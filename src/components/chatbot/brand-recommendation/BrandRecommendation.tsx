@@ -1,43 +1,38 @@
 import { export_icon, thumbsDown } from "../../../assets/assets.css";
+import useBrandStore from "../../../stores/useBrandStore";
 import BrandRecommendationCard from "../brand-recommendation-card/BrandRecommendationCard";
 import { brandRecommendContainer, brandRecommendIcon, brandRecommendIconWrap, brandRecommendWrap } from "./brandRecommendation.css";
 
-const dummy = [
-  {
-    id: 1,
-    content: <BrandRecommendationCard />
-  },
-  {
-    id: 2,
-    content: <BrandRecommendationCard />
-  },
-  {
-    id: 3,
-    content: <BrandRecommendationCard />
-  },
-  {
-    id: 4,
-    content: <BrandRecommendationCard />
-  },
-  {
-    id: 5,
-    content: <BrandRecommendationCard />
-  },
-  {
-    id: 6,
-    content: <BrandRecommendationCard />
-  }
-]
+interface DummyItem {
+  id: number;
+  content: JSX.Element;
+  value: string;
+}
+
+const dummy: DummyItem[] = [
+  { id: 1, content: <BrandRecommendationCard />, value: 'rockfish weather wear' },
+  { id: 2, content: <BrandRecommendationCard />, value: 'crocs' },
+  { id: 3, content: <BrandRecommendationCard />, value: 'bensimon' },
+  { id: 4, content: <BrandRecommendationCard />, value: 'adidas' },
+  { id: 5, content: <BrandRecommendationCard />, value: 'nike' },
+  { id: 6, content: <BrandRecommendationCard />, value: 'new balance' }
+];
+
 
 
 const BrandRecommendation = () => {
+  const setSelectedBrand = useBrandStore((state) => state.setSelectedBrand);
+
+  const handleBrandClick = (brand: string) => {
+    setSelectedBrand(brand);
+  }
   return (
     <>
       <div className={brandRecommendWrap}>
 
         <ul className={brandRecommendContainer}>
           {dummy.map((item) => (
-            <li key={item.id}>{item.content}</li>
+            <li key={item.id} onClick={() => handleBrandClick(item.value)}>{item.content}</li>
           ))}
         </ul>
         <div className={brandRecommendIconWrap}>
