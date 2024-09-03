@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css';
-import { theme } from '../../../styles/theme';
 import { select_arrow20 } from '../../../assets/assets.css';
+import { theme } from '../../../styles/theme';
 
 export const dateSelectBox = style({
   width: '343px',

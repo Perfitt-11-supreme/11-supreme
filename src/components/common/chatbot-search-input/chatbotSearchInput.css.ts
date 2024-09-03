@@ -7,7 +7,7 @@ export const chatbotSearchContainer = style({
   alignItems: 'center',
   gap: '8px',
   backgroundColor: theme.color.gray100,
-  width: '343px',
+  width: '375px',
   height: '104px',
   padding: '16px 16px 40px 16px',
 });
@@ -50,4 +50,8 @@ export const uploadIconBox = style({
   cursor: 'pointer',
   position: 'absolute',
   right: '4px',
+});
+
+export const hiddenFileInput = style({
+  display: 'none', // 파일 입력 필드를 화면에 보이지 않도록 숨김
 });
