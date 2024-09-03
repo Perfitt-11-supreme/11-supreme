@@ -7,7 +7,8 @@ export const footSizeCardContainer = style({
   borderRadius: '6px',
   overflow: 'hidden',
   display: 'flex',
-  flexDirection:'column',
+  flexDirection: 'column',
+  marginTop:'10px'
 })
 
 export const footSizeCardTop = style({

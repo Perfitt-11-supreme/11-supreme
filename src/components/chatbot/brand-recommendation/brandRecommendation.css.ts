@@ -3,6 +3,7 @@ import { style } from '@vanilla-extract/css';
 export const brandRecommendWrap = style({
   display: 'flex',
   flexDirection: 'column',
+  marginTop:'10px'
 })
 
 export const brandRecommendContainer = style({

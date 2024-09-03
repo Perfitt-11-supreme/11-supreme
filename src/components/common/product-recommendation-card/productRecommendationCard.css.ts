@@ -31,7 +31,6 @@ export const brandIconBox = style({
 });
 export const productBox = style({
   width: '100%',
-  height: '89px',
   padding: '6px 10px',
   display: 'flex',
   flexDirection: 'column',

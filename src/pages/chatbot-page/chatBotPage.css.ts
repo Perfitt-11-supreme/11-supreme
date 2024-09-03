@@ -24,12 +24,12 @@ export const chatBubbleWrap = style({
   display: 'flex',
   flexDirection: 'column',
   flexGrow: 1,
+  overflowY:'scroll'
   
 })
 
 export const chatBotCardWrap = style({
   paddingLeft: '12px',
-  paddingTop:'10px '
 })
 
 export const chatBotModalWrap = style({

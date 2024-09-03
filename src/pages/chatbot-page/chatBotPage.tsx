@@ -2,6 +2,7 @@ import { hamburger_menu } from "../../assets/assets.css";
 import BrandRecommendation from "../../components/chatbot/brand-recommendation/BrandRecommendation";
 import ChatBotBubble from "../../components/chatbot/chatbot-bubble/ChatBotBubble";
 import FootSizeCard from "../../components/chatbot/foot-size-card/FootSizeCard";
+import ProductRecommendationPreview from "../../components/chatbot/product-recommendation-preview/ProductRecommendationPreview";
 import ProductRecommendation from "../../components/chatbot/product-recommendation/ProductRecommendation";
 import UserBubble from "../../components/chatbot/user-bubble/UserBubble";
 
@@ -21,6 +22,7 @@ const ChatBotPage = () => {
             <div className={chatBotCardWrap}>
               <FootSizeCard />
               <BrandRecommendation />
+              <ProductRecommendationPreview />
             </div>
             <UserBubble bubbleContent='트레킹, 영화, 등산화' />
           </div>
