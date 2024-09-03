@@ -1,4 +1,5 @@
 import { globalFontFace, globalStyle } from '@vanilla-extract/css';
+import { theme } from './styles/theme';
 
 const Pretendard = 'PretendardVariable';
 
@@ -45,8 +46,9 @@ globalStyle('h1,h2,h3,h4,button,input,label', {
   lineHeight: '1.1',
 });
 
-globalStyle('h1,h2,h3,h4', {
+globalStyle('h1,h2,h3,h4,b', {
   textWrap: 'balance',
+  color: theme.color.black,
 });
 
 globalStyle('a:not([class])', {

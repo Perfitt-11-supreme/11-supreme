@@ -1,13 +1,89 @@
+import { ai, back_arrow, hamburger_menu } from './assets/assets.css';
+import Button from './components/common/button/Button';
+import ChatbotSearchInput from './components/common/chatbot-search-input/ChatbotSearchInput';
+import Input from './components/common/input/Input';
+import RecommendedQuestionCard from './components/common/recommended-question-card/RecommendedQuestionCard';
+import Select from './components/common/select/Select';
+import DateSelect from './components/common/date-select/DateSelect';
+import { theme } from './styles/theme';
+import KeywordCard from './components/common/keyword-card/KeywordCard';
+import Modal from './components/common/modal/Modal';
+import Header from './components/common/header/Header';
+import SizeRecommendationCard from './components/common/size-recommendation-card/SizeRecommendationCard';
+import ProductRecommendationCard from './components/common/product-recommendation-card/ProductRecommendationCard';
 
-
-function App() {
-
-
+const App = () => {
   return (
     <>
-      <h1>폰트 적용 테스트</h1>
+      {/* 공통 테마, 아이콘 세팅 */}
+      <div>
+        <h1 style={{ color: theme.color.ai_red500 }}>폰트 적용 테스트</h1>
+        <span style={{ backgroundColor: theme.color.ai_purple500 }}>아이콘 적용 테스트</span>
+        <img src={ai} alt="ai" />
+      </div>
+      {/* 공통 컴포넌트 - 버튼 */}
+      <div style={{ display: 'flex', gap: '4px' }}>
+        <Button text="다음" />
+        <Button text="시작하기" />
+        <Button text="가입완료" />
+      </div>
+      {/* 공통 컴포넌트 - 챗봇 검색 */}
+      <ChatbotSearchInput />
+      {/* 공통 컴포넌트 - 추천 질문 카드 */}
+      <div style={{ display: 'flex', gap: '10px' }}>
+        <RecommendedQuestionCard text="비 오는날 신기 좋은 레인부츠 브랜드 알려줘" />
+        <RecommendedQuestionCard text="요즘 등산할 때 신기 좋은 가벼운 등산화 추천해줘" />
+        <RecommendedQuestionCard text="비 오는날 신기 좋은 레인부츠 브랜드 알려줘" />
+      </div>
+      {/* 공통 컴포넌트 - 인풋 */}
+      <form style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <Input label="아이디" type="email" name="userEmail" id="userEmail1" placeholder="이메일을 입력해주세요" />
+        <Input
+          label="비밀번호"
+          type="password"
+          name="userPassword"
+          id="userPassword"
+          placeholder="비밀번호를 입력해주세요"
+        />
+        <Input label="이름" type="text" name="userName" id="userName" placeholder="이름을 입력해 주세요" />
+        {/* 공통 컴포넌트 - 셀렉트박스 */}
+        <Select
+          id="gender"
+          label="성별"
+          options={[
+            { value: '', label: '성별을 선택해 주세요' },
+            { value: 'male', label: '남성' },
+            { value: 'female', label: '여성' },
+          ]}
+        />
+        {/* 공통 컴포넌트 - 셀렉트박스 날짜 */}
+        <DateSelect label="생년월일" />
+      </form>
+      {/* 공통 컴포넌트 - 키워드 카드 */}
+      <div style={{ maxWidth: '335px', display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+        <KeywordCard text="스니커즈" />
+        <KeywordCard text="운동" />
+        <KeywordCard text="산책" />
+        <KeywordCard text="운동화" />
+        <KeywordCard text="구두" />
+        <KeywordCard text="샌들" />
+        <KeywordCard text="레인부츠" />
+        <KeywordCard text="슬리퍼" />
+      </div>
+      {/* 공통 컴포넌트 - 모달 */}
+      <div style={{ display: 'flex' }}>
+        <Modal title="관심 키워드" height="340px" />
+        <Modal title="회원가입" height="612px" />
+      </div>
+      {/* 공통 컴포넌트 - 헤더 */}
+      <Header imageSrc={hamburger_menu} alt="hamburger menu" />
+      <Header imageSrc={back_arrow} alt="back arrow" />
+      {/* 공통 컴포넌트 - 사이즈 추천 카드 */}
+      <SizeRecommendationCard />
+      {/* 공통 컴포넌트 - 상품 추천 카드 */}
+      <ProductRecommendationCard />
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
