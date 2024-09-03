@@ -11,6 +11,8 @@ import Header from "../../components/common/header/Header";
 import Modal from "../../components/common/modal/Modal";
 import { chatBotCardWrap, chatBotContainer, chatBotModalWrap, chatBotWrap, chatBubbleWrap } from "./chatBotPage.css";
 
+// const dummy = ['스니커즈', '트레킹', '운동', '산책', '여행', '운동화', '구두', '등산화', '샌들', '레인부츠', '슬리퍼']
+
 const ChatBotPage = () => {
   return (
     <>
@@ -31,6 +33,14 @@ const ChatBotPage = () => {
             <Modal height="758px">
               <ProductRecommendation />
             </Modal>
+            {/* 관심키워드 */}
+            {/* <Modal height="340px" title="관심키워드">
+              <div className={keywordWrap}>
+                {dummy.map((item, index) => (
+                  <KeywordCard key={index} text={item} />
+                ))}
+              </div>
+            </Modal> */}
           </div>
         </div>
       </div>

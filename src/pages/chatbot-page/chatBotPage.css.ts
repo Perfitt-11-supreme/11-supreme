@@ -35,3 +35,10 @@ export const chatBotCardWrap = style({
 export const chatBotModalWrap = style({
   position: 'relative',
 })
+
+export const keywordWrap = style({
+  width: 'auto',
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: '4px'
+})
