@@ -3,7 +3,6 @@ import { style } from '@vanilla-extract/css';
 export const chatBotBubbleWrap = style({
   width: '100%',
   height: 'auto',
-  
 })
 
 export const chatBotBubbleContainer = style({

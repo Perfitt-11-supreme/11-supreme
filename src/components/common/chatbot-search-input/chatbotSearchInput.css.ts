@@ -10,6 +10,8 @@ export const chatbotSearchContainer = style({
   width: '375px',
   height: '104px',
   padding: '16px 16px 40px 16px',
+  position: 'relative',
+  zIndex:2
 });
 export const pictureIconBox = style({
   cursor: 'pointer',

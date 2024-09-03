@@ -5,7 +5,7 @@ export const chatBotWrap = style({
   minHeight: "100vh",
   display: "flex",
   justifyContent: "center",
-  backgroundColor:'red'
+  backgroundColor:'black'
 })
 
 export const chatBotContainer = style({
@@ -30,4 +30,8 @@ export const chatBubbleWrap = style({
 export const chatBotCardWrap = style({
   paddingLeft: '12px',
   paddingTop:'10px '
+})
+
+export const chatBotModalWrap = style({
+  position: 'relative',
 })
