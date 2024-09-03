@@ -27,8 +27,8 @@ export const keywordCard = style([
 export const keywordCardChecked = style([
   baseKeywordCard,
   {
-    color: theme.color.cool_gray400,
-    backgroundColor: theme.color.cool_gray100,
-    border: `1px solid ${theme.color.cool_gray100}`,
+    color: theme.color.slate400,
+    backgroundColor: theme.color.slate100,
+    border: `1px solid ${theme.color.slate100}`,
   },
 ]);
