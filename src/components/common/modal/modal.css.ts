@@ -1,16 +1,26 @@
 import { style } from '@vanilla-extract/css';
 import { theme } from '../../../styles/theme';
 
-export const modalContainer = style({
+export const modalContainerWrapper = style( {
+  position: 'relative', 
   width: '375px',
-  paddingTop: '8px',
+  height: 'auto',
+})
+
+export const modalContainer = style({
+  width: '100%',
+  padding: '8px 16px 0',
   backgroundColor: theme.color.white,
   borderRadius: '24px 24px 0px 0px',
   boxShadow: `0px -1px 4px 0px ${theme.color.black}26;`,
+  position: 'absolute',
+  bottom:'0px',
+  zIndex: 1,
 });
 export const barBox = style({
   display: 'flex',
   justifyContent: 'center',
+  cursor:'pointer'
 });
 export const modalContainerTitle = style({
   width: '100%',
@@ -24,3 +34,4 @@ export const modalContainerTitle = style({
   letterSpacing: '-0.015em',
   textAlign: 'center',
 });
+
