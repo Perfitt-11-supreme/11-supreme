@@ -93,4 +93,5 @@ export const productDetailsButton = style({
   backgroundColor: theme.color.white,
   border: `0.58px solid ${theme.color.cool_gray100}`,
   borderRadius: '6px',
+  cursor: 'pointer',
 });
