@@ -4,7 +4,7 @@ import { theme } from './styles/theme';
 const Pretendard = 'PretendardVariable';
 
 globalFontFace('PretendardVariable', {
-  src: `url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/PretendardVariable.woff2') format('woff')`,
+  src: `local('PretendardVariable'), url('/fonts/PretendardVariable.woff2') format('woff2-variations')`,
   fontWeight: '45 920',
   fontStyle: 'normal',
 });
