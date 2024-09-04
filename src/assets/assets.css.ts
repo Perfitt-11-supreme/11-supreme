@@ -12,6 +12,8 @@ import select_arrow24 from './select_arrow24.svg';
 import shoes_w159 from './shoes_w159.svg';
 import shoes_w182 from './shoes_w182.svg';
 import upload from './upload.svg';
+import search from './search_icon.svg';
+import camera from './camera.svg';
 export {
   ai,
   back_arrow,
@@ -27,4 +29,6 @@ export {
   shoes_w159,
   shoes_w182,
   upload,
+  search,
+  camera,
 };
