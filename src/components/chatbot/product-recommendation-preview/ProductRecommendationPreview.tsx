@@ -1,6 +1,9 @@
-import { export_icon, thumbsDown } from "../../../assets/assets.css";
+import { motion } from 'framer-motion';
+import { arrow_right, export_icon, thumbsDown } from "../../../assets/assets.css";
+import useModalStore from '../../../stores/useModalStore';
 import ProductRecommendationCard from "../../common/product-recommendation-card/ProductRecommendationCard";
-import { brandRecommendContainer, brandRecommendIcon, brandRecommendIconWrap, brandRecommendWrap } from "../brand-recommendation/brandRecommendation.css";
+import { brandRecommendIcon } from "../brand-recommendation/brandRecommendation.css";
+import { productRecommendPreviewContainer, productRecommendPreviewIcon, productRecommendPreviewIconWrap, productRecommendPreviewMore, productRecommendPreviewMoreIcon, productRecommendPreviewWrap } from "./productRecommendationPreview.css";
 const dummy = [
   {
     id: 1,
@@ -10,36 +13,34 @@ const dummy = [
     id: 2,
     content: <ProductRecommendationCard />
   },
-  {
-    id: 3,
-    content: <ProductRecommendationCard />
-  },
-  {
-    id: 4,
-    content: <ProductRecommendationCard />
-  },
-  {
-    id: 5,
-    content: <ProductRecommendationCard />
-  },
-  {
-    id: 6,
-    content: <ProductRecommendationCard />
-  }
+
 ]
 
 const ProductRecommendationPreview = () => {
+  const { setIsOpen } = useModalStore()
+
+  const handleOpenModal = () => {
+    setIsOpen(true)
+  }
   return (
     <>
-      <div className={brandRecommendWrap}>
+      <div className={productRecommendPreviewWrap}>
 
-        <ul className={brandRecommendContainer}>
+        <motion.ul className={productRecommendPreviewContainer}
+          drag="x"
+          dragConstraints={{ left: -60, right: 0 }}>
           {dummy.map((item) => (
             <li key={item.id}>{item.content}</li>
           ))}
-        </ul>
-        <div className={brandRecommendIconWrap}>
-          <img src={export_icon} alt="" className={brandRecommendIcon} />
+          <div onClick={handleOpenModal}>
+            <div className={productRecommendPreviewMore}>
+              <img src={arrow_right} className={productRecommendPreviewMoreIcon} />
+              <p style={{ fontSize: '9px', marginTop: '6px' }}>더보기</p>
+            </div>
+          </div>
+        </motion.ul>
+        <div className={productRecommendPreviewIconWrap}>
+          <img src={export_icon} alt="" className={productRecommendPreviewIcon} />
           <img src={thumbsDown} alt="" className={brandRecommendIcon} />
         </div>
 

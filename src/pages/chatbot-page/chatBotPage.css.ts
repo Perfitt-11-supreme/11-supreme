@@ -5,7 +5,7 @@ export const chatBotWrap = style({
   minHeight: "100vh",
   display: "flex",
   justifyContent: "center",
-  backgroundColor:'black'
+  backgroundColor: 'black'
 })
 
 export const chatBotContainer = style({
@@ -16,16 +16,17 @@ export const chatBotContainer = style({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: "space-between",
-  overflow:'hidden'
+  overflowY:'hidden'
 })
 
 export const chatBubbleWrap = style({
-  padding: '20px 16px 0',
+  padding: '20px 16px 8px',
   display: 'flex',
   flexDirection: 'column',
   flexGrow: 1,
+  overflowX: 'hidden',
   overflowY:'scroll'
-  
+
 })
 
 export const chatBotCardWrap = style({

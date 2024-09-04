@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { hamburger_menu } from "../../assets/assets.css";
 import BrandPLP from "../../components/chatbot/brand-plp/BrandPLP";
 import BrandRecommendation from "../../components/chatbot/brand-recommendation/BrandRecommendation";
@@ -7,20 +6,19 @@ import FootSizeCard from "../../components/chatbot/foot-size-card/FootSizeCard";
 import ProductRecommendationPreview from "../../components/chatbot/product-recommendation-preview/ProductRecommendationPreview";
 import ProductRecommendation from "../../components/chatbot/product-recommendation/ProductRecommendation";
 import UserBubble from "../../components/chatbot/user-bubble/UserBubble";
-import Button from "../../components/common/button/Button";
 import ChatbotSearchInput from "../../components/common/chatbot-search-input/ChatbotSearchInput";
 
 import Header from "../../components/common/header/Header";
-import KeywordCard from "../../components/common/keyword-card/KeywordCard";
 import Modal from "../../components/common/modal/Modal";
 import useBrandStore from "../../stores/useBrandStore";
-import { chatBotCardWrap, chatBotContainer, chatBotModalWrap, chatBotWrap, chatBubbleWrap, keywordWrap } from "./chatBotPage.css";
+import useModalStore from "../../stores/useModalStore";
+import { chatBotCardWrap, chatBotContainer, chatBotModalWrap, chatBotWrap, chatBubbleWrap } from "./chatBotPage.css";
 
-const dummy = ['스니커즈', '트레킹', '운동', '산책', '여행', '운동화', '구두', '등산화', '샌들', '레인부츠', '슬리퍼']
+// const dummy = ['스니커즈', '트레킹', '운동', '산책', '여행', '운동화', '구두', '등산화', '샌들', '레인부츠', '슬리퍼']
 
 const ChatBotPage = () => {
   const { selectedBrand } = useBrandStore()
-  const [showInterestKeywords, setShowInterestKeywords] = useState(false);
+  const { isOpen } = useModalStore(); // 모달 열림 상태 추가
   return (
     <>
       <div className={chatBotWrap}>
@@ -36,24 +34,25 @@ const ChatBotPage = () => {
             <UserBubble bubbleContent='트레킹, 영화, 등산화' />
           </div>
           <div className={chatBotModalWrap}>
-            {showInterestKeywords && (
-              <>
-                <ChatbotSearchInput />
-                <Modal height="758px">
-                  {selectedBrand ? <BrandPLP /> : <ProductRecommendation />}
-                </Modal>
-              </>
-            )}
+
+            {!isOpen && <ChatbotSearchInput />} {/* 모달이 열렸을 때는 ChatbotSearchInput을 숨김 */}
+            <Modal
+              height="758px"
+            >
+              {selectedBrand ? <BrandPLP /> : <ProductRecommendation />}
+            </Modal>
 
             {/* 관심키워드 */}
-            <Modal height="340px" title="관심 키워드">
+            {/* <Modal height="340px" title="관심 키워드">
               <div className={keywordWrap}>
                 {dummy.map((item, index) => (
                   <KeywordCard key={index} text={item} />
                 ))}
-                <Button text="n개 선택" onClick={() => setShowInterestKeywords(false)} />
+                <div style={{ marginTop: '40px' }}>
+                  <Button text="n개 선택" onClick={() => setShowInterestKeywords(false)} />
+                </div>
               </div>
-            </Modal>
+            </Modal> */}
           </div>
         </div>
       </div>

@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { ai, back_arrow, hamburger_menu } from '../../../assets/assets.css';
 import { theme } from '../../../styles/theme';
 import Button from '../button/Button';
 import ChatbotSearchInput from '../chatbot-search-input/ChatbotSearchInput';
 import DateSelect from '../date-select/DateSelect';
+import FilterButton from '../filter-button/FilterButton';
 import Header from '../header/Header';
 import Input from '../input/Input';
 import KeywordCard from '../keyword-card/KeywordCard';
@@ -13,6 +15,11 @@ import Select from '../select/Select';
 import SizeRecommendationCard from '../size-recommendation-card/SizeRecommendationCard';
 
 const CommonGuide = () => {
+  const [activeFilter, setActiveFilter] = useState('ALL');
+
+  const handleFilterClick = (filter: string) => {
+    setActiveFilter(filter);
+  };
   return (
     <>
       {/* 공통 테마, 아이콘 세팅 */}
@@ -82,6 +89,19 @@ const CommonGuide = () => {
       <SizeRecommendationCard />
       {/* 공통 컴포넌트 - 상품 추천 카드 */}
       <ProductRecommendationCard />
+
+      {/* 공통 컴포넌트 - 상품 필터링 버튼 */}
+      <FilterButton
+
+        title="ALL"
+        isActive={activeFilter === 'ALL'}
+        onClick={() => handleFilterClick('ALL')}
+      />
+      <FilterButton
+        title="WOMEN"
+        isActive={activeFilter === 'WOMEN'}
+        onClick={() => handleFilterClick('WOMEN')}
+      />
     </>
   );
 };

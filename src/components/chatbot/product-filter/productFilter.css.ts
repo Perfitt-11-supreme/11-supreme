@@ -2,37 +2,12 @@ import { style } from '@vanilla-extract/css';
 import { polygon2 } from '../../../assets/assets.css';
 import { theme } from '../../../styles/theme';
 
-export const productRecommendWrap = style({
-  width: '100%',
-  display: "flex",
-  flexDirection:'column',
-  paddingTop:'16px'
-})
-
-export const productRecommendTextWrap = style({
-  width: '100%',
-  height: 'auto',
-  display: "flex",
-  alignItems: 'center',
-  padding:'0 16px'
-})
-
-export const chatBotRecommendText = style({
-  fontWeight: 600,
-  fontSize: '14px',
-  marginLeft: '10px',
-})
-
-export const ProductRecommendResult = style({
-  fontWeight:'600'
-})
-
 export const productRecommendFilterWrap = style({
   width: '100%',
   display: 'flex',
   justifyContent: 'space-between',
   alignItems:'center',
-  padding: '10px 0',
+  padding: '10px 16px',
   marginTop:'16px'
 })
 
@@ -62,4 +37,21 @@ export const productRecommendFiltering = style({
     outline: 'none',  // 포커스 시 아웃라인 제거
     boxShadow: 'none', // 포커스 시 그림자 제거
   },
+})
+
+export const productRecommendWrapper = style({
+  height: '650px', // 또는 원하는 고정 높이
+  overflowY: 'auto',
+  
+});
+
+export const productRecommend = style({
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr', 
+  gap: '10px',
+  height:'auto',
+  overflowY: 'scroll', // 세로로 스크롤이 생기도록 설정
+  overflowX: 'hidden', // 가로로 스크롤이 생기지 않도록 설정
+  padding:'0 16px 16px'
+  
 })

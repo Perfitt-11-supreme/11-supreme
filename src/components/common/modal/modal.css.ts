@@ -9,7 +9,7 @@ export const modalContainerWrapper = style( {
 
 export const modalContainer = style({
   width: '100%',
-  padding: '8px 16px 0',
+  paddingTop: '8px',
   backgroundColor: theme.color.white,
   borderRadius: '24px 24px 0px 0px',
   boxShadow: `0px -1px 4px 0px ${theme.color.black}26;`,
