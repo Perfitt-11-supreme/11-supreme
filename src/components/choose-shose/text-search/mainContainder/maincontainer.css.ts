@@ -1,16 +1,21 @@
 import { style } from '@vanilla-extract/css';
 import { theme } from '../../../../styles/theme';
 
-export const ContentContainer_Container = style({
+export const MainContainter_Background = style({
+  marginTop: '155px',
+  marginBottom: '108px',
+});
+
+export const MainContainer_Container = style({
   margin: '0 24px',
 });
 
-export const ContentContainer_Header = style({
+export const MainContainer_Header = style({
   display: 'flex',
   justifyContent: 'space-between',
 });
 
-export const ContentContainer_RecentSearches = style({
+export const MainContainer_RecentSearches = style({
   // width: '83px',
   height: '21px',
   fontWeight: '500',
@@ -19,7 +24,7 @@ export const ContentContainer_RecentSearches = style({
   color: theme.color.black,
 });
 
-export const ContentContainer_Remove = style({
+export const MainContainer_Remove = style({
   display: 'flex',
   // width: '49px',
   height: '19px',
@@ -31,7 +36,7 @@ export const ContentContainer_Remove = style({
   paddingTop: '2px',
 });
 
-export const ContentContainer_NoRecord = style({
+export const MainContainer_NoRecord = style({
   display: 'flex',
   // width: '132px',
   height: '17px',
@@ -45,7 +50,7 @@ export const ContentContainer_NoRecord = style({
   // margin: '31px 121px 0 122px',
 });
 
-export const ContentContainer_RecentRecord = style({
+export const MainContainer_RecentRecord = style({
   height: '24px',
   marginTop: '10px',
   fontWeight: '400',
@@ -53,7 +58,7 @@ export const ContentContainer_RecentRecord = style({
   color: theme.color.gray300,
 });
 
-export const ContentContainer_Line = style({
+export const MainContainer_Line = style({
   width: '375px',
   height: '6px',
   marginTop: '31px',
