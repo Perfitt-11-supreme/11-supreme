@@ -12,6 +12,11 @@ import select_arrow24 from './select_arrow24.svg';
 import shoes_w159 from './shoes_w159.svg';
 import shoes_w182 from './shoes_w182.svg';
 import upload from './upload.svg';
+import user_profile_upload from './user_profile_upload.svg';
+import user_profile from './user_profile.svg';
+import mypage_heart from './mypage_heart.svg';
+import mypage_shose_room from './mypage_shose_room.svg';
+import mypage_arrow from './mypage_arrow.svg';
 export {
   ai,
   back_arrow,
@@ -27,4 +32,9 @@ export {
   shoes_w159,
   shoes_w182,
   upload,
+  user_profile_upload,
+  user_profile,
+  mypage_heart,
+  mypage_shose_room,
+  mypage_arrow,
 };
