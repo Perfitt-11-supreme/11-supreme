@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { polygon2 } from '../../../assets/assets.css';
+import { polygon2 } from '../../../assets/assets';
 import { theme } from '../../../styles/theme';
 
 export const productRecommendFilterWrap = style({

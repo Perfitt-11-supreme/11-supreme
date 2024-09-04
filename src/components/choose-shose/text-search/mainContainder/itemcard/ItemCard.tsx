@@ -1,4 +1,4 @@
-import { shoes_w159 } from '../../../../../assets/assets.css';
+import { shoes_w159 } from '../../../../../assets/assets';
 import {
   ItemCard_Container,
   ItemCard_Frame,

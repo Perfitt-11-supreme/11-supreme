@@ -1,4 +1,4 @@
-import { plus } from '../../assets/assets.css';
+import { plus } from '../../assets/assets';
 import { shoes1, shoes2, shoes3, shoes4, shoes5, shoes6, shoes7, shoes8 } from '../../assets/shoes/shoes';
 import Header from '../header/Header';
 import UserProfile from '../user-profile/UserProfile';

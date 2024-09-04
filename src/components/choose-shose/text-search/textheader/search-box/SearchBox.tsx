@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { camera, search } from '../../../../../assets/assets.css';
+import { camera, search } from '../../../../../assets/assets';
 import {
   SearchBox_Background,
   SearchBox_Box,

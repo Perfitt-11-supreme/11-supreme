@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { checked } from '../../../assets/assets.css';
+import { checked } from '../../../assets/assets';
 import { TButton } from '../../../types/button';
 import { keywordCard, keywordCardChecked } from './keywordCard.css';
 

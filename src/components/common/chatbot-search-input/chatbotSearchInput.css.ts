@@ -7,10 +7,13 @@ export const chatbotSearchContainer = style({
   alignItems: 'center',
   gap: '8px',
   backgroundColor: theme.color.gray100,
-  width: '343px',
+  width: '375px',
   height: '104px',
   padding: '16px 16px 40px 16px',
+  position: 'relative',
+  zIndex:2
 });
+
 export const pictureIconBox = style({
   cursor: 'pointer',
 });

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { plus } from '../../assets/assets.css';
+import { plus } from '../../assets/assets';
 import Choose from '../choose/Choose';
 import Button from '../common/button/Button';
 import Header from '../header/Header';

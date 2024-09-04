@@ -1,4 +1,4 @@
-import { prefitt_symbol } from "../../../assets/assets.css";
+import { prefitt_symbol } from "../../../assets/assets";
 import ProductFilter from "../product-filter/ProductFilter";
 import { chatBotRecommendText, productRecommendTextWrap, productRecommendWrap } from "./ProductRecommendation.css";
 

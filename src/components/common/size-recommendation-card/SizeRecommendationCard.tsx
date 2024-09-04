@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ai, brand_abcmart, heart_empty, heart_filled } from '../../../assets/assets.css';
+import { ai, brand_abcmart, heart_empty, heart_filled } from '../../../assets/assets';
 import {
   brandIconBox,
   heartIconBox,
