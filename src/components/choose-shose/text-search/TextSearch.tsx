@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import TextSearchBox from './search-box/SearchBox';
 import TextHeader from './textheader/TextHeader';
-import TextContentContainer from './contentcontainer/ContentContainer';
+import MainContainer from './mainContainder/MainContainer';
+import TextFooter from './textfooter/TextFooter';
 
 const TextSearch = () => {
   const [record, setRecord] = useState<string[]>([]);
   const [focus, setFocus] = useState(false);
   const [text, setText] = useState('');
+  const [remove, setRemove] = useState(false);
 
   const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
@@ -14,11 +15,14 @@ const TextSearch = () => {
 
   const handleSubmitSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (text.length === 0) return;
 
     if (record.length >= 10) {
       record.pop();
     }
+
+    console.log();
 
     if (record.includes(text)) {
       const filterRecord = record.filter(item => item !== text);
@@ -32,6 +36,14 @@ const TextSearch = () => {
     }
   };
 
+  const handleFocusSearchBox = (bol: boolean) => {
+    if (remove) {
+      setRemove(false);
+      return;
+    }
+    setFocus(bol);
+  };
+
   const handleCLickRecentRecord = (str: string) => {
     const filterRecord = record.filter(item => item !== str);
     filterRecord.unshift(str);
@@ -42,25 +54,25 @@ const TextSearch = () => {
 
   const handleClickAllRemove = () => {
     setRecord([]);
+    setRemove(true);
   };
 
   return (
     <>
       <div>
-        <TextHeader />
-        <TextSearchBox
+        <TextHeader
           text={text}
           handleSubmitSearch={handleSubmitSearch}
           handleChangeText={handleChangeText}
-          setFocus={setFocus}
+          handleFocusSearchBox={handleFocusSearchBox}
         />
-        <TextContentContainer
+        <MainContainer
           record={record}
           focus={focus}
-          text={text}
           handleCLickRecentRecord={handleCLickRecentRecord}
           handleClickAllRemove={handleClickAllRemove}
         />
+        <TextFooter />
       </div>
     </>
   );
