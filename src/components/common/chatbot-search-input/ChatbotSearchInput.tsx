@@ -1,8 +1,8 @@
 import { picture, upload } from '../../../assets/assets';
 import {
+  chatbotSearchContainer,
   chatbotSearchInput,
   chatbotSearchInputBox,
-  chatbotSearchContainer,
   pictureIconBox,
   uploadIconBox,
 } from './chatbotSearchInput.css';

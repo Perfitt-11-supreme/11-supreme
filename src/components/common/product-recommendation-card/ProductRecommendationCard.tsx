@@ -1,16 +1,16 @@
 import { useState } from 'react';
+import { brand_abcmart, heart_empty, heart_filled } from '../../../assets/assets';
 import {
   brandIconBox,
   heartIconBox,
   productBox,
   productBrand,
   productName,
-  productText,
   productPrice,
   productRecommendationCardBox,
   productRecommendationThumbnail,
+  productText,
 } from './productRecommendationCard.css';
-import { brand_abcmart, heart_empty, heart_filled } from '../../../assets/assets.css';
 
 const ProductRecommendationCard = () => {
   const [isChecked, setIsChecked] = useState(false);

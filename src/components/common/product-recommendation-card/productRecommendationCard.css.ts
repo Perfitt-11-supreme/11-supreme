@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css';
+import { shoes_w159 } from '../../../assets/assets';
 import { theme } from '../../../styles/theme';
-import { shoes_w159 } from '../../../assets/assets.css';
 
 export const productRecommendationCardBox = style({
   width: '162px',

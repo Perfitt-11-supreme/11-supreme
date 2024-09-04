@@ -7,6 +7,7 @@ import Header from '../header/Header';
 import Input from '../input/Input';
 import KeywordCard from '../keyword-card/KeywordCard';
 import Modal from '../modal/Modal';
+
 import ProductRecommendationCard from '../product-recommendation-card/ProductRecommendationCard';
 import RecommendedQuestionCard from '../recommended-question-card/RecommendedQuestionCard';
 import Select from '../select/Select';
@@ -74,6 +75,7 @@ const CommonGuide = () => {
       <div style={{ display: 'flex' }}>
         <Modal title="관심 키워드" height="340px" />
         <Modal title="회원가입" height="612px" />
+
       </div>
       {/* 공통 컴포넌트 - 헤더 */}
       <Header imageSrc={hamburger_menu} alt="hamburger menu" />

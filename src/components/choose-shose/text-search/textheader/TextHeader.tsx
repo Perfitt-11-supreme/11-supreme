@@ -1,4 +1,4 @@
-import { back_arrow } from '../../../../assets/assets.css';
+import { back_arrow } from '../../../../assets/assets';
 import SearchBox from './search-box/SearchBox';
 import { TextHeader_Container, TextHeader_Frame, TextHeader_Title, TextHeader_TouchBox } from './textheader.css';
 
