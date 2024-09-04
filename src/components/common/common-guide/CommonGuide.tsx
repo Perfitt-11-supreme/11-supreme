@@ -1,4 +1,4 @@
-import { ai, back_arrow, hamburger_menu } from '../../../assets/assets';
+import { ai, back_arrow, hamburger_menu } from '../../../assets/assets.css';
 import { theme } from '../../../styles/theme';
 import Button from '../button/Button';
 import ChatbotSearchInput from '../chatbot-search-input/ChatbotSearchInput';

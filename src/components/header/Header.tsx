@@ -1,5 +1,5 @@
-import { back_arrow } from '../../assets/assets';
-import { backButton, headerTitle, headerDiv, frame } from './header.css';
+import { back_arrow } from '../../assets/assets.css';
+import { backButton, frame, headerDiv, headerTitle } from './header.css';
 
 const Header = ({ title }: { title: string }) => {
   return (

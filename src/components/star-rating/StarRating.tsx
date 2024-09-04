@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { starContainer, star } from './starrating.css';
-import { empty_star, filled_star } from '../../assets/assets';
+import { empty_star, filled_star } from '../../assets/assets.css';
+import { star, starContainer } from './starrating.css';
 
 const StarRating = () => {
   const [rating, setRating] = useState(0);

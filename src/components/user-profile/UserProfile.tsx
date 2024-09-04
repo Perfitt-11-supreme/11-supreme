@@ -1,4 +1,4 @@
-import { user } from '../../assets/assets';
+import { user } from '../../assets/assets.css';
 import { descP, nameP, userButton, userDiv } from './userprofile.css';
 
 const UserProfile = () => {

@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css';
-import { theme } from '../../../styles/theme';
 import { select_arrow24 } from '../../../assets/assets.css';
+import { theme } from '../../../styles/theme';
 
 export const selectBox = style({
   width: '343px',

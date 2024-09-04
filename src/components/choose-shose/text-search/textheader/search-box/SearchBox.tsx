@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { camera, search } from '../../../../../assets/assets.css';
 import {
-  SearchBox_Container,
-  SearchBox_searchIcon,
-  SearchBox_Box,
-  SearchBox_cameraIcon,
   SearchBox_Background,
+  SearchBox_Box,
+  SearchBox_Container,
   SearchBox_Hide,
+  SearchBox_cameraIcon,
+  SearchBox_searchIcon,
 } from './searchbox.css';
 
 const SearchBox = ({

@@ -1,17 +1,17 @@
 import { useState } from 'react';
-import { ai, brand_abcmart, heart_empty, heart_filled } from '../../../assets/assets';
+import { ai, brand_abcmart, heart_empty, heart_filled } from '../../../assets/assets.css';
 import {
-  sizeRecommendationCardBox,
-  sizeRecommendationThumbnail,
-  sizeRecommendationBadge,
-  sizeRecommendationBadgeTag,
-  heartIconBox,
   brandIconBox,
+  heartIconBox,
   productBox,
   productBrand,
-  productName,
   productDetailsButton,
+  productName,
   productText,
+  sizeRecommendationBadge,
+  sizeRecommendationBadgeTag,
+  sizeRecommendationCardBox,
+  sizeRecommendationThumbnail,
 } from './sizeRecommendationCard.css';
 
 const SizeRecommendationCard = () => {

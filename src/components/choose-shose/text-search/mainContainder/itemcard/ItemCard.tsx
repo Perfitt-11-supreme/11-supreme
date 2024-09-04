@@ -2,10 +2,10 @@ import { shoes_w159 } from '../../../../../assets/assets.css';
 import {
   ItemCard_Container,
   ItemCard_Frame,
+  ItemCard_Rectangle,
   ItemCard_ShoseBrand,
   ItemCard_ShoseName,
   ItemCard_ShosePrice,
-  ItemCard_Rectangle,
 } from './itemcard.css';
 
 const TextItemCard = () => {

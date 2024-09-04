@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import { plus } from '../../assets/assets';
-import { area, buttonDiv, container, descP, imagePlusButton, questionP, questP, starP } from './shoesregistry.css';
+import { plus } from '../../assets/assets.css';
 import Choose from '../choose/Choose';
-import Slider from '../slider/Slider';
-import { button } from '../common/button/button.css';
-import StarRating from '../star-rating/StarRating';
-import Header from '../header/Header';
 import Button from '../common/button/Button';
+import Header from '../header/Header';
+import Slider from '../slider/Slider';
+import StarRating from '../star-rating/StarRating';
+import { area, buttonDiv, container, descP, imagePlusButton, questionP, questP, starP } from './shoesregistry.css';
 
 const ShoesRegistry = () => {
   const [selectedLength, setSelectedLength] = useState('');
