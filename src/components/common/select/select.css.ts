@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { select_arrow24 } from '../../../assets/assets';
+import { select_arrow20 } from '../../../assets/assets.css';
 import { theme } from '../../../styles/theme';
 
 export const selectBox = style({
@@ -28,7 +28,7 @@ export const select = style({
   backgroundColor: theme.color.white,
   border: `1px solid ${theme.color.cool_gray100}`,
   borderRadius: '4px',
-  backgroundImage: `url(${select_arrow24})`,
+  backgroundImage: `url(${select_arrow20})`,
   backgroundRepeat: 'no-repeat',
   backgroundPosition: 'calc(100% - 16px) 14px',
   backgroundSize: 'auto 24px',

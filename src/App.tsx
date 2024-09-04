@@ -1,4 +1,3 @@
-
 const App = () => {
   return (
     <>
@@ -6,6 +5,15 @@ const App = () => {
       {/* <ShoesRoom /> */}
       {/* <ShoesRegistry /> */}
       {/* <ChatBotPage /> */}
+
+      {/* <CommonGuide /> */}
+      {/* <SignUpSizeInput /> */}
+      {/* <SignUpInfoInput /> */}
+      {/* <LoginHello /> */}
+      {/* <Login /> */}
+
+      {/* <SignUpInfoInputValid /> */}
+      {/* <SignUpSizeInputValid /> */}
     </>
   );
 };

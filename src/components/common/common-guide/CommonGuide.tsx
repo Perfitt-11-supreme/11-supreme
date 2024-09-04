@@ -2,15 +2,15 @@ import { ai, back_arrow, hamburger_menu } from '../../../assets/assets';
 import { theme } from '../../../styles/theme';
 import Button from '../button/Button';
 import ChatbotSearchInput from '../chatbot-search-input/ChatbotSearchInput';
-import DateSelect from '../date-select/DateSelect';
+import DateSelect from '../../logindateselect/LoginDateSelect';
 import Header from '../header/Header';
-import Input from '../input/Input';
+import Input from '../../logininput/LoginInput';
 import KeywordCard from '../keyword-card/KeywordCard';
 import Modal from '../modal/Modal';
 
 import ProductRecommendationCard from '../product-recommendation-card/ProductRecommendationCard';
 import RecommendedQuestionCard from '../recommended-question-card/RecommendedQuestionCard';
-import Select from '../select/Select';
+import Select from '../../loginselect/LoginSelect';
 import SizeRecommendationCard from '../size-recommendation-card/SizeRecommendationCard';
 
 const CommonGuide = () => {
