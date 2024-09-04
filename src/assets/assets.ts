@@ -14,6 +14,13 @@ import shoes_w182 from './shoes_w182.svg';
 import upload from './upload.svg';
 import search from './search_icon.svg';
 import camera from './camera.svg';
+import noshoes from './noshoes.svg';
+import user from './user.svg';
+import plus from './plus.svg';
+import select from './select.svg';
+import filled_star from './filled_star.svg';
+import empty_star from './empty_star.svg';
+
 export {
   ai,
   back_arrow,
@@ -31,4 +38,10 @@ export {
   upload,
   search,
   camera,
+  noshoes,
+  user,
+  plus,
+  select,
+  filled_star,
+  empty_star,
 };

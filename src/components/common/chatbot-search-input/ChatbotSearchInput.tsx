@@ -1,4 +1,4 @@
-import { picture, upload } from '../../../assets/assets.css';
+import { picture, upload } from '../../../assets/assets';
 import {
   chatbotSearchInput,
   chatbotSearchInputBox,
