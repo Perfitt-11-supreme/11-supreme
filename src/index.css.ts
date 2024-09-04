@@ -62,7 +62,7 @@ globalStyle('img,picture', {
 });
 
 globalStyle('input,button,textarea,select', {
-  font: Pretendard,
+  fontFamily: Pretendard,
 });
 
 globalStyle('textarea:not([row])', {
