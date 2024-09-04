@@ -1,7 +1,13 @@
+import ShoesRegistry from './components/shoes-registry/ShoesRegistry';
+import EmptyShoesRoom from './components/empty-shoes-room/EmptyShoesRoom';
+import ShoesRoom from './components/shoes-room/ShoesRoom';
+
 const App = () => {
   return (
     <>
-      <h1>App Component</h1>
+      {/* <EmptyShoesRoom /> */}
+      {/* <ShoesRoom /> */}
+      <ShoesRegistry />
     </>
   );
 };
