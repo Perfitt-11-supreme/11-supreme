@@ -21,10 +21,15 @@ import small_arrow from './small_arrow.svg';
 import speech_bubble from './speech_bubble.svg';
 import thumbsDown from './thumbsDown.svg';
 import upload from './upload.svg';
+import search from './search_icon.svg';
+import camera from './camera.svg';
 export {
   ai, arrow_right, back_arrow, bar, brand_abcmart, checked, close, detail, export_icon, hamburger_menu, heart_empty, heart_filled, picture, polygon2, prefitt_symbol, select_arrow20,
   select_arrow24,
   shoes_w159,
   shoes_w182, small_arrow, speech_bubble, thumbsDown, upload
+  search,
+  camera,
+
 };
 
