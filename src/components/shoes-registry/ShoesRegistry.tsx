@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { plus } from '../../assets/assets';
-import Choose from '../choose/Choose';
-import Button from '../common/button/Button';
-import Header from '../header/Header';
+import Choose from '../empty-shoes-room/choose/Choose';
 import Slider from '../slider/Slider';
-import StarRating from '../star-rating/StarRating';
+import StarRating from './star-rating/StarRating';
+import Header from '../empty-shoes-room/header/Header';
+import Button from '../common/button/Button';
 import { area, buttonDiv, container, descP, imagePlusButton, questionP, questP, starP } from './shoesregistry.css';
 
 const ShoesRegistry = () => {
