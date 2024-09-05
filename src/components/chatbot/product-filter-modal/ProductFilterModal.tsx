@@ -1,25 +1,23 @@
 import { motion } from 'framer-motion';
 import { bar } from '../../../assets/assets';
 import useModalStore from '../../../stores/useModalStore';
-import { barBox, modalContainer, modalContainerTitle, modalContainerWrapper } from './modal.css';
+import { barBox, modalContainer, modalContainerTitle, modalContainerWrapper } from './productFilterModal.css';
+
 
 type TModal = {
   title?: string;
   height: string;
-  initialHeight?: string;
   children?: React.ReactNode;
 };
 
-const Modal = ({ title, height, children, initialHeight }: TModal) => {
-  const { isOpen, setIsOpen } = useModalStore();
+const ProductFilterModal = ({ title, height, children }: TModal) => {
+  const { filterOpen, setFilterOpen } = useModalStore();
 
-  const handleModalClick = () => {
-    if (title !== '관심 키워드') {
-      setIsOpen(!isOpen);
-    }
+  const handleModalClose = () => {
+    setFilterOpen(false);  // 모달 닫기
   };
 
-  const isInterestKeyword = title === '관심 키워드';
+  const isInterestKeyword = title === '관심 키워드' || title === '필터';
 
   return (
     <>
@@ -34,11 +32,11 @@ const Modal = ({ title, height, children, initialHeight }: TModal) => {
         ) : (
           <motion.div
             className={modalContainer}
-            initial={{ height: initialHeight }}
-            animate={{ height: isOpen ? height : initialHeight }}
+            initial={{ height: '0px' }}
+            animate={{ height: filterOpen ? height : '0px' }}
             transition={{ duration: 0.5 }}
           >
-            <div className={barBox} onClick={handleModalClick}>
+            <div className={barBox} onClick={handleModalClose}>
               <img src={bar} alt="bar" />
             </div>
             {title && <h1 className={modalContainerTitle}>{title}</h1>}
@@ -50,4 +48,4 @@ const Modal = ({ title, height, children, initialHeight }: TModal) => {
   );
 };
 
-export default Modal;
+export default ProductFilterModal;

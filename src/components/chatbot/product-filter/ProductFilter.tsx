@@ -1,5 +1,8 @@
 import { detail } from "../../../assets/assets";
+import useModalStore from "../../../stores/useModalStore";
 import SizeRecommendationCard from "../../common/size-recommendation-card/SizeRecommendationCard";
+import ProductFilterDetail from "../product-filter-detail/ProductFilterDetail";
+import ProductFilterModal from "../product-filter-modal/ProductFilterModal";
 import { ProductRecommendResult } from "../product-recommendation/ProductRecommendation.css";
 import { productRecommend, productRecommendFilterContainer, productRecommendFilterDetail, productRecommendFilterWrap, productRecommendFiltering, productRecommendWrapper } from "./productFilter.css";
 const dummy = [
@@ -43,6 +46,13 @@ const dummy = [
 ]
 
 const ProductFilter = () => {
+  const { setFilterOpen, filterOpen } = useModalStore();
+
+  const handleDetailClick = () => {
+    setFilterOpen(true);  // detail 버튼 클릭 시 Modal 열기
+  };
+
+
   return (
     <>
       <div className={productRecommendFilterWrap}>
@@ -53,7 +63,7 @@ const ProductFilter = () => {
           <select className={productRecommendFiltering}>
             <option>최신상품순</option>
           </select>
-          <img src={detail} className={productRecommendFilterDetail} />
+          <img src={detail} className={productRecommendFilterDetail} onClick={handleDetailClick} />
         </div>
       </div>
       <div className={productRecommendWrapper}>
@@ -63,6 +73,10 @@ const ProductFilter = () => {
           ))}
         </ul>
       </div>
+      {filterOpen && <ProductFilterModal height="330px" title="필터">
+        <ProductFilterDetail />
+      </ProductFilterModal>}
+
     </>
   );
 }
