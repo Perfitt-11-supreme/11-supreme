@@ -1,4 +1,12 @@
+import CameraWindow from './camera-window/CameraWindow';
+import ImageFooter from './imagefooter/ImageFooter';
+
 const ImageSearch = () => {
-  return <div>ImageSearch</div>;
+  return (
+    <>
+      <CameraWindow />
+      <ImageFooter />
+    </>
+  );
 };
 export default ImageSearch;

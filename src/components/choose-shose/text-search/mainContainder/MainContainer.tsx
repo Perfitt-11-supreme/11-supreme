@@ -8,7 +8,7 @@ import {
   MainContainer_Header,
   MainContainter_Background,
 } from './maincontainer.css';
-import TextItemCard from './itemcard/ItemCard';
+import ItemCard from '../../itemcard/ItemCard';
 
 const MainContainer = ({
   record,
@@ -47,16 +47,16 @@ const MainContainer = ({
           </>
         ) : (
           <div>
-            <TextItemCard />
-            <TextItemCard />
-            <TextItemCard />
-            <TextItemCard />
-            <TextItemCard />
-            <TextItemCard />
-            <TextItemCard />
-            <TextItemCard />
-            <TextItemCard />
-            <TextItemCard />
+            <ItemCard />
+            <ItemCard />
+            <ItemCard />
+            <ItemCard />
+            <ItemCard />
+            <ItemCard />
+            <ItemCard />
+            <ItemCard />
+            <ItemCard />
+            <ItemCard />
           </div>
         )}
       </div>
