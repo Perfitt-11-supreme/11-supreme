@@ -65,7 +65,6 @@ const BrandPLP = () => {
           ))}
         </div>
         <ProductFilter />
-
       </div>
     </>
   );
