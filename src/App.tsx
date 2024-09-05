@@ -6,12 +6,18 @@ import OnBoarding2 from './components/onboarding/OnBoarding2';
 import { Link, Outlet } from 'react-router-dom';
 import FootInfo from './components/foot-info/FootInfo';
 import MyFootInfo from './components/foot-info/MyFootInfo';
-import ImageSearch from './components/choose-shose/image-search/ImageSearch';
 
 const App = () => {
   return (
     <>
-      <ImageSearch />
+      {/* <EmptyShoesRoom /> */}
+      {/* <ShoesRoom /> */}
+      {/* <ShoesRegistry /> */}
+      {/* <ChatBotPage /> */}
+      {/* <OnBoarding /> */}
+      {/* <OnBoarding2 /> */}
+      <FootInfo />
+      {/* <MyFootInfo /> */}
     </>
   );
 };
