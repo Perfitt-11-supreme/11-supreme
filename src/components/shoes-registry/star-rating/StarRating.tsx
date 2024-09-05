@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { empty_star, filled_star } from '../../assets/assets';
+import { empty_star, filled_star } from '../../../assets/assets';
 import { star, starContainer } from './starrating.css';
 
 const StarRating = () => {

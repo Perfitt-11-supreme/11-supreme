@@ -1,7 +1,7 @@
 import { noshoes } from '../../assets/assets';
 import Button from '../common/button/Button';
-import Header from '../header/Header';
-import UserProfile from '../user-profile/UserProfile';
+import Header from './header/Header';
+import UserProfile from './user-profile/UserProfile';
 import { buttonDiv, container, noShoesDiv } from './emptyshoesroom.css';
 
 const EmptyShoesRoom = () => {
