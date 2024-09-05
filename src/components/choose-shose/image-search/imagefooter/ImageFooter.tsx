@@ -9,11 +9,12 @@ import {
 import './imagefooter.css';
 import AnalyzeItem from './analyzeitem/AnalyzeItem.tsx';
 
-const ImageFooter = () => {
+const ImageFooter = ({ setIsAnalyze }: { setIsAnalyze: React.Dispatch<React.SetStateAction<boolean>> }) => {
   const [isClickIcon, setIsClickIcon] = useState(false);
 
-  const handleClickIcon = () => {
-    setIsClickIcon(true);
+  const handleClickIcon = (bol: boolean) => {
+    setIsClickIcon(bol);
+    setIsAnalyze(bol);
   };
 
   return (
@@ -23,7 +24,7 @@ const ImageFooter = () => {
           isClickIcon ? ImageFotter_IconMove.moved : ImageFotter_IconMove.static
         }`}
       >
-        <img className={ImageFooter_CameraIcon} src={camera} alt="camera" onClick={handleClickIcon} />
+        <img className={ImageFooter_CameraIcon} src={camera} alt="camera" onClick={() => handleClickIcon(true)} />
       </div>
       <div
         className={`${ImageFooter_GalleryIcon} ${
@@ -32,7 +33,7 @@ const ImageFooter = () => {
       >
         <img src={gallery} alt="gallery" />
       </div>
-      <AnalyzeItem isClickIcon={isClickIcon} />
+      <AnalyzeItem isClickIcon={isClickIcon} handleClickIcon={handleClickIcon} />
     </>
   );
 };

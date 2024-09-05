@@ -10,6 +10,7 @@ import {
   Product_ProductInfo,
   Product_ProductName,
   Product_ProductPrice,
+  Product_ScrollableContent,
   Product_Similar,
   Product_SimilarProductButton,
   Product_SimilarProductContainer,
@@ -18,33 +19,41 @@ import {
 } from './succesproduct.css';
 import ItemCard from '../../../../itemcard/ItemCard';
 
-const SuccesProduct = ({ handleClickAgain }: { handleClickAgain: (bol: boolean) => void }) => {
-  const [isSimilar, setIsSimilar] = useState(false);
-
+const SuccesProduct = ({
+  handleClickAgain,
+  isSimilar,
+  setIsSimilar,
+}: {
+  handleClickAgain: (bol: boolean) => void;
+  isSimilar: boolean;
+  setIsSimilar: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   return (
     <>
       {isSimilar ? (
-        <div className={Product_SimilarProductContainer}>
-          <div className="">
-            <ItemCard />
-            <ItemCard />
-            <ItemCard />
-            <ItemCard />
-            <ItemCard />
-            <ItemCard />
-            <ItemCard />
-            <ItemCard />
-            <ItemCard />
-            <ItemCard />
-            <ItemCard />
-            <ItemCard />
-            <ItemCard />
-            <ItemCard />
+        <>
+          <div className={Product_SimilarProductContainer}>
+            <div className={Product_ScrollableContent}>
+              <ItemCard />
+              <ItemCard />
+              <ItemCard />
+              <ItemCard />
+              <ItemCard />
+              <ItemCard />
+              <ItemCard />
+              <ItemCard />
+              <ItemCard />
+              <ItemCard />
+              <ItemCard />
+              <ItemCard />
+              <ItemCard />
+              <ItemCard />
+            </div>
+            <div className={Product_SimilarProductButton}>
+              <Button text="선택 완료"></Button>
+            </div>
           </div>
-          <div className={Product_SimilarProductButton}>
-            <Button text="선택 완료"></Button>
-          </div>
-        </div>
+        </>
       ) : (
         <div className={Product_SuccesContainer}>
           <div className={Product_AgainBox}>

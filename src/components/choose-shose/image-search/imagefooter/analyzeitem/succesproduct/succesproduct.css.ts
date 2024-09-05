@@ -104,3 +104,9 @@ export const Product_SimilarProductButton = style({
   alignItems: 'center',
   background: theme.color.white,
 });
+
+export const Product_ScrollableContent = style({
+  width: '100%',
+  height: '100%',
+  overflowY: 'scroll',
+});

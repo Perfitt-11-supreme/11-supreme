@@ -5,6 +5,9 @@ export const CameraWindow_Container = style({
   width: '100vw',
   height: '100vh',
   background: theme.color.black,
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
 });
 
 export const CameraWindow_CloseIcon = style({

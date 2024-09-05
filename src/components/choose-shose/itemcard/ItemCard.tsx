@@ -8,7 +8,7 @@ import {
   ItemCard_ShosePrice,
 } from './itemcard.css';
 
-const TextItemCard = () => {
+const ItemCard = () => {
   return (
     <>
       <div className={ItemCard_Container}>
@@ -24,4 +24,4 @@ const TextItemCard = () => {
     </>
   );
 };
-export default TextItemCard;
+export default ItemCard;

@@ -55,6 +55,8 @@ import arrow_up from './arrow_up.svg';
 import arrow_down from './arrow_down.svg';
 import gallery from './gallery.svg';
 import again from './again.svg';
+import circle from './circle.svg';
+import rectangle from './rectangle.svg';
 
 export {
   ai,
@@ -114,4 +116,6 @@ export {
   arrow_down,
   gallery,
   again,
+  circle,
+  rectangle,
 };
