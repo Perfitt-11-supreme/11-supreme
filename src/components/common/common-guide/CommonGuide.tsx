@@ -2,15 +2,15 @@ import { ai, back_arrow, hamburger_menu } from '../../../assets/assets';
 import { theme } from '../../../styles/theme';
 import Button from '../button/Button';
 import ChatbotSearchInput from '../chatbot-search-input/ChatbotSearchInput';
-import DateSelect from '../../logindateselect/LoginDateSelect';
+import DateSelect from '../../signup/infoInput/signupdateselect/SignUpDateSelect';
 import Header from '../header/Header';
-import Input from '../../logininput/LoginInput';
+import Input from '../../signup/infoInput/signupinput/SignUpInput';
 import KeywordCard from '../keyword-card/KeywordCard';
 import Modal from '../modal/Modal';
 
 import ProductRecommendationCard from '../product-recommendation-card/ProductRecommendationCard';
 import RecommendedQuestionCard from '../recommended-question-card/RecommendedQuestionCard';
-import Select from '../../loginselect/LoginSelect';
+import Select from '../../signup/infoInput/signupselect/SignUpSelect';
 import SizeRecommendationCard from '../size-recommendation-card/SizeRecommendationCard';
 
 const CommonGuide = () => {
@@ -75,7 +75,6 @@ const CommonGuide = () => {
       <div style={{ display: 'flex' }}>
         <Modal title="관심 키워드" height="340px" />
         <Modal title="회원가입" height="612px" />
-
       </div>
       {/* 공통 컴포넌트 - 헤더 */}
       <Header imageSrc={hamburger_menu} alt="hamburger menu" />
