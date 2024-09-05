@@ -12,7 +12,7 @@ export const productRecommendTextWrap = style({
   width: '100%',
   height: 'auto',
   display: "flex",
-  alignItems: 'center',
+  justifyContent:'space-between',
   padding:'0 16px'
 })
 
@@ -43,6 +43,11 @@ export const productRecommendFilterDetail = style({
   cursor: 'pointer'
 })
 
+
+export const productRecommendTextContainer = style({
+  display: "flex",
+  alignItems: 'center',
+})
 // export const productRecommendFiltering = style({
 //   appearance: 'none',
 //   border: 'none',

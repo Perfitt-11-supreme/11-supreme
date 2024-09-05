@@ -37,7 +37,7 @@ const BrandPLP = () => {
   const { setIsOpen } = useModalStore();
   const [activeFilter, setActiveFilter] = useState('ALL');
 
-  const handleFilterClick = (filter: string) => {
+  const handleFilterButtonClick = (filter: string) => {
     setActiveFilter(filter);
   };
 
@@ -60,7 +60,7 @@ const BrandPLP = () => {
               key={category}
               title={category}
               isActive={activeFilter === category}
-              onClick={() => handleFilterClick(category)}
+              onClick={() => handleFilterButtonClick(category)}
             />
           ))}
         </div>
