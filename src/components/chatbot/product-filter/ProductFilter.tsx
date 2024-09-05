@@ -1,7 +1,8 @@
 import { detail } from "../../../assets/assets";
 import useModalStore from "../../../stores/useModalStore";
-import Modal from "../../common/modal/Modal";
 import SizeRecommendationCard from "../../common/size-recommendation-card/SizeRecommendationCard";
+import ProductFilterDetail from "../product-filter-detail/ProductFilterDetail";
+import ProductFilterModal from "../product-filter-modal/ProductFilterModal";
 import { ProductRecommendResult } from "../product-recommendation/ProductRecommendation.css";
 import { productRecommend, productRecommendFilterContainer, productRecommendFilterDetail, productRecommendFilterWrap, productRecommendFiltering, productRecommendWrapper } from "./productFilter.css";
 const dummy = [
@@ -45,10 +46,10 @@ const dummy = [
 ]
 
 const ProductFilter = () => {
-  const { setIsOpen } = useModalStore();
+  const { setFilterOpen, filterOpen } = useModalStore();
 
   const handleDetailClick = () => {
-    setIsOpen(true);  // detail 버튼 클릭 시 Modal 열기
+    setFilterOpen(true);  // detail 버튼 클릭 시 Modal 열기
   };
 
 
@@ -72,7 +73,10 @@ const ProductFilter = () => {
           ))}
         </ul>
       </div>
-      <Modal height="330px" title="필터"></Modal>
+      {filterOpen && <ProductFilterModal height="330px" title="필터">
+        <ProductFilterDetail />
+      </ProductFilterModal>}
+
     </>
   );
 }
