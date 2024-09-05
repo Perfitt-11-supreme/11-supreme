@@ -37,9 +37,22 @@ import salomon from './salomon.svg';
 import more_arrow from './more_arrow.svg';
 import naver from './naver.svg';
 import kakao from './kakao.svg';
-
 import onboarding1 from './onboarding1.svg';
 import onboarding2 from './onboarding2.svg';
+import my_foot from './my_foot.svg';
+import my_foot_info from './my_foot_info.svg';
+import analyze from './analyze.svg';
+import analyze2 from './analyze2.svg';
+import warning from './warning.svg';
+import warning2 from './warning2.svg';
+import tip1 from './tip1.svg';
+import tip2 from './tip2.svg';
+import tip3 from './tip3.svg';
+import tip4 from './tip4.svg';
+import tip5 from './tip5.svg';
+import tip6 from './tip6.svg';
+import arrow_up from './arrow_up.svg';
+import arrow_down from './arrow_down.svg';
 
 export {
   ai,
@@ -83,4 +96,18 @@ export {
   user,
   onboarding1,
   onboarding2,
+  my_foot,
+  my_foot_info,
+  analyze,
+  analyze2,
+  warning,
+  warning2,
+  tip1,
+  tip2,
+  tip3,
+  tip4,
+  tip5,
+  tip6,
+  arrow_up,
+  arrow_down,
 };
