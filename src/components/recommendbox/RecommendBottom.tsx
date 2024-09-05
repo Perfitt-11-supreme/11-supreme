@@ -1,12 +1,12 @@
 import { moreArrow, textBottom, textBottomContainer } from '../itembox/itemBox.css';
 
-interface RecommendBottomProps {
+type RecommendBottomProps = {
   text: string;
   imageSrc: string;
   onClick?: () => void;
-}
+};
 
-const RecommendBottom: React.FC<RecommendBottomProps> = ({ text, imageSrc, onClick }) => {
+const RecommendBottom = ({ text, imageSrc, onClick }: RecommendBottomProps) => {
   return (
     <button className={textBottomContainer} onClick={onClick}>
       <span className={textBottom}>{text}</span>

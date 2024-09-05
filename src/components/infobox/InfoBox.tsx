@@ -1,6 +1,6 @@
 import { infoContainer, infoIcon, infoTextbox } from './infoBox.css';
 
-const InfoBox: React.FC = () => {
+const InfoBox = () => {
   return (
     <div className={infoContainer}>
       <div className={infoIcon} />

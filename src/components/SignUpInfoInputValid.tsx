@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { hamburger_menu } from '../assets/assets.css';
 import Button from './common/button/Button';
 import DateSelect from './logindateselect/LoginDateSelect';
 import Header from './common/header/Header';
@@ -7,6 +6,7 @@ import Input from './logininput/LoginInput';
 import Modal from './common/modal/Modal';
 import Select from './loginselect/LoginSelect';
 import { theme } from '../styles/theme';
+import { hamburger_menu } from '../assets/assets';
 
 const SignUpInfoInputValid = () => {
   type FormErrors = {

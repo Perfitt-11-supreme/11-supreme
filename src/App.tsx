@@ -1,21 +1,8 @@
 const App = () => {
   return (
     <>
-      {/* <EmptyShoesRoom /> */}
-      {/* <ShoesRoom /> */}
-      {/* <ShoesRegistry /> */}
-      {/* <ChatBotPage /> */}
-
-      {/* <CommonGuide /> */}
-      {/* <SignUpSizeInput /> */}
-      {/* <SignUpInfoInput /> */}
-      {/* <LoginHello /> */}
-      {/* <Login /> */}
-
-      {/* <SignUpInfoInputValid /> */}
-      {/* <SignUpSizeInputValid /> */}
+      <h1>App Component</h1>
     </>
   );
 };
-
 export default App;

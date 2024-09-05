@@ -16,7 +16,7 @@ const Modal = ({ title, height, children }: TModal) => {
     if (title !== '관심 키워드') {
       setIsOpen(!isOpen);
     }
-  }
+  };
 
   const isInterestKeyword = title === '관심 키워드';
 
@@ -24,10 +24,7 @@ const Modal = ({ title, height, children }: TModal) => {
     <>
       <div className={modalContainerWrapper}>
         {isInterestKeyword ? (
-          <div
-            className={modalContainer}
-            style={{ height: height }}
-          >
+          <div className={modalContainer} style={{ height: height }}>
             <div className={barBox} />
 
             {title && <h1 className={modalContainerTitle}>{title}</h1>}
@@ -36,8 +33,8 @@ const Modal = ({ title, height, children }: TModal) => {
         ) : (
           <motion.div
             className={modalContainer}
-            initial={{ height: '125px' }}
-            animate={{ height: isOpen ? height : '125px' }}
+            initial={{ height: '76px' }}
+            animate={{ height: isOpen ? height : '76px' }}
             transition={{ duration: 0.5 }}
           >
             <div className={barBox} onClick={handleModalClick}>

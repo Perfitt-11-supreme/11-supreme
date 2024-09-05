@@ -1,4 +1,4 @@
-import { hamburger_menu } from '../assets/assets.css';
+import { hamburger_menu } from '../assets/assets';
 import ChatBotBox from './chatbotbox/ChatBotBox';
 import ChatbotSearchInput from './common/chatbot-search-input/ChatbotSearchInput';
 import Header from './common/header/Header';

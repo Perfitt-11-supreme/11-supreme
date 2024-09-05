@@ -1,11 +1,11 @@
 import React from 'react';
 import { chatbotContainer, chatbotIcon, chatbotTextbox } from './chatbotBox.css';
 
-interface ChatBotBoxStartProps {
+type ChatBotBoxStartProps = {
   text: string[];
-}
+};
 
-const ChatBotBoxStart: React.FC<ChatBotBoxStartProps> = ({ text }) => {
+const ChatBotBoxStart = ({ text }: ChatBotBoxStartProps) => {
   return (
     <div className={chatbotContainer}>
       <div className={chatbotIcon} />

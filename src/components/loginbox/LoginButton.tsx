@@ -1,12 +1,11 @@
-import React from 'react';
 import { loginButton, loginIcon, loginTextbox } from './loginButton.css';
 
-interface LoginButtonProps {
+type LoginButtonProps = {
   imageSrc?: string;
   text: string;
-}
+};
 
-const LoginButton: React.FC<LoginButtonProps> = ({ imageSrc, text }) => {
+const LoginButton = ({ imageSrc, text }: LoginButtonProps) => {
   return (
     <button className={loginButton}>
       {imageSrc && <img src={imageSrc} className={loginIcon} alt="icon" />}

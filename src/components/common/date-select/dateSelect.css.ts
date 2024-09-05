@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { select_arrow20 } from '../../../assets/assets.css';
+import { select_arrow20 } from '../../../assets/assets';
 import { theme } from '../../../styles/theme';
 
 export const dateSelectBox = style({

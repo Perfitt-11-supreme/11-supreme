@@ -7,15 +7,15 @@ import {
   itemContainerButton,
 } from './itemBox.css';
 
-interface ItemBoxProps {
+type ItemBoxProps = {
   imageSrc: string;
   brand: string;
   itemName: string;
   price: string;
   onClick?: () => void;
-}
+};
 
-const ItemBox: React.FC<ItemBoxProps> = ({ imageSrc, brand, itemName, price, onClick }) => {
+const ItemBox = ({ imageSrc, brand, itemName, price, onClick }: ItemBoxProps) => {
   return (
     <button className={`${individualitemContainer} ${itemContainerButton}`} onClick={onClick}>
       <img src={imageSrc} alt={brand} className={itemIcon} />

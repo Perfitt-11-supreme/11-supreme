@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { hamburger_menu } from '../assets/assets.css';
+
 import Button from './common/button/Button';
 import ButtonBlank from './buttonselect/ButtonBlank';
 import ButtonFill from './buttonselect/ButtonFill';
@@ -7,6 +7,7 @@ import Header from './common/header/Header';
 import Modal from './common/modal/Modal';
 import UsualSizeSelect from './usualsizeselect/UsualSizeSelect';
 import InfoBox from './infobox/InfoBox';
+import { hamburger_menu } from '../assets/assets';
 
 const SignUpSizeInput = () => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);

@@ -29,12 +29,53 @@ import speech_bubble from './speech_bubble.svg';
 import thumbs_down from './thumbsDown.svg';
 import upload from './upload.svg';
 import user from './user.svg';
-
+import info from './info.svg';
+import perfittlogo from './perfittlogo.svg';
+import asics from './asics.svg';
+import hoka from './hoka.svg';
+import salomon from './salomon.svg';
+import more_arrow from './more_arrow.svg';
+import naver from './naver.svg';
+import kakao from './kakao.svg';
 
 export {
-  ai, arrow_right, back_arrow, bar, brand_abcmart, camera, checked, close, detail, empty_star, export_icon, filled_star, hamburger_menu, heart_empty, heart_filled, noshoes, picture, plus, polygon2, prefitt_symbol, search, select, select_arrow20,
+  ai,
+  arrow_right,
+  back_arrow,
+  bar,
+  brand_abcmart,
+  camera,
+  checked,
+  close,
+  detail,
+  empty_star,
+  export_icon,
+  filled_star,
+  hamburger_menu,
+  heart_empty,
+  heart_filled,
+  noshoes,
+  picture,
+  plus,
+  polygon2,
+  prefitt_symbol,
+  search,
+  select,
+  select_arrow20,
   select_arrow24,
   shoes_w159,
-  shoes_w182, small_arrow, speech_bubble, thumbs_down, upload, user
+  shoes_w182,
+  small_arrow,
+  speech_bubble,
+  thumbs_down,
+  upload,
+  user,
+  info,
+  perfittlogo,
+  asics,
+  hoka,
+  salomon,
+  more_arrow,
+  naver,
+  kakao,
 };
-

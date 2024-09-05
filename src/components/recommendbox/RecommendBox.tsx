@@ -1,9 +1,9 @@
-import { asics, hoka, more_arrow, salomon } from '../../assets/assets.css';
+import { asics, hoka, more_arrow, salomon } from '../../assets/assets';
 import ItemBox from '../itembox/ItemBox';
 import { fullContainer, textTop } from '../itembox/itemBox.css';
 import RecommendBottom from './RecommendBottom';
 
-const RecommendBox: React.FC = () => {
+const RecommendBox = () => {
   return (
     <div className={fullContainer}>
       <div className={textTop}>맞춤 상품 추천</div>

@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css';
 import { theme } from '../../styles/theme';
-import { perfittlogo } from '../../assets/assets.css';
+import { perfittlogo } from '../../assets/assets';
 
 export const chatbotContainer = style({
   width: '343px',

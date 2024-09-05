@@ -1,9 +1,9 @@
-import { hamburger_menu, kakao, naver } from '../assets/assets.css';
 import { theme } from '../styles/theme';
 import ChatBotBox from './chatbotbox/ChatBotBox';
 import ChatbotSearchInput from './common/chatbot-search-input/ChatbotSearchInput';
 import Header from './common/header/Header';
 import LoginButton from './loginbox/LoginButton';
+import { hamburger_menu, kakao, naver } from '../assets/assets';
 
 const Login = () => {
   return (
