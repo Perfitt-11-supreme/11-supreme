@@ -1,7 +1,19 @@
+import ShoesRegistry from './components/shoes-registry/ShoesRegistry';
+import EmptyShoesRoom from './components/empty-shoes-room/EmptyShoesRoom';
+import ShoesRoom from './components/shoes-room/ShoesRoom';
+import OnBoarding from './components/onboarding/OnBoarding';
+import OnBoarding2 from './components/onboarding/OnBoarding2';
+import { Link, Outlet } from 'react-router-dom';
+
 const App = () => {
   return (
     <>
-      <h1>App Component</h1>
+      {/* <EmptyShoesRoom /> */}
+      {/* <ShoesRoom /> */}
+      {/* <ShoesRegistry /> */}
+      {/* <ChatBotPage /> */}
+      <OnBoarding />
+      {/* <OnBoarding2 /> */}
     </>
   );
 };

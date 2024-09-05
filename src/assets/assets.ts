@@ -38,6 +38,9 @@ import more_arrow from './more_arrow.svg';
 import naver from './naver.svg';
 import kakao from './kakao.svg';
 
+import onboarding1 from './onboarding1.svg';
+import onboarding2 from './onboarding2.svg';
+
 export {
   ai,
   arrow_right,
@@ -45,22 +48,22 @@ export {
   bar,
   brand_abcmart,
   camera,
+  empty_star,
+  filled_star,
+  noshoes,
+  plus,
+  search,
+  select,
   checked,
   close,
   detail,
-  empty_star,
   export_icon,
-  filled_star,
   hamburger_menu,
   heart_empty,
   heart_filled,
-  noshoes,
   picture,
-  plus,
   polygon2,
   prefitt_symbol,
-  search,
-  select,
   select_arrow20,
   select_arrow24,
   shoes_w159,
@@ -69,7 +72,6 @@ export {
   speech_bubble,
   thumbs_down,
   upload,
-  user,
   info,
   perfittlogo,
   asics,
@@ -78,4 +80,7 @@ export {
   more_arrow,
   naver,
   kakao,
+  user,
+  onboarding1,
+  onboarding2,
 };
