@@ -6,10 +6,11 @@ import { barBox, modalContainer, modalContainerTitle, modalContainerWrapper } fr
 type TModal = {
   title?: string;
   height: string;
+  initialHeight?: string;
   children?: React.ReactNode;
 };
 
-const Modal = ({ title, height, children }: TModal) => {
+const Modal = ({ title, height, children, initialHeight }: TModal) => {
   const { isOpen, setIsOpen } = useModalStore();
 
   const handleModalClick = () => {
@@ -33,8 +34,8 @@ const Modal = ({ title, height, children }: TModal) => {
         ) : (
           <motion.div
             className={modalContainer}
-            initial={{ height: '76px' }}
-            animate={{ height: isOpen ? height : '76px' }}
+            initial={{ height: initialHeight }}
+            animate={{ height: isOpen ? height : initialHeight }}
             transition={{ duration: 0.5 }}
           >
             <div className={barBox} onClick={handleModalClick}>
