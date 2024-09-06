@@ -1,10 +1,13 @@
 import { style } from '@vanilla-extract/css';
 import { theme } from '../../../../styles/theme';
 
-export const CameraWindow_Container = style({
+export const CameraWindow_RectangleContainer = style({
+  position: 'absolute',
+  top: '0',
+  left: '0',
   width: '100vw',
   height: '100vh',
-  background: theme.color.black,
+  zIndex: '10',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -17,4 +20,5 @@ export const CameraWindow_CloseIcon = style({
   width: '24px',
   height: '24px',
   filter: 'brightness(0) invert(1)',
+  zIndex: '11',
 });

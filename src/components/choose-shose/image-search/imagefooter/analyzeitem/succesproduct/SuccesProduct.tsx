@@ -23,10 +23,12 @@ const SuccesProduct = ({
   handleClickAgain,
   isSimilar,
   setIsSimilar,
+  capturedImage,
 }: {
   handleClickAgain: (bol: boolean) => void;
   isSimilar: boolean;
   setIsSimilar: React.Dispatch<React.SetStateAction<boolean>>;
+  capturedImage: string | null;
 }) => {
   return (
     <>
@@ -56,14 +58,14 @@ const SuccesProduct = ({
         </>
       ) : (
         <div className={Product_SuccesContainer}>
-          <div className={Product_AgainBox}>
-            <img className={Product_AgainIcon} src={again} alt="again" onClick={() => handleClickAgain(false)} />
+          <div className={Product_AgainBox} onClick={() => handleClickAgain(false)}>
+            <img className={Product_AgainIcon} src={again} alt="again" />
             <p className={Product_AgainText}>다시하기</p>
           </div>
           <div className={Product_Similar} onClick={() => setIsSimilar(true)}>
             <p className={Product_SimilarText}>비슷한 상품 더보기</p>
           </div>
-          <img className={Product_ProductImage} src={shoes_w159} alt="shoes_w159" />
+          <img className={Product_ProductImage} src={capturedImage!} alt="shoes_w159" />
           <div className={Product_ProductInfo}>
             <p className={Product_ProductBrand}>Hoka</p>
             <p className={Product_ProductName}>호카 카하 2 로우 고어텍스 옥스 포드 탄</p>
