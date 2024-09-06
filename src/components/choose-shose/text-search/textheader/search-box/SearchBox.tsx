@@ -8,6 +8,7 @@ import {
   SearchBox_cameraIcon,
   SearchBox_searchIcon,
 } from './searchbox.css';
+import { useNavigate } from 'react-router-dom';
 
 const SearchBox = ({
   text,
@@ -22,6 +23,7 @@ const SearchBox = ({
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isScrollingDown, setIsScrollingDown] = useState(false);
+  const navigate = useNavigate();
 
   let lastScrollY = 0;
 
@@ -36,6 +38,10 @@ const SearchBox = ({
 
   const handleClickImage = () => {
     inputRef.current?.focus();
+  };
+
+  const handleNavigation = () => {
+    navigate('/imageSearch');
   };
 
   const handleSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
@@ -66,7 +72,7 @@ const SearchBox = ({
             name="searchText"
             ref={inputRef}
           />
-          <img className={SearchBox_cameraIcon} src={camera} alt="camera_icon" />
+          <img className={SearchBox_cameraIcon} src={camera} alt="camera_icon" onClick={handleNavigation} />
         </form>
       </div>
     </>

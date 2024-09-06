@@ -34,7 +34,7 @@ export const SearchBox_Box = style({
       color: theme.color.cool_gray200,
     },
   },
-  width: '260px',
+  width: '90%',
   marginLeft: '11px',
   marginRight: '4px',
 });
