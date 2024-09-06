@@ -3,6 +3,7 @@ import BrandPLP from "../../components/chatbot/brand-plp/BrandPLP";
 import BrandRecommendation from "../../components/chatbot/brand-recommendation/BrandRecommendation";
 import ChatBotBubble from "../../components/chatbot/chatbot-bubble/ChatBotBubble";
 import FootSizeCard from "../../components/chatbot/foot-size-card/FootSizeCard";
+import ProductFitComment from "../../components/chatbot/product-fit-comment/ProductFitComment";
 import ProductRecommendationPreview from "../../components/chatbot/product-recommendation-preview/ProductRecommendationPreview";
 import ProductRecommendation from "../../components/chatbot/product-recommendation/ProductRecommendation";
 import UserBubble from "../../components/chatbot/user-bubble/UserBubble";
@@ -18,7 +19,7 @@ import { chatBotCardWrap, chatBotContainer, chatBotModalWrap, chatBotWrap, chatB
 
 const ChatBotPage = () => {
   const { selectedBrand } = useBrandStore()
-  const { isOpen } = useModalStore(); // 모달 열림 상태 추가
+  const { isOpen, fitOpen } = useModalStore(); // 모달 열림 상태 추가
   return (
     <>
       <div className={chatBotWrap}>
@@ -42,6 +43,10 @@ const ChatBotPage = () => {
             >
               {selectedBrand ? <BrandPLP /> : <ProductRecommendation />}
             </Modal>
+
+            {fitOpen && <Modal height="758px" >
+              <ProductFitComment />
+            </Modal>}
 
             {/* 관심키워드 */}
             {/* <Modal height="340px" title="관심 키워드">
