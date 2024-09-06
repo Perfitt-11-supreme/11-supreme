@@ -53,6 +53,10 @@ import tip5 from './tip5.svg';
 import tip6 from './tip6.svg';
 import arrow_up from './arrow_up.svg';
 import arrow_down from './arrow_down.svg';
+import gallery from './gallery.svg';
+import again from './again.svg';
+import circle from './circle.svg';
+import rectangle from './rectangle.svg';
 
 export {
   ai,
@@ -110,4 +114,8 @@ export {
   tip6,
   arrow_up,
   arrow_down,
+  gallery,
+  again,
+  circle,
+  rectangle,
 };

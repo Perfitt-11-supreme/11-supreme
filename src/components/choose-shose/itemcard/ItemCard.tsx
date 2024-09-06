@@ -1,4 +1,4 @@
-import { shoes_w159 } from '../../../../../assets/assets';
+import { shoes_w159 } from '../../../assets/assets';
 import {
   ItemCard_Container,
   ItemCard_Frame,
@@ -8,7 +8,7 @@ import {
   ItemCard_ShosePrice,
 } from './itemcard.css';
 
-const TextItemCard = () => {
+const ItemCard = () => {
   return (
     <>
       <div className={ItemCard_Container}>
@@ -24,4 +24,4 @@ const TextItemCard = () => {
     </>
   );
 };
-export default TextItemCard;
+export default ItemCard;
