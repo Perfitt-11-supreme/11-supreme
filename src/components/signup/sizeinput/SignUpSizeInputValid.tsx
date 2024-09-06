@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '../../common/button/Button';
 import ButtonBlank from './sizetypebutton/buttonblank/ButtonBlank';
 import ButtonFill from './sizetypebutton/buttonfill/ButtonFill';
@@ -19,7 +19,10 @@ import {
 const SignUpSizeInputValid = () => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [shoeSize, setShoeSize] = useState<number | ''>('');
-  const [errors, setErrors] = useState<{ sizeType?: string; shoeSize?: string }>({});
+  const [errors, setErrors] = useState<{
+    sizeType?: string;
+    shoeSize?: string;
+  }>({});
 
   const sizeTypes = ['mm', 'EU', 'US'];
 
@@ -56,46 +59,55 @@ const SignUpSizeInputValid = () => {
     setErrors(validationErrors);
   };
 
+  const [modalHeight, setModalHeight] = useState<string>('492px');
+
+  useEffect(() => {
+    const errorMessages = Object.values(errors).filter(Boolean);
+    const additionalHeight = errorMessages.length * 20;
+    setModalHeight(`${Math.max(492, 492 + additionalHeight)}px`);
+  }, [errors]);
+
   return (
     <div className={fullContainer}>
-      <div style={{ height: '34px' }}></div>
-
-      <Header imageSrc={hamburger_menu} alt="hamburger menu" />
-
-      <div style={{ display: 'flex', marginTop: 'auto' }}>
-        <Modal title="회원가입" height="76px" />
+      <div>
+        <div style={{ height: '34px' }}></div>
+        <Header imageSrc={hamburger_menu} alt="hamburger menu" />
       </div>
 
-      <div className={signupComponentContainer}>
-        <div className={signupSizeTypeContainer}>
-          <label className={signupSizeTypeLabel}>사이즈 타입</label>
-          <div style={{ display: 'flex', gap: '8px' }}>
-            {sizeTypes.map((text, index) =>
-              selectedIndex === index ? (
-                <ButtonFill key={index} text={text} onClick={() => handleSelect(index)} />
-              ) : (
-                <ButtonBlank key={index} text={text} onClick={() => handleSelect(index)} />
-              )
-            )}
+      <div>
+        <Modal title="회원가입" height={modalHeight} initialHeight="492px" animateHeightOnClick={false}>
+          <div className={signupComponentContainer}>
+            <div className={signupSizeTypeContainer}>
+              <label className={signupSizeTypeLabel}>사이즈 타입</label>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                {sizeTypes.map((text, index) =>
+                  selectedIndex === index ? (
+                    <ButtonFill key={index} text={text} onClick={() => handleSelect(index)} />
+                  ) : (
+                    <ButtonBlank key={index} text={text} onClick={() => handleSelect(index)} />
+                  )
+                )}
+              </div>
+              {errors.sizeType && <div className={errorMessage}>{errors.sizeType}</div>}
+            </div>
           </div>
-          {errors.sizeType && <div className={errorMessage}>{errors.sizeType}</div>}
-        </div>
-      </div>
 
-      <div className={signupComponentContainer} style={{ marginTop: '24px' }}>
-        <UsualSizeSelect label="평소 신는 스니커즈 사이즈" value={shoeSize} onChange={handleShoeSizeChange} />
-      </div>
-      {errors.shoeSize && (
-        <div className={errorMessage} style={{ marginLeft: '16px' }}>
-          {errors.shoeSize}
-        </div>
-      )}
+          <div className={signupComponentContainer} style={{ marginTop: '24px' }}>
+            <UsualSizeSelect label="평소 신는 스니커즈 사이즈" value={shoeSize} onChange={handleShoeSizeChange} />
+          </div>
+          {errors.shoeSize && (
+            <div className={errorMessage} style={{ marginLeft: '16px' }}>
+              {errors.shoeSize}
+            </div>
+          )}
 
-      <div className={infosubmitContainer}>
-        <InfoBox />
-        <form onSubmit={handleSubmit}>
-          <Button text="가입 완료" />
-        </form>
+          <div className={infosubmitContainer}>
+            <InfoBox />
+            <form onSubmit={handleSubmit}>
+              <Button text="가입 완료" />
+            </form>
+          </div>
+        </Modal>
       </div>
     </div>
   );

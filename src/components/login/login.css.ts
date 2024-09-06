@@ -8,6 +8,7 @@ export const fullContainer = style({
   height: '812px',
   margin: '0 auto',
   boxSizing: 'border-box',
+  justifyContent: 'space-between',
 });
 
 export const batteryMargin = style({
