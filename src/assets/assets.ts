@@ -63,6 +63,7 @@ import gallery from './gallery.svg';
 import again from './again.svg';
 import circle from './circle.svg';
 import rectangle from './rectangle.svg';
+import sidemenu_list from './sidemenu_list.svg';
 
 export {
   ai,
@@ -130,4 +131,5 @@ export {
   again,
   circle,
   rectangle,
+  sidemenu_list,
 };
