@@ -4,6 +4,10 @@ import ChatBotPage from '../pages/chatbot-page/chatBotPage';
 import TextSearch from '../components/choose-shose/text-search/TextSearch';
 import ImageSearch from '../components/choose-shose/image-search/ImageSearch';
 import ShoesRegistry from '../components/shoes-registry/ShoesRegistry';
+import SignUpSizeInputValid from '../components/signup/sizeinput/SignUpSizeInputValid';
+import SignUpInfoInputValid from '../components/signup/infoInput/SignUpInfoInputValid';
+import Login from '../components/login/Login';
+import LoginHello from '../components/login/LoginHello';
 
 export const router = createBrowserRouter([
   {
@@ -25,5 +29,21 @@ export const router = createBrowserRouter([
   {
     path: '/shoesRegistry',
     element: <ShoesRegistry />,
+  },
+  {
+    path: '/signupinfo',
+    element: <SignUpInfoInputValid />,
+  },
+  {
+    path: '/signupsize',
+    element: <SignUpSizeInputValid />,
+  },
+  {
+    path: '/login',
+    element: <Login />,
+  },
+  {
+    path: '/hello',
+    element: <LoginHello />,
   },
 ]);

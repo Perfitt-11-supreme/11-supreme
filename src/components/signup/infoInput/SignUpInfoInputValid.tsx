@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '../../common/button/Button';
 import DateSelect from './signupdateselect/SignUpDateSelect';
 import Header from '../../common/header/Header';
@@ -8,6 +8,7 @@ import Select from './signupselect/SignUpSelect';
 import { hamburger_menu } from '../../../assets/assets';
 import { batteryMargin, fullContainer } from '../../login/login.css';
 import { errorMessage, signupFormContainer, signupFormGap, submitbuttonContainer } from '../signup.css';
+import { useNavigate } from 'react-router-dom';
 
 const SignUpInfoInputValid = () => {
   type FormErrors = {
@@ -99,95 +100,111 @@ const SignUpInfoInputValid = () => {
     }
   };
 
+  const navigate = useNavigate();
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     const validationErrors = validate(formData);
     setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length === 0) {
+      navigate('/signupsize');
+    }
   };
+
+  const [modalHeight, setModalHeight] = useState<string>('612px');
+
+  useEffect(() => {
+    const errorMessages = Object.values(errors).filter(Boolean);
+    const additionalHeight = errorMessages.length * 20;
+    setModalHeight(`${Math.max(612, 612 + additionalHeight)}px`);
+  }, [errors]);
 
   return (
     <div className={fullContainer}>
-      <div className={batteryMargin}></div>
-
-      <Header imageSrc={hamburger_menu} alt="hamburger menu" />
-
-      <div style={{ display: 'flex', marginTop: 'auto' }}>
-        <Modal title="회원가입" height="76px" />
+      <div>
+        <div className={batteryMargin}></div>
+        <Header imageSrc={hamburger_menu} alt="hamburger menu" />
       </div>
 
-      <div className={signupFormContainer}>
-        <div>
-          <Input
-            label="아이디"
-            type="email"
-            name="userEmail"
-            id="userEmail1"
-            placeholder="이메일을 입력해주세요"
-            value={formData.userEmail}
-            onChange={handleChange}
-          />
-          {errors.userEmail && <div className={errorMessage}>{errors.userEmail}</div>}
-        </div>
+      <div>
+        <Modal title="회원가입" height={modalHeight} initialHeight="612px" animateHeightOnClick={false}>
+          <div className={signupFormContainer}>
+            <div>
+              <Input
+                label="아이디"
+                type="email"
+                name="userEmail"
+                id="userEmail1"
+                placeholder="이메일을 입력해주세요"
+                value={formData.userEmail}
+                onChange={handleChange}
+              />
+              {errors.userEmail && <div className={errorMessage}>{errors.userEmail}</div>}
+            </div>
 
-        <div className={signupFormGap}>
-          <Input
-            label="비밀번호"
-            type="password"
-            name="userPassword"
-            id="userPassword"
-            placeholder="비밀번호를 입력해주세요"
-            value={formData.userPassword}
-            onChange={handleChange}
-          />
-          {errors.userPassword && <div className={errorMessage}>{errors.userPassword}</div>}
-        </div>
+            <div className={signupFormGap}>
+              <Input
+                label="비밀번호"
+                type="password"
+                name="userPassword"
+                id="userPassword"
+                placeholder="비밀번호를 입력해주세요"
+                value={formData.userPassword}
+                onChange={handleChange}
+              />
+              {errors.userPassword && <div className={errorMessage}>{errors.userPassword}</div>}
+            </div>
 
-        <div className={signupFormGap}>
-          <Input
-            label="이름"
-            type="text"
-            name="userName"
-            id="userName"
-            placeholder="이름을 입력해 주세요"
-            value={formData.userName}
-            onChange={handleChange}
-          />
-          {errors.userName && <div className={errorMessage}>{errors.userName}</div>}
-        </div>
+            <div className={signupFormGap}>
+              <Input
+                label="이름"
+                type="text"
+                name="userName"
+                id="userName"
+                placeholder="이름을 입력해 주세요"
+                value={formData.userName}
+                onChange={handleChange}
+              />
+              {errors.userName && <div className={errorMessage}>{errors.userName}</div>}
+            </div>
 
-        <div className={signupFormGap}>
-          <Select
-            id="gender"
-            label="성별"
-            options={[
-              { value: '', label: '성별을 선택해 주세요' },
-              { value: 'male', label: '남성' },
-              { value: 'female', label: '여성' },
-            ]}
-            value={formData.gender}
-            onChange={handleChange}
-          />
-          {errors.gender && <div className={errorMessage}>{errors.gender}</div>}
-        </div>
+            <div className={signupFormGap}>
+              <Select
+                id="gender"
+                label="성별"
+                options={[
+                  { value: '', label: '성별을 선택해 주세요' },
+                  { value: 'male', label: '남성' },
+                  { value: 'female', label: '여성' },
+                ]}
+                value={formData.gender}
+                onChange={handleChange}
+              />
+              {errors.gender && <div className={errorMessage}>{errors.gender}</div>}
+            </div>
 
-        <div className={signupFormGap}>
-          <DateSelect
-            label="생년월일"
-            value={{
-              year: formData.birthDate.year,
-              month: formData.birthDate.month,
-              day: formData.birthDate.day,
-            }}
-            onChange={handleChange}
-          />
-          {errors.birthDate && <div className={errorMessage}>{errors.birthDate}</div>}
-        </div>
+            <div className={signupFormGap}>
+              <DateSelect
+                label="생년월일"
+                value={{
+                  year: formData.birthDate.year,
+                  month: formData.birthDate.month,
+                  day: formData.birthDate.day,
+                }}
+                onChange={handleChange}
+              />
+              {errors.birthDate && <div className={errorMessage}>{errors.birthDate}</div>}
+            </div>
 
-        <div className={submitbuttonContainer}>
-          <form onSubmit={handleSubmit}>
-            <Button text="다음" />
-          </form>
-        </div>
+            <div className={submitbuttonContainer}>
+              <form onSubmit={handleSubmit}>
+                <Button text="다음" />
+              </form>
+            </div>
+          </div>
+        </Modal>
       </div>
     </div>
   );
