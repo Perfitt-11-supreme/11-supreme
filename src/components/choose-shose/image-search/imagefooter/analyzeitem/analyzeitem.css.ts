@@ -11,6 +11,7 @@ export const AnalyzeItem_Container = style({
   borderRadius: '20px 20px 0 0',
   background: theme.color.white,
   transition: 'all 0.3s ease',
+  zIndex: '100',
 });
 
 export const AnalyzeItem_AnalyzeCircle = style({

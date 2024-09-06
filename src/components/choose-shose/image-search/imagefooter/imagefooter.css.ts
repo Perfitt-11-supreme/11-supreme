@@ -14,6 +14,7 @@ export const ImageFooter_CameraIconBackground = style({
   borderRadius: '50px',
   background: theme.color.white,
   transition: 'bottom 0.3s ease',
+  zIndex: '11',
 });
 
 export const ImageFooter_CameraIcon = style({
@@ -26,6 +27,7 @@ export const ImageFooter_GalleryIcon = style({
   left: '10.5vw',
   bottom: '20px',
   transition: 'bottom 0.3s ease',
+  zIndex: '11',
 });
 
 export const ImageFotter_IconMove = styleVariants({
