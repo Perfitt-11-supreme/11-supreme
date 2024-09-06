@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { back_arrow } from '../../../../assets/assets';
 import SearchBox from './search-box/SearchBox';
 import { TextHeader_Container, TextHeader_Frame, TextHeader_Title, TextHeader_TouchBox } from './textheader.css';
@@ -13,12 +14,18 @@ const TextHeader = ({
   handleChangeText: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleFocusSearchBox: (bol: boolean) => void;
 }) => {
+  const navigate = useNavigate();
+
+  const handleNavigation = () => {
+    navigate('./shoesRegistry');
+  };
+
   return (
     <>
       <header className={TextHeader_Container}>
         <div className={TextHeader_Frame}>
           <div className={TextHeader_TouchBox}>
-            <img src={back_arrow} alt="back_arrow" />
+            <img src={back_arrow} alt="back_arrow" onClick={handleNavigation} />
           </div>
           <div className={TextHeader_TouchBox}></div>
         </div>

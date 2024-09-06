@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { CameraComponent_View } from './CameraComponent.css';
+import { CameraComponent_View } from './cameracomponent.css';
 
 const CameraComponent = ({
   isAnalyze,
