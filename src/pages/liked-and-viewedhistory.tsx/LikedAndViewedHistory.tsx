@@ -8,7 +8,7 @@ import {
   LikedAndViewedHistoryButtonBox,
   LikedAndViewedHistoryCointainer,
   LikedAndViewedHistoryItemBox,
-} from './LikedAndViewedHistory.css';
+} from './likedAndViewedHistory.css';
 
 const LikedAndViewedHistory = () => {
   return (

@@ -10,13 +10,21 @@ export const LikedAndViewedHistoryButtonBox = style({
 });
 export const LikedAndViewedHistoryButton = style({
   width: '50%',
+  height: '40px',
+  backgroundColor: theme.color.white,
+  border: 'none',
+  padding: '0',
+  fontWeight: '800',
+  fontSize: '16px',
+  lineHeight: '24px',
+  letterSpacing: '-0.003em',
+  textAlign: 'center',
+  borderBottom: `1px solid  ${theme.color.slate200}`,
 });
 export const FilterProductsAndBrandsButtonBox = style({
   width: '100%',
 });
-export const FilterProductsAndBrandsButton = style({
-  width: '50%',
-});
+export const FilterProductsAndBrandsButton = style({});
 export const LikedAndViewedHistoryItemBox = style({
   padding: '0 16px',
   display: 'grid',
