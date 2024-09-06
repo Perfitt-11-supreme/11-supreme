@@ -4,6 +4,8 @@ import SizeRecommendationCard from '../../components/common/size-recommendation-
 import {
   FilterProductsAndBrandsButton,
   FilterProductsAndBrandsButtonBox,
+  FilterProductsAndBrandsQuantity,
+  FilterProductsAndBrandsQuantityBox,
   LikedAndViewedHistoryButton,
   LikedAndViewedHistoryButtonBox,
   LikedAndViewedHistoryCointainer,
@@ -14,8 +16,8 @@ const LikedAndViewedHistory = () => {
   return (
     <>
       <h1>LikedAndViewedHistory Component</h1>
-      <Header imageSrc={back_arrow} alt="back arrow" />
       <section className={LikedAndViewedHistoryCointainer}>
+        <Header imageSrc={back_arrow} alt="back arrow" />
         <article className={LikedAndViewedHistoryButtonBox}>
           <button className={LikedAndViewedHistoryButton}>좋아요</button>
           <button className={LikedAndViewedHistoryButton}>최근 본</button>
@@ -23,7 +25,9 @@ const LikedAndViewedHistory = () => {
         <article className={FilterProductsAndBrandsButtonBox}>
           <button className={FilterProductsAndBrandsButton}>상품</button>
           <button className={FilterProductsAndBrandsButton}>브랜드</button>
-          <p>5개</p>
+        </article>
+        <article className={FilterProductsAndBrandsQuantityBox}>
+          <div className={FilterProductsAndBrandsQuantity}>5개</div>
         </article>
 
         <article className={LikedAndViewedHistoryItemBox}>
