@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { plus } from '../../../assets/assets';
 import { shoes1, shoes2, shoes3, shoes4, shoes5, shoes6, shoes7, shoes8 } from '../../../assets/shoes/shoes';
 import Header from '../header/Header';
@@ -14,8 +15,14 @@ import {
 } from './shoesroom.css';
 
 const ShoesRoom = () => {
-  const clickHandler = () => {
-    console.log('click');
+  const navigate = useNavigate();
+
+  const handleShoesInfo = () => {
+    navigate('/shoesInfo');
+  };
+
+  const handleRegistry = () => {
+    navigate('/shoesRegistry');
   };
   return (
     <>
@@ -31,10 +38,10 @@ const ShoesRoom = () => {
           </select>
         </div>
         <div className={shoesdiv}>
-          <button className={imageplusbutton}>
+          <button className={imageplusbutton} onClick={handleRegistry}>
             <img src={plus} alt="등록" />
           </button>
-          <button className={imagebutton}>
+          <button className={imagebutton} onClick={handleShoesInfo}>
             <img className={buttonImage} src={shoes8} alt="" />
           </button>
           <button className={imagebutton}>

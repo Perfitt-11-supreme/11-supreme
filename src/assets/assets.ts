@@ -57,6 +57,10 @@ import gallery from './gallery.svg';
 import again from './again.svg';
 import circle from './circle.svg';
 import rectangle from './rectangle.svg';
+import kebab from './kebab.svg';
+import deleted from './delete.svg';
+import modify from './modify.svg';
+import share from './share.svg';
 
 export {
   ai,
@@ -118,4 +122,8 @@ export {
   again,
   circle,
   rectangle,
+  kebab,
+  deleted,
+  modify,
+  share,
 };

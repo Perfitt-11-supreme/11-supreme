@@ -1,14 +1,22 @@
 import React, { useState } from 'react';
 import { label, labels, slider, sliderContainer } from './slider.css';
 
-const Slider = () => {
-  const [value, setValue] = useState(0);
+interface SliderProps {
+  onChange?: (value: number) => void;
+}
+
+const Slider = ({ onChange }: SliderProps) => {
+  const [value, setValue] = useState<number>(0);
 
   const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(Number(e.target.value));
+    const newValue = Number(e.target.value);
+    setValue(newValue);
+    if (onChange) {
+      onChange(newValue);
+    }
   };
 
-  const labelPositions = ['-10', '-5', '정사이즈', '+5', '+10'];
+  const labelPositions = ['많이 작아요', '약간 작아요', '정사이즈', '약간 커요', '많이 커요'];
 
   return (
     <div className={sliderContainer}>
