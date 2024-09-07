@@ -8,6 +8,8 @@ import SignUpSizeInputValid from '../components/signup/sizeinput/SignUpSizeInput
 import SignUpInfoInputValid from '../components/signup/infoInput/SignUpInfoInputValid';
 import Login from '../components/login/Login';
 import LoginHello from '../components/login/LoginHello';
+import ShoesInfo from '../components/shoes-info/ShoesInfo';
+import EmptyShoesRoom from '../components/empty-shoes-room/EmptyShoesRoom';
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +27,10 @@ export const router = createBrowserRouter([
   {
     path: '/imageSearch',
     element: <ImageSearch />,
+  },
+  {
+    path: '/shoesRoom',
+    element: <EmptyShoesRoom />,
   },
   {
     path: '/shoesRegistry',
@@ -45,5 +51,9 @@ export const router = createBrowserRouter([
   {
     path: '/hello',
     element: <LoginHello />,
+  },
+  {
+    path: '/shoesInfo',
+    element: <ShoesInfo />,
   },
 ]);

@@ -14,9 +14,6 @@ import {
 } from './shoesroom.css';
 
 const ShoesRoom = () => {
-  const clickHandler = () => {
-    console.log('click');
-  };
   return (
     <>
       <div className={container}>

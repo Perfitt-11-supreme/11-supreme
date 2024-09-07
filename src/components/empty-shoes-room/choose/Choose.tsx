@@ -1,33 +1,42 @@
+import React from 'react';
 import { radio, radioButton, radioChecked, radioform } from './choose.css';
 
-const Choose = ({
-  groupName,
-  options,
-  selectedOption,
-  handleChange,
-}: {
+interface Option {
+  id: string;
+  label: string;
+}
+
+interface ChooseProps {
   groupName: string;
-  options: { id: string; label: string }[];
+  options: Option[];
   selectedOption: string;
-  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}) => {
+  setter: (value: string) => void;
+}
+
+const Choose = ({ groupName, options, selectedOption, setter }: ChooseProps) => {
+  const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setter(e.target.value);
+  };
   return (
     <form className={radioform}>
       {options.map(option => (
-        <>
+        <div key={option.id}>
           <input
             className={radio}
             type="radio"
             id={option.id}
             name={groupName}
-            value={option.id}
-            onChange={handleChange}
-            checked={selectedOption === option.id}
+            value={option.label}
+            onChange={handleChangeValue}
+            checked={selectedOption === option.label}
           />
-          <label className={`${radioButton} ${selectedOption === option.id ? radioChecked : ''}`} htmlFor={option.id}>
+          <label
+            className={`${radioButton} ${selectedOption === option.label ? radioChecked : ''}`}
+            htmlFor={option.id}
+          >
             {option.label}
           </label>
-        </>
+        </div>
       ))}
     </form>
   );

@@ -3,8 +3,13 @@ import Button from '../common/button/Button';
 import Header from './header/Header';
 import UserProfile from './user-profile/UserProfile';
 import { buttonDiv, container, noShoesDiv } from './emptyshoesroom.css';
+import { useNavigate } from 'react-router-dom';
 
 const EmptyShoesRoom = () => {
+  const navigate = useNavigate();
+  const handleNavigate = () => {
+    navigate('/shoesRegistry');
+  };
   return (
     <div className={container}>
       <Header title="신발장" />
@@ -13,7 +18,7 @@ const EmptyShoesRoom = () => {
         <img src={noshoes} />
       </div>
       <div className={buttonDiv}>
-        <Button text="신발 등록하기" />
+        <Button text="신발 등록하기" onClick={handleNavigate} />
       </div>
     </div>
   );
