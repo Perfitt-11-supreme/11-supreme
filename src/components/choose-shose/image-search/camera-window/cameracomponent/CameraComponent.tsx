@@ -1,13 +1,7 @@
 import { useEffect } from 'react';
 import { CameraComponent_Container, CameraComponent_View } from './cameracomponent.css';
 
-const CameraComponent = ({
-  isAnalyze,
-  videoRef,
-}: {
-  isAnalyze: boolean;
-  videoRef: React.MutableRefObject<HTMLVideoElement | null>;
-}) => {
+const CameraComponent = ({ videoRef }: { videoRef: React.MutableRefObject<HTMLVideoElement | null> }) => {
   useEffect(() => {
     const getCameraStream = async () => {
       try {
@@ -21,8 +15,6 @@ const CameraComponent = ({
     };
 
     getCameraStream();
-
-    console.log(isAnalyze);
 
     return () => {
       if (videoRef.current && videoRef.current.srcObject) {
