@@ -11,7 +11,6 @@ import useImageSearchStore from '../../../../stores/useImageSearchStore.ts';
 
 const ImageFooter = () => {
   const { isAnalyze, handleClickCameraIcon } = useImageSearchStore();
-
   return (
     <>
       <div
