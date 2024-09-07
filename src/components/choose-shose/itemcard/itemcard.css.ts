@@ -11,6 +11,13 @@ export const ItemCard_Container = style({
   marginTop: '10px',
 });
 
+export const ItemCard_Select = style({
+  border: `2px solid ${theme.color.black}`,
+  borderRadius: '8px',
+  height: '81px',
+  width: '347px',
+});
+
 export const ItemCard_Frame = style({
   display: 'flex',
   flexDirection: 'column',

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { CameraComponent_View } from './cameracomponent.css';
+import { CameraComponent_Container, CameraComponent_View } from './cameracomponent.css';
 
 const CameraComponent = ({
   isAnalyze,
@@ -34,7 +34,7 @@ const CameraComponent = ({
   }, []);
 
   return (
-    <div>
+    <div className={CameraComponent_Container}>
       <video className={CameraComponent_View} ref={videoRef} autoPlay></video>
     </div>
   );
