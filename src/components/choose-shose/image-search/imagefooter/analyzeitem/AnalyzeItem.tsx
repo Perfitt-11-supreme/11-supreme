@@ -13,11 +13,9 @@ import SuccesProduct from './succesproduct/SuccesProduct.tsx';
 const AnalyzeItem = ({
   isClickIcon,
   handleClickIcon,
-  capturedImage,
 }: {
   isClickIcon: boolean;
   handleClickIcon: (bol: boolean) => void;
-  capturedImage: string | null;
 }) => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isSimilar, setIsSimilar] = useState(false);
@@ -69,12 +67,7 @@ const AnalyzeItem = ({
         }`}
       >
         {isSuccess ? (
-          <SuccesProduct
-            handleClickAgain={handleClickAgain}
-            isSimilar={isSimilar}
-            setIsSimilar={setIsSimilar}
-            capturedImage={capturedImage}
-          />
+          <SuccesProduct handleClickAgain={handleClickAgain} isSimilar={isSimilar} setIsSimilar={setIsSimilar} />
         ) : (
           <div className={AnalyzeItem_AnalyzerWindow}>
             <img className={`rotatingImage ${AnalyzeItem_AnalyzeCircle}`} src={circle} alt="analyze" />

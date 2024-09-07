@@ -18,18 +18,18 @@ import {
   Product_SuccesContainer,
 } from './succesproduct.css';
 import ItemCard from '../../../../itemcard/ItemCard';
+import useCaptureStore from '../../../../../../stores/useCaptureStore';
 
 const SuccesProduct = ({
   handleClickAgain,
   isSimilar,
   setIsSimilar,
-  capturedImage,
 }: {
   handleClickAgain: (bol: boolean) => void;
   isSimilar: boolean;
   setIsSimilar: React.Dispatch<React.SetStateAction<boolean>>;
-  capturedImage: string | null;
 }) => {
+  const { capturedImage } = useCaptureStore();
   const [isSelected, setIsSelected] = useState<number | null>(null);
 
   const cards = Array(10).fill(null);

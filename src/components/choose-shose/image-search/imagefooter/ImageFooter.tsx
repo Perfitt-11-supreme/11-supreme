@@ -8,16 +8,10 @@ import {
 } from './imagefooter.css.ts';
 import './imagefooter.css';
 import AnalyzeItem from './analyzeitem/AnalyzeItem.tsx';
+import useAnalyzeStore from '../../../../stores/useAnalyzeStore.ts';
 
-const ImageFooter = ({
-  setIsAnalyze,
-  capturedImage,
-  handleCaptureImage,
-}: {
-  setIsAnalyze: React.Dispatch<React.SetStateAction<boolean>>;
-  capturedImage: string | null;
-  handleCaptureImage: () => void;
-}) => {
+const ImageFooter = ({ handleCaptureImage }: { handleCaptureImage: () => void }) => {
+  const { setIsAnalyze } = useAnalyzeStore();
   const [isClickIcon, setIsClickIcon] = useState(false);
 
   const handleClickIcon = (bol: boolean) => {
@@ -42,7 +36,7 @@ const ImageFooter = ({
       >
         <img src={gallery} alt="gallery" />
       </div>
-      <AnalyzeItem isClickIcon={isClickIcon} handleClickIcon={handleClickIcon} capturedImage={capturedImage} />
+      <AnalyzeItem isClickIcon={isClickIcon} handleClickIcon={handleClickIcon} />
     </>
   );
 };

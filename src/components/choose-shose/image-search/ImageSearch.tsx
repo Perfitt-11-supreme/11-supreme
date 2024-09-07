@@ -1,10 +1,10 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import CameraWindow from './camera-window/CameraWindow';
 import ImageFooter from './imagefooter/ImageFooter';
+import useCaptureStore from '../../../stores/useCaptureStore';
 
 const ImageSearch = () => {
-  const [isAnalyze, setIsAnalyze] = useState(false);
-  const [capturedImage, setCapturedImage] = useState<string | null>(null);
+  const { setCapturedImage } = useCaptureStore();
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -29,8 +29,8 @@ const ImageSearch = () => {
 
   return (
     <>
-      <CameraWindow isAnalyze={isAnalyze} videoRef={videoRef} />
-      <ImageFooter setIsAnalyze={setIsAnalyze} capturedImage={capturedImage} handleCaptureImage={handleCaptureImage} />
+      <CameraWindow videoRef={videoRef} />
+      <ImageFooter handleCaptureImage={handleCaptureImage} />
       <canvas ref={canvasRef} style={{ position: 'fixed', bottom: '100vh' }}></canvas>
     </>
   );
