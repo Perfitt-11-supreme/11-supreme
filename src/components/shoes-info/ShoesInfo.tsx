@@ -17,20 +17,20 @@ import Header from '../empty-shoes-room/header/Header';
 import { filled_star } from '../../assets/assets';
 
 const ShoesInfo = () => {
-  const { rating, length, width, height, sole, weight, recommendation, review } = useShoesRegistryStore();
+  const { rating, length, width, height, sole, weight, recommendation, review, selectedItem } = useShoesRegistryStore();
 
   return (
     <div className={container}>
       <Header title="신발 등록" />
-      <div className={imgDiv}>이미지</div>
+      <div className={imgDiv}>{selectedItem ? <img src={selectedItem.image} /> : '이미지 없음'}</div>
       <div className={infoDiv}>
         <div className={starDiv}>
           <img src={filled_star} alt="별점" />
           <p className={ratingP}>{rating}</p>
         </div>
         <div>
-          <p className={brandP}>브랜드</p>
-          <p className={shoesP}>신발 이름</p>
+          <p className={brandP}>{selectedItem?.brand || '브랜드'}</p>
+          <p className={shoesP}>{selectedItem?.shoesName || '신발 이름'}</p>
         </div>
       </div>
       <div className={infoDiv}>

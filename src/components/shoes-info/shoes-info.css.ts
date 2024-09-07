@@ -28,7 +28,7 @@ export const imgDiv = style({
   width: '343px',
   height: '343px',
   borderRadius: '6px',
-  backgroundColor: 'grey',
+  backgroundColor: '#f5f5f5',
   justifyContent: 'center',
   alignItems: 'center',
   marginBottom: '20px',

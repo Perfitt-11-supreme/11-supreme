@@ -8,8 +8,13 @@ import Button from '../common/button/Button';
 import Slider from '../slider/Slider';
 import { area, buttonDiv, container, descP, imagePlusButton, questionP, questP, starP } from './shoesregistry.css';
 import { useNavigate } from 'react-router-dom';
+import ItemCard from '../choose-shose/itemcard/ItemCard';
+import { useShoesStore } from '../../stores/useShoesStore';
 
 const ShoesRegistry = () => {
+  const { selectedItem } = useShoesStore(state => ({
+    selectedItem: state.selectedItem,
+  }));
   const {
     length,
     width,
@@ -33,7 +38,7 @@ const ShoesRegistry = () => {
   };
 
   const handleSubmit = () => {
-    navigate('/shoesinfo');
+    navigate('/shoesRoom');
   };
 
   return (
@@ -41,7 +46,11 @@ const ShoesRegistry = () => {
       <Header title="신발 등록" />
       <p className={descP}>신발을 선택해 주세요</p>
       <button className={imagePlusButton} onClick={handleChooseShoes}>
-        <img src={plus} alt="등록" />
+        {selectedItem !== null ? (
+          <ItemCard index={selectedItem} handleClickItemCard={() => {}} />
+        ) : (
+          <img src={plus} alt="등록" />
+        )}
       </button>
       <p className={questionP}>신발은 마음에 드셨나요?</p>
       <p className={starP}>별점을 눌러 만족도를 알려주세요</p>

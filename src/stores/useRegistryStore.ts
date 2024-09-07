@@ -1,6 +1,6 @@
 import create from 'zustand';
 
-interface ShoesRegistryStore {
+type ShoesRegistryStore = {
   rating: number;
   length: string;
   width: string;
@@ -9,6 +9,11 @@ interface ShoesRegistryStore {
   weight: string;
   recommendation: string;
   review: string;
+  selectedItem: {
+    image: string;
+    brand: string;
+    shoesName: string;
+  } | null;
   setRating: (value: number) => void;
   setLength: (value: string) => void;
   setWidth: (value: string) => void;
@@ -17,7 +22,8 @@ interface ShoesRegistryStore {
   setWeight: (value: string) => void;
   setRecommendation: (value: string) => void;
   setReview: (value: string) => void;
-}
+  setSelectedItem: (item: { image: string; brand: string; shoesName: string } | null) => void;
+};
 
 export const useShoesRegistryStore = create<ShoesRegistryStore>(set => ({
   rating: 0,
@@ -28,6 +34,7 @@ export const useShoesRegistryStore = create<ShoesRegistryStore>(set => ({
   weight: '',
   recommendation: '',
   review: '',
+  selectedItem: null,
   setRating: (value: number) => set({ rating: value }),
   setLength: (value: string) => set({ length: value }),
   setWidth: (value: string) => set({ width: value }),
@@ -36,4 +43,5 @@ export const useShoesRegistryStore = create<ShoesRegistryStore>(set => ({
   setWeight: (value: string) => set({ weight: value }),
   setRecommendation: (value: string) => set({ recommendation: value }),
   setReview: (value: string) => set({ review: value }),
+  setSelectedItem: item => set({ selectedItem: item }),
 }));

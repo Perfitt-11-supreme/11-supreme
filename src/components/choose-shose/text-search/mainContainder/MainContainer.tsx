@@ -9,6 +9,8 @@ import {
   MainContainter_Background,
 } from './maincontainer.css';
 import ItemCard from '../../itemcard/ItemCard';
+import { useState } from 'react';
+import { useShoesStore } from '../../../../stores/useShoesStore';
 
 const MainContainer = ({
   record,
@@ -21,6 +23,17 @@ const MainContainer = ({
   handleCLickRecentRecord: (str: string) => void;
   handleClickAllRemove: () => void;
 }) => {
+  const [isSelected, setIsSelected] = useState<number | null>(null);
+
+  const cards = Array(10).fill(null);
+
+  const handleClickItemCard = (index: number) => {
+    setIsSelected(index);
+    setSelectedItem(index);
+  };
+
+  const setSelectedItem = useShoesStore(state => state.setSelectedItem);
+
   return (
     <>
       <div className={MainContainter_Background}>
@@ -47,16 +60,9 @@ const MainContainer = ({
           </>
         ) : (
           <div>
-            <ItemCard />
-            <ItemCard />
-            <ItemCard />
-            <ItemCard />
-            <ItemCard />
-            <ItemCard />
-            <ItemCard />
-            <ItemCard />
-            <ItemCard />
-            <ItemCard />
+            {cards.map((_, index) => (
+              <ItemCard key={index} index={index} isSelected={isSelected} handleClickItemCard={handleClickItemCard} />
+            ))}
           </div>
         )}
       </div>

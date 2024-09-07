@@ -1,4 +1,5 @@
 import { shoes_w159 } from '../../../assets/assets';
+import { useShoesRegistryStore } from '../../../stores/useRegistryStore';
 import {
   ItemCard_Container,
   ItemCard_Frame,
@@ -15,15 +16,22 @@ const ItemCard = ({
   handleClickItemCard,
 }: {
   index: number;
-  isSelected: number | null;
+  isSelected?: number | null;
   handleClickItemCard: (index: number) => void;
 }) => {
+  const setSelectedItem = useShoesRegistryStore(state => state.setSelectedItem);
+
+  const handleClick = () => {
+    handleClickItemCard(index);
+    setSelectedItem({
+      image: shoes_w159,
+      brand: 'Hoka',
+      shoesName: '호카 카하 2 고어텍스 블랙',
+    });
+  };
   return (
     <>
-      <div
-        className={`${ItemCard_Container} ${index === isSelected ? ItemCard_Select : ''}`}
-        onClick={() => handleClickItemCard(index)}
-      >
+      <div className={`${ItemCard_Container} ${index === isSelected ? ItemCard_Select : ''}`} onClick={handleClick}>
         <div className={ItemCard_Rectangle}>
           <img src={shoes_w159} alt="" />
         </div>
