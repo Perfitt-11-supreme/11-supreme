@@ -73,25 +73,6 @@ export const sidemenuListsBox = style({
   flexDirection: 'column',
   gap: '10px',
 });
-export const sidemenuListBox = style({
-  display: 'flex',
-  justifyContent: 'flex-start',
-  alignItems: 'center',
-  gap: '8px',
-  width: '100%',
-  height: '24px',
-  cursor: 'pointer',
-});
-export const sidemenuListIcon = style({
-  marginBottom: '2px',
-});
-export const sidemenuListText = style({
-  fontWeight: '400',
-  fontSize: '16px',
-  lineHeight: '24px',
-  letterSpacing: '-0.003em',
-  color: theme.color.black800,
-});
 
 export const sidemenuMypageMoveContainer = style({
   marginTop: '195px',

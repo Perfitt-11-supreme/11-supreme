@@ -1,4 +1,5 @@
 import { hamburger_menu, sidemenu_list, sidemenu_plus, user_profile } from '../../assets/assets';
+import SidemenuList from '../../components/sidemenu/SidemenuList';
 import {
   hamburgerIconBox,
   sidemenuHeaderContainer,
@@ -10,9 +11,6 @@ import {
   sidemenuListsBox,
   sidemenuListsTitle,
   plusButtonBox,
-  sidemenuListIcon,
-  sidemenuListText,
-  sidemenuListBox,
   sidemenuMypageMoveButton,
   sidemenuMypageLine,
   sidemenuMypageMoveContainer,
@@ -44,29 +42,14 @@ const SideMenu = () => {
           <article className={sidemenuListsContainer}>
             <h3 className={sidemenuListsTitle}>오늘</h3>
             <ul className={sidemenuListsBox}>
-              <li className={sidemenuListBox}>
-                <img className={sidemenuListIcon} src={sidemenu_list} alt="sidemenu_list" />
-                <div className={sidemenuListText}>최근 가장 인기있는 여성 운동화</div>
-              </li>
-              <li className={sidemenuListBox}>
-                <img className={sidemenuListIcon} src={sidemenu_list} alt="sidemenu_list" />
-                <div className={sidemenuListText}>비오는 날 신기 좋은 레인부츠 추천</div>
-              </li>
+              <SidemenuList iconSrc={sidemenu_list} text="최근 가장 인기있는 여성 운동화" />
+              <SidemenuList iconSrc={sidemenu_list} text="비오는 날 신기 좋은 레인부츠 추천" />
             </ul>
             <h3 className={sidemenuListsTitle}>지난 7일</h3>
             <ul className={sidemenuListsBox}>
-              <li className={sidemenuListBox}>
-                <img className={sidemenuListIcon} src={sidemenu_list} alt="sidemenu_list" />
-                <div className={sidemenuListText}>여름 슬리퍼 추천</div>
-              </li>
-              <li className={sidemenuListBox}>
-                <img className={sidemenuListIcon} src={sidemenu_list} alt="sidemenu_list" />
-                <div className={sidemenuListText}>가벼운 러닝화</div>
-              </li>
-              <li className={sidemenuListBox}>
-                <img className={sidemenuListIcon} src={sidemenu_list} alt="sidemenu_list" />
-                <div className={sidemenuListText}>20대 여성이 많이 찾는 브랜드</div>
-              </li>
+              <SidemenuList iconSrc={sidemenu_list} text="여름 슬리퍼 추천" />
+              <SidemenuList iconSrc={sidemenu_list} text="가벼운 러닝화" />
+              <SidemenuList iconSrc={sidemenu_list} text="20대 여성이 많이 찾는 브랜드" />
             </ul>
           </article>
           {/* mypage 링크 */}
