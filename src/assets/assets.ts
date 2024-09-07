@@ -64,6 +64,9 @@ import again from './again.svg';
 import circle from './circle.svg';
 import rectangle from './rectangle.svg';
 import sidemenu_list from './sidemenu_list.svg';
+import brand_adidas from './brand_adidas.svg';
+import brand_crocs from './brand_crocs.svg';
+import brand_nike from './brand_nike.svg';
 
 export {
   ai,
@@ -132,4 +135,7 @@ export {
   circle,
   rectangle,
   sidemenu_list,
+  brand_adidas,
+  brand_crocs,
+  brand_nike,
 };

@@ -1,37 +1,37 @@
-import { useState } from "react";
-import { close } from "../../../assets/assets";
-import useModalStore from "../../../stores/useModalStore";
-import FilterButton from "../../common/filter-button/FilterButton";
-import SizeRecommendationCard from "../../common/size-recommendation-card/SizeRecommendationCard";
-import ProductFilter from "../product-filter/ProductFilter";
-import { brandPlpBrandImage, brandPlpFilterButtonWrap, brandPlpNameContainer, brandPlpWrap } from "./brandPLP.css";
+import { useState } from 'react';
+import { close } from '../../../assets/assets';
+import useModalStore from '../../../stores/useModalStore';
+import FilterButton from '../../common/filter-button/FilterButton';
+import SizeRecommendationCard from '../../mypage/size-recommendation-card/SizeRecommendationCard';
+import ProductFilter from '../product-filter/ProductFilter';
+import { brandPlpBrandImage, brandPlpFilterButtonWrap, brandPlpNameContainer, brandPlpWrap } from './brandPLP.css';
 
 const dummy = [
   {
     id: 1,
-    content: <SizeRecommendationCard />
+    content: <SizeRecommendationCard />,
   },
   {
     id: 2,
-    content: <SizeRecommendationCard />
+    content: <SizeRecommendationCard />,
   },
   {
     id: 3,
-    content: <SizeRecommendationCard />
+    content: <SizeRecommendationCard />,
   },
   {
     id: 4,
-    content: <SizeRecommendationCard />
+    content: <SizeRecommendationCard />,
   },
   {
     id: 5,
-    content: <SizeRecommendationCard />
+    content: <SizeRecommendationCard />,
   },
   {
     id: 6,
-    content: <SizeRecommendationCard />
-  }
-]
+    content: <SizeRecommendationCard />,
+  },
+];
 const filterCategories = ['ALL', 'WOMEN', 'MEN', 'KIDS'];
 const BrandPLP = () => {
   const { setIsOpen } = useModalStore();
@@ -55,7 +55,7 @@ const BrandPLP = () => {
           <img />
         </section>
         <div className={brandPlpFilterButtonWrap}>
-          {filterCategories.map((category) => (
+          {filterCategories.map(category => (
             <FilterButton
               key={category}
               title={category}
@@ -68,5 +68,5 @@ const BrandPLP = () => {
       </div>
     </>
   );
-}
-export default BrandPLP
+};
+export default BrandPLP;
