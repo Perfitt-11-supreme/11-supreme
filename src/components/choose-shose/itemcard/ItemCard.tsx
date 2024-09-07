@@ -3,15 +3,27 @@ import {
   ItemCard_Container,
   ItemCard_Frame,
   ItemCard_Rectangle,
+  ItemCard_Select,
   ItemCard_ShoseBrand,
   ItemCard_ShoseName,
   ItemCard_ShosePrice,
 } from './itemcard.css';
 
-const ItemCard = () => {
+const ItemCard = ({
+  index,
+  isSelected,
+  handleClickItemCard,
+}: {
+  index: number;
+  isSelected: number | null;
+  handleClickItemCard: (index: number) => void;
+}) => {
   return (
     <>
-      <div className={ItemCard_Container}>
+      <div
+        className={`${ItemCard_Container} ${index === isSelected ? ItemCard_Select : ''}`}
+        onClick={() => handleClickItemCard(index)}
+      >
         <div className={ItemCard_Rectangle}>
           <img src={shoes_w159} alt="" />
         </div>
