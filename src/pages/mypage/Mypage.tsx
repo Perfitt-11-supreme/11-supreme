@@ -35,7 +35,7 @@ const Mypage = () => {
   return (
     <>
       <section className={mypageContainer}>
-        <Header imageSrc={back_arrow} alt="back arrow" />
+        <Header imageSrc={back_arrow} alt="back arrow" title="헤더" />
         <article className={userProfileImageContainer}>
           <div className={userProfileIconBox}>
             <img src={user_profile} alt="user_profile" />
