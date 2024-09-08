@@ -14,28 +14,32 @@ import {
   sizeRecommendationThumbnail,
 } from './sizeRecommendationCard.css';
 
-const SizeRecommendationCard = () => {
+type SizeRecommendationCardProps = {
+  isHeartFilled?: boolean;
+};
+
+const SizeRecommendationCard = ({ isHeartFilled = false }: SizeRecommendationCardProps) => {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleHeartChecked = () => {
     setIsChecked(!isChecked);
   };
+
   return (
     <>
       <div className={sizeRecommendationCardBox}>
-        {/* Thumbnail */}
         <div className={sizeRecommendationThumbnail}>
           <div className={sizeRecommendationBadge}>
             <p className={sizeRecommendationBadgeTag}>240mm 추천</p>
           </div>
+
           <div className={heartIconBox} onClick={handleHeartChecked}>
-            {isChecked ? <img src={heart_filled} alt="heart_filled" /> : <img src={heart_empty} alt="heart_empty" />}
+            <img src={isHeartFilled || isChecked ? heart_filled : heart_empty} alt="heart" />
           </div>
           <div className={brandIconBox}>
             <img src={brand_abcmart} alt="brand_abcmart" />
           </div>
         </div>
-        {/* Product */}
         <div className={productBox}>
           <div className={productName}>
             <p className={productBrand}>Hoka</p>
