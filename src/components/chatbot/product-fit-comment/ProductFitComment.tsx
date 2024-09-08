@@ -1,15 +1,22 @@
 import { back_arrow } from "../../../assets/assets";
+import useModalStore from "../../../stores/useModalStore";
 import { theme } from "../../../styles/theme";
 import Button from "../../common/button/Button";
-import { bubbleContainer, bubbleContent, fitCommentAIContainer, fitCommentAIResult, fitCommentAItext, fitCommentAItextContainer, fitCommentDescription, fitCommentHeader, fitCommentProductContainer, fitCommentProductImage, fitCommentProductTextContainer, fitCommentSlider, fitCommentSliderContainer, fitCommentSliderDot, fitCommentSliderDotContainer, fitCommentSliderLabels, fitCommentSliderThumbs, fitCommentSliderWrap, fitCommentWrap } from "./productFitComment.css";
+import { bubbleContainer, bubbleContent, fitCommentAIContainer, fitCommentAIResult, fitCommentAItext, fitCommentAItextContainer, fitCommentDescription, fitCommentHeader, fitCommentProductContainer, fitCommentProductImage, fitCommentProductTextContainer, fitCommentSlider, fitCommentSliderContainer, fitCommentSliderDot, fitCommentSliderDotContainer, fitCommentSliderLabels, fitCommentSliderThumbs, fitCommentSliderWrap, fitCommentTooltipContainer, fitCommentWrap } from "./productFitComment.css";
 
 const ProductFitComment = () => {
+
+  const { setFitOpen } = useModalStore()
+
+  const handleCloseClick = () => {
+    setFitOpen(false);
+  };
 
   return (
     <>
       <div className={fitCommentWrap}>
         <div className={fitCommentHeader}>
-          <img src={back_arrow} />
+          <img src={back_arrow} onClick={handleCloseClick} />
         </div>
         <div className={fitCommentProductContainer}>
           <div className={fitCommentProductImage}>
@@ -29,10 +36,13 @@ const ProductFitComment = () => {
             <p className={fitCommentAIResult}>이 신발을 <span style={{ fontWeight: 800, fontSize: '18px' }}>'기본 핏'</span>으로 분석했어요.</p>
           </div>
           <div className={fitCommentSliderContainer}>
-            <div className={bubbleContainer}>
-              <div className={bubbleContent}>
+            <div className={fitCommentTooltipContainer}>
+
+              <div className={bubbleContainer}>
+                <div className={bubbleContent}>
+                </div>
+                <p style={{ color: theme.color.white }}>3.0</p>
               </div>
-              <p style={{ color: theme.color.white }}>gd</p>
             </div>
 
             <div className={fitCommentSliderWrap}>

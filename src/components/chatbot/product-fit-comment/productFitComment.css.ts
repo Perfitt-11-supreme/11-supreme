@@ -5,15 +5,15 @@ export const fitCommentWrap = style({
   padding: '16px',
   display: 'flex',
   flexDirection: 'column',
-  gap:'16px'
 })
 
 export const fitCommentHeader = style({
-  padding:'16px 16px 32px 16px'
+  padding:'16px 0 8px'
 })
 
 export const fitCommentProductContainer = style({
   display: 'flex',
+  marginBottom:'16px'
 })
 
 export const fitCommentProductImage = style({
@@ -32,7 +32,7 @@ export const fitCommentProductTextContainer = style({
   flexDirection: 'column',
   marginLeft: '12px',
   letterSpacing: '-0.24px',
-  fontSize:'18px'
+  fontSize: '18px'
 })
 
 export const fitCommentAIContainer = style({
@@ -40,7 +40,8 @@ export const fitCommentAIContainer = style({
   display: 'flex',
   flexDirection: 'column',
   border: `1px solid ${theme.color.cool_gray100}`,
-  borderRadius:'8px'
+  borderRadius: '8px',
+  marginBottom:'18px'
 })
 
 export const fitCommentAItextContainer = style({
@@ -48,7 +49,7 @@ export const fitCommentAItextContainer = style({
   display: 'flex',
   flexDirection:'column',
   gap: '8px',
-  borderBottom:`1px solid ${theme.color.cool_gray100}`
+  borderBottom: `1px solid ${theme.color.cool_gray100}`,
 })
 
 export const fitCommentAItext = style({
@@ -72,12 +73,19 @@ export const fitCommentSliderContainer = style({
   padding: '20px 10px',
 });
 
+export const fitCommentTooltipContainer = style({
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'center',
+  marginBottom:'8px'
+})
+
 export const fitCommentSliderTooltipContainer = style({
   width: '100%',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  position: 'relative',
+
 })
 
 export const bubbleContainer = style({
@@ -87,7 +95,7 @@ export const bubbleContainer = style({
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent:'center',
-  position: 'absolute',
+  position: 'relative',
   zIndex: 1,
   borderRadius:'8px',
   backgroundColor: '#18181B',
@@ -191,7 +199,10 @@ export const fitCommentSliderLabels = style({
 export const fitCommentDescription = style({
   padding: '16px',
   letterSpacing: '-0.003px',
-  color:'#18181B'
+  color: '#18181B',
+  backgroundColor: '#FAFAFA',
+  borderRadius: '8px',
+  lineHeight:'24px'
 })
 // export const fitCommentWrap = style({
 
