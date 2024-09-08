@@ -69,6 +69,10 @@ import brand_crocs from './brand_crocs.svg';
 import brand_nike from './brand_nike.svg';
 import sidemenu_linkshare from './sidemenu_linkshare.svg';
 import sidemenu_delete from './sidemenu_delete.svg';
+import kebab from './kebab.svg';
+import deleted from './delete.svg';
+import modify from './modify.svg';
+import share from './share.svg';
 
 export {
   ai,
@@ -142,4 +146,8 @@ export {
   brand_nike,
   sidemenu_linkshare,
   sidemenu_delete,
+  kebab,
+  deleted,
+  modify,
+  share,
 };

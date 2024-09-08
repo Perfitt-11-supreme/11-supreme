@@ -30,26 +30,23 @@ const SuccesProduct = ({
   setIsSimilar: React.Dispatch<React.SetStateAction<boolean>>;
   capturedImage: string | null;
 }) => {
+  const [isSelected, setIsSelected] = useState<number | null>(null);
+
+  const cards = Array(10).fill(null);
+
+  const handleClickItemCard = (index: number) => {
+    setIsSelected(index);
+  };
+
   return (
     <>
       {isSimilar ? (
         <>
           <div className={Product_SimilarProductContainer}>
             <div className={Product_ScrollableContent}>
-              <ItemCard />
-              <ItemCard />
-              <ItemCard />
-              <ItemCard />
-              <ItemCard />
-              <ItemCard />
-              <ItemCard />
-              <ItemCard />
-              <ItemCard />
-              <ItemCard />
-              <ItemCard />
-              <ItemCard />
-              <ItemCard />
-              <ItemCard />
+              {cards.map((_, index) => (
+                <ItemCard key={index} index={index} isSelected={isSelected} handleClickItemCard={handleClickItemCard} />
+              ))}
             </div>
             <div className={Product_SimilarProductButton}>
               <Button text="선택 완료"></Button>

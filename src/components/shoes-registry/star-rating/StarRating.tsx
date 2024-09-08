@@ -1,9 +1,9 @@
-import { useState } from 'react';
 import { empty_star, filled_star } from '../../../assets/assets';
+import { useShoesRegistryStore } from '../../../stores/useRegistryStore';
 import { star, starContainer } from './starrating.css';
 
 const StarRating = () => {
-  const [rating, setRating] = useState(0);
+  const { rating, setRating } = useShoesRegistryStore();
 
   const handleClick = (index: number) => {
     if (rating === index) {

@@ -15,7 +15,7 @@ const UsualSizeSelect = ({ label, value, onChange }: TUsualSizeSelect) => {
     return options;
   };
 
-  const sizeOptions = setSizeOptions(220, 290, 5);
+  const sizeOptions = setSizeOptions(210, 290, 5);
 
   return (
     <div className={usualsizeSelectBox}>

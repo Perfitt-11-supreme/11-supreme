@@ -17,7 +17,7 @@ const TextHeader = ({
   const navigate = useNavigate();
 
   const handleNavigation = () => {
-    navigate('./shoesRegistry');
+    navigate('/shoesRegistry');
   };
 
   return (
