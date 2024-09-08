@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 
-interface BrandStoreState {
+type BrandStoreState = {
   selectedBrand: string | null;
   setSelectedBrand: (brand: string) => void;
 }

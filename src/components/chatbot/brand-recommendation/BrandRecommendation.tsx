@@ -3,7 +3,7 @@ import useBrandStore from "../../../stores/useBrandStore";
 import BrandRecommendationCard from "../brand-recommendation-card/BrandRecommendationCard";
 import { brandRecommendContainer, brandRecommendIcon, brandRecommendIconWrap, brandRecommendWrap } from "./brandRecommendation.css";
 
-interface DummyItem {
+type DummyItem = {
   id: number;
   content: JSX.Element;
   value: string;
