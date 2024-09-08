@@ -43,7 +43,7 @@ export const router = createBrowserRouter([
     element: <EmptyShoesRoom />,
   },
   {
-    path: '/shoes-room',
+    path: '/shoesroom',
     element: <ShoesRoom />,
   },
   {
