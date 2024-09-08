@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ai, brand_abcmart, heart_empty, heart_filled } from '../../../assets/assets';
+import useModalStore from '../../../stores/useModalStore';
 import {
   brandIconBox,
   heartIconBox,
@@ -20,6 +21,13 @@ type SizeRecommendationCardProps = {
 
 const SizeRecommendationCard = ({ isHeartFilled = false }: SizeRecommendationCardProps) => {
   const [isChecked, setIsChecked] = useState(false);
+  const { setFitOpen } = useModalStore();
+
+  const handleFitCommentClick = () => {
+    setFitOpen(true);  // 이 신발 더보기 버튼 클릭 시 Modal 열기
+  };
+
+
 
   const handleHeartChecked = () => {
     setIsChecked(!isChecked);
@@ -47,7 +55,7 @@ const SizeRecommendationCard = ({ isHeartFilled = false }: SizeRecommendationCar
           </div>
           <p className={productText}>100,000원</p>
         </div>
-        <button className={productDetailsButton}>
+        <button className={productDetailsButton} onClick={handleFitCommentClick}>
           <img src={ai} alt="ai" />이 신발 더 알아보기
         </button>
       </div>

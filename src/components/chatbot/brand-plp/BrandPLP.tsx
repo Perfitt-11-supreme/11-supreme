@@ -1,37 +1,11 @@
-import { useState } from 'react';
-import { close } from '../../../assets/assets';
-import useModalStore from '../../../stores/useModalStore';
-import FilterButton from '../../common/filter-button/FilterButton';
-import SizeRecommendationCard from '../../mypage/size-recommendation-card/SizeRecommendationCard';
-import ProductFilter from '../product-filter/ProductFilter';
-import { brandPlpBrandImage, brandPlpFilterButtonWrap, brandPlpNameContainer, brandPlpWrap } from './brandPLP.css';
+import { useState } from "react";
+import { close } from "../../../assets/assets";
+import useModalStore from "../../../stores/useModalStore";
+import FilterButton from "../../common/filter-button/FilterButton";
+import ProductFilter from "../product-filter/ProductFilter";
+import { brandPlpBrandImage, brandPlpFilterButtonWrap, brandPlpNameContainer, brandPlpWrap } from "./brandPLP.css";
 
-const dummy = [
-  {
-    id: 1,
-    content: <SizeRecommendationCard />,
-  },
-  {
-    id: 2,
-    content: <SizeRecommendationCard />,
-  },
-  {
-    id: 3,
-    content: <SizeRecommendationCard />,
-  },
-  {
-    id: 4,
-    content: <SizeRecommendationCard />,
-  },
-  {
-    id: 5,
-    content: <SizeRecommendationCard />,
-  },
-  {
-    id: 6,
-    content: <SizeRecommendationCard />,
-  },
-];
+
 const filterCategories = ['ALL', 'WOMEN', 'MEN', 'KIDS'];
 const BrandPLP = () => {
   const { setIsOpen } = useModalStore();

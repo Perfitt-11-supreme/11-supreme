@@ -5,6 +5,8 @@ type ModalStore = {
   setIsOpen: (isOpen: boolean) => void;
   filterOpen: boolean;
   setFilterOpen: (filterOpen: boolean) => void;
+  fitOpen: boolean;
+  setFitOpen: (fitOpen: boolean) => void;
 };
 
 const useModalStore = create<ModalStore>((set) => ({
@@ -12,6 +14,8 @@ const useModalStore = create<ModalStore>((set) => ({
   setIsOpen: (isOpen) => set({ isOpen }),
   filterOpen: false,
   setFilterOpen: (filterOpen) => set({ filterOpen }),
+  fitOpen: false,
+  setFitOpen: (fitOpen) => set({ fitOpen })
 }));
 
 export default useModalStore;
