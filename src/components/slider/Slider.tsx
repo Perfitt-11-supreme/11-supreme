@@ -1,31 +1,47 @@
-import React, { useState } from 'react';
-import { label, labels, slider, sliderContainer } from './slider.css';
+import { sliderContainer, slider, track, dotContainer, dot, labels, label } from './slider.css';
+import { useShoesRegistryStore } from '../../stores/useRegistryStore';
+import { useEffect, useState } from 'react';
 
-interface SliderProps {
-  onChange?: (value: number) => void;
-}
+// 슬라이더 값과 라벨 매핑
+const valueToLabel: Record<string, string> = {
+  '-2': '많이 작아요',
+  '-1': '약간 작아요',
+  '0': '정사이즈',
+  '1': '약간 커요',
+  '2': '많이 커요',
+};
 
-const Slider = ({ onChange }: SliderProps) => {
-  const [value, setValue] = useState<number>(0);
+const Slider = () => {
+  const { setRecommendation } = useShoesRegistryStore();
+  const [value, setValue] = useState('0');
 
   const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = Number(e.target.value);
+    const newValue = e.target.value;
     setValue(newValue);
-    if (onChange) {
-      onChange(newValue);
-    }
+    setRecommendation(valueToLabel[newValue]);
   };
 
-  const labelPositions = ['많이 작아요', '약간 작아요', '정사이즈', '약간 커요', '많이 커요'];
+  useEffect(() => {
+    setRecommendation(valueToLabel[value]);
+  }, []);
+
+  const labelPositions = Object.keys(valueToLabel)
+    .sort((a, b) => parseInt(a) - parseInt(b))
+    .map(key => valueToLabel[key]);
 
   return (
     <div className={sliderContainer}>
+      <div className={track} />
       <input type="range" min="-2" max="2" value={value} className={slider} onChange={handleChangeValue} />
+      <div className={dotContainer}>
+        {labelPositions.map(key => (
+          <div key={key} className={dot} />
+        ))}
+      </div>
       <div className={labels}>
         {labelPositions.map((position, index) => (
-          <div key={index} style={{ zIndex: '2' }}>
+          <div key={index}>
             <span className={label}>{position}</span>
-            {/* <div className={dot} style={{ left: `${(index / (labelPositions.length - 1)) * 100}%` }} /> */}
           </div>
         ))}
       </div>
