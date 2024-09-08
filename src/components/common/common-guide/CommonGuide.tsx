@@ -11,7 +11,7 @@ import Modal from '../modal/Modal';
 import ProductRecommendationCard from '../product-recommendation-card/ProductRecommendationCard';
 import RecommendedQuestionCard from '../recommended-question-card/RecommendedQuestionCard';
 import Select from '../../signup/infoInput/signupselect/SignUpSelect';
-import SizeRecommendationCard from '../size-recommendation-card/SizeRecommendationCard';
+import SizeRecommendationCard from '../../mypage/size-recommendation-card/SizeRecommendationCard';
 
 const CommonGuide = () => {
   return (

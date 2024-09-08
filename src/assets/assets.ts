@@ -53,10 +53,22 @@ import tip5 from './tip5.svg';
 import tip6 from './tip6.svg';
 import arrow_up from './arrow_up.svg';
 import arrow_down from './arrow_down.svg';
+import mypage_arrow from './mypage_arrow.svg';
+import mypage_heart from './mypage_heart.svg';
+import mypage_shose_room from './mypage_shose_room.svg';
+import user_profile_upload from './user_profile_upload.svg';
+import user_profile from './user_profile.svg';
+import sidemenu_plus from './sidemenu_plus.svg';
 import gallery from './gallery.svg';
 import again from './again.svg';
 import circle from './circle.svg';
 import rectangle from './rectangle.svg';
+import sidemenu_list from './sidemenu_list.svg';
+import brand_adidas from './brand_adidas.svg';
+import brand_crocs from './brand_crocs.svg';
+import brand_nike from './brand_nike.svg';
+import sidemenu_linkshare from './sidemenu_linkshare.svg';
+import sidemenu_delete from './sidemenu_delete.svg';
 import kebab from './kebab.svg';
 import deleted from './delete.svg';
 import modify from './modify.svg';
@@ -118,10 +130,22 @@ export {
   tip6,
   arrow_up,
   arrow_down,
+  mypage_arrow,
+  mypage_heart,
+  mypage_shose_room,
+  user_profile_upload,
+  user_profile,
+  sidemenu_plus,
   gallery,
   again,
   circle,
   rectangle,
+  sidemenu_list,
+  brand_adidas,
+  brand_crocs,
+  brand_nike,
+  sidemenu_linkshare,
+  sidemenu_delete,
   kebab,
   deleted,
   modify,
