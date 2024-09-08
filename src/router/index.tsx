@@ -60,7 +60,8 @@ export const router = createBrowserRouter([
   {
     path: '/viewedhistorypage',
     element: <ViewedHistoryPage />,
-      },
+  },
+  {
     path: '/signupinfo',
     element: <SignUpInfoInputValid />,
   },

@@ -78,7 +78,7 @@ const CommonGuide = () => {
       </div>
       {/* 공통 컴포넌트 - 헤더 */}
       <Header imageSrc={hamburger_menu} alt="hamburger menu" />
-      <Header imageSrc={back_arrow} alt="back arrow" />
+      <Header imageSrc={back_arrow} alt="back arrow" title="페이지명" />
       {/* 공통 컴포넌트 - 사이즈 추천 카드 */}
       <SizeRecommendationCard />
       {/* 공통 컴포넌트 - 상품 추천 카드 */}
