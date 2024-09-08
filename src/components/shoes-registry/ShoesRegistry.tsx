@@ -38,7 +38,7 @@ const ShoesRegistry = () => {
   };
 
   const handleSubmit = () => {
-    navigate('/shoesRoom');
+    navigate('/shoesInfo');
   };
 
   return (
