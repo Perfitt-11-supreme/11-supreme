@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { camera, gallery } from '../../../../assets/assets';
 import {
   ImageFotter_IconMove,
@@ -9,34 +9,36 @@ import {
 import './imagefooter.css';
 import AnalyzeItem from './analyzeitem/AnalyzeItem.tsx';
 import useAnalyzeStore from '../../../../stores/useAnalyzeStore.ts';
+import useCaptureStore from '../../../../stores/useCaptureStore.ts';
 
-const ImageFooter = ({ handleCaptureImage }: { handleCaptureImage: () => void }) => {
-  const { setIsAnalyze } = useAnalyzeStore();
-  const [isClickIcon, setIsClickIcon] = useState(false);
+const ImageFooter = () => {
+  const { isAnalyze, setIsAnalyze } = useAnalyzeStore();
+  const { handleCaptureImage } = useCaptureStore();
 
-  const handleClickIcon = (bol: boolean) => {
-    setIsClickIcon(bol);
+  const clickCameraIcon = (bol: boolean) => {
     setIsAnalyze(bol);
     handleCaptureImage();
   };
+
+  useEffect(() => {
+    useCaptureStore.setState({ handleClickCameraIcon: clickCameraIcon });
+  }, []);
 
   return (
     <>
       <div
         className={`${ImageFooter_CameraIconBackground} ${
-          isClickIcon ? ImageFotter_IconMove.moved : ImageFotter_IconMove.static
+          isAnalyze ? ImageFotter_IconMove.moved : ImageFotter_IconMove.static
         }`}
       >
-        <img className={ImageFooter_CameraIcon} src={camera} alt="camera" onClick={() => handleClickIcon(true)} />
+        <img className={ImageFooter_CameraIcon} src={camera} alt="camera" onClick={() => clickCameraIcon(true)} />
       </div>
       <div
-        className={`${ImageFooter_GalleryIcon} ${
-          isClickIcon ? ImageFotter_IconMove.moved : ImageFotter_IconMove.static
-        }`}
+        className={`${ImageFooter_GalleryIcon} ${isAnalyze ? ImageFotter_IconMove.moved : ImageFotter_IconMove.static}`}
       >
         <img src={gallery} alt="gallery" />
       </div>
-      <AnalyzeItem isClickIcon={isClickIcon} handleClickIcon={handleClickIcon} />
+      <AnalyzeItem />
     </>
   );
 };

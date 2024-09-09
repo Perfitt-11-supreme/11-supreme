@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { again, shoes_w159 } from '../../../../../../assets/assets';
+import { again } from '../../../../../../assets/assets';
 import Button from '../../../../../common/button/Button';
 import {
   Product_AgainBox,
@@ -21,15 +21,13 @@ import ItemCard from '../../../../itemcard/ItemCard';
 import useCaptureStore from '../../../../../../stores/useCaptureStore';
 
 const SuccesProduct = ({
-  handleClickAgain,
   isSimilar,
   setIsSimilar,
 }: {
-  handleClickAgain: (bol: boolean) => void;
   isSimilar: boolean;
   setIsSimilar: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { capturedImage } = useCaptureStore();
+  const { capturedImage, handleClickAgain } = useCaptureStore();
   const [isSelected, setIsSelected] = useState<number | null>(null);
 
   const cards = Array(10).fill(null);
@@ -55,7 +53,7 @@ const SuccesProduct = ({
         </>
       ) : (
         <div className={Product_SuccesContainer}>
-          <div className={Product_AgainBox} onClick={() => handleClickAgain(false)}>
+          <div className={Product_AgainBox} onClick={handleClickAgain}>
             <img className={Product_AgainIcon} src={again} alt="again" />
             <p className={Product_AgainText}>다시하기</p>
           </div>

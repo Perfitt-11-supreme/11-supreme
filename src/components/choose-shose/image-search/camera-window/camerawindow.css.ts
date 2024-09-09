@@ -1,5 +1,4 @@
 import { style } from '@vanilla-extract/css';
-import { theme } from '../../../../styles/theme';
 
 export const CameraWindow_RectangleContainer = style({
   position: 'absolute',

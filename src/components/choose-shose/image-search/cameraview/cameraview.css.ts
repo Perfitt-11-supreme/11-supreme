@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { theme } from '../../../../../styles/theme';
+import { theme } from '../../../../styles/theme';
 
 export const CameraComponent_Container = style({
   display: 'flex',

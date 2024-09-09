@@ -9,39 +9,42 @@ import {
 import './analyzeitem.css';
 import { useEffect, useRef, useState } from 'react';
 import SuccesProduct from './succesproduct/SuccesProduct.tsx';
+import useCaptureStore from '../../../../../stores/useCaptureStore.ts';
+import useAnalyzeStore from '../../../../../stores/useAnalyzeStore.ts';
 
-const AnalyzeItem = ({
-  isClickIcon,
-  handleClickIcon,
-}: {
-  isClickIcon: boolean;
-  handleClickIcon: (bol: boolean) => void;
-}) => {
+const AnalyzeItem = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isSimilar, setIsSimilar] = useState(false);
   const divRef = useRef<HTMLDivElement>(null);
+  const { handleClickCameraIcon } = useCaptureStore();
+  const { isAnalyze } = useAnalyzeStore();
 
-  const handleClickAgain = () => {
-    handleClickIcon(false);
+  const clickAgain = () => {
+    handleClickCameraIcon(false);
     setIsSuccess(false);
   };
 
   useEffect(() => {
-    if (!isClickIcon) return;
+    useCaptureStore.setState({ handleClickAgain: clickAgain });
+  }, []);
+
+  useEffect(() => {
+    if (!isAnalyze) return;
     if (isSuccess) return;
 
     const timer = setTimeout(() => {
       setIsSuccess(true);
       clearTimeout(timer);
     }, 5000);
-  }, [isClickIcon]);
+  }, [isAnalyze]);
+
+  console.log(isAnalyze);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      // divRef와 그 아래 자식 요소를 제외한 클릭을 감지
       if (isSimilar && divRef.current && !divRef.current.contains(event.target as Node)) {
         console.log(isSimilar);
-        handleClickIcon(false);
+        handleClickCameraIcon(false);
         setIsSimilar(false);
         setIsSuccess(false);
       }
@@ -59,7 +62,7 @@ const AnalyzeItem = ({
       <div
         ref={divRef}
         className={`${AnalyzeItem_Container} ${
-          isClickIcon
+          isAnalyze
             ? isSuccess
               ? AnalyzeItem_AnalyzerContainerMove.success
               : AnalyzeItem_AnalyzerContainerMove.analyze
@@ -67,7 +70,7 @@ const AnalyzeItem = ({
         }`}
       >
         {isSuccess ? (
-          <SuccesProduct handleClickAgain={handleClickAgain} isSimilar={isSimilar} setIsSimilar={setIsSimilar} />
+          <SuccesProduct isSimilar={isSimilar} setIsSimilar={setIsSimilar} />
         ) : (
           <div className={AnalyzeItem_AnalyzerWindow}>
             <img className={`rotatingImage ${AnalyzeItem_AnalyzeCircle}`} src={circle} alt="analyze" />
