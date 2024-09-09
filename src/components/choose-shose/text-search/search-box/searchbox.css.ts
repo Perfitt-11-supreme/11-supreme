@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { theme } from '../../../../../styles/theme';
+import { theme } from '../../../../styles/theme';
 
 export const SearchBox_Background = style({
   position: 'fixed',
@@ -7,7 +7,7 @@ export const SearchBox_Background = style({
   justifyContent: 'center',
   width: '100vw',
   height: '65px',
-  top: '90px',
+  top: '56px',
   background: theme.color.white,
   transition: 'transform 0.3s ease-in-out',
   zIndex: '100',
