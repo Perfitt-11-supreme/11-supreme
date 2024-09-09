@@ -1,11 +1,11 @@
-import { create } from 'zustand';
+import create from 'zustand';
 
-type ShoeStore = {
+interface ShoesStore {
   selectedItem: number | null;
-  setSelectedItem: (index: number | null) => void;
-};
+  setSelectedItem: (item: number | null) => void;
+}
 
-export const useShoesStore = create<ShoeStore>(set => ({
+export const useShoesStore = create<ShoesStore>(set => ({
   selectedItem: null,
-  setSelectedItem: index => set({ selectedItem: index }),
+  setSelectedItem: item => set({ selectedItem: item }),
 }));

@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 const EmptyShoesRoom = () => {
   const navigate = useNavigate();
   const handleNavigate = () => {
-    navigate('/shoesRegistry');
+    navigate('/shoes-registry');
   };
   return (
     <div className={container}>

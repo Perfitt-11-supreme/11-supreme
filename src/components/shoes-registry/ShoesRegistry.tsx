@@ -6,10 +6,21 @@ import StarRating from './star-rating/StarRating';
 import Header from '../empty-shoes-room/header/Header';
 import Button from '../common/button/Button';
 import Slider from '../slider/Slider';
-import { area, buttonDiv, container, descP, imagePlusButton, questionP, questP, starP } from './shoesregistry.css';
 import { useNavigate } from 'react-router-dom';
 import ItemCard from '../choose-shose/itemcard/ItemCard';
 import { useShoesStore } from '../../stores/useShoesStore';
+import {
+  area,
+  buttonDiv,
+  container,
+  descP,
+  imagePlusButton,
+  imagePlusButtonSelected,
+  itemCardDiv,
+  questionP,
+  questP,
+  starP,
+} from './shoesregistry.css';
 
 const ShoesRegistry = () => {
   const { selectedItem } = useShoesStore(state => ({
@@ -34,24 +45,31 @@ const ShoesRegistry = () => {
 
   const navigate = useNavigate();
   const handleChooseShoes = () => {
-    navigate('/textSearch');
+    navigate('/text-search');
   };
 
   const handleSubmit = () => {
-    navigate('/shoesRoom');
+    navigate('/shoesinfo');
   };
 
   return (
     <div className={container}>
       <Header title="신발 등록" />
-      <p className={descP}>신발을 선택해 주세요</p>
-      <button className={imagePlusButton} onClick={handleChooseShoes}>
-        {selectedItem !== null ? (
-          <ItemCard index={selectedItem} handleClickItemCard={() => {}} />
-        ) : (
-          <img src={plus} alt="등록" />
-        )}
-      </button>
+      {selectedItem === null ? (
+        <>
+          <p className={descP}>신발을 선택해 주세요</p>
+          <button className={imagePlusButton} onClick={handleChooseShoes}>
+            <img src={plus} alt="등록" />
+          </button>
+        </>
+      ) : (
+        <button className={imagePlusButtonSelected} onClick={handleChooseShoes}>
+          <div className={itemCardDiv}>
+            <ItemCard index={selectedItem} handleClickItemCard={() => {}} />
+          </div>
+        </button>
+      )}
+
       <p className={questionP}>신발은 마음에 드셨나요?</p>
       <p className={starP}>별점을 눌러 만족도를 알려주세요</p>
       <div>
@@ -119,7 +137,7 @@ const ShoesRegistry = () => {
       />
 
       <p className={questP}>이 신발의 추천 사이즈는 무엇인가요?</p>
-      {/* <Slider onChange={value => setRecommendation(value)} /> */}
+      <Slider />
 
       <p className={questP}>자세한 사용기를 적어주세요.</p>
       <textarea

@@ -7,7 +7,7 @@ export const ItemCard_Container = style({
   height: '77px',
   gap: '10px',
   alignItems: 'center',
-  marginLeft: '16px',
+  // marginLeft: '16px',
   marginTop: '10px',
 });
 

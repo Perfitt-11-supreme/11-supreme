@@ -28,6 +28,17 @@ export const imagePlusButton = style({
   marginTop: '11px',
 });
 
+export const imagePlusButtonSelected = style({
+  border: 'none',
+  backgroundColor: 'white',
+  height: '77px',
+});
+
+export const itemCardDiv = style({
+  display: 'flex',
+  textAlign: 'start',
+});
+
 export const questionP = style({
   fontSize: '18px',
   fontWeight: '600',

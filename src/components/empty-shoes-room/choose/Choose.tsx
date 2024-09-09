@@ -1,17 +1,17 @@
 import React from 'react';
 import { radio, radioButton, radioChecked, radioform } from './choose.css';
 
-interface Option {
+type Option = {
   id: string;
   label: string;
-}
+};
 
-interface ChooseProps {
+type ChooseProps = {
   groupName: string;
   options: Option[];
   selectedOption: string;
   setter: (value: string) => void;
-}
+};
 
 const Choose = ({ groupName, options, selectedOption, setter }: ChooseProps) => {
   const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -5,7 +5,7 @@ import { TextFooter_Background } from './textfooter.css';
 const TextFooter = () => {
   const navigate = useNavigate();
   const handleNavigate = () => {
-    navigate('/shoesRegistry');
+    navigate('/shoes-registry');
   };
   return (
     <>
