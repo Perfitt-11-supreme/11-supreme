@@ -4,8 +4,11 @@ import Header from '../common/header/Header';
 import LoginButton from './loginchatbot/loginbox/LoginButton';
 import { hamburger_menu, kakao, naver } from '../../assets/assets';
 import { batteryMargin, loginbuttonContainer, loginbuttonTextContainer, fullContainer } from './login.css';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <div className={fullContainer}>
@@ -18,11 +21,11 @@ const Login = () => {
         </div>
 
         <div className={loginbuttonContainer}>
-          <LoginButton imageSrc={naver} text="네이버" />
-          <LoginButton imageSrc={kakao} text="카카오" />
-          <LoginButton text="이메일 로그인" />
+          <LoginButton imageSrc={naver} text="네이버" onClick={() => navigate('')} />
+          <LoginButton imageSrc={kakao} text="카카오" onClick={() => navigate('')} />
+          <LoginButton text="이메일 로그인" onClick={() => navigate('/emaillogin')} />
           <div className={loginbuttonTextContainer}>또는</div>
-          <LoginButton text="회원가입 하기" />
+          <LoginButton text="회원가입 하기" onClick={() => navigate('/signupinfo')} />
         </div>
 
         <div style={{ marginTop: 'auto' }}>

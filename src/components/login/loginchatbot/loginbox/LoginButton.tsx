@@ -3,11 +3,12 @@ import { loginButton, loginIcon, loginTextbox } from './loginButton.css';
 type LoginButtonProps = {
   imageSrc?: string;
   text: string;
+  onClick?: () => void;
 };
 
-const LoginButton = ({ imageSrc, text }: LoginButtonProps) => {
+const LoginButton = ({ imageSrc, text, onClick }: LoginButtonProps) => {
   return (
-    <button className={loginButton}>
+    <button className={loginButton} onClick={onClick}>
       {imageSrc && <img src={imageSrc} className={loginIcon} alt="icon" />}
       <span className={loginTextbox}>{text}</span>
     </button>
