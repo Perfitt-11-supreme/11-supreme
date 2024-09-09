@@ -16,6 +16,7 @@ import LikedPage from '../pages/liked-page/LikedPage';
 import Mypage from '../pages/mypage/Mypage';
 import SideMenu from '../pages/sidemenu/SideMenu';
 import ViewedHistoryPage from '../pages/viewed-history-page/ViewedHistoryPage';
+import EmailLogin from '../components/login/emaillogin/EmailLogin';
 
 export const router = createBrowserRouter([
   {
@@ -24,7 +25,7 @@ export const router = createBrowserRouter([
   },
   {
     path: '/test',
-    element: <ProductFitComment />
+    element: <ProductFitComment />,
   },
   {
     path: '/redirect',
@@ -85,5 +86,9 @@ export const router = createBrowserRouter([
   {
     path: '/shoesinfo',
     element: <ShoesInfo />,
+  },
+  {
+    path: '/emaillogin',
+    element: <EmailLogin />,
   },
 ]);
