@@ -11,7 +11,6 @@ const CameraView = () => {
     setVideoRef(videoRef);
     setCanvasRef(canvasRef);
   }, [setVideoRef, setCanvasRef]);
-
   useEffect(() => {
     const getCameraStream = async () => {
       try {
