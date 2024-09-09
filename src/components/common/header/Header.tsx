@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { header, headerIcon, headerTitle } from './header.css';
+import { header, headerContainer, headerIcon, headerSpacer, headerTitle } from './header.css';
 
 type THeader = {
   imageSrc: string;
@@ -14,9 +14,12 @@ const Header = ({ imageSrc, alt, title }: THeader) => {
   };
   return (
     <>
-      <header className={header}>
-        <img className={headerIcon} src={imageSrc} alt={alt} onClick={handleNavigate} />
-        <div className={headerTitle}>{title}</div>
+      <div className={headerSpacer} />
+      <header className={headerContainer}>
+        <div className={header}>
+          <img className={headerIcon} src={imageSrc} alt={alt} onClick={handleNavigate} />
+          <div className={headerTitle}>{title}</div>
+        </div>
       </header>
     </>
   );

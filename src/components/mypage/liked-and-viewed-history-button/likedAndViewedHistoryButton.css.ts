@@ -5,6 +5,7 @@ export const likedAndViewedHistoryButtonBox = style({
   width: '100%',
   position: 'absolute',
   top: '36.5px',
+  zIndex: '100',
 });
 const baseLikedAndViewedHistoryButton = style({
   width: '50%',
