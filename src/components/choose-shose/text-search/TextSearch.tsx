@@ -62,7 +62,7 @@ const TextSearch = () => {
   return (
     <>
       <div>
-        <Header imageSrc={back_arrow} alt="뒤로가기" title="신발검색"></Header>
+        <Header imageSrc={back_arrow} alt="뒤로가기" title="신발검색" nav="/shoes-registry"></Header>
         <SearchBox
           text={text}
           handleSubmitSearch={handleSubmitSearch}

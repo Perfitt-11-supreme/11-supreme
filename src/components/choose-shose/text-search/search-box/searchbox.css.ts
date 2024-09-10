@@ -10,7 +10,7 @@ export const SearchBox_Background = style({
   top: '56px',
   background: theme.color.white,
   transition: 'transform 0.3s ease-in-out',
-  zIndex: '100',
+  zIndex: '10',
 });
 
 export const SearchBox_Container = style({

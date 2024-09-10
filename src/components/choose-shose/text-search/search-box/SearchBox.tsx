@@ -41,7 +41,7 @@ const SearchBox = ({
   };
 
   const handleNavigation = () => {
-    navigate('/imageSearch');
+    navigate('/image-search');
   };
 
   const handleSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {

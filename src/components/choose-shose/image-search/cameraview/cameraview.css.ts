@@ -8,11 +8,11 @@ export const CameraComponent_Container = style({
   width: '100vw',
   height: '100vh',
   background: theme.color.black,
+  position: 'absolute',
+  zIndex: '0',
 });
 
 export const CameraComponent_View = style({
-  position: 'relative',
   width: '100vw',
   height: 'auto',
-  zIndex: '0',
 });
