@@ -7,6 +7,8 @@ type ModalStore = {
   setFilterOpen: (filterOpen: boolean) => void;
   fitOpen: boolean;
   setFitOpen: (fitOpen: boolean) => void;
+  isKeywordModalOpen: boolean; 
+  setKeywordModalOpen: (isOpen: boolean) => void;
 };
 
 const useModalStore = create<ModalStore>((set) => ({
@@ -15,7 +17,9 @@ const useModalStore = create<ModalStore>((set) => ({
   filterOpen: false,
   setFilterOpen: (filterOpen) => set({ filterOpen }),
   fitOpen: false,
-  setFitOpen: (fitOpen) => set({ fitOpen })
+  setFitOpen: (fitOpen) => set({ fitOpen }),
+  isKeywordModalOpen: true, 
+  setKeywordModalOpen: (isOpen) => set({ isKeywordModalOpen: isOpen }),
 }));
 
 export default useModalStore;

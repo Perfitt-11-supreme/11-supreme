@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { hamburger_menu } from "../../assets/assets";
 import BrandPLP from "../../components/chatbot/brand-plp/BrandPLP";
 import BrandRecommendation from "../../components/chatbot/brand-recommendation/BrandRecommendation";
@@ -7,19 +8,63 @@ import ProductFitComment from "../../components/chatbot/product-fit-comment/Prod
 import ProductRecommendationPreview from "../../components/chatbot/product-recommendation-preview/ProductRecommendationPreview";
 import ProductRecommendation from "../../components/chatbot/product-recommendation/ProductRecommendation";
 import UserBubble from "../../components/chatbot/user-bubble/UserBubble";
+import Button from "../../components/common/button/Button";
 import ChatbotSearchInput from "../../components/common/chatbot-search-input/ChatbotSearchInput";
 
+import { useState } from "react";
+import { keywordsListAPI } from "../../api/chatRequests";
 import Header from "../../components/common/header/Header";
+import KeywordCard from "../../components/common/keyword-card/KeywordCard";
 import Modal from "../../components/common/modal/Modal";
 import useBrandStore from "../../stores/useBrandStore";
 import useModalStore from "../../stores/useModalStore";
-import { chatBotCardWrap, chatBotContainer, chatBotModalWrap, chatBotWrap, chatBubbleWrap } from "./chatBotPage.css";
+import LoadingPage from "../loading-page/loadingPage";
+import { chatBotCardWrap, chatBotContainer, chatBotModalWrap, chatBotWrap, chatBubbleWrap, keywordWrap } from "./chatBotPage.css";
 
-// const dummy = ['스니커즈', '트레킹', '운동', '산책', '여행', '운동화', '구두', '등산화', '샌들', '레인부츠', '슬리퍼']
+type KeywordsList = string[]
+
 
 const ChatBotPage = () => {
   const { selectedBrand } = useBrandStore()
-  const { isOpen, fitOpen } = useModalStore(); // 모달 열림 상태 추가
+  const { isOpen, fitOpen, isKeywordModalOpen } = useModalStore();
+  const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
+
+  // 키워드 리스트 불러오기
+  const { data: keywordsData, isLoading: isKeywordsLoading, error: keywordsError } = useQuery<KeywordsList>({
+    queryKey: ['keywords'],
+    queryFn: async () => {
+      try {
+        const response = await keywordsListAPI();
+        console.log("데이터 확인용", response)
+        return response.data
+      } catch (error) {
+        console.error('키워드 정보 불러오기 에러', error)
+        throw error;
+      }
+    },
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+
+  })
+
+  const handleKeywordSelect = (keyword: string) => {
+    setSelectedKeywords((prevSelected) =>
+      prevSelected.includes(keyword)
+        ? prevSelected.filter((item) => item !== keyword)  // 선택 해제
+        : [...prevSelected, keyword]                       // 선택 추가
+    );
+  };
+
+
+
+
+  if (isKeywordsLoading) return <LoadingPage />
+  if (keywordsError) return <div>
+    error:{keywordsError?.message}
+  </div>
+
+
   return (
     <>
       <div className={chatBotWrap}>
@@ -36,7 +81,7 @@ const ChatBotPage = () => {
           </div>
           <div className={chatBotModalWrap}>
 
-            {!isOpen && <ChatbotSearchInput />} {/* 모달이 열렸을 때는 ChatbotSearchInput을 숨김 */}
+            {!isOpen && !isKeywordModalOpen && <ChatbotSearchInput />} {/* 모달이 열렸을 때는 ChatbotSearchInput을 숨김 */}
             <Modal
               height="758px"
               initialHeight="120px"
@@ -49,16 +94,19 @@ const ChatBotPage = () => {
             </Modal>}
 
             {/* 관심키워드 */}
-            {/* <Modal height="340px" title="관심 키워드">
+            <Modal height="360px" title="관심 키워드">
               <div className={keywordWrap}>
-                {dummy.map((item, index) => (
-                  <KeywordCard key={index} text={item} />
+                {keywordsData && keywordsData.map((item, index) => (
+                  <KeywordCard key={index} text={item}
+                    onClick={() => handleKeywordSelect(item)}  // 키워드 클릭 시 선택 처리
+                    isSelected={selectedKeywords.includes(item)}
+                  />
                 ))}
                 <div style={{ marginTop: '40px' }}>
-                  <Button text="n개 선택" onClick={() => setShowInterestKeywords(false)} />
+                  <Button text={`${selectedKeywords.length}개 선택`} />
                 </div>
               </div>
-            </Modal> */}
+            </Modal>
           </div>
         </div>
       </div>

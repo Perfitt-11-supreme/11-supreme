@@ -41,5 +41,6 @@ export const keywordWrap = style({
   width: 'auto',
   display: 'flex',
   flexWrap: 'wrap',
-  gap: '4px'
+  gap: '4px',
+  padding:'0 16px 16px'
 })
