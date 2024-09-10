@@ -1,23 +1,17 @@
 import { motion } from 'framer-motion';
 import { arrow_right, export_icon, thumbs_down } from "../../../assets/assets";
 import useModalStore from '../../../stores/useModalStore';
-import ProductRecommendationCard from "../../common/product-recommendation-card/ProductRecommendationCard";
+import useProductStore from '../../../stores/useProductsStore';
+import ProductRecommendationCard from '../../common/product-recommendation-card/ProductRecommendationCard';
 import { brandRecommendIcon } from "../brand-recommendation/brandRecommendation.css";
 import { productRecommendPreviewContainer, productRecommendPreviewIcon, productRecommendPreviewIconWrap, productRecommendPreviewMore, productRecommendPreviewMoreIcon, productRecommendPreviewWrap } from "./productRecommendationPreview.css";
-const dummy = [
-  {
-    id: 1,
-    content: <ProductRecommendationCard />
-  },
-  {
-    id: 2,
-    content: <ProductRecommendationCard />
-  },
 
-]
 
 const ProductRecommendationPreview = () => {
   const { setIsOpen } = useModalStore()
+  const { products } = useProductStore()
+
+  const previewProducts = products.slice(0, 2);
 
   const handleOpenModal = () => {
     setIsOpen(true)
@@ -26,11 +20,14 @@ const ProductRecommendationPreview = () => {
     <>
       <div className={productRecommendPreviewWrap}>
 
+
         <motion.ul className={productRecommendPreviewContainer}
           drag="x"
           dragConstraints={{ left: -60, right: 0 }}>
-          {dummy.map((item) => (
-            <li key={item.id}>{item.content}</li>
+          {previewProducts.map((product) => (
+            <li key={product.productId}>
+              <ProductRecommendationCard product={product} />
+            </li>
           ))}
           <div onClick={handleOpenModal}>
             <div className={productRecommendPreviewMore}>

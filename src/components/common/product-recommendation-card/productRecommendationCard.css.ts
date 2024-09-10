@@ -1,5 +1,4 @@
 import { style } from '@vanilla-extract/css';
-import { shoes_w159 } from '../../../assets/assets';
 import { theme } from '../../../styles/theme';
 
 export const productRecommendationCardBox = style({
@@ -14,10 +13,19 @@ export const productRecommendationThumbnail = style({
   borderRadius: '6.27px',
   backgroundColor: theme.color.gray100,
   position: 'relative',
-  backgroundImage: `url(${shoes_w159})`,
-  backgroundRepeat: 'no-repeat',
-  backgroundPosition: 'center calc(100% - 23px)',
+  
 });
+
+export const productRecommendationThumbnailContainer = style({
+  width: '100%',
+  height: '156px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderTopLeftRadius: '6.27px',
+  borderTopRightRadius: '6.27px',
+  overflow:'hidden'
+})
 
 export const heartIconBox = style({
   position: 'absolute',

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ai, brand_abcmart, heart_empty, heart_filled } from '../../../assets/assets';
 import useModalStore from '../../../stores/useModalStore';
+import { TProduct } from '../../../types/product';
 import {
   brandIconBox,
   heartIconBox,
@@ -13,13 +14,16 @@ import {
   sizeRecommendationBadgeTag,
   sizeRecommendationCardBox,
   sizeRecommendationThumbnail,
+  sizeRecommendationThumbnailContainer,
 } from './sizeRecommendationCard.css';
+
 
 type SizeRecommendationCardProps = {
   isHeartFilled?: boolean;
+  product: TProduct;
 };
 
-const SizeRecommendationCard = ({ isHeartFilled = false }: SizeRecommendationCardProps) => {
+const SizeRecommendationCard = ({ product, isHeartFilled = false }: SizeRecommendationCardProps) => {
   const [isChecked, setIsChecked] = useState(false);
   const { setFitOpen } = useModalStore();
 
@@ -37,11 +41,18 @@ const SizeRecommendationCard = ({ isHeartFilled = false }: SizeRecommendationCar
     <>
       <div className={sizeRecommendationCardBox}>
         <div className={sizeRecommendationThumbnail}>
+          <div className={sizeRecommendationThumbnailContainer}>
+            <img src={product.image} />
+          </div>
           <div className={sizeRecommendationBadge}>
             <p className={sizeRecommendationBadgeTag}>240mm 추천</p>
           </div>
 
-          <div className={heartIconBox} onClick={handleHeartChecked}>
+          <div className={heartIconBox} onClick={(e) => {
+            e.stopPropagation();
+            handleHeartChecked();
+          }}
+          >
             <img src={isHeartFilled || isChecked ? heart_filled : heart_empty} alt="heart" />
           </div>
           <div className={brandIconBox}>
@@ -50,8 +61,8 @@ const SizeRecommendationCard = ({ isHeartFilled = false }: SizeRecommendationCar
         </div>
         <div className={productBox}>
           <div className={productName}>
-            <p className={productBrand}>Hoka</p>
-            <p className={productText}>호카 카하 2 로우 고어텍스</p>
+            <p className={productBrand}>{product.brand}</p>
+            <p className={productText}>{product.modelName}</p>
           </div>
           <p className={productText}>100,000원</p>
         </div>

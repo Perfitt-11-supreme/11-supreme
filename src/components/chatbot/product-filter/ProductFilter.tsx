@@ -1,5 +1,6 @@
 import { detail } from '../../../assets/assets';
 import useModalStore from '../../../stores/useModalStore';
+import useProductStore from '../../../stores/useProductsStore';
 import SizeRecommendationCard from '../../mypage/size-recommendation-card/SizeRecommendationCard';
 import ProductFilterDetail from '../product-filter-detail/ProductFilterDetail';
 import ProductFilterModal from '../product-filter-modal/ProductFilterModal';
@@ -12,48 +13,10 @@ import {
   productRecommendFiltering,
   productRecommendWrapper,
 } from './productFilter.css';
-const dummy = [
-  {
-    id: 1,
-    content: <SizeRecommendationCard />,
-  },
-  {
-    id: 2,
-    content: <SizeRecommendationCard />,
-  },
-  {
-    id: 3,
-    content: <SizeRecommendationCard />,
-  },
-  {
-    id: 4,
-    content: <SizeRecommendationCard />,
-  },
-  {
-    id: 5,
-    content: <SizeRecommendationCard />,
-  },
-  {
-    id: 6,
-    content: <SizeRecommendationCard />,
-  },
-  {
-    id: 7,
-    content: <SizeRecommendationCard />,
-  },
-  {
-    id: 8,
-    content: <SizeRecommendationCard />,
-  },
-  {
-    id: 9,
-    content: <SizeRecommendationCard />,
-  },
-];
 
 const ProductFilter = () => {
   const { setFilterOpen, filterOpen } = useModalStore();
-
+  const { products } = useProductStore()
   const handleDetailClick = () => {
     setFilterOpen(true); // detail 버튼 클릭 시 Modal 열기
   };
@@ -62,7 +25,7 @@ const ProductFilter = () => {
     <>
       <div className={productRecommendFilterWrap}>
         <p style={{ fontSize: '14px' }}>
-          <span className={ProductRecommendResult}>512</span>개 상품
+          <span className={ProductRecommendResult}>{products.length}</span>개 상품
         </p>
         <div className={productRecommendFilterContainer}>
           <select className={productRecommendFiltering}>
@@ -73,8 +36,8 @@ const ProductFilter = () => {
       </div>
       <div className={productRecommendWrapper}>
         <ul className={productRecommend}>
-          {dummy.map(item => (
-            <li key={item.id}>{item.content}</li>
+          {products.map(product => (
+            <li key={product.productId}><SizeRecommendationCard product={product} /></li>
           ))}
         </ul>
       </div>

@@ -8,7 +8,7 @@ export const chatBotBubbleWrap = style({
 export const chatBotBubbleContainer = style({
   width: '100%',
   display: "flex",
-  alignItems:'center'
+  alignItems:'start'
 })
 
 export const chatBotBubbleText = style({
@@ -16,4 +16,5 @@ export const chatBotBubbleText = style({
   fontSize: '14px',
   display: 'inline-block',
   letterSpacing: '-0.003em',
+  whiteSpace:'pre-line'
 })

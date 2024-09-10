@@ -1,5 +1,4 @@
 import { style } from '@vanilla-extract/css';
-import { shoes_w182 } from '../../../assets/assets';
 import { theme } from '../../../styles/theme';
 
 export const sizeRecommendationCardBox = style({
@@ -15,10 +14,18 @@ export const sizeRecommendationThumbnail = style({
   borderRadius: '6.27px',
   backgroundColor: theme.color.gray100,
   position: 'relative',
-  backgroundImage: `url(${shoes_w182})`,
-  backgroundRepeat: 'no-repeat',
-  backgroundPosition: 'center calc(100% - 13px)',
 });
+
+export const sizeRecommendationThumbnailContainer = style({
+  width: '100%',
+  height: '156px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderTopLeftRadius: '6.27px',
+  borderTopRightRadius: '6.27px',
+  overflow:'hidden'
+})
 export const sizeRecommendationBadge = style({
   width: '77px',
   height: '20px',
@@ -61,7 +68,11 @@ export const productBox = style({
   flexDirection: 'column',
   gap: '10px',
 });
-export const productName = style({ display: 'flex', flexDirection: 'column', gap: '3px' });
+export const productName = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '3px',
+});
 export const productBrand = style({
   width: 'auto',
   height: '22px',
@@ -77,6 +88,9 @@ export const productText = style({
   fontWeight: '600',
   lineHeight: '17px',
   letterSpacing: '-0.003em',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
 });
 
 export const productDetailsButton = style({
