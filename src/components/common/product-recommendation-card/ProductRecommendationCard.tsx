@@ -9,32 +9,46 @@ import {
   productPrice,
   productRecommendationCardBox,
   productRecommendationThumbnail,
+  productRecommendationThumbnailContainer,
   productText,
 } from './productRecommendationCard.css';
 
-const ProductRecommendationCard = () => {
+
+
+const ProductRecommendationCard = ({ product }) => {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleHeartChecked = () => {
     setIsChecked(!isChecked);
   };
+
+  const handleClickProductBrandLink = () => {
+    window.open(product.link, '_blank', 'noopener,noreferrer');
+  }
   return (
     <>
       <div className={productRecommendationCardBox}>
         {/* Thumbnail */}
         <div className={productRecommendationThumbnail}>
-          <div className={heartIconBox} onClick={handleHeartChecked}>
+          <div className={productRecommendationThumbnailContainer}>
+            <img src={product.image} />
+          </div>
+          <div className={heartIconBox} onClick={(e) => {
+            e.stopPropagation();
+            handleHeartChecked();
+          }}>
             {isChecked ? <img src={heart_filled} alt="heart_filled" /> : <img src={heart_empty} alt="heart_empty" />}
           </div>
+
           <div className={brandIconBox}>
             <img src={brand_abcmart} alt="brand_abcmart" />
           </div>
         </div>
         {/* Product */}
-        <div className={productBox}>
+        <div className={productBox} onClick={handleClickProductBrandLink}>
           <div className={productName}>
-            <p className={productBrand}>New Balance</p>
-            <p className={productText}>뉴발란스 2002R 고어텍스</p>
+            <p className={productBrand}>{product.brand}</p>
+            <p className={productText}>{product.modelName}</p>
           </div>
           <p className={productPrice}>248,000원</p>
         </div>
