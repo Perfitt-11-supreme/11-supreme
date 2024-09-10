@@ -66,7 +66,8 @@ const ChatBotPage = () => {
     );
   };
 
-  const handleKeywordPost = useMutation({
+
+  const keywordMutation = useMutation({
     mutationFn: (data: TKeyWordsData) => chatKeywordsAPI(data),
     onSuccess: (response) => {
       console.log('키워드 전송 성공:', response)
@@ -84,7 +85,7 @@ const ChatBotPage = () => {
 
   const handleSubmit = () => {
     const chat: TKeyWordsData = { keywords: selectedKeywords };
-    handleKeywordPost.mutate(chat)
+    keywordMutation.mutate(chat)
   }
   //키워드 포맷
   const formattedKeywords = selectedKeywords.join(', ');
