@@ -116,10 +116,10 @@ const ChatBotPage = () => {
 
             {!isOpen && !isKeywordModalOpen && <ChatbotSearchInput />} {/* 모달이 열렸을 때는 ChatbotSearchInput을 숨김 */}
             <Modal
-              height="758px"
+              height="753px"
               initialHeight="120px"
             >
-              {selectedBrand ? <BrandPLP /> : <ProductRecommendation />}
+              {selectedBrand ? <BrandPLP /> : <ProductRecommendation keywords={formattedKeywords} />}
             </Modal>
 
             {fitOpen && <Modal height="758px" >

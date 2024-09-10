@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { brand_abcmart, heart_empty, heart_filled } from '../../../assets/assets';
+import { TProduct } from '../../../types/product';
 import {
   brandIconBox,
   heartIconBox,
@@ -15,7 +16,7 @@ import {
 
 
 
-const ProductRecommendationCard = ({ product }) => {
+const ProductRecommendationCard = ({ product }: TProduct) => {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleHeartChecked = () => {
