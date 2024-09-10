@@ -9,6 +9,7 @@ export const fullContainer = style({
   margin: '0 auto',
   boxSizing: 'border-box',
   justifyContent: 'space-between',
+  overflowX: 'hidden',
 });
 
 export const batteryMargin = style({
@@ -41,7 +42,16 @@ export const loginbuttonTextContainer = style({
 
 export const recommendedquestioncardContainer = style({
   display: 'flex',
-  overflowX: 'hidden',
   gap: '8px',
-  marginTop: 'auto',
+  marginBottom: '10px',
+  marginLeft:'16px',
+  cursor: 'grab',
+  
 });
+
+export const loginHelloContainer = style({
+  height:'100%',
+  display: 'flex',
+  flexDirection: 'column',
+  overflowY:'scroll'
+})
