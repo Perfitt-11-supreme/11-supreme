@@ -37,15 +37,15 @@ export const AnalyzeItem_AnalyzerWindow = style({
 
 export const AnalyzeItem_AnalyzerContainerMove = styleVariants({
   success: {
-    height: '573px',
+    height: '70vh',
     transform: 'translateY(0)',
   },
   analyze: {
-    height: '200px',
+    height: '25vh',
     transform: 'translateY(0)',
   },
   hidden: {
-    height: '200px',
+    height: '0',
     transform: 'translateY(200px)',
   },
 });

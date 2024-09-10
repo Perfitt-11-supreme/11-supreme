@@ -55,8 +55,8 @@ const MainContainer = ({
               ) : (
                 <div className={MainContainer_NoRecord}>최근 검색어가 없습니다.</div>
               )}
+              <div className={MainContainer_Line} />
             </div>
-            <div className={MainContainer_Line} />
           </>
         ) : (
           <div>

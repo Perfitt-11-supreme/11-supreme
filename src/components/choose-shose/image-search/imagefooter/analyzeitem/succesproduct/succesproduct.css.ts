@@ -88,15 +88,17 @@ export const Product_ProductPrice = style({
 });
 
 export const Product_SimilarProductContainer = style({
-  width: '100%',
+  width: '100vw',
   height: '100%',
   paddingTop: '29px',
   paddingBottom: '108px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
 });
 
 export const Product_SimilarProductButton = style({
-  width: '100%',
-  height: '108px',
+  height: '13vh',
   position: 'fixed',
   bottom: '0',
   display: 'flex',
@@ -106,7 +108,7 @@ export const Product_SimilarProductButton = style({
 });
 
 export const Product_ScrollableContent = style({
-  width: '100%',
+  width: 'calc(90vw + 4px)',
   height: '100%',
   overflowY: 'scroll',
 });
