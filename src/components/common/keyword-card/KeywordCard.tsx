@@ -1,18 +1,19 @@
-import { useState } from 'react';
 import { checked } from '../../../assets/assets';
-import { TButton } from '../../../types/button';
 import { keywordCard, keywordCardChecked } from './keywordCard.css';
 
-const KeywordCard = ({ text }: TButton) => {
-  const [isChecked, setIsChecked] = useState(false);
+type KeywordCardProps = {
+  text: string;
+  isSelected: boolean;
+  onClick: () => void;
+};
 
-  const handleKeywordCardChecked = () => {
-    setIsChecked(!isChecked);
-  };
+
+const KeywordCard = ({ text, isSelected, onClick }: KeywordCardProps) => {
+
   return (
     <>
-      <div className={isChecked ? keywordCardChecked : keywordCard} onClick={handleKeywordCardChecked}>
-        {isChecked && <img src={checked} alt="checked" />}
+      <div className={isSelected ? keywordCardChecked : keywordCard} onClick={onClick}>
+        {isSelected && <img src={checked} alt="checked" />}
         {text}
       </div>
     </>
