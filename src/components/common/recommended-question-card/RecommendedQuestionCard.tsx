@@ -1,10 +1,15 @@
-import { TButton } from '../../../types/button';
 import { recommendedQuestionCardBox, recommendedQuestionCardItem } from './recommendedQuestionCard.css';
 
-const RecommendedQuestionCard = ({ text }: TButton) => {
+type RecommendedQuestionCardProps = {
+  text: string;
+  onClick: () => void;
+}
+
+const RecommendedQuestionCard = ({ text, onClick }: RecommendedQuestionCardProps) => {
+
   return (
     <>
-      <div className={recommendedQuestionCardBox}>
+      <div className={recommendedQuestionCardBox} onClick={onClick}>
         <p className={recommendedQuestionCardItem}>{text}</p>
       </div>
     </>
