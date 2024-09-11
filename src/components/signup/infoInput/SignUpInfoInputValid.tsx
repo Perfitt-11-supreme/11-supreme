@@ -6,9 +6,13 @@ import Input from './signupinput/SignUpInput';
 import Modal from '../../common/modal/Modal';
 import Select from './signupselect/SignUpSelect';
 import { hamburger_menu } from '../../../assets/assets';
-import { batteryMargin, fullContainer } from '../../login/login.css';
+import { fullContainer } from '../../login/login.css';
 import { errorMessage, signupFormContainer, signupFormGap, submitbuttonContainer } from '../signup.css';
 import { useNavigate } from 'react-router-dom';
+import { auth, USER_COLLECTION } from '../../../firebase/firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
+import { FirebaseError } from 'firebase/app';
 
 const SignUpInfoInputValid = () => {
   type FormErrors = {
@@ -102,14 +106,49 @@ const SignUpInfoInputValid = () => {
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const validationErrors = validate(formData);
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
-      navigate('/signupsize');
+      try {
+        //회원가입
+        const userCredential = await createUserWithEmailAndPassword(auth, formData.userEmail, formData.userPassword);
+        const user = userCredential.user;
+
+        //USER Collection에 user.uid를 ID로 사용자 정보 저장 문서 생성
+        const userDoc = doc(USER_COLLECTION, user.uid);
+        //아래 정보 저장
+        await setDoc(userDoc, {
+          uid: user.uid,
+          email: formData.userEmail,
+          username: formData.userName,
+          gender: formData.gender,
+          birthDate: formData.birthDate,
+        });
+
+        //사용자 ID를 localStorage에 저장
+        localStorage.setItem('userUID', user.uid);
+
+        //성공 시 이동
+        navigate('/signupsize');
+      } catch (err) {
+        if (err instanceof FirebaseError) {
+          switch (err.code) {
+            case 'auth/weak-password':
+              alert('안전하지 않은 비밀번호입니다.');
+              break;
+            case 'auth/email-already-in-use':
+              alert('이미 가입된 이메일입니다.');
+              break;
+            default:
+              alert('회원가입에 실패했습니다. 다시 시도해 주세요.');
+              break;
+          }
+        }
+      }
     }
   };
 
@@ -124,7 +163,6 @@ const SignUpInfoInputValid = () => {
   return (
     <div className={fullContainer}>
       <div>
-        <div className={batteryMargin}></div>
         <Header imageSrc={hamburger_menu} alt="hamburger menu" />
       </div>
 

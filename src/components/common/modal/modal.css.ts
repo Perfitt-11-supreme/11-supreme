@@ -33,4 +33,5 @@ export const modalContainerTitle = style({
   lineHeight: '24px',
   letterSpacing: '-0.015em',
   textAlign: 'center',
+  marginTop: '8px',
 });

@@ -15,6 +15,9 @@ import {
   signupSizeTypeContainer,
   signupSizeTypeLabel,
 } from '../signup.css';
+import { USER_COLLECTION } from '../../../firebase/firebase';
+import { doc, updateDoc } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
 
 const SignUpSizeInputValid = () => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -53,10 +56,35 @@ const SignUpSizeInputValid = () => {
     }));
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const navigate = useNavigate();
+  //localStorage에서 사용자 ID 가져오기
+  const userUID = localStorage.getItem('userUID');
+
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
     const validationErrors = validate();
     setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length === 0) {
+      try {
+        if (userUID) {
+          //USER Collection에 데이터 저장
+          const userDocRef = doc(USER_COLLECTION, userUID); //사용자 ID로 문서 참조
+          await updateDoc(userDocRef, {
+            sizeType: sizeTypes[selectedIndex || 0],
+            shoeSize: shoeSize,
+          });
+
+          // 저장 성공
+          navigate('/emaillogin');
+        } else {
+          alert('처음부터 순서대로 회원가입을 진행해주세요.');
+        }
+      } catch {
+        alert('회원가입에 실패했습니다. 다시 시도해 주세요.');
+      }
+    }
   };
 
   const [modalHeight, setModalHeight] = useState<string>('492px');
@@ -70,7 +98,6 @@ const SignUpSizeInputValid = () => {
   return (
     <div className={fullContainer}>
       <div>
-        <div style={{ height: '34px' }}></div>
         <Header imageSrc={hamburger_menu} alt="hamburger menu" />
       </div>
 

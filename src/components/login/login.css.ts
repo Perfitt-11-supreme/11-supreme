@@ -16,10 +16,9 @@ export const batteryMargin = style({
 });
 
 export const loginbuttonContainer = style({
-  marginTop: '-45px', //기본적으로 마진탑이 45px인데 왜 그런건지.....
   marginLeft: '44px',
   width: '200px',
-  height: '190px',
+  height: 'auto',
   padding: '8px',
   display: 'flex',
   flexDirection: 'column',
