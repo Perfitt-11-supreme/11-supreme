@@ -1,15 +1,10 @@
 import { close, rectangle } from '../../../../assets/assets';
 import { CameraWindow_RectangleContainer } from './camerawindow.css';
-import useAnalyzeStore from '../../../../stores/useAnalyzeStore';
 import Header from '../../../common/header/Header';
-import { useEffect } from 'react';
+import useImageSearchStore from '../../../../stores/useImageSearchStore';
 
 const CameraWindow = () => {
-  const { isAnalyze, setIsAnalyze } = useAnalyzeStore();
-
-  useEffect(() => {
-    setIsAnalyze(false);
-  }, []);
+  const { isAnalyze } = useImageSearchStore();
 
   return (
     <>

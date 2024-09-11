@@ -18,17 +18,11 @@ import {
   Product_SuccesContainer,
 } from './succesproduct.css';
 import ItemCard from '../../../../itemcard/ItemCard';
-import useCaptureStore from '../../../../../../stores/useCaptureStore';
+import useImageSearchStore from '../../../../../../stores/useImageSearchStore';
 
-const SuccesProduct = ({
-  isSimilar,
-  setIsSimilar,
-}: {
-  isSimilar: boolean;
-  setIsSimilar: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
-  const { capturedImage, handleClickAgain } = useCaptureStore();
+const SuccesProduct = () => {
   const [isSelected, setIsSelected] = useState<number | null>(null);
+  const { isSimilar, setIsSimilar, capturedImage, handleClickAgain } = useImageSearchStore();
 
   const cards = Array(10).fill(null);
 
@@ -53,7 +47,7 @@ const SuccesProduct = ({
         </>
       ) : (
         <div className={Product_SuccesContainer}>
-          <div className={Product_AgainBox} onClick={handleClickAgain}>
+          <div className={Product_AgainBox} onClick={() => handleClickAgain()}>
             <img className={Product_AgainIcon} src={again} alt="again" />
             <p className={Product_AgainText}>다시하기</p>
           </div>

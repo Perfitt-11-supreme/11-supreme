@@ -7,26 +7,13 @@ import {
   AnalyzeItem_Container,
 } from './analyzeitem.css.ts';
 import './analyzeitem.css';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import SuccesProduct from './succesproduct/SuccesProduct.tsx';
-import useCaptureStore from '../../../../../stores/useCaptureStore.ts';
-import useAnalyzeStore from '../../../../../stores/useAnalyzeStore.ts';
+import useImageSearchStore from '../../../../../stores/useImageSearchStore.ts';
 
 const AnalyzeItem = () => {
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [isSimilar, setIsSimilar] = useState(false);
   const divRef = useRef<HTMLDivElement>(null);
-  const { handleClickCameraIcon } = useCaptureStore();
-  const { isAnalyze } = useAnalyzeStore();
-
-  const clickAgain = () => {
-    handleClickCameraIcon(false);
-    setIsSuccess(false);
-  };
-
-  useEffect(() => {
-    useCaptureStore.setState({ handleClickAgain: clickAgain });
-  }, []);
+  const { isAnalyze, isSuccess, setIsSuccess, isSimilar, setIsSimilar, handleClickCameraIcon } = useImageSearchStore();
 
   useEffect(() => {
     if (!isAnalyze) return;
@@ -37,8 +24,6 @@ const AnalyzeItem = () => {
       clearTimeout(timer);
     }, 5000);
   }, [isAnalyze]);
-
-  console.log(isAnalyze);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -70,7 +55,7 @@ const AnalyzeItem = () => {
         }`}
       >
         {isSuccess ? (
-          <SuccesProduct isSimilar={isSimilar} setIsSimilar={setIsSimilar} />
+          <SuccesProduct />
         ) : (
           <div className={AnalyzeItem_AnalyzerWindow}>
             <img className={`rotatingImage ${AnalyzeItem_AnalyzeCircle}`} src={circle} alt="analyze" />

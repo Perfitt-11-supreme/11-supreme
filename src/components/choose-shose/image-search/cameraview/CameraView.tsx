@@ -1,30 +1,16 @@
 import { useEffect, useRef } from 'react';
 import { CameraComponent_Container, CameraComponent_View } from './cameraview.css';
-import useCaptureStore from '../../../../stores/useCaptureStore';
+import useImageSearchStore from '../../../../stores/useImageSearchStore';
 
 const CameraView = () => {
-  const { setCapturedImage } = useCaptureStore();
-
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const { setVideoRef, setCanvasRef } = useImageSearchStore();
 
-  const captureImage = () => {
-    if (videoRef.current && canvasRef.current) {
-      const canvas: HTMLCanvasElement = canvasRef.current;
-      const video: HTMLVideoElement = videoRef.current;
-
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-
-      const ctx = canvas.getContext('2d');
-      if (ctx) {
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-        const imageData = canvas.toDataURL('image/png');
-        setCapturedImage(imageData);
-      }
-    }
-  };
+  useEffect(() => {
+    setVideoRef(videoRef);
+    setCanvasRef(canvasRef);
+  }, [setVideoRef, setCanvasRef]);
 
   useEffect(() => {
     const getCameraStream = async () => {
@@ -39,7 +25,6 @@ const CameraView = () => {
     };
 
     getCameraStream();
-    useCaptureStore.setState({ handleCaptureImage: captureImage });
 
     return () => {
       if (videoRef.current && videoRef.current.srcObject) {
