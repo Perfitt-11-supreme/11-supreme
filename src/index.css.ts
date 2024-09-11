@@ -76,7 +76,7 @@ globalStyle(
     padding: 0,
     border: 0,
     fontSize: '100%',
-    font: 'inherit',
+    // font: 'inherit',
     fontFamily: Pretendard,
     verticalAlign: 'baseline',
   }

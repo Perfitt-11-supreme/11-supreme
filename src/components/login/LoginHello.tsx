@@ -1,42 +1,130 @@
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { onValue, push, ref } from "firebase/database";
+import { motion } from 'framer-motion';
+import { Fragment, useEffect, useRef, useState } from 'react';
+import { chatCompletionsAPI, recommendQuestionAPI } from '../../api/chatRequests';
 import { hamburger_menu } from '../../assets/assets';
-import ChatBotBox from './loginchatbot/chatbotbox/ChatBotBox';
+import { database } from '../../firebase/firebase';
+import LoadingPage from '../../pages/loading-page/loadingPage';
+import useProductStore from '../../stores/useProductsStore';
+import { TProduct } from '../../types/product';
+import ChatBotBubble from '../chatbot/chatbot-bubble/ChatBotBubble';
+import UserBubble from '../chatbot/user-bubble/UserBubble';
 import ChatbotSearchInput from '../common/chatbot-search-input/ChatbotSearchInput';
 import Header from '../common/header/Header';
 import RecommendedQuestionCard from '../common/recommended-question-card/RecommendedQuestionCard';
+import { batteryMargin, fullContainer, loginHelloContainer, recommendedquestioncardContainer } from './login.css';
+import ChatBotBox from './loginchatbot/chatbotbox/ChatBotBox';
 import RecommendBox from './loginchatbot/recommendbox/RecommendBox';
-import { fullContainer, recommendedquestioncardContainer } from './login.css';
+
+type TQuestions = {
+  question: string;
+}
+
+type QuestionList = TQuestions[]
+
+type ChatItem = {
+  userQuestion: string;
+  botResponse: string;
+  products: TProduct;
+}
 
 const LoginHello = () => {
-  const recommendedQuestions = [
-    '비 오는날 신기 좋은 레인부츠 브랜드 알려줘',
-    '요즘 등산할 때 신기 좋은 가벼운 등산화 추천해줘',
-    '요즘 등산할 때 신기 좋은 가벼운 등산화 추천해줘',
-  ];
+  const { setProducts } = useProductStore.getState();
+  const [chatHistory, setChatHistory] = useState<ChatItem[]>([]);
+  const chatContainerRef = useRef<HTMLDivElement | null>(null);
+  // Firebase에서 채팅 기록 불러오기
+  useEffect(() => {
+    const chatRef = ref(database, 'chatHistory');
+    onValue(chatRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setChatHistory(Object.values(data));
+      }
+    });
+  }, []);
+
+  // 추천 질문 불러오는 함수
+  const { data: keywordsData, isLoading: isRecommendQuestionLoading, error: recommendQuestionError } = useQuery<QuestionList>({
+    queryKey: ['keywords'],
+    queryFn: async () => {
+      try {
+        const response = await recommendQuestionAPI();
+        console.log("데이터 확인용", response);
+        return response.data;
+      } catch (error) {
+        console.error('추천 질문 불러오기 에러', error);
+        throw error;
+      }
+    },
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  });
+
+  // 채팅 응답 함수
+  const chatCompletionsMutation = useMutation({
+    mutationFn: (question: string) => chatCompletionsAPI({ message: { content: question } }),
+    onSuccess: (response, question) => {
+      console.log('채팅 응답 성공:', response);
+      const newChatItem: ChatItem = {
+        userQuestion: question,
+        botResponse: response.data.message,
+        products: response.data.products
+      };
+      push(ref(database, 'chatHistory'), newChatItem);
+      setProducts(response.data.products);
+    },
+    onError: (error) => {
+      console.error('채팅 응답 에러:', error);
+    },
+  });
+
+  const handleQuestionSelect = (question: string) => {
+    chatCompletionsMutation.mutate(question);
+  };
+
+  // 채팅 기록 변경 시 스크롤을 맨 아래로 이동
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [chatHistory]);
+
+  if (isRecommendQuestionLoading) return <LoadingPage />;
+  if (recommendQuestionError) return <div>error:{recommendQuestionError?.message}</div>;
 
   return (
-    <>
-      <div className={fullContainer}>
-        <Header imageSrc={hamburger_menu} alt="hamburger menu" />
-
-        <div style={{ marginTop: '20px' }}>
-          <ChatBotBox text={['반갑습니다 OO님!', 'OO님을 위한 맞춤 상품을 추천해 드릴게요.']} />
-        </div>
-
-        <div style={{ marginLeft: '44px' }}>
-          <RecommendBox />
-        </div>
-
-        <div className={recommendedquestioncardContainer}>
-          {recommendedQuestions.map((question, index) => (
-            <RecommendedQuestionCard key={index} text={question} />
+    <div className={fullContainer}>
+      <div className={batteryMargin}></div>
+      <Header imageSrc={hamburger_menu} alt="hamburger menu" />
+      <div className={loginHelloContainer}>
+        <div ref={chatContainerRef} style={{ overflowY: 'auto' }}> {/* 채팅 기록 컨테이너 */}
+          <div style={{ marginTop: '20px' }}>
+            <ChatBotBox text={['반갑습니다 OO님!', 'OO님을 위한 맞춤 상품을 추천해 드릴게요.']} />
+          </div>
+          <div style={{ marginLeft: '44px' }}>
+            <RecommendBox />
+          </div>
+          {chatHistory.map((chat, index) => (
+            <Fragment key={index}>
+              <UserBubble bubbleContent={chat.userQuestion} />
+              <ChatBotBubble bubbleContent={chat.botResponse} />
+            </Fragment>
           ))}
         </div>
-
-        <div style={{ marginTop: '10px' }}>
-          <ChatbotSearchInput />
-        </div>
       </div>
-    </>
+      <motion.div
+        drag="x"
+        dragConstraints={{ right: 0, left: -550 }}
+        whileTap={{ cursor: "grabbing" }}
+        className={recommendedquestioncardContainer}>
+        {keywordsData && keywordsData.map((question, index) => (
+          <RecommendedQuestionCard key={index} text={question.question} onClick={() => handleQuestionSelect(question.question)} />
+        ))}
+      </motion.div>
+      <ChatbotSearchInput />
+    </div >
   );
 };
 

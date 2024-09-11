@@ -1,28 +1,27 @@
 import {
   individualitemContainer,
+  itemContainerButton,
   itemIcon,
   textboxContainer,
   textboxRegular,
   textboxSemibold,
-  itemContainerButton,
 } from './itemBox.css';
 
 type ItemBoxProps = {
-  imageSrc: string;
+  image: string;
   brand: string;
-  itemName: string;
-  price: string;
+  modelName: string;
   onClick?: () => void;
 };
 
-const ItemBox = ({ imageSrc, brand, itemName, price, onClick }: ItemBoxProps) => {
+const ItemBox = ({ image, brand, modelName, onClick }: ItemBoxProps) => {
   return (
     <button className={`${individualitemContainer} ${itemContainerButton}`} onClick={onClick}>
-      <img src={imageSrc} alt={brand} className={itemIcon} />
+      <img src={image} alt={brand} className={itemIcon} />
       <div className={textboxContainer}>
         <div className={textboxRegular}>{brand}</div>
-        <div className={textboxSemibold}>{itemName}</div>
-        <div className={textboxSemibold}>{price}</div>
+        <div className={textboxSemibold}>{modelName}</div>
+        {/* <div className={textboxSemibold}>{price}</div> */}
       </div>
     </button>
   );

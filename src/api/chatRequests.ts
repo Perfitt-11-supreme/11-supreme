@@ -1,4 +1,5 @@
 import { TKeyWordsData } from "../types/keywords";
+import { TQuestion } from "../types/question";
 import { axiosClient } from "./axiosClient";
 
 // URI 경로들의 타입 정의 (평탄화된 구조)
@@ -43,7 +44,7 @@ export const recommendQuestionAPI = () => {
 };
 
 /** 채팅 응답 */
-export const chatCompletionsAPI = (data: any) => {
+export const chatCompletionsAPI = (data:TQuestion ) => {
   return axiosClient.post(chatRequests.getFullPath(chatRequests.chatCompletions), data);
 };
 
