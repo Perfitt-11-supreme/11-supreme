@@ -7,45 +7,30 @@ import {
   AnalyzeItem_Container,
 } from './analyzeitem.css.ts';
 import './analyzeitem.css';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import SuccesProduct from './succesproduct/SuccesProduct.tsx';
+import useImageSearchStore from '../../../../../stores/useImageSearchStore.ts';
 
-const AnalyzeItem = ({
-  isClickIcon,
-  handleClickIcon,
-  capturedImage,
-}: {
-  isClickIcon: boolean;
-  handleClickIcon: (bol: boolean) => void;
-  capturedImage: string | null;
-}) => {
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [isSimilar, setIsSimilar] = useState(false);
+const AnalyzeItem = () => {
   const divRef = useRef<HTMLDivElement>(null);
-
-  const handleClickAgain = () => {
-    handleClickIcon(false);
-    setIsSuccess(false);
-  };
+  const { isAnalyze, isSuccess, isSimilar, setIsState, handleClickCameraIcon } = useImageSearchStore();
 
   useEffect(() => {
-    if (!isClickIcon) return;
+    if (!isAnalyze) return;
     if (isSuccess) return;
 
     const timer = setTimeout(() => {
-      setIsSuccess(true);
+      setIsState({ isSuccess: true });
       clearTimeout(timer);
     }, 5000);
-  }, [isClickIcon]);
+  }, [isAnalyze]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      // divRef와 그 아래 자식 요소를 제외한 클릭을 감지
       if (isSimilar && divRef.current && !divRef.current.contains(event.target as Node)) {
         console.log(isSimilar);
-        handleClickIcon(false);
-        setIsSimilar(false);
-        setIsSuccess(false);
+        handleClickCameraIcon(false);
+        setIsState({ isSuccess: false, isSimilar: false });
       }
     };
 
@@ -61,7 +46,7 @@ const AnalyzeItem = ({
       <div
         ref={divRef}
         className={`${AnalyzeItem_Container} ${
-          isClickIcon
+          isAnalyze
             ? isSuccess
               ? AnalyzeItem_AnalyzerContainerMove.success
               : AnalyzeItem_AnalyzerContainerMove.analyze
@@ -69,12 +54,7 @@ const AnalyzeItem = ({
         }`}
       >
         {isSuccess ? (
-          <SuccesProduct
-            handleClickAgain={handleClickAgain}
-            isSimilar={isSimilar}
-            setIsSimilar={setIsSimilar}
-            capturedImage={capturedImage}
-          />
+          <SuccesProduct />
         ) : (
           <div className={AnalyzeItem_AnalyzerWindow}>
             <img className={`rotatingImage ${AnalyzeItem_AnalyzeCircle}`} src={circle} alt="analyze" />

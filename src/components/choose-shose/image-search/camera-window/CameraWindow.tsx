@@ -1,30 +1,19 @@
-import { useNavigate } from 'react-router-dom';
 import { close, rectangle } from '../../../../assets/assets';
-import CameraComponent from './cameracomponent/CameraComponent';
-import { CameraWindow_CloseIcon, CameraWindow_RectangleContainer } from './camerawindow.css';
+import { CameraWindow_RectangleContainer } from './camerawindow.css';
+import Header from '../../../common/header/Header';
+import useImageSearchStore from '../../../../stores/useImageSearchStore';
 
-const CameraWindow = ({
-  isAnalyze,
-  videoRef,
-}: {
-  isAnalyze: boolean;
-  videoRef: React.MutableRefObject<HTMLVideoElement | null>;
-}) => {
-  const navigate = useNavigate();
-
-  const handleNavigation = () => {
-    navigate('/textSearch');
-  };
+const CameraWindow = () => {
+  const { isAnalyze } = useImageSearchStore();
 
   return (
     <>
-      <CameraComponent isAnalyze={isAnalyze} videoRef={videoRef} />
+      <Header imageSrc={close} alt="close" nav="/text-search"></Header>
       {!isAnalyze && (
         <div className={CameraWindow_RectangleContainer}>
           <img src={rectangle} alt="rectangle" />
         </div>
       )}
-      <img className={CameraWindow_CloseIcon} src={close} alt="close" onClick={handleNavigation} />
     </>
   );
 };

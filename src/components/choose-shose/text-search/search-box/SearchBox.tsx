@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { camera, search } from '../../../../../assets/assets';
+import { camera, search } from '../../../../assets/assets';
 import {
   SearchBox_Background,
   SearchBox_Box,
@@ -41,7 +41,7 @@ const SearchBox = ({
   };
 
   const handleNavigation = () => {
-    navigate('/imageSearch');
+    navigate('/image-search');
   };
 
   const handleSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {

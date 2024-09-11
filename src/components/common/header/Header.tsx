@@ -5,12 +5,14 @@ type THeader = {
   imageSrc: string;
   alt: string;
   title?: string;
+  nav?: string;
 };
 
-const Header = ({ imageSrc, alt, title }: THeader) => {
+const Header = ({ imageSrc, alt, title, nav }: THeader) => {
   const navigate = useNavigate();
   const handleNavigate = () => {
-    navigate(-1);
+    if (nav?.length! > 0) navigate(nav!);
+    else navigate(-1);
   };
   return (
     <>

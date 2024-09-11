@@ -4,21 +4,21 @@ import { theme } from '../../../../styles/theme';
 export const MainContainter_Background = style({
   display: 'flex',
   justifyContent: 'center',
-  marginTop: '155px',
+  marginTop: '65px',
   marginBottom: '108px',
 });
 
 export const MainContainer_Container = style({
-  margin: '0 24px',
+  width: '100%',
 });
 
 export const MainContainer_Header = style({
+  margin: '0 7vw',
   display: 'flex',
   justifyContent: 'space-between',
 });
 
 export const MainContainer_RecentSearches = style({
-  // width: '83px',
   height: '21px',
   fontWeight: '500',
   fontSize: '18px',
@@ -28,7 +28,6 @@ export const MainContainer_RecentSearches = style({
 
 export const MainContainer_Remove = style({
   display: 'flex',
-  // width: '49px',
   height: '19px',
   fontWeight: '400',
   fontSize: '14px',

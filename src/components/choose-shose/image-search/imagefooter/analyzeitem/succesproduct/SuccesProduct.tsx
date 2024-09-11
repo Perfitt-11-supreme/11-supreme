@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { again, shoes_w159 } from '../../../../../../assets/assets';
+import { again } from '../../../../../../assets/assets';
 import Button from '../../../../../common/button/Button';
 import {
   Product_AgainBox,
@@ -18,19 +18,11 @@ import {
   Product_SuccesContainer,
 } from './succesproduct.css';
 import ItemCard from '../../../../itemcard/ItemCard';
+import useImageSearchStore from '../../../../../../stores/useImageSearchStore';
 
-const SuccesProduct = ({
-  handleClickAgain,
-  isSimilar,
-  setIsSimilar,
-  capturedImage,
-}: {
-  handleClickAgain: (bol: boolean) => void;
-  isSimilar: boolean;
-  setIsSimilar: React.Dispatch<React.SetStateAction<boolean>>;
-  capturedImage: string | null;
-}) => {
+const SuccesProduct = () => {
   const [isSelected, setIsSelected] = useState<number | null>(null);
+  const { isSimilar, setIsState, capturedImage, handleClickAgain } = useImageSearchStore();
 
   const cards = Array(10).fill(null);
 
@@ -55,11 +47,11 @@ const SuccesProduct = ({
         </>
       ) : (
         <div className={Product_SuccesContainer}>
-          <div className={Product_AgainBox} onClick={() => handleClickAgain(false)}>
+          <div className={Product_AgainBox} onClick={() => handleClickAgain()}>
             <img className={Product_AgainIcon} src={again} alt="again" />
             <p className={Product_AgainText}>다시하기</p>
           </div>
-          <div className={Product_Similar} onClick={() => setIsSimilar(true)}>
+          <div className={Product_Similar} onClick={() => setIsState({ isSimilar: true })}>
             <p className={Product_SimilarText}>비슷한 상품 더보기</p>
           </div>
           <img className={Product_ProductImage} src={capturedImage!} alt="shoes_w159" />

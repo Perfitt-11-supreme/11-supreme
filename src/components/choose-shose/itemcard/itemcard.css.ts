@@ -3,19 +3,29 @@ import { theme } from '../../../styles/theme';
 
 export const ItemCard_Container = style({
   display: 'flex',
-  width: '343px',
-  height: '77px',
-  gap: '10px',
+  width: '90vw',
+  height: '9.5vh',
+  gap: '1.3vh',
   alignItems: 'center',
-  // marginLeft: '16px',
+  boxSizing: 'content-box',
+  marginLeft: '2px',
   marginTop: '10px',
 });
 
 export const ItemCard_Select = style({
   border: `2px solid ${theme.color.black}`,
   borderRadius: '8px',
-  height: '81px',
-  width: '347px',
+  marginLeft: '0',
+});
+
+export const ItemCard_Rectangle = style({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '100%',
+  aspectRatio: '1 / 1',
+  borderRadius: '6px',
+  background: theme.color.gray100,
 });
 
 export const ItemCard_Frame = style({
@@ -50,14 +60,4 @@ export const ItemCard_ShosePrice = style({
   lineHeight: '15px',
   letterSpacing: '-0.003em',
   color: theme.color.black,
-});
-
-export const ItemCard_Rectangle = style({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  width: '77px',
-  height: '77px',
-  borderRadius: '6px',
-  background: theme.color.gray100,
 });

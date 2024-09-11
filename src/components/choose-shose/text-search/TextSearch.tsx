@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import TextHeader from './textheader/TextHeader';
 import MainContainer from './mainContainder/MainContainer';
 import TextFooter from './textfooter/TextFooter';
+import SearchBox from './search-box/SearchBox';
+import { back_arrow } from '../../../assets/assets';
+import Header from '../../common/header/Header';
 
 const TextSearch = () => {
   const [record, setRecord] = useState<string[]>([]);
@@ -60,7 +62,8 @@ const TextSearch = () => {
   return (
     <>
       <div>
-        <TextHeader
+        <Header imageSrc={back_arrow} alt="뒤로가기" title="신발검색" nav="/shoes-registry"></Header>
+        <SearchBox
           text={text}
           handleSubmitSearch={handleSubmitSearch}
           handleChangeText={handleChangeText}
