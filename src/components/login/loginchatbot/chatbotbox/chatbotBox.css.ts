@@ -4,7 +4,7 @@ import { perfittlogo } from '../../../../assets/assets';
 
 export const chatbotContainer = style({
   width: '343px',
-  height: '104px',
+  height: 'auto',
   marginLeft: '16px',
   boxSizing: 'border-box',
   display: 'flex',

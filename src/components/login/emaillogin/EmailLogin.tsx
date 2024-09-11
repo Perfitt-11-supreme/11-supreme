@@ -1,11 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import Button from '../../common/button/Button';
-import Header from '../../empty-shoes-room/header/Header';
+import Header from '../../common/header/Header';
 import { errorMessage, signupFormContainer, signupFormGap, submitbuttonContainer } from '../../signup/signup.css';
 import { accountSearchBox, accountSearchButton } from './emailLogin.css';
 import { useState } from 'react';
 import SignUpInput from '../../signup/infoInput/signupinput/SignUpInput';
 import { fullContainer } from '../login.css';
+import { auth } from '../../../firebase/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { back_arrow } from '../../../assets/assets';
 
 const EmailLogin = () => {
   type FormErrors = {
@@ -56,14 +59,23 @@ const EmailLogin = () => {
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const validationErrors = validate(formData);
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
-      navigate('/hello');
+      try {
+        //로그인
+        const { user } = await signInWithEmailAndPassword(auth, formData.userEmail, formData.userPassword);
+        console.log('로그인한 사용자:', user);
+
+        //로그인 성공 시 이동
+        navigate('/hello');
+      } catch {
+        alert('입력한 정보를 다시 확인해주세요.');
+      }
     }
   };
 
@@ -77,7 +89,7 @@ const EmailLogin = () => {
     <>
       <div className={fullContainer}>
         <div>
-          <Header title="이메일 로그인" />
+          <Header imageSrc={back_arrow} alt="back arrow" title="이메일 로그인" />
           <div className={signupFormContainer} style={{ marginTop: '20px' }}>
             <div>
               <SignUpInput

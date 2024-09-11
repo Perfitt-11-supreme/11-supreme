@@ -75,6 +75,7 @@ import user_profile from './user_profile.svg';
 import user_profile_upload from './user_profile_upload.svg';
 import warning from './warning.svg';
 import warning2 from './warning2.svg';
+import google from './google.svg';
 
 export {
   again, ai, analyze,
@@ -99,6 +100,7 @@ export {
   tip3,
   tip4,
   tip5, tip6, tooltip, upload, user, user_profile, user_profile_upload, warning,
-  warning2
+  warning2,
+  google
 };
 

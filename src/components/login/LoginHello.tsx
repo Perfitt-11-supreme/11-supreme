@@ -4,7 +4,7 @@ import ChatbotSearchInput from '../common/chatbot-search-input/ChatbotSearchInpu
 import Header from '../common/header/Header';
 import RecommendedQuestionCard from '../common/recommended-question-card/RecommendedQuestionCard';
 import RecommendBox from './loginchatbot/recommendbox/RecommendBox';
-import { batteryMargin, fullContainer, recommendedquestioncardContainer } from './login.css';
+import { fullContainer, recommendedquestioncardContainer } from './login.css';
 
 const LoginHello = () => {
   const recommendedQuestions = [
@@ -16,15 +16,13 @@ const LoginHello = () => {
   return (
     <>
       <div className={fullContainer}>
-        <div className={batteryMargin}></div>
-
         <Header imageSrc={hamburger_menu} alt="hamburger menu" />
 
         <div style={{ marginTop: '20px' }}>
           <ChatBotBox text={['반갑습니다 OO님!', 'OO님을 위한 맞춤 상품을 추천해 드릴게요.']} />
         </div>
 
-        <div style={{ marginTop: '-36px', marginLeft: '44px' }}>
+        <div style={{ marginLeft: '44px' }}>
           <RecommendBox />
         </div>
 
