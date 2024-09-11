@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { camera, gallery } from '../../../../assets/assets';
 import {
   ImageFotter_IconMove,

@@ -22,7 +22,7 @@ import useImageSearchStore from '../../../../../../stores/useImageSearchStore';
 
 const SuccesProduct = () => {
   const [isSelected, setIsSelected] = useState<number | null>(null);
-  const { isSimilar, setIsSimilar, capturedImage, handleClickAgain } = useImageSearchStore();
+  const { isSimilar, setIsState, capturedImage, handleClickAgain } = useImageSearchStore();
 
   const cards = Array(10).fill(null);
 
@@ -51,7 +51,7 @@ const SuccesProduct = () => {
             <img className={Product_AgainIcon} src={again} alt="again" />
             <p className={Product_AgainText}>다시하기</p>
           </div>
-          <div className={Product_Similar} onClick={() => setIsSimilar(true)}>
+          <div className={Product_Similar} onClick={() => setIsState({ isSimilar: true })}>
             <p className={Product_SimilarText}>비슷한 상품 더보기</p>
           </div>
           <img className={Product_ProductImage} src={capturedImage!} alt="shoes_w159" />

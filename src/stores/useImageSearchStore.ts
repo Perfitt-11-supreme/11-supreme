@@ -6,32 +6,37 @@ type ImageSearchStore = {
   setVideoRef: (videoRef: RefObject<HTMLVideoElement>) => void;
   canvasRef: RefObject<HTMLCanvasElement> | null;
   setCanvasRef: (canvasRef: RefObject<HTMLCanvasElement>) => void;
-  isAnalyze: boolean;
-  setIsAnalyze: (isAnalyze: boolean) => void;
-  isSuccess: boolean;
-  setIsSuccess: (isSuccess: boolean) => void;
-  isSimilar: boolean;
-  setIsSimilar: (isSimilar: boolean) => void;
+
   capturedImage: string | null;
+
   handleCaptureImage: () => void;
   handleClickCameraIcon: (bol: boolean) => void;
   handleClickAgain: () => void;
 };
 
-export const useImageSearchStore = create<ImageSearchStore>(set => ({
+type ImageSearchStateStore = {
+  isAnalyze: boolean;
+  isSuccess: boolean;
+  isSimilar: boolean;
+};
+
+type ImageSearchUpdateStore = {
+  setIsState: (changedState: Partial<ImageSearchStateStore>) => void;
+};
+
+export const useImageSearchStore = create<ImageSearchStore & ImageSearchStateStore & ImageSearchUpdateStore>(set => ({
   videoRef: null,
   setVideoRef: videoRef => set({ videoRef }),
   canvasRef: null,
   setCanvasRef: canvasRef => set({ canvasRef }),
 
   isAnalyze: false,
-  setIsAnalyze: isAnalyze => set({ isAnalyze }),
   isSuccess: false,
-  setIsSuccess: isSuccess => set({ isSuccess }),
   isSimilar: false,
-  setIsSimilar: isSimilar => set({ isSimilar }),
+  setIsState: changedState => set(state => ({ ...state, ...changedState })),
 
   capturedImage: null,
+
   handleCaptureImage: () => {
     set(state => {
       if (state.videoRef!.current && state.canvasRef!.current) {
@@ -58,15 +63,14 @@ export const useImageSearchStore = create<ImageSearchStore>(set => ({
   handleClickCameraIcon: (bol: boolean) => {
     set(state => {
       state.handleCaptureImage();
-      state.setIsAnalyze(bol);
+      state.setIsState({ isAnalyze: bol });
       return {};
     });
   },
 
   handleClickAgain: () => {
     set(state => {
-      state.setIsAnalyze(false);
-      state.setIsSuccess(false);
+      state.setIsState({ isAnalyze: false, isSuccess: false });
       return {};
     });
   },
