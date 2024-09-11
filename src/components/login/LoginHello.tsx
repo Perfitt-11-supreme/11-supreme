@@ -21,9 +21,11 @@ type TQuestions = {
 type QuestionList = TQuestions[]
 
 const LoginHello = () => {
-  const { message, products } = useProductStore();
+  const { message } = useProductStore();
   const { setMessage, setProducts } = useProductStore.getState()
   const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
+
+  // 추천 질문 불러오는 함수
   const { data: keywordsData, isLoading: isRecommendQuestionLoading, error: recommendQuestionError } = useQuery<QuestionList>({
     queryKey: ['keywords'],
     queryFn: async () => {
@@ -42,6 +44,7 @@ const LoginHello = () => {
 
   })
 
+  // 채팅 응답 함수
   const chatCompletionsMutation = useMutation({
     mutationFn: (question: string) => chatCompletionsAPI({ message: { content: question } }),
     onSuccess: (response) => {
@@ -61,6 +64,7 @@ const LoginHello = () => {
     setSelectedQuestion(question);
     chatCompletionsMutation.mutate(question);
   };
+
 
   if (isRecommendQuestionLoading) return <LoadingPage />
   if (recommendQuestionError) return <div>error:{recommendQuestionError?.message}</div>

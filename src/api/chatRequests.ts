@@ -1,5 +1,5 @@
 import { TKeyWordsData } from "../types/keywords";
-import { TQuestion } from "../types/recommend";
+import { TQuestion } from "../types/question";
 import { axiosClient } from "./axiosClient";
 
 // URI 경로들의 타입 정의 (평탄화된 구조)

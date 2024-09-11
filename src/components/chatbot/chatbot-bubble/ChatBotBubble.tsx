@@ -1,3 +1,4 @@
+import ReactMarkdown from 'react-markdown';
 import { prefitt_symbol } from "../../../assets/assets";
 import { TChat } from "../../../types/chat";
 import { chatBotBubbleContainer, chatBotBubbleText, chatBotBubbleWrap } from "./chatBotBubble.css";
@@ -9,7 +10,7 @@ const ChatBotBubble = ({ bubbleContent }: TChat) => {
         <div className={chatBotBubbleContainer}>
           <img src={prefitt_symbol} alt="" />
           <div className={chatBotBubbleText}>
-            <p>{bubbleContent}</p>
+            <ReactMarkdown>{bubbleContent}</ReactMarkdown>
           </div>
         </div>
       </div>
