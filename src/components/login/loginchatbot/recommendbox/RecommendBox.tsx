@@ -1,20 +1,40 @@
-import { asics, hoka, more_arrow, salomon } from '../../../../assets/assets';
+import { useQuery } from '@tanstack/react-query';
+import { shoesRecommendAPI } from '../../../../api/chatRequests';
+import { more_arrow } from '../../../../assets/assets';
+import LoadingPage from '../../../../pages/loading-page/loadingPage';
+import { TProduct } from '../../../../types/product';
+import RecommendBottom from './RecommendBottom';
 import ItemBox from './itembox/ItemBox';
 import { fullContainer, textTop } from './itembox/itemBox.css';
-import RecommendBottom from './RecommendBottom';
 
-const items = [
-  { imageSrc: asics, brand: 'Asics', itemName: '아식스 조그 100 S 화이트', price: '96,000원' },
-  { imageSrc: hoka, brand: 'Hoka', itemName: '호카 카하 2 로우 고어텍스 블랙', price: '100,000원' },
-  { imageSrc: salomon, brand: 'Salomon', itemName: '살로몬 XT-6 익스팬스 바닐라 아이스 화이트', price: '169,000원' },
-];
 
 const RecommendBox = () => {
+
+  //맞춤 상품 추천
+  const { data: shoesRecommendData, isLoading: shoesRecommendIsLoading, error: shoesRecommendError } = useQuery({
+    queryKey: ['shoesRecommend'],
+    queryFn: async () => {
+      try {
+        const response = await shoesRecommendAPI()
+        console.log('맞춤 상품 추천 데이터 확인', response.data)
+        return response.data
+      } catch (error) {
+        console.error('맞춤 상품 불러오기 에러', error)
+        throw error;
+      }
+    }
+  })
+
+  if (shoesRecommendIsLoading) return <LoadingPage />
+  if (shoesRecommendError) return <div>error:{shoesRecommendError?.message}</div>
+
+
+
   return (
     <div className={fullContainer}>
       <div className={textTop}>맞춤 상품 추천</div>
-      {items.map((item, index) => (
-        <ItemBox key={index} imageSrc={item.imageSrc} brand={item.brand} itemName={item.itemName} price={item.price} />
+      {shoesRecommendData.map((shoesData: TProduct) => (
+        <ItemBox key={shoesData.productId} image={shoesData.image} brand={shoesData.brand} modelName={shoesData.modelName} />
       ))}
       <RecommendBottom text="더보기" imageSrc={more_arrow} />
     </div>
