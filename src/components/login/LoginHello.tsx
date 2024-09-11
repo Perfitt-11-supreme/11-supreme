@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { onValue, push, ref } from "firebase/database";
 import { motion } from 'framer-motion';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { chatCompletionsAPI, recommendQuestionAPI } from '../../api/chatRequests';
 import { hamburger_menu } from '../../assets/assets';
 import { database } from '../../firebase/firebase';
@@ -32,7 +32,7 @@ type ChatItem = {
 const LoginHello = () => {
   const { setProducts } = useProductStore.getState();
   const [chatHistory, setChatHistory] = useState<ChatItem[]>([]);
-
+  const chatContainerRef = useRef<HTMLDivElement | null>(null);
   // Firebase에서 채팅 기록 불러오기
   useEffect(() => {
     const chatRef = ref(database, 'chatHistory');
@@ -84,6 +84,13 @@ const LoginHello = () => {
     chatCompletionsMutation.mutate(question);
   };
 
+  // 채팅 기록 변경 시 스크롤을 맨 아래로 이동
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [chatHistory]);
+
   if (isRecommendQuestionLoading) return <LoadingPage />;
   if (recommendQuestionError) return <div>error:{recommendQuestionError?.message}</div>;
 
@@ -92,18 +99,20 @@ const LoginHello = () => {
       <div className={batteryMargin}></div>
       <Header imageSrc={hamburger_menu} alt="hamburger menu" />
       <div className={loginHelloContainer}>
-        <div style={{ marginTop: '20px' }}>
-          <ChatBotBox text={['반갑습니다 OO님!', 'OO님을 위한 맞춤 상품을 추천해 드릴게요.']} />
+        <div ref={chatContainerRef} style={{ overflowY: 'auto' }}> {/* 채팅 기록 컨테이너 */}
+          <div style={{ marginTop: '20px' }}>
+            <ChatBotBox text={['반갑습니다 OO님!', 'OO님을 위한 맞춤 상품을 추천해 드릴게요.']} />
+          </div>
+          <div style={{ marginLeft: '44px' }}>
+            <RecommendBox />
+          </div>
+          {chatHistory.map((chat, index) => (
+            <Fragment key={index}>
+              <UserBubble bubbleContent={chat.userQuestion} />
+              <ChatBotBubble bubbleContent={chat.botResponse} />
+            </Fragment>
+          ))}
         </div>
-        <div style={{ marginLeft: '44px' }}>
-          <RecommendBox />
-        </div>
-        {chatHistory.map((chat, index) => (
-          <Fragment key={index}>
-            <UserBubble bubbleContent={chat.userQuestion} />
-            <ChatBotBubble bubbleContent={chat.botResponse} />
-          </Fragment>
-        ))}
       </div>
       <motion.div
         drag="x"
@@ -115,7 +124,7 @@ const LoginHello = () => {
         ))}
       </motion.div>
       <ChatbotSearchInput />
-    </div>
+    </div >
   );
 };
 

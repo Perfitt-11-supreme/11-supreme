@@ -13,6 +13,7 @@ export const chatBotBubbleContainer = style({
 
 export const chatBotBubbleText = style({
   marginLeft: '10px',
+  marginTop: '10px',
   fontSize: '14px',
   display: 'inline-block',
   letterSpacing: '-0.003em',
