@@ -5,7 +5,7 @@ type CaptureStore = {
   setCapturedImage: (capturedImage: string) => void;
   handleCaptureImage: () => void;
   handleClickCameraIcon: (bol: boolean) => void;
-  handleClickAgain: () => void;
+  handleClickAgain: (bol: boolean) => void;
 };
 
 const useCaptureStore = create<CaptureStore>(set => ({
