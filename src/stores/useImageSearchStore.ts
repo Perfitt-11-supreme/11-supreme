@@ -6,25 +6,14 @@ type ImageSearchStore = {
   setVideoRef: (videoRef: RefObject<HTMLVideoElement>) => void;
   canvasRef: RefObject<HTMLCanvasElement> | null;
   setCanvasRef: (canvasRef: RefObject<HTMLCanvasElement>) => void;
-<<<<<<< HEAD
 
   capturedImage: string | null;
 
-=======
-  isAnalyze: boolean;
-  setIsAnalyze: (isAnalyze: boolean) => void;
-  isSuccess: boolean;
-  setIsSuccess: (isSuccess: boolean) => void;
-  isSimilar: boolean;
-  setIsSimilar: (isSimilar: boolean) => void;
-  capturedImage: string | null;
->>>>>>> 5a409e4 (refactor-choose-shose-상태관리---jobeomjun--1차 리팩토리)
   handleCaptureImage: () => void;
   handleClickCameraIcon: (bol: boolean) => void;
   handleClickAgain: () => void;
 };
 
-<<<<<<< HEAD
 type ImageSearchStateStore = {
   isAnalyze: boolean;
   isSuccess: boolean;
@@ -36,31 +25,18 @@ type ImageSearchUpdateStore = {
 };
 
 export const useImageSearchStore = create<ImageSearchStore & ImageSearchStateStore & ImageSearchUpdateStore>(set => ({
-=======
-export const useImageSearchStore = create<ImageSearchStore>(set => ({
->>>>>>> 5a409e4 (refactor-choose-shose-상태관리---jobeomjun--1차 리팩토리)
   videoRef: null,
   setVideoRef: videoRef => set({ videoRef }),
   canvasRef: null,
   setCanvasRef: canvasRef => set({ canvasRef }),
 
   isAnalyze: false,
-<<<<<<< HEAD
   isSuccess: false,
   isSimilar: false,
   setIsState: changedState => set(state => ({ ...state, ...changedState })),
 
   capturedImage: null,
 
-=======
-  setIsAnalyze: isAnalyze => set({ isAnalyze }),
-  isSuccess: false,
-  setIsSuccess: isSuccess => set({ isSuccess }),
-  isSimilar: false,
-  setIsSimilar: isSimilar => set({ isSimilar }),
-
-  capturedImage: null,
->>>>>>> 5a409e4 (refactor-choose-shose-상태관리---jobeomjun--1차 리팩토리)
   handleCaptureImage: () => {
     set(state => {
       if (state.videoRef!.current && state.canvasRef!.current) {
@@ -87,23 +63,14 @@ export const useImageSearchStore = create<ImageSearchStore>(set => ({
   handleClickCameraIcon: (bol: boolean) => {
     set(state => {
       state.handleCaptureImage();
-<<<<<<< HEAD
       state.setIsState({ isAnalyze: bol });
-=======
-      state.setIsAnalyze(bol);
->>>>>>> 5a409e4 (refactor-choose-shose-상태관리---jobeomjun--1차 리팩토리)
       return {};
     });
   },
 
   handleClickAgain: () => {
     set(state => {
-<<<<<<< HEAD
       state.setIsState({ isAnalyze: false, isSuccess: false });
-=======
-      state.setIsAnalyze(false);
-      state.setIsSuccess(false);
->>>>>>> 5a409e4 (refactor-choose-shose-상태관리---jobeomjun--1차 리팩토리)
       return {};
     });
   },
