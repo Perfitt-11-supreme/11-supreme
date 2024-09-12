@@ -3,7 +3,6 @@ import ProductFitComment from '../components/chatbot/product-fit-comment/Product
 import ImageSearch from '../components/choose-shose/image-search/ImageSearch';
 import TextSearch from '../components/choose-shose/text-search/TextSearch';
 import EmptyShoesRoom from '../components/empty-shoes-room/EmptyShoesRoom';
-import ShoesRoom from '../components/empty-shoes-room/shoes-room/ShoesRoom';
 import Login from '../components/login/Login';
 import LoginHello from '../components/login/LoginHello';
 import ShoesInfo from '../components/shoes-info/ShoesInfo';
@@ -17,6 +16,7 @@ import Mypage from '../pages/mypage/Mypage';
 import SideMenu from '../pages/sidemenu/SideMenu';
 import ViewedHistoryPage from '../pages/viewed-history-page/ViewedHistoryPage';
 import EmailLogin from '../components/login/emaillogin/EmailLogin';
+import OnBoarding from '../components/onboarding/OnBoarding';
 
 export const router = createBrowserRouter([
   {
@@ -42,10 +42,6 @@ export const router = createBrowserRouter([
   {
     path: '/empty-shoesroom',
     element: <EmptyShoesRoom />,
-  },
-  {
-    path: '/shoesroom',
-    element: <ShoesRoom />,
   },
   {
     path: '/shoes-registry',
@@ -84,11 +80,15 @@ export const router = createBrowserRouter([
     element: <LoginHello />,
   },
   {
-    path: '/shoesinfo',
+    path: '/shoesinfo/:shoesId',
     element: <ShoesInfo />,
   },
   {
     path: '/emaillogin',
     element: <EmailLogin />,
+  },
+  {
+    path: '/onboarding',
+    element: <OnBoarding />,
   },
 ]);

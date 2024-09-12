@@ -23,6 +23,7 @@ export const dropdownMenu = style({
   borderRadius: '10px',
   zIndex: 1000,
   opacity: 0,
+  pointerEvents: 'none',
   transform: 'translateY(-10px)',
   transition: 'opacity 0.3s ease-out, transform 0.3s ease-out',
 });
@@ -30,6 +31,7 @@ export const dropdownMenu = style({
 export const dropdownMenuVisible = style({
   opacity: 1,
   transform: 'translateY(0)',
+  pointerEvents: 'auto',
 });
 
 export const menuItem = style({

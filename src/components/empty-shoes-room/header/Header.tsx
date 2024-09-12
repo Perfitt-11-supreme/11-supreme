@@ -9,7 +9,7 @@ const Header = ({ title }: { title?: string }) => {
     navigate(-1);
   };
 
-  const showKebab = location.pathname === '/shoesInfo';
+  const showKebab = location.pathname.startsWith('/shoesinfo/');
   return (
     <>
       <header className={headerDiv}>
