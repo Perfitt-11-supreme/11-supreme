@@ -1,9 +1,9 @@
-import create from 'zustand';
+import { create } from 'zustand';
 
-interface ShoesStore {
+type ShoesStore = {
   selectedItem: number | null;
   setSelectedItem: (item: number | null) => void;
-}
+};
 
 export const useShoesStore = create<ShoesStore>(set => ({
   selectedItem: null,
