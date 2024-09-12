@@ -45,7 +45,7 @@ const ProductFilter = () => {
         </ul>
       </div>
       {filterOpen && (
-        <ProductFilterModal height="853px" title="필터">
+        <ProductFilterModal height="330px" title="필터">
           <ProductFilterDetail />
         </ProductFilterModal>
       )}
