@@ -31,13 +31,13 @@ export const ItemCard_Rectangle = style({
 export const ItemCard_Frame = style({
   display: 'flex',
   flexDirection: 'column',
-  width: '256px',
-  height: '59px',
-  gap: '6px',
+  width: 'auto',
+  height: 'auto',
+  gap: '10px',
 });
 
 export const ItemCard_ShoseBrand = style({
-  height: '17px',
+  height: 'auto',
   fontWeight: '400',
   fontSize: '14px',
   lineHeight: '16.71px',

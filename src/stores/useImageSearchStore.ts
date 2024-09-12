@@ -7,24 +7,27 @@ type ImageSearchStore = {
   canvasRef: RefObject<HTMLCanvasElement> | null;
   setCanvasRef: (canvasRef: RefObject<HTMLCanvasElement>) => void;
 
-  capturedImage: string | null;
+  canvasImage: string | null;
 
-  handleCaptureImage: () => void;
-  handleClickCameraIcon: (bol: boolean) => void;
+  handleCaptureImage: (bol: boolean) => void;
   handleClickAgain: () => void;
+};
+
+type ImageSerachGetData = {
+  capturedImage: string | null;
+  brand: string | null;
+  modelName: string | null;
+  setGetData: (getData: Partial<ImageSerachGetData>) => void;
 };
 
 type ImageSearchStateStore = {
   isAnalyze: boolean;
   isSuccess: boolean;
   isSimilar: boolean;
-};
-
-type ImageSearchUpdateStore = {
   setIsState: (changedState: Partial<ImageSearchStateStore>) => void;
 };
 
-export const useImageSearchStore = create<ImageSearchStore & ImageSearchStateStore & ImageSearchUpdateStore>(set => ({
+const useImageSearchStore = create<ImageSearchStore & ImageSerachGetData & ImageSearchStateStore>(set => ({
   videoRef: null,
   setVideoRef: videoRef => set({ videoRef }),
   canvasRef: null,
@@ -35,9 +38,14 @@ export const useImageSearchStore = create<ImageSearchStore & ImageSearchStateSto
   isSimilar: false,
   setIsState: changedState => set(state => ({ ...state, ...changedState })),
 
-  capturedImage: null,
+  canvasImage: null,
 
-  handleCaptureImage: () => {
+  capturedImage: null,
+  brand: null,
+  modelName: null,
+  setGetData: getData => set(state => ({ ...state, ...getData })),
+
+  handleCaptureImage: (bol: boolean) => {
     set(state => {
       if (state.videoRef!.current && state.canvasRef!.current) {
         const canvas: HTMLCanvasElement = state.canvasRef!.current;
@@ -51,19 +59,15 @@ export const useImageSearchStore = create<ImageSearchStore & ImageSearchStateSto
           ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
           const imageData = canvas.toDataURL('image/png');
+          if (imageData === 'data:,') {
+            return {};
+          }
+          state.setIsState({ isAnalyze: bol });
 
           // 캡처된 이미지를 Zustand 상태로 저장
-          return { capturedImage: imageData };
+          return { canvasImage: imageData };
         }
       }
-      return {};
-    });
-  },
-
-  handleClickCameraIcon: (bol: boolean) => {
-    set(state => {
-      state.handleCaptureImage();
-      state.setIsState({ isAnalyze: bol });
       return {};
     });
   },

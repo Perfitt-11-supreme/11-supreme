@@ -9,13 +9,16 @@ export const Product_SuccesContainer = style({
   alignItems: 'center',
 });
 
+export const Product_AgainContainder = style({
+  width: '100%',
+  marginTop: '7%',
+  marginLeft: '9%',
+});
+
 export const Product_AgainBox = style({
   display: 'flex',
-  width: '100%',
   alignItems: 'center',
   gap: '10px',
-  marginLeft: '36px',
-  marginTop: '27px',
 });
 
 export const Product_AgainIcon = style({
@@ -50,18 +53,16 @@ export const Product_SimilarText = style({
 });
 
 export const Product_ProductImage = style({
-  width: '92vw',
-  height: '30%',
-  marginTop: '35px',
+  width: '70vw',
 });
 
 export const Product_ProductInfo = style({
   display: 'flex',
   flexDirection: 'column',
   gap: '11px',
-  width: '81vw',
-  marginTop: '34px',
-  marginBottom: '39px',
+  width: '70vw',
+  marginTop: '7%',
+  marginBottom: '7%',
 });
 
 export const Product_ProductBrand = style({

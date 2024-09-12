@@ -7,7 +7,7 @@ import Header from '../../common/header/Header';
 
 const TextSearch = () => {
   const [record, setRecord] = useState<string[]>([]);
-  const [focus, setFocus] = useState(false);
+  const [focus, setFocus] = useState(true);
   const [text, setText] = useState('');
   const [remove, setRemove] = useState(false);
 

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { CameraComponent_Container, CameraComponent_View } from './cameraview.css';
+import { CameraComponent_Canvas, CameraComponent_Container, CameraComponent_View } from './cameraview.css';
 import useImageSearchStore from '../../../../stores/useImageSearchStore';
 
 const CameraView = () => {
@@ -38,7 +38,7 @@ const CameraView = () => {
   return (
     <div className={CameraComponent_Container}>
       <video className={CameraComponent_View} ref={videoRef} autoPlay></video>
-      <canvas ref={canvasRef} style={{ position: 'fixed', bottom: '100vh' }}></canvas>
+      <canvas className={CameraComponent_Canvas} ref={canvasRef}></canvas>
     </div>
   );
 };
