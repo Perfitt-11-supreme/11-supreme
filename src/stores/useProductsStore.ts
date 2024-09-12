@@ -8,7 +8,8 @@ import { create } from 'zustand';
     link: string;
     modelName: string;
     modelNo: string;
-    productId: string;
+    productId?: string;
+    gender?: string;
   }>;
   selectedKeywords: string[];
   setMessage: (message: string) => void;
@@ -16,7 +17,6 @@ import { create } from 'zustand';
   setSelectedKeywords: (keywords: string[]) => void;
 };
 
-// Zustand Store 생성
 const useProductStore = create<ProductStoreState>((set) => ({
   message: '',
   products: [],

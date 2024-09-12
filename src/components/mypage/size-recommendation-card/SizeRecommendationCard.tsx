@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { ai, brand_abcmart, heart_empty, heart_filled } from '../../../assets/assets';
-import useModalStore from '../../../stores/useModalStore';
 import { TProduct } from '../../../types/product';
 import {
   brandIconBox,
@@ -25,11 +24,19 @@ type SizeRecommendationCardProps = {
 
 const SizeRecommendationCard = ({ product, isHeartFilled = false }: SizeRecommendationCardProps) => {
   const [isChecked, setIsChecked] = useState(false);
-  const { setFitOpen } = useModalStore();
+  // const { setFitOpen } = useModalStore();
 
-  const handleFitCommentClick = () => {
-    setFitOpen(true);  // 이 신발 더보기 버튼 클릭 시 Modal 열기
+  // const handleFitCommentClick = () => {
+  //   setFitOpen(true);  // 이 신발 더보기 버튼 클릭 시 Modal 열기
+  // };
+
+  const handleProductDetailsClick = () => {
+    if (product.link) {
+      window.location.href = product.link; // 버튼 클릭 시 product.link로 이동
+    }
   };
+
+
 
 
 
@@ -66,7 +73,7 @@ const SizeRecommendationCard = ({ product, isHeartFilled = false }: SizeRecommen
           </div>
           <p className={productText}>100,000원</p>
         </div>
-        <button className={productDetailsButton} onClick={handleFitCommentClick}>
+        <button className={productDetailsButton} onClick={handleProductDetailsClick}>
           <img src={ai} alt="ai" />이 신발 더 알아보기
         </button>
       </div>

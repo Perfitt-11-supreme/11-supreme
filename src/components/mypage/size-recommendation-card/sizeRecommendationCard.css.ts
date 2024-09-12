@@ -24,7 +24,8 @@ export const sizeRecommendationThumbnailContainer = style({
   alignItems: 'center',
   borderTopLeftRadius: '6.27px',
   borderTopRightRadius: '6.27px',
-  overflow:'hidden'
+  overflow: 'hidden'
+  
 })
 export const sizeRecommendationBadge = style({
   width: '77px',

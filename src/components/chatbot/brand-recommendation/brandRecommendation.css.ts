@@ -3,13 +3,13 @@ import { style } from '@vanilla-extract/css';
 export const brandRecommendWrap = style({
   display: 'flex',
   flexDirection: 'column',
-  marginTop:'10px'
+  marginTop: '10px',
+  marginLeft:'12px'
 })
 
 export const brandRecommendContainer = style({
-  width:'100vh',
   display: 'flex',
-  gap:'10px'
+  gap: '10px',
 })
 
 export const brandRecommendIconWrap = style({

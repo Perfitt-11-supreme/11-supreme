@@ -16,8 +16,8 @@ export const brandPlpNameContainer = style({
 
 export const brandPlpBrandImage = style({
   width: '100%',
-  height: '100px',
-  backgroundColor:'red', 
+  height: 'auto',
+  backgroundColor: 'red', 
 })
 
 export const brandPlpFilterButtonWrap = style({

@@ -14,9 +14,12 @@ import {
   productText,
 } from './productRecommendationCard.css';
 
+interface ProductRecommendationCardProps {
+  product: TProduct;
+}
 
 
-const ProductRecommendationCard = ({ product }: TProduct) => {
+const ProductRecommendationCard = ({ product }: ProductRecommendationCardProps) => {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleHeartChecked = () => {

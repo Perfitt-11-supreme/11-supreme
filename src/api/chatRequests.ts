@@ -9,6 +9,7 @@ type ChatRequestPaths = {
   questionRecommend: string;
   chatCompletions: string;
   chatKeywords: string;
+  brandInfo: string;
 };
 
 // URI 경로들과 유틸리티 함수를 포함하는 객체 타입 정의
@@ -23,6 +24,7 @@ const chatRequests: ChatRequests = {
   questionRecommend: '/question/recommend', // 질문추천 
   chatCompletions: '/chat/completions', // 채팅응답 
   chatKeywords: '/chat/completions/keywords', // 채팅응답 키워드 
+  brandInfo: '/brands/:brand', // 브랜드 정보
   getFullPath(path: string): string {
     return path.startsWith('/') ? path : `/${path}`;
   },
@@ -51,4 +53,10 @@ export const chatCompletionsAPI = (data:TQuestion ) => {
 /** 채팅 응답 키워드 */
 export const chatKeywordsAPI = (data: TKeyWordsData) => {
   return axiosClient.post(chatRequests.getFullPath(chatRequests.chatKeywords), data);
+};
+
+/** 브랜드 정보 */
+export const brandInfoAPI = (brand: string) => {
+  const path = chatRequests.brandInfo.replace(':brand', brand);
+  return axiosClient.get(chatRequests.getFullPath(path));
 };

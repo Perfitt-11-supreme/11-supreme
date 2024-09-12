@@ -37,7 +37,7 @@ const ChatBotPage = () => {
     queryFn: async () => {
       try {
         const response = await keywordsListAPI();
-        console.log("데이터 확인용", response)
+        console.log(" 키워드 리스트 데이터 확인용", response)
         return response.data
       } catch (error) {
         console.error('키워드 정보 불러오기 에러', error)
@@ -109,7 +109,7 @@ const ChatBotPage = () => {
             <div className={chatBotCardWrap}>
               {/* <FootSizeCard /> */}
               {/* <BrandRecommendation /> */}
-              {products.length > 0 && <ProductRecommendationPreview />}
+              {products.length > 0 && <ProductRecommendationPreview products={products} />}
             </div>
             {selectedKeywords.length > 0 && <UserBubble bubbleContent={formattedKeywords} />}
           </div>

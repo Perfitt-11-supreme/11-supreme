@@ -1,8 +1,9 @@
 import { small_arrow } from "../../../assets/assets";
 import useModalStore from "../../../stores/useModalStore";
+import { TBrand } from "../../../types/brand";
 import { brandRecommendButton, brandRecommendCardWrap, brandRecommendImgContainer, brandRecommendText, brandRecommendTextWrap } from "./brandRecommendationCard.css";
 
-const BrandRecommendationCard = () => {
+const BrandRecommendationCard = ({ thumbnail, description }: TBrand) => {
   const { setIsOpen } = useModalStore()
 
   const handleOpenModal = () => {
@@ -12,7 +13,7 @@ const BrandRecommendationCard = () => {
     <>
       <div className={brandRecommendCardWrap}>
         <div className={brandRecommendImgContainer}>
-          <img />
+          <img src={thumbnail} alt={description} />
         </div>
         <div className={brandRecommendButton}>
           <div className={brandRecommendTextWrap} onClick={handleOpenModal}>
