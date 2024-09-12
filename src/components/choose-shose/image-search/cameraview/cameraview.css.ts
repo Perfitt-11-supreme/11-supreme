@@ -16,3 +16,11 @@ export const CameraComponent_View = style({
   width: '100vw',
   height: 'auto',
 });
+
+export const CameraComponent_Canvas = style({
+  position: 'fixed',
+  bottom: '-100%',
+  width: '100vw',
+  height: 'auto',
+  zIndex: '-1',
+});

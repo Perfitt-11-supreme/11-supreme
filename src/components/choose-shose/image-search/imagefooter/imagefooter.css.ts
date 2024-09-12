@@ -1,4 +1,4 @@
-import { style, styleVariants } from '@vanilla-extract/css';
+import { style } from '@vanilla-extract/css';
 import { theme } from '../../../../styles/theme';
 
 export const ImageFooter_CameraIconBackground = style({
@@ -28,13 +28,4 @@ export const ImageFooter_GalleryIcon = style({
   bottom: '20px',
   transition: 'bottom 0.3s ease',
   zIndex: '11',
-});
-
-export const ImageFotter_IconMove = styleVariants({
-  moved: {
-    bottom: '220px',
-  },
-  static: {
-    bottom: '20px',
-  },
 });

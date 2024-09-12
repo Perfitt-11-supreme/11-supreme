@@ -13,23 +13,12 @@ import useImageSearchStore from '../../../../../stores/useImageSearchStore.ts';
 
 const AnalyzeItem = () => {
   const divRef = useRef<HTMLDivElement>(null);
-  const { isAnalyze, isSuccess, isSimilar, setIsState, handleClickCameraIcon } = useImageSearchStore();
-
-  useEffect(() => {
-    if (!isAnalyze) return;
-    if (isSuccess) return;
-
-    const timer = setTimeout(() => {
-      setIsState({ isSuccess: true });
-      clearTimeout(timer);
-    }, 5000);
-  }, [isAnalyze]);
+  const { isAnalyze, isSuccess, isSimilar, setIsState, handleCaptureImage } = useImageSearchStore();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (isSimilar && divRef.current && !divRef.current.contains(event.target as Node)) {
-        console.log(isSimilar);
-        handleClickCameraIcon(false);
+        handleCaptureImage(false);
         setIsState({ isSuccess: false, isSimilar: false });
       }
     };
