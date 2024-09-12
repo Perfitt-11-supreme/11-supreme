@@ -22,7 +22,11 @@ const RecommendBox = () => {
         console.error('맞춤 상품 불러오기 에러', error)
         throw error;
       }
-    }
+    },
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+
   })
 
   if (shoesRecommendIsLoading) return <LoadingPage />
