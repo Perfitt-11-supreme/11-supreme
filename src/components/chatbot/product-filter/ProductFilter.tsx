@@ -16,10 +16,13 @@ import {
 
 const ProductFilter = () => {
   const { setFilterOpen, filterOpen } = useModalStore();
-  const { products } = useProductStore()
+  const { products = [] } = useProductStore()
   const handleDetailClick = () => {
     setFilterOpen(true); // detail 버튼 클릭 시 Modal 열기
+    console.log("필터")
   };
+
+  // console.log("상태전달", products)
 
   return (
     <>
@@ -36,13 +39,13 @@ const ProductFilter = () => {
       </div>
       <div className={productRecommendWrapper}>
         <ul className={productRecommend}>
-          {products.map(product => (
-            <li key={product.productId}><SizeRecommendationCard product={product} /></li>
+          {products.map((product, index) => (
+            <li key={index}><SizeRecommendationCard product={product} /></li>
           ))}
         </ul>
       </div>
       {filterOpen && (
-        <ProductFilterModal height="330px" title="필터">
+        <ProductFilterModal height="853px" title="필터">
           <ProductFilterDetail />
         </ProductFilterModal>
       )}

@@ -40,7 +40,7 @@ export const productRecommendFiltering = style({
 })
 
 export const productRecommendWrapper = style({
-  height: '650px', // 또는 원하는 고정 높이
+  height: '1000px', // 또는 원하는 고정 높이
   overflowY: 'auto',
   
 });
