@@ -15,7 +15,7 @@ export const modalContainer = style({
   boxShadow: `0px -1px 4px 0px ${theme.color.black}26;`,
   position: 'absolute',
   bottom: '0px',
-  zIndex: 1,
+  zIndex: 100,
 });
 export const barBox = style({
   display: 'flex',
