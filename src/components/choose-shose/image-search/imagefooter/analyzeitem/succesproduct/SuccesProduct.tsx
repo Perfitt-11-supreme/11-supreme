@@ -48,7 +48,6 @@ const SuccesProduct = () => {
 
   const handleClickSimilar = () => {
     handleImageSearchPost.mutate(capturedImage!);
-    console.log(capturedImage);
   };
 
   const handleClickItemCard = (index: number) => {
