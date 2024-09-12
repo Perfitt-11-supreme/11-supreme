@@ -77,7 +77,7 @@ const SignUpSizeInputValid = () => {
           });
 
           // 저장 성공
-          navigate('/emaillogin');
+          navigate('/login');
         } else {
           alert('처음부터 순서대로 회원가입을 진행해주세요.');
         }
