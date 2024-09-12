@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { onValue, push, ref } from "firebase/database";
+import { onValue, push, ref } from 'firebase/database';
 import { motion } from 'framer-motion';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { chatCompletionsAPI, recommendQuestionAPI } from '../../api/chatRequests';
@@ -25,9 +25,9 @@ import RecommendBox from './loginchatbot/recommendbox/RecommendBox';
 
 type TQuestions = {
   question: string;
-}
+};
 
-type QuestionList = TQuestions[]
+type QuestionList = TQuestions[];
 
 type Brand = {
   brand: string;
@@ -42,11 +42,11 @@ type ChatItem = {
   products: TProduct[] | null;
   brands: Brand[] | null;
   keywords: string;
-}
+};
 
 const LoginHello = () => {
   const { setProducts } = useProductStore.getState();
-  const { selectedBrand } = useBrandStore()
+  const { selectedBrand } = useBrandStore();
   const { setBrands } = useBrandStore();
   const [currentKeywords, setCurrentKeywords] = useState<string>('');
   const [chatHistory, setChatHistory] = useState<ChatItem[]>([]);
@@ -54,7 +54,7 @@ const LoginHello = () => {
   // Firebase에서 채팅 기록 불러오기
   useEffect(() => {
     const chatRef = ref(database, 'chatHistory');
-    onValue(chatRef, (snapshot) => {
+    onValue(chatRef, snapshot => {
       const data = snapshot.val();
       if (data) {
         const chatItems: ChatItem[] = Object.values(data);
@@ -73,12 +73,16 @@ const LoginHello = () => {
   }, [setProducts, setBrands]);
 
   // 추천 질문 불러오는 함수
-  const { data: keywordsData, isLoading: isRecommendQuestionLoading, error: recommendQuestionError } = useQuery<QuestionList>({
+  const {
+    data: keywordsData,
+    isLoading: isRecommendQuestionLoading,
+    error: recommendQuestionError,
+  } = useQuery<QuestionList>({
     queryKey: ['keywords'],
     queryFn: async () => {
       try {
         const response = await recommendQuestionAPI();
-        console.log("추천 질문 데이터 확인용", response);
+        console.log('추천 질문 데이터 확인용', response);
         return response.data;
       } catch (error) {
         console.error('추천 질문 불러오기 에러', error);
@@ -101,14 +105,14 @@ const LoginHello = () => {
         botResponse: response.data.message,
         products: response.data.products || null,
         brands: response.data.brands || null,
-        keywords: question
+        keywords: question,
       };
       push(ref(database, 'chatHistory'), newChatItem);
       setProducts(response.data.products);
-      setBrands(response.data.brands)
+      setBrands(response.data.brands);
       setCurrentKeywords(question);
     },
-    onError: (error) => {
+    onError: error => {
       console.error('채팅 응답 에러:', error);
     },
   });
@@ -117,8 +121,6 @@ const LoginHello = () => {
     setCurrentKeywords(question);
     chatCompletionsMutation.mutate(question);
   };
-
-
 
   // 채팅 기록 변경 시 스크롤을 맨 아래로 이동
   useEffect(() => {
@@ -135,7 +137,9 @@ const LoginHello = () => {
       <div className={batteryMargin}></div>
       <Header imageSrc={hamburger_menu} alt="hamburger menu" />
       <div className={loginHelloContainer}>
-        <div ref={chatContainerRef} style={{ overflowY: 'auto', overflowX: 'hidden' }}> {/* 채팅 기록 컨테이너 */}
+        <div ref={chatContainerRef} style={{ overflowY: 'auto', overflowX: 'hidden' }}>
+          {' '}
+          {/* 채팅 기록 컨테이너 */}
           <div style={{ marginTop: '20px' }}>
             <ChatBotBox text={['반갑습니다 OO님!', 'OO님을 위한 맞춤 상품을 추천해 드릴게요.']} />
           </div>
@@ -164,24 +168,27 @@ const LoginHello = () => {
         <motion.div
           drag="x"
           dragConstraints={{ right: 0, left: -550 }}
-          whileTap={{ cursor: "grabbing" }}
-          className={recommendedquestioncardContainer}>
-          {keywordsData && keywordsData.map((question, index) => (
-            <RecommendedQuestionCard key={index} text={question.question} onClick={() => handleQuestionSelect(question.question)} />
-          ))}
+          whileTap={{ cursor: 'grabbing' }}
+          className={recommendedquestioncardContainer}
+        >
+          {keywordsData &&
+            keywordsData.map((question, index) => (
+              <RecommendedQuestionCard
+                key={index}
+                text={question.question}
+                onClick={() => handleQuestionSelect(question.question)}
+              />
+            ))}
         </motion.div>
       )}
 
       {chatHistory.length > 0 && (
-        <Modal
-          height="700px"
-          initialHeight="25px"
-        >
+        <Modal height="700px" initialHeight="25px">
           {selectedBrand ? <BrandPLP /> : <ProductRecommendation keywords={currentKeywords} />}
         </Modal>
       )}
       <ChatbotSearchInput />
-    </div >
+    </div>
   );
 };
 
