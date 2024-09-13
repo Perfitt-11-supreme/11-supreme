@@ -44,7 +44,7 @@ export const router = createBrowserRouter([
     element: <EmptyShoesRoom />,
   },
   {
-    path: '/shoes-registry',
+    path: '/shoes-registry/:shoesId?',
     element: <ShoesRegistry />,
   },
   {

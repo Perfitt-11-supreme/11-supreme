@@ -1,3 +1,4 @@
+import React, { useEffect, useRef, useState } from 'react';
 import { useShoesRegistryStore } from '../../stores/useRegistryStore';
 import { plus } from '../../assets/assets';
 import Choose from '../empty-shoes-room/choose/Choose';
@@ -5,9 +6,8 @@ import StarRating from './star-rating/StarRating';
 import Header from '../empty-shoes-room/header/Header';
 import Button from '../common/button/Button';
 import Slider from '../slider/Slider';
-import { useNavigate } from 'react-router-dom';
-import ItemCard from '../choose-shose/itemcard/ItemCard';
-import { addDoc, collection } from 'firebase/firestore';
+import { useNavigate, useParams } from 'react-router-dom';
+import { addDoc, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase/firebase';
 import {
   area,
@@ -20,14 +20,15 @@ import {
   questionP,
   questP,
   starP,
+  errorText,
 } from './shoesregistry.css';
-import { useRef } from 'react';
+import ItemCard from '../choose-shose/itemcard/ItemCard';
 
 const ShoesRegistry = () => {
-  const { selectedItem } = useShoesRegistryStore(state => ({
-    selectedItem: state.selectedItem,
-  }));
+  const { shoesId } = useParams();
+
   const {
+    selectedItem,
     rating,
     length,
     width,
@@ -46,72 +47,97 @@ const ShoesRegistry = () => {
     setSelectedItem,
     setRecommendation,
   } = useShoesRegistryStore();
+  const [errors, setErrors] = useState({
+    selectedItem: '',
+    rating: '',
+    length: '',
+    width: '',
+    height: '',
+    sole: '',
+    weight: '',
+    review: '',
+  });
+
+  const [editData, setEditData] = useState<any>(null);
+
+  const fetchShoeInfo = async () => {
+    if (shoesId) {
+      try {
+        const docSnap = await getDoc(doc(db, 'myshoes', shoesId));
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setEditData(data);
+
+          // 폼에 데이터 채우기
+          setSelectedItem(data.selectedItem);
+          setRating(data.rating);
+          setLength(data.length);
+          setWidth(data.width);
+          setHeight(data.height);
+          setSole(data.sole);
+          setWeight(data.weight);
+          setReview(data.review);
+          setRecommendation(data.recommendation);
+        } else {
+          console.log('해당 문서가 없습니다.');
+        }
+      } catch (e) {
+        console.error('문서를 가져오는 중 오류 발생: ', e);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchShoeInfo();
+  }, [shoesId]);
 
   const saveToFirestore = async (data: any) => {
     try {
-      const docRef = await addDoc(collection(db, 'myshoes'), data);
-      console.log('db 저장 성공 ID: ', docRef.id);
+      if (shoesId) {
+        //신발 정보 수정
+        const shoeDocRef = doc(db, 'myshoes', shoesId);
+        await updateDoc(shoeDocRef, data);
+        console.log('db 수정 성공 ID: ', shoesId);
+      } else {
+        //신발 정보 저장
+        const docRef = await addDoc(collection(db, 'myshoes'), data);
+        console.log('db 저장 성공 ID: ', docRef.id);
+      }
     } catch (e) {
-      console.error('db 저장 에러: ', e);
+      console.error('db 저장/수정 에러: ', e);
     }
   };
 
-  const navigate = useNavigate();
-  const handleChooseShoes = () => {
-    navigate('/text-search');
-  };
+  const validateForm = () => {
+    const newErrors: any = {};
+    if (!rating) newErrors.rating = '별점을 선택해 주세요';
+    if (!length) newErrors.length = '신발 길이를 선택해 주세요';
+    if (!width) newErrors.width = '발볼 너비를 선택해 주세요';
+    if (!height) newErrors.height = '발등 높이를 선택해 주세요';
+    if (!sole) newErrors.sole = '밑창 상태를 선택해 주세요';
+    if (!weight) newErrors.weight = '신발 무게를 선택해 주세요';
+    if (!review) newErrors.review = '리뷰를 작성해 주세요';
 
-  const chooseShoesRef = useRef<HTMLDivElement>(null);
-  const ratingRef = useRef<HTMLDivElement>(null);
-  const lengthRef = useRef<HTMLDivElement>(null);
-  const widthRef = useRef<HTMLDivElement>(null);
-  const heightRef = useRef<HTMLDivElement>(null);
-  const soleRef = useRef<HTMLDivElement>(null);
-  const weightRef = useRef<HTMLDivElement>(null);
-  const reviewRef = useRef<HTMLTextAreaElement>(null);
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async () => {
-    if (!selectedItem) {
-      alert('신발을 선택해 주세요.');
-      chooseShoesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
-    }
-    if (!rating) {
-      alert('별점을 선택해 주세요.');
-      ratingRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
-    }
-    if (!length) {
-      alert('신발 길이를 선택해 주세요.');
-      lengthRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
-    }
-    if (!width) {
-      alert('발볼 너비를 선택해 주세요.');
-      widthRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
-    }
-    if (!height) {
-      alert('발등 높이를 선택해 주세요.');
-      heightRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
-    }
-    if (!sole) {
-      alert('밑창 상태를 선택해 주세요.');
-      soleRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
-    }
-    if (!weight) {
-      alert('신발 무게를 선택해 주세요.');
-      weightRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (!validateForm()) {
+      const firstErrorKey = Object.keys(errors)[0];
+      const refMap: any = {
+        rating: ratingRef,
+        length: lengthRef,
+        width: widthRef,
+        height: heightRef,
+        sole: soleRef,
+        weight: weightRef,
+        review: reviewRef,
+      };
+      refMap[firstErrorKey]?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
 
-    if (!review) {
-      alert('리뷰를 작성해 주세요.');
-      reviewRef.current?.focus();
-      return;
-    }
     const data = {
       ...selectedItem,
       rating,
@@ -127,6 +153,7 @@ const ShoesRegistry = () => {
 
     await saveToFirestore(data);
 
+    // 상태 초기화
     setSelectedItem(null);
     setRating(0);
     setLength('');
@@ -140,20 +167,41 @@ const ShoesRegistry = () => {
     navigate('/empty-shoesroom');
   };
 
+  const navigate = useNavigate();
+  const handleChooseShoes = () => navigate('/text-search');
+
+  const ratingRef = useRef<HTMLDivElement>(null);
+  const lengthRef = useRef<HTMLDivElement>(null);
+  const widthRef = useRef<HTMLDivElement>(null);
+  const heightRef = useRef<HTMLDivElement>(null);
+  const soleRef = useRef<HTMLDivElement>(null);
+  const weightRef = useRef<HTMLDivElement>(null);
+  const reviewRef = useRef<HTMLTextAreaElement>(null);
+
   return (
     <div className={container}>
       <Header title="신발 등록" />
+      <p className={descP}>신발을 선택해 주세요</p>
       {selectedItem === null ? (
-        <div ref={chooseShoesRef}>
-          <p className={descP}>신발을 선택해 주세요</p>
-          <button className={imagePlusButton} onClick={handleChooseShoes}>
-            <img src={plus} alt="등록" />
-          </button>
-        </div>
+        <button className={imagePlusButton} onClick={handleChooseShoes}>
+          <img src={plus} alt="등록" />
+        </button>
       ) : (
-        <button className={imagePlusButtonSelected} onClick={handleChooseShoes}>
+        <button className={imagePlusButtonSelected} onClick={handleChooseShoes} disabled={!!shoesId}>
           <div className={itemCardDiv}>
-            <ItemCard index={0} handleClickItemCard={() => {}} />
+            <ItemCard
+              index={0}
+              isSelected={null}
+              handleClickItemCard={() => {}}
+              data={{
+                brand: 'Nike',
+                image: '나이키 슈즈',
+                link: 'https://nike.com',
+                modelName: 'Air Max',
+                modelNo: '123456',
+                Productid: '1',
+              }}
+            />
           </div>
         </button>
       )}
@@ -163,6 +211,7 @@ const ShoesRegistry = () => {
       <div ref={ratingRef}>
         <StarRating />
       </div>
+      {errors.rating && <p className={errorText}>{errors.rating}</p>}
 
       <p className={questP}>신발 길이가 잘 맞나요?</p>
       <div ref={lengthRef}>
@@ -176,6 +225,7 @@ const ShoesRegistry = () => {
           selectedOption={length}
           setter={setLength}
         />
+        {errors.length && <p className={errorText}>{errors.length}</p>}
       </div>
 
       <p className={questP}>발볼 너비가 잘 맞나요?</p>
@@ -190,6 +240,7 @@ const ShoesRegistry = () => {
           selectedOption={width}
           setter={setWidth}
         />
+        {errors.width && <p className={errorText}>{errors.width}</p>}
       </div>
 
       <p className={questP}>발등 높이는 어떤가요?</p>
@@ -204,6 +255,7 @@ const ShoesRegistry = () => {
           selectedOption={height}
           setter={setHeight}
         />
+        {errors.height && <p className={errorText}>{errors.height}</p>}
       </div>
 
       <p className={questP}>밑창은 푹신한가요?</p>
@@ -218,6 +270,7 @@ const ShoesRegistry = () => {
           selectedOption={sole}
           setter={setSole}
         />
+        {errors.sole && <p className={errorText}>{errors.sole}</p>}
       </div>
 
       <p className={questP}>신발 무게는 어떤가요?</p>
@@ -232,11 +285,13 @@ const ShoesRegistry = () => {
           selectedOption={weight}
           setter={setWeight}
         />
+        {errors.weight && <p className={errorText}>{errors.weight}</p>}
       </div>
 
       <p className={questP}>이 신발의 추천 사이즈는 무엇인가요?</p>
       <Slider />
       <p className={questP}>자세한 사용기를 적어주세요.</p>
+      {errors.review && <p className={errorText}>{errors.review}</p>}
       <textarea
         ref={reviewRef}
         className={area}
@@ -245,7 +300,7 @@ const ShoesRegistry = () => {
         onChange={e => setReview(e.target.value)}
       />
       <div className={buttonDiv}>
-        <Button text="입력 완료" onClick={handleSubmit} />
+        <Button text={shoesId ? '수정 완료' : '입력 완료'} onClick={handleSubmit} />
       </div>
     </div>
   );

@@ -9,7 +9,7 @@ const OnBoarding = () => {
   const navigate = useNavigate();
 
   const handlePageMove = () => {
-    navigate('/onboarding2');
+    navigate('/login');
   };
 
   const handleNextSlide = () => {
