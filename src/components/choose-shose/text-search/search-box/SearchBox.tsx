@@ -9,24 +9,59 @@ import {
   SearchBox_searchIcon,
 } from './searchbox.css';
 import { useNavigate } from 'react-router-dom';
+import useTextSearchStore from '../../../../stores/useTextSearchStore';
+import { useMutation } from '@tanstack/react-query';
+import { textShoseSearchAPI } from '../../../../api/searchRequests';
+import { TProduct } from '../../../../types/product';
+import useProductStore from '../../../../stores/useProductsStore';
 
-const SearchBox = ({
-  text,
-  handleSubmitSearch,
-  handleChangeText,
-  handleFocusSearchBox,
-}: {
-  text: string;
-  handleSubmitSearch: (e: React.FormEvent<HTMLFormElement>) => void;
-  handleChangeText: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleFocusSearchBox: (bol: boolean) => void;
-}) => {
+const SearchBox = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isScrollingDown, setIsScrollingDown] = useState(false);
+  const { text, postText, setState, handleSubmitSearch, handleFocusSearchBox } = useTextSearchStore();
+  const { setProducts } = useProductStore();
+
   const navigate = useNavigate();
 
-  let lastScrollY = 0;
+  const handleTextSearchPost = useMutation({
+    mutationFn: (data: string) => {
+      setState({ isLoading: true, isSubmit: true });
+      return textShoseSearchAPI(data);
+    },
+    onSuccess: response => {
+      console.log('키워드 전송 성공');
 
+      const products: TProduct[] = response.data.products;
+      setProducts(products);
+      setState({ isLoading: false, postText: text });
+    },
+    onError: error => {
+      console.error('이미지 서칭 실패:', error);
+    },
+    onSettled: () => {
+      console.log('결과에 관계없이 무언가 실행됨');
+    },
+  });
+
+  const handleNavigation = () => {
+    navigate('/image-search');
+  };
+
+  const handleSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (text !== postText) {
+      handleTextSearchPost.mutate(text);
+      handleSubmitSearch(e);
+    }
+    setState({ focus: false });
+    inputRef.current?.blur();
+  };
+
+  const handleClickSearchIcon = () => {
+    inputRef.current?.focus();
+  };
+
+  let lastScrollY = 0;
   const handleScroll = () => {
     if (window.scrollY > lastScrollY) {
       setIsScrollingDown(true);
@@ -36,21 +71,9 @@ const SearchBox = ({
     lastScrollY = window.scrollY;
   };
 
-  const handleClickImage = () => {
-    inputRef.current?.focus();
-  };
-
-  const handleNavigation = () => {
-    navigate('/image-search');
-  };
-
-  const handleSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
-    handleSubmitSearch(e);
-    inputRef.current?.blur();
-  };
-
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
+    inputRef.current?.focus();
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
@@ -60,15 +83,14 @@ const SearchBox = ({
     <>
       <div className={`${SearchBox_Background} ${isScrollingDown ? SearchBox_Hide : ''}`}>
         <form onSubmit={handleSubmitForm} className={SearchBox_Container}>
-          <img className={SearchBox_searchIcon} src={search} alt="search_icon" onClick={handleClickImage} />
+          <img className={SearchBox_searchIcon} src={search} alt="search_icon" onClick={handleClickSearchIcon} />
           <input
             className={SearchBox_Box}
             type="text"
             placeholder="신발이름, 모델명 검색"
             value={text}
-            onChange={handleChangeText}
+            onChange={e => setState({ text: e.target.value })}
             onFocus={() => handleFocusSearchBox(true)}
-            onBlur={() => handleFocusSearchBox(false)}
             name="searchText"
             ref={inputRef}
           />
