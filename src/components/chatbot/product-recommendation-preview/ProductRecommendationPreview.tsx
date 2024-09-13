@@ -8,14 +8,17 @@ import { productRecommendPreviewContainer, productRecommendPreviewIcon, productR
 interface ProductRecommendationPreviewProps {
   products: TProduct[];
   id: string;
+  onMoreClick: () => void;
+
 }
 
-const ProductRecommendationPreview = ({ products = [], id }: ProductRecommendationPreviewProps) => {
+const ProductRecommendationPreview = ({ products = [], id, onMoreClick }: ProductRecommendationPreviewProps) => {
   const { setIsOpen, setIsShareModalOpen, setShareModalId } = useModalStore()
 
   const previewProducts = products.slice(0, 2);
 
   const handleOpenModal = () => {
+    onMoreClick()
     setIsOpen(true)
   }
 

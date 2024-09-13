@@ -49,10 +49,12 @@ type ChatItem = {
 
 const LoginHello = () => {
   const { setProducts } = useProductStore.getState();
-  const { selectedBrand, setBrands } = useBrandStore();
+  const { selectedBrand, setBrands, setSelectedBrand } = useBrandStore();
   const { isShareModalOpen } = useModalStore()
   const [currentKeywords, setCurrentKeywords] = useState<string>('');
   const [chatHistory, setChatHistory] = useState<ChatItem[]>([]);
+  const [showProductRecommendation, setShowProductRecommendation] = useState(false);
+  const [selectedChatItemId, setSelectedChatItemId] = useState<string | null>(null);
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
   // Firebase에서 채팅 기록 불러오기
   useEffect(() => {
@@ -140,6 +142,30 @@ const LoginHello = () => {
     }
   }, [chatHistory]);
 
+  const handleBrandClick = (brand: string) => {
+    setSelectedBrand(brand);
+    setShowProductRecommendation(false);
+  };
+
+  const handleProductMoreClick = (chatItemId: string) => {
+    setShowProductRecommendation(true);
+    setSelectedBrand(null);
+    setSelectedChatItemId(chatItemId);
+
+    const selectedChat = chatHistory.find(chat => chat.id === chatItemId);
+    if (selectedChat && selectedChat.products) {
+      setProducts(selectedChat.products);
+    }
+  };
+
+  const getSelectedKeywords = () => {
+    const selectedChat = chatHistory.find(chat => chat.id === selectedChatItemId);
+    return selectedChat ? selectedChat.keywords : '';
+  };
+
+
+
+
   if (isRecommendQuestionLoading) return <LoadingPage />;
   if (recommendQuestionError) return <div>error:{recommendQuestionError?.message}</div>;
 
@@ -164,12 +190,12 @@ const LoginHello = () => {
               <ChatBotBubble bubbleContent={chat.botResponse} />
               {chat.brands && chat.brands.length > 0 && chat.id && (
                 <div style={{ marginLeft: '28px' }}>
-                  <BrandRecommendation brands={chat.brands} id={chat.id} />
+                  <BrandRecommendation brands={chat.brands} id={chat.id} onBrandClick={handleBrandClick} />
                 </div>
               )}
               {chat.products && chat.products.length > 0 && chat.id && (
                 <div style={{ marginLeft: '28px' }}>
-                  <ProductRecommendationPreview products={chat.products} id={chat.id} />
+                  <ProductRecommendationPreview products={chat.products} id={chat.id} onMoreClick={() => handleProductMoreClick(chat.id)} />
                 </div>
               )}
             </Fragment>
@@ -196,7 +222,9 @@ const LoginHello = () => {
 
       {chatHistory.length > 0 && (
         <Modal height="700px" initialHeight="25px">
-          {selectedBrand ? <BrandPLP /> : <ProductRecommendation keywords={currentKeywords} />}
+          {selectedBrand ? <BrandPLP /> :
+            showProductRecommendation ? <ProductRecommendation keywords={getSelectedKeywords()} /> :
+              null}
         </Modal>
       )}
       <ChatbotSearchInput chatCompletionsMutation={chatCompletionsMutation} />
