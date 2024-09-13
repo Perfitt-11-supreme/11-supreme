@@ -12,7 +12,7 @@ export const container = style({
 export const descP = style({
   width: '100%',
   padding: '6px 0 0 16px',
-  fontWeight: '600',
+  fontWeight: 'bold',
   fontSize: '15px',
   lineHeight: '18px',
 });
@@ -69,11 +69,17 @@ export const area = style({
   borderRadius: '6px',
   fontSize: '15px',
   padding: '16px',
-  margin: '6px 0 32px 0',
+  margin: '6px 0 20px 0',
   lineHeight: '24px',
   letterSpacing: '-0.003em',
 });
 
 export const buttonDiv = style({
   marginBottom: '34px',
+});
+
+export const errorText = style({
+  width: '343px',
+  color: 'red',
+  fontSize: '12px',
 });

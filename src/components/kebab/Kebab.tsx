@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import {
   menuContainer,
   kebabButton,
@@ -48,17 +48,10 @@ const KebabMenu = () => {
     }
   };
 
-  const editData = async (shoesId: string, updateFields: any) => {
-    try {
-      await updateDoc(doc(db, 'myshoes', shoesId), updateFields);
-      console.log('수정 완료');
-    } catch (e) {
-      console.error('수정 실패');
-    }
-  };
-
   const handleEdit = () => {
-    // editData(shoesId, updateFields);
+    if (shoesId) {
+      navigate(`/shoes-registry/${shoesId}`);
+    }
     console.log('수정 버튼 클릭됨');
   };
 

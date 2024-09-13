@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useShoesRegistryStore } from '../../stores/useRegistryStore';
 import {
   brandP,
   container,
@@ -20,7 +19,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase/firebase';
 
 const ShoesInfo = () => {
-  const [shoeData, setShoeData] = useState<any>(null); // 신발 데이터를 상태로 저장
+  const [shoeData, setShoeData] = useState<any>(null);
   const { shoesId } = useParams(); // URL 파라미터에서 ID 가져오기
 
   useEffect(() => {
