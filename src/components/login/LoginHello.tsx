@@ -199,7 +199,7 @@ const LoginHello = () => {
           {selectedBrand ? <BrandPLP /> : <ProductRecommendation keywords={currentKeywords} />}
         </Modal>
       )}
-      <ChatbotSearchInput />
+      <ChatbotSearchInput chatCompletionsMutation={chatCompletionsMutation} />
 
       {isShareModalOpen && <ShareModal />}
     </div>
