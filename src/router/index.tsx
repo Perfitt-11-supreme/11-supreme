@@ -16,6 +16,7 @@ import Mypage from '../pages/mypage/Mypage';
 import ViewedHistoryPage from '../pages/viewed-history-page/ViewedHistoryPage';
 import EmailLogin from '../components/login/emaillogin/EmailLogin';
 import OnBoarding from '../components/onboarding/OnBoarding';
+import FootInfo from '../components/foot-info/FootInfo';
 
 export const router = createBrowserRouter([
   {
@@ -85,5 +86,9 @@ export const router = createBrowserRouter([
   {
     path: '/onboarding',
     element: <OnBoarding />,
+  },
+  {
+    path: '/footinfo',
+    element: <FootInfo />,
   },
 ]);

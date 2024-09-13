@@ -102,53 +102,12 @@ export const sidemenuListsBox = style({
 });
 
 export const sidemenuMypageMoveContainer = style({
-  marginTop: '195px',
   display: 'flex',
   flexDirection: 'column',
   gap: '14px',
-});
-export const sidemenuMypageLine = style({
-  margin: '0',
-  height: '1px',
-  border: 'none',
-  backgroundColor: theme.color.cool_gray100,
-  selectors: {
-    '&:first-child': {
-      marginBottom: '2px',
-    },
-    '&:last-child': {
-      marginTop: '2px',
-    },
-  },
-});
-export const sidemenuMypageMoveButton = style({
-  fontWeight: '400',
-  fontSize: '16px',
-  height: '24px',
-  lineHeight: '24px',
-  letterSpacing: '-0.003em',
-  backgroundColor: theme.color.white,
-  border: 'none',
-  cursor: 'pointer',
-});
-export const sidemenuUserProfileBox = style({
-  width: '100%',
-});
-export const sidemenuUserProfileButton = style({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '8px',
-  backgroundColor: theme.color.white,
-  border: 'none',
-  cursor: 'pointer',
-});
-export const sidemenuUserProfileIcon = style({
-  width: '30px',
-  height: '30px',
-});
-export const sidemenuUserProfileText = style({
-  fontWeight: '600',
-  fontSize: '16px',
-  lineHeight: '20px',
-  letterSpacing: '-0.003em',
+  paddingBottom: '14px',
+  position: 'absolute',
+  bottom: '15px',
+  right: '16px',
+  left: '16px',
 });

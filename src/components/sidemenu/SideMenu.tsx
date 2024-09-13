@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { hamburger_menu, sidemenu_list, sidemenu_plus, user_profile } from '../../assets/assets';
+import { useEffect, useState } from 'react';
+import { hamburger_menu, sidemenu_list, sidemenu_plus } from '../../assets/assets';
 import SidemenuList from '../../components/sidemenu/SidemenuList';
 import {
   hamburgerIconBox,
@@ -12,26 +12,38 @@ import {
   sidemenuListsBox,
   sidemenuListsTitle,
   plusButtonBox,
-  sidemenuMypageMoveButton,
-  sidemenuMypageLine,
   sidemenuMypageMoveContainer,
-  sidemenuUserProfileIcon,
-  sidemenuUserProfileText,
-  sidemenuUserProfileBox,
-  sidemenuUserProfileButton,
 } from './sidemenu.css';
+import SidemenuMypageLinks from './SidemenuMypageLinks';
+import { useNavigate } from 'react-router-dom';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import Button from '../common/button/Button';
 
 type SideMenuProps = {
   onClose: () => void;
 };
 
 const SideMenu = ({ onClose }: SideMenuProps) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+  const auth = getAuth();
+
   useEffect(() => {
     document.body.style.overflow = 'hidden';
+    const unsubscribe = onAuthStateChanged(auth, user => {
+      setIsLoggedIn(!!user); // 사용자가 로그인되어 있으면 true, 아니면 false
+    });
+
     return () => {
       document.body.style.overflow = 'auto';
+      unsubscribe(); // Firebase 인증 상태 변경 구독 해제
     };
-  }, []);
+  }, [auth]);
+
+  const handleLoginClick = () => {
+    onClose(); // 모달 닫기
+    navigate('/login'); // 로그인 페이지로 이동
+  };
 
   return (
     <>
@@ -64,28 +76,9 @@ const SideMenu = ({ onClose }: SideMenuProps) => {
               <SidemenuList iconSrc={sidemenu_list} text="20대 여성이 많이 찾는 브랜드" />
             </ul>
           </article>
-          {/* mypage 링크 */}
+          {/* mypage 링크 또는 로그인 버튼 */}
           <article className={sidemenuMypageMoveContainer}>
-            <hr className={sidemenuMypageLine} />
-            <div>
-              <button className={sidemenuMypageMoveButton}>좋아요</button>
-              <span>|</span>
-              <button className={sidemenuMypageMoveButton}>최근 본</button>
-            </div>
-            <div>
-              <button className={sidemenuMypageMoveButton}>신발장</button>
-            </div>
-            <div>
-              <button className={sidemenuMypageMoveButton}>내 발 정보</button>
-            </div>
-            <hr className={sidemenuMypageLine} />
-
-            <div className={sidemenuUserProfileBox}>
-              <button className={sidemenuUserProfileButton}>
-                <img className={sidemenuUserProfileIcon} src={user_profile} alt="user_profile" />
-                <span className={sidemenuUserProfileText}>김펄핏</span>
-              </button>
-            </div>
+            {isLoggedIn ? <SidemenuMypageLinks /> : <Button onClick={handleLoginClick} text="로그인" width="100%" />}
           </article>
         </div>
       </section>
