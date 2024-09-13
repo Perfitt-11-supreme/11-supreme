@@ -1,4 +1,13 @@
-import { style } from '@vanilla-extract/css';
+import { style, keyframes } from '@vanilla-extract/css';
+
+const rotation = keyframes({
+  '0%': {
+    transform: 'rotate(0deg)',
+  },
+  '100%': {
+    transform: 'rotate(360deg)',
+  },
+});
 
 export const IsLoading_Window = style({
   position: 'absolute',
@@ -11,6 +20,7 @@ export const IsLoading_Window = style({
 
 export const IsLoading_Circle = style({
   position: 'absolute',
+  animation: `${rotation} 2s linear infinite`,
 });
 
 export const IsLoading_Text = style({

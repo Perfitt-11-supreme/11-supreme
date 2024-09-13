@@ -1,6 +1,5 @@
 import { circle } from '../../../assets/assets';
-import './isloading.css';
-import { IsLoading_Circle, IsLoading_MarginTop, IsLoading_Text, IsLoading_Window } from './isloading.css.ts';
+import { IsLoading_Circle, IsLoading_MarginTop, IsLoading_Text, IsLoading_Window } from './isloading.css';
 
 export default function IsLoading({ text, isMargin }: { text: string; isMargin?: boolean }) {
   return (
