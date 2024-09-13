@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { hamburger_menu, sidemenu_list, sidemenu_plus, user_profile } from '../../assets/assets';
 import SidemenuList from '../../components/sidemenu/SidemenuList';
 import {
@@ -20,14 +21,25 @@ import {
   sidemenuUserProfileButton,
 } from './sidemenu.css';
 
-const SideMenu = () => {
+type SideMenuProps = {
+  onClose: () => void;
+};
+
+const SideMenu = ({ onClose }: SideMenuProps) => {
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
+
   return (
     <>
-      <section className={sidemenuDimmed}>
-        <div className={sidemenuContainer}>
+      <section className={sidemenuDimmed} onClick={onClose}>
+        <div className={sidemenuContainer} onClick={e => e.stopPropagation()}>
           {/* 헤더 */}
           <article className={sidemenuHeaderContainer}>
-            <button className={hamburgerIconBox}>
+            <button className={hamburgerIconBox} onClick={onClose}>
               <img src={hamburger_menu} alt="hamburger_menu" />
             </button>
           </article>
