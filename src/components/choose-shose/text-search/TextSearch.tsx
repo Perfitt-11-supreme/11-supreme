@@ -12,7 +12,7 @@ const TextSearch = () => {
   const { setState } = useTextSearchStore();
   useEffect(() => {
     setProducts([]);
-    setState({ focus: true, text: '', remove: false, isLoading: true, isSubmit: false });
+    setState({ focus: true, text: '', postText: '', remove: false, isLoading: true, isSubmit: false });
   }, []);
 
   return (
