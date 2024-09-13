@@ -21,21 +21,21 @@ import ItemCard from '../../../../itemcard/ItemCard';
 import useImageSearchStore from '../../../../../../stores/useImageSearchStore';
 import { ImageShoseSearchAPI } from '../../../../../../api/searchRequests';
 import { useMutation } from '@tanstack/react-query';
-import { ProductData } from '../../../../../../types/data';
-import useProductStore from '../../../../../../stores/useProductStroe';
+import { TProduct } from '../../../../../../types/product';
+import useProductStore from '../../../../../../stores/useProductsStore';
 
 const SuccesProduct = () => {
   const [isSelected, setIsSelected] = useState<number | null>(null);
   const { isSimilar, setIsState, capturedImage, brand, modelName, handleClickAgain } = useImageSearchStore();
-  const { setData, getData } = useProductStore();
+  const { products, setProducts } = useProductStore();
 
   const handleImageSearchPost = useMutation({
     mutationFn: (data: string) => ImageShoseSearchAPI(data),
     onSuccess: response => {
       console.log('키워드 전송 성공');
 
-      const products: ProductData[] = response.data.products;
-      setData({ getData: products });
+      const products: TProduct[] = response.data.products;
+      setProducts(products);
       setIsState({ isSimilar: true });
     },
     onError: error => {
@@ -59,13 +59,13 @@ const SuccesProduct = () => {
         <>
           <div className={Product_SimilarProductContainer}>
             <div className={Product_ScrollableContent}>
-              {getData!.map((_, index) => (
+              {products!.map((product, index) => (
                 <ItemCard
                   key={index}
                   index={index}
                   isSelected={isSelected}
                   handleClickItemCard={handleClickItemCard}
-                  data={getData![index]}
+                  data={product}
                 />
               ))}
             </div>

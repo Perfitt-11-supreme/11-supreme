@@ -1,5 +1,5 @@
 import { useShoesRegistryStore } from '../../../stores/useRegistryStore';
-import { ProductData } from '../../../types/data';
+import { TProduct } from '../../../types/product';
 import {
   ItemCard_Container,
   ItemCard_Frame,
@@ -18,7 +18,7 @@ const ItemCard = ({
   index: number;
   isSelected?: number | null;
   handleClickItemCard: (index: number) => void;
-  data: ProductData;
+  data: TProduct;
 }) => {
   const setSelectedItem = useShoesRegistryStore(state => state.setSelectedItem);
 
