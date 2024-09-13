@@ -1,15 +1,8 @@
-import { circle } from '../../../../../assets/assets.ts';
-import {
-  AnalyzeItem_AnalyzeCircle,
-  AnalyzeItem_AnalyzerWindow,
-  AnalyzeItem_AnalyzerContainerMove,
-  AnalyzeItem_AnalyzeText,
-  AnalyzeItem_Container,
-} from './analyzeitem.css.ts';
-import './analyzeitem.css';
+import { AnalyzeItem_AnalyzerContainerMove, AnalyzeItem_Container } from './analyzeitem.css.ts';
 import { useEffect, useRef } from 'react';
 import SuccesProduct from './succesproduct/SuccesProduct.tsx';
 import useImageSearchStore from '../../../../../stores/useImageSearchStore.ts';
+import IsLoading from '../../../isLoading/IsLoading.tsx';
 
 const AnalyzeItem = () => {
   const divRef = useRef<HTMLDivElement>(null);
@@ -42,14 +35,7 @@ const AnalyzeItem = () => {
             : AnalyzeItem_AnalyzerContainerMove.hidden
         }`}
       >
-        {isSuccess ? (
-          <SuccesProduct />
-        ) : (
-          <div className={AnalyzeItem_AnalyzerWindow}>
-            <img className={`rotatingImage ${AnalyzeItem_AnalyzeCircle}`} src={circle} alt="analyze" />
-            <p className={AnalyzeItem_AnalyzeText}>분석중</p>
-          </div>
-        )}
+        {isSuccess ? <SuccesProduct /> : <IsLoading text="분석중" />}
       </div>
     </>
   );

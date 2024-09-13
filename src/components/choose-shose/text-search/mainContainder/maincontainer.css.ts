@@ -53,6 +53,7 @@ export const MainContainer_NoRecord = style({
 
 export const MainContainer_RecentRecord = style({
   height: '24px',
+  margin: '0 7vw',
   marginTop: '10px',
   fontWeight: '400',
   fontSize: '15px',

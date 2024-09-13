@@ -4,5 +4,6 @@ export type TProduct = {
   link: string;
   modelName: string;
   modelNo: string;
-  productId: string;
+  productId?: string;
+  gender?: string;
 };
