@@ -3,15 +3,17 @@ import { theme } from '../../../styles/theme';
 
 export const shareWrap = style({
   width: '100%',
-  height: '100vh',
+  height: '100%',
   backgroundColor:'rgba(0,0,0,0.5)',
   display: 'flex',
   justifyContent: "center",
-  alignItems:'center'
+  alignItems: 'center',
+  position: 'absolute',
+  top:'0',
+  zIndex:99999
 })
 export const shareContainer = style({
   width: '320px',
-  height: '306px',
   padding: '16px',
   borderRadius: '16px',
   backgroundColor: theme.color.white,

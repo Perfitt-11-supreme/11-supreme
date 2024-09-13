@@ -24,7 +24,7 @@ export const router = createBrowserRouter([
     element: <ChatBotPage />,
   },
   {
-    path: '/test',
+    path: '/share/:id',
     element: <SharePage />,
   },
   {
