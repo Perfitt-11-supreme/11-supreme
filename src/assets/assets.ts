@@ -14,15 +14,18 @@ import brand_adidas from './brand_adidas.svg';
 import brand_crocs from './brand_crocs.svg';
 import brand_nike from './brand_nike.svg';
 import camera from './camera.svg';
+import chatCircle from './chatCircle.svg';
 import checked from './checked.svg';
 import circle from './circle.svg';
 import close from './close.svg';
+import copy_left from './copy_left.svg';
 import deleted from './delete.svg';
 import detail from './detail.svg';
 import empty_star from './empty_star.svg';
 import export_icon from './export_icon.svg';
 import filled_star from './filled_star.svg';
 import gallery from './gallery.svg';
+import google from './google.svg';
 import hamburger_menu from './hamburger-menu.svg';
 import heart_empty from './heart_empty.svg';
 import heart_filled from './heart_filled.svg';
@@ -30,6 +33,8 @@ import hoka from './hoka.svg';
 import info from './info.svg';
 import kakao from './kakao.svg';
 import kebab from './kebab.svg';
+import link_angled from './link_angled.svg';
+import loading from './loading.svg';
 import modify from './modify.svg';
 import more_arrow from './more_arrow.svg';
 import my_foot from './my_foot.svg';
@@ -75,17 +80,15 @@ import user_profile from './user_profile.svg';
 import user_profile_upload from './user_profile_upload.svg';
 import warning from './warning.svg';
 import warning2 from './warning2.svg';
-import google from './google.svg';
-
 export {
   again, ai, analyze,
   analyze2, arrow_down, arrow_right, arrow_up, asics, back_arrow,
   bar,
   brand_abcmart, brand_adidas,
   brand_crocs,
-  brand_nike, camera, checked, circle, close, deleted, detail, empty_star, export_icon, filled_star, gallery, hamburger_menu,
+  brand_nike, camera, chatCircle, checked, circle, close, copy_left, deleted, detail, empty_star, export_icon, filled_star, gallery, google, hamburger_menu,
   heart_empty,
-  heart_filled, hoka, info, kakao, kebab, modify, more_arrow, my_foot,
+  heart_filled, hoka, info, kakao, kebab, link_angled, loading, modify, more_arrow, my_foot,
   my_foot_info, mypage_arrow,
   mypage_heart,
   mypage_shose_room, naver, noshoes, onboarding1,
@@ -100,7 +103,6 @@ export {
   tip3,
   tip4,
   tip5, tip6, tooltip, upload, user, user_profile, user_profile_upload, warning,
-  warning2,
-  google
+  warning2
 };
 

@@ -188,6 +188,7 @@ const LoginHello = () => {
         </Modal>
       )}
       <ChatbotSearchInput />
+
     </div>
   );
 };
