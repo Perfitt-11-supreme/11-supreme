@@ -10,6 +10,7 @@ export const fullContainer = style({
   boxSizing: 'border-box',
   justifyContent: 'space-between',
   overflow: 'hidden',
+  position:'relative'
 });
 
 export const batteryMargin = style({
@@ -50,7 +51,6 @@ export const recommendedquestioncardContainer = style({
 
 export const loginHelloContainer = style({
   height:'100%',
-  display: 'flex',
-  flexDirection: 'column',
-  overflowY:'scroll'
+  overflowY: 'scroll',
+  marginBottom:'30px'
 })
