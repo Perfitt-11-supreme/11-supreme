@@ -1,10 +1,10 @@
 import { TButton } from '../../../types/button';
 import { button } from './button.css';
 
-const Button = ({ text, onClick }: TButton) => {
+const Button = ({ text, onClick, width = '343px' }: TButton) => {
   return (
     <>
-      <button className={button} onClick={onClick}>
+      <button className={button} onClick={onClick} style={{ width }}>
         {text}
       </button>
     </>
