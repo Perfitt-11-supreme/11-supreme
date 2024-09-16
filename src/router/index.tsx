@@ -1,10 +1,11 @@
 import { createBrowserRouter } from 'react-router-dom';
-import ProductFitComment from '../components/chatbot/product-fit-comment/ProductFitComment';
 import ImageSearch from '../components/choose-shose/image-search/ImageSearch';
 import TextSearch from '../components/choose-shose/text-search/TextSearch';
 import EmptyShoesRoom from '../components/empty-shoes-room/EmptyShoesRoom';
 import Login from '../components/login/Login';
 import LoginHello from '../components/login/LoginHello';
+import EmailLogin from '../components/login/emaillogin/EmailLogin';
+import OnBoarding from '../components/onboarding/OnBoarding';
 import ShoesInfo from '../components/shoes-info/ShoesInfo';
 import ShoesRegistry from '../components/shoes-registry/ShoesRegistry';
 import SignUpInfoInputValid from '../components/signup/infoInput/SignUpInfoInputValid';
@@ -17,6 +18,8 @@ import ViewedHistoryPage from '../pages/viewed-history-page/ViewedHistoryPage';
 import EmailLogin from '../components/login/emaillogin/EmailLogin';
 import OnBoarding from '../components/onboarding/OnBoarding';
 import FootInfo from '../components/foot-info/FootInfo';
+import SharePage from '../pages/share-page/SharePage';
+import SideMenu from '../pages/sidemenu/SideMenu';
 
 export const router = createBrowserRouter([
   {
@@ -24,8 +27,8 @@ export const router = createBrowserRouter([
     element: <ChatBotPage />,
   },
   {
-    path: '/test',
-    element: <ProductFitComment />,
+    path: '/share/:id',
+    element: <SharePage />,
   },
   {
     path: '/redirect',

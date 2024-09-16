@@ -53,4 +53,11 @@ export const uploadIconBox = style({
   cursor: 'pointer',
   position: 'absolute',
   right: '4px',
+  background: 'none', /* 배경 없음 */
+  border: 'none', /* 테두리 없음 */
+  padding: 0, /* 패딩 없음 */
+  margin: 0, /* 마진 없음 */
+  font: 'inherit', /* 상속된 폰트 사용 */
+  color: 'inherit', /* 상속된 텍스트 색상 사용 */
+  outline: 'none', /* 포커스 아웃라인 없음 */
 });

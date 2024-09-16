@@ -7,6 +7,7 @@ import { hamburger_menu } from '../../assets/assets';
 import { database } from '../../firebase/firebase';
 import LoadingPage from '../../pages/loading-page/loadingPage';
 import useBrandStore from '../../stores/useBrandStore';
+import useModalStore from '../../stores/useModalStore';
 import useProductStore from '../../stores/useProductsStore';
 import { TProduct } from '../../types/product';
 import BrandPLP from '../chatbot/brand-plp/BrandPLP';
@@ -19,6 +20,7 @@ import ChatbotSearchInput from '../common/chatbot-search-input/ChatbotSearchInpu
 import Header from '../common/header/Header';
 import Modal from '../common/modal/Modal';
 import RecommendedQuestionCard from '../common/recommended-question-card/RecommendedQuestionCard';
+import ShareModal from '../common/share-modal/ShareModal';
 import { batteryMargin, fullContainer, loginHelloContainer, recommendedquestioncardContainer } from './login.css';
 import ChatBotBox from './loginchatbot/chatbotbox/ChatBotBox';
 import RecommendBox from './loginchatbot/recommendbox/RecommendBox';
@@ -37,6 +39,7 @@ type Brand = {
 };
 
 type ChatItem = {
+  id: string;
   userQuestion: string;
   botResponse: string;
   products: TProduct[] | null;
@@ -46,20 +49,28 @@ type ChatItem = {
 
 const LoginHello = () => {
   const { setProducts } = useProductStore.getState();
-  const { selectedBrand } = useBrandStore();
-  const { setBrands } = useBrandStore();
+  const { selectedBrand, setBrands, setSelectedBrand } = useBrandStore();
+  const { isShareModalOpen } = useModalStore()
   const [currentKeywords, setCurrentKeywords] = useState<string>('');
   const [chatHistory, setChatHistory] = useState<ChatItem[]>([]);
+  const [showProductRecommendation, setShowProductRecommendation] = useState(false);
+  const [selectedChatItemId, setSelectedChatItemId] = useState<string | null>(null);
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
   // Firebase에서 채팅 기록 불러오기
   useEffect(() => {
     const chatRef = ref(database, 'chatHistory');
     onValue(chatRef, snapshot => {
-      const data = snapshot.val();
-      if (data) {
-        const chatItems: ChatItem[] = Object.values(data);
+      const chatItems: ChatItem[] = [];
+      snapshot.forEach(childSnapshot => {
+        const data = childSnapshot.val();
+        const id = childSnapshot.key; // 고유 키를 가져옴
+        if (id) { // id가 존재할 때만 추가
+          chatItems.push({ ...data, id }); // 데이터와 키를 함께 저장
+        }
+      });
+
+      if (chatItems.length > 0) {
         setChatHistory(chatItems);
-        // 마지막 채팅 아이템의 products를 Zustand store에 설정
         const lastChatItem = chatItems[chatItems.length - 1];
         if (lastChatItem && lastChatItem.products) {
           setProducts(lastChatItem.products);
@@ -71,6 +82,7 @@ const LoginHello = () => {
       }
     });
   }, [setProducts, setBrands]);
+
 
   // 추천 질문 불러오는 함수
   const {
@@ -101,6 +113,7 @@ const LoginHello = () => {
       console.log('채팅 응답 성공:', response);
 
       const newChatItem: ChatItem = {
+        id: push(ref(database, 'chatHistory')).key || '',
         userQuestion: question,
         botResponse: response.data.message,
         products: response.data.products || null,
@@ -129,6 +142,30 @@ const LoginHello = () => {
     }
   }, [chatHistory]);
 
+  const handleBrandClick = (brand: string) => {
+    setSelectedBrand(brand);
+    setShowProductRecommendation(false);
+  };
+
+  const handleProductMoreClick = (chatItemId: string) => {
+    setShowProductRecommendation(true);
+    setSelectedBrand(null);
+    setSelectedChatItemId(chatItemId);
+
+    const selectedChat = chatHistory.find(chat => chat.id === chatItemId);
+    if (selectedChat && selectedChat.products) {
+      setProducts(selectedChat.products);
+    }
+  };
+
+  const getSelectedKeywords = () => {
+    const selectedChat = chatHistory.find(chat => chat.id === selectedChatItemId);
+    return selectedChat ? selectedChat.keywords : '';
+  };
+
+
+
+
   if (isRecommendQuestionLoading) return <LoadingPage />;
   if (recommendQuestionError) return <div>error:{recommendQuestionError?.message}</div>;
 
@@ -149,15 +186,16 @@ const LoginHello = () => {
           {chatHistory.map((chat, index) => (
             <Fragment key={index}>
               <UserBubble bubbleContent={chat.userQuestion} />
+
               <ChatBotBubble bubbleContent={chat.botResponse} />
-              {chat.brands && chat.brands.length > 0 && (
-                <div>
-                  <BrandRecommendation brands={chat.brands} />
+              {chat.brands && chat.brands.length > 0 && chat.id && (
+                <div style={{ marginLeft: '28px' }}>
+                  <BrandRecommendation brands={chat.brands} id={chat.id} onBrandClick={handleBrandClick} />
                 </div>
               )}
-              {chat.products && chat.products.length > 0 && (
-                <div>
-                  <ProductRecommendationPreview products={chat.products} />
+              {chat.products && chat.products.length > 0 && chat.id && (
+                <div style={{ marginLeft: '28px' }}>
+                  <ProductRecommendationPreview products={chat.products} id={chat.id} onMoreClick={() => handleProductMoreClick(chat.id)} />
                 </div>
               )}
             </Fragment>
@@ -184,10 +222,14 @@ const LoginHello = () => {
 
       {chatHistory.length > 0 && (
         <Modal height="700px" initialHeight="25px">
-          {selectedBrand ? <BrandPLP /> : <ProductRecommendation keywords={currentKeywords} />}
+          {selectedBrand ? <BrandPLP /> :
+            showProductRecommendation ? <ProductRecommendation keywords={getSelectedKeywords()} /> :
+              null}
         </Modal>
       )}
-      <ChatbotSearchInput />
+      <ChatbotSearchInput chatCompletionsMutation={chatCompletionsMutation} />
+
+      {isShareModalOpen && <ShareModal />}
     </div>
   );
 };

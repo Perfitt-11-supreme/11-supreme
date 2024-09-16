@@ -7,17 +7,26 @@ import { brandRecommendIcon } from "../brand-recommendation/brandRecommendation.
 import { productRecommendPreviewContainer, productRecommendPreviewIcon, productRecommendPreviewIconWrap, productRecommendPreviewMore, productRecommendPreviewMoreIcon, productRecommendPreviewWrap } from "./productRecommendationPreview.css";
 interface ProductRecommendationPreviewProps {
   products: TProduct[];
+  id: string;
+  onMoreClick: () => void;
+
 }
 
-const ProductRecommendationPreview = ({ products = [] }: ProductRecommendationPreviewProps) => {
-  const { setIsOpen } = useModalStore()
-
+const ProductRecommendationPreview = ({ products = [], id, onMoreClick }: ProductRecommendationPreviewProps) => {
+  const { setIsOpen, setIsShareModalOpen, setShareModalId } = useModalStore()
 
   const previewProducts = products.slice(0, 2);
 
   const handleOpenModal = () => {
+    onMoreClick()
     setIsOpen(true)
   }
+
+  const handleOpenShareModal = () => {
+    setShareModalId(id);
+    setIsShareModalOpen(true)
+  }
+
   return (
     <>
       <div className={productRecommendPreviewWrap}>
@@ -43,7 +52,7 @@ const ProductRecommendationPreview = ({ products = [] }: ProductRecommendationPr
           </div>
         </motion.ul>
         <div className={productRecommendPreviewIconWrap}>
-          <img src={export_icon} alt="" className={productRecommendPreviewIcon} />
+          <img src={export_icon} alt="" className={productRecommendPreviewIcon} onClick={handleOpenShareModal} />
           <img src={thumbs_down} alt="" className={brandRecommendIcon} />
         </div>
 
