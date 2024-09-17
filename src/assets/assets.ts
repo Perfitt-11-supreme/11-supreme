@@ -1,84 +1,77 @@
-import again from './again.svg';
-import ai from './ai.svg';
-import analyze from './analyze.svg';
-import analyze2 from './analyze2.svg';
-import arrow_down from './arrow_down.svg';
-import arrow_right from './arrow_right.svg';
-import arrow_up from './arrow_up.svg';
-import asics from './asics.svg';
-import back_arrow from './back_arrow.svg';
-import bar from './bar.svg';
-import brand_abcmart from './brand_abcmart.svg';
-import brand_adidas from './brand_adidas.svg';
-import brand_crocs from './brand_crocs.svg';
-import brand_nike from './brand_nike.svg';
-import camera from './camera.svg';
-import chatCircle from './chatCircle.svg';
-import checked from './checked.svg';
-import circle from './circle.svg';
-import close from './close.svg';
-import copy_left from './copy_left.svg';
-import deleted from './delete.svg';
-import detail from './detail.svg';
-import empty_star from './empty_star.svg';
-import export_icon from './export_icon.svg';
-import filled_star from './filled_star.svg';
-import gallery from './gallery.svg';
-import google from './google.svg';
-import hamburger_menu from './hamburger-menu.svg';
-import heart_empty from './heart_empty.svg';
-import heart_filled from './heart_filled.svg';
-import hoka from './hoka.svg';
-import info from './info.svg';
-import kakao from './kakao.svg';
-import kebab from './kebab.svg';
-import link_angled from './link_angled.svg';
-import loading from './loading.svg';
-import modify from './modify.svg';
-import more_arrow from './more_arrow.svg';
-import my_foot from './my_foot.svg';
-import my_foot_info from './my_foot_info.svg';
-import mypage_arrow from './mypage_arrow.svg';
-import mypage_heart from './mypage_heart.svg';
-import mypage_shose_room from './mypage_shose_room.svg';
-import naver from './naver.svg';
-import noshoes from './noshoes.svg';
-import onboarding1 from './onboarding1.svg';
-import onboarding2 from './onboarding2.svg';
-import prefitt_symbol from './perfitt_symbol.svg';
-import perfittlogo from './perfittlogo.svg';
-import picture from './picture.svg';
-import plus from './plus.svg';
-import polygon2 from './polygon_2.svg';
-import rectangle from './rectangle.svg';
-import salomon from './salomon.svg';
-import search from './search_icon.svg';
-import select from './select.svg';
-import select_arrow20 from './select_arrow20.svg';
-import select_arrow24 from './select_arrow24.svg';
-import share from './share.svg';
-import shoes_w159 from './shoes_w159.svg';
-import shoes_w182 from './shoes_w182.svg';
-import sidemenu_delete from './sidemenu_delete.svg';
-import sidemenu_linkshare from './sidemenu_linkshare.svg';
-import sidemenu_list from './sidemenu_list.svg';
-import sidemenu_plus from './sidemenu_plus.svg';
-import small_arrow from './small_arrow.svg';
-import speech_bubble from './speech_bubble.svg';
-import thumbs_down from './thumbsDown.svg';
-import tip1 from './tip1.svg';
-import tip2 from './tip2.svg';
-import tip3 from './tip3.svg';
-import tip4 from './tip4.svg';
-import tip5 from './tip5.svg';
-import tip6 from './tip6.svg';
-import tooltip from './tooltip.svg';
-import upload from './upload.svg';
-import user from './user.svg';
-import user_profile from './user_profile.svg';
-import user_profile_upload from './user_profile_upload.svg';
-import warning from './warning.svg';
-import warning2 from './warning2.svg';
+import again from './choose-shose/again.svg';
+import ai from './common/ai.svg';
+import analyze from './foot-info/analyze.svg';
+import analyze2 from './foot-info/analyze2.svg';
+import arrow_down from './foot-info/arrow_down.svg';
+import arrow_right from './common/arrow_right.svg';
+import back_arrow from './common/back_arrow.svg';
+import bar from './common/bar.svg';
+import brand_abcmart from './common/brand_abcmart.svg';
+import brand_adidas from './common/brand_adidas.svg';
+import brand_crocs from './common/brand_crocs.svg';
+import brand_nike from './common/brand_nike.svg';
+import camera from './choose-shose/camera.svg';
+import chatCircle from './common/chatCircle.svg';
+import checked from './common/checked.svg';
+import circle from './common/circle.svg';
+import close from './common/close.svg';
+import deleted from './sidemenu/delete.svg';
+import detail from './chatbot/detail.svg';
+import empty_star from './shoes-registry/empty_star.svg';
+import export_icon from './chatbot/export_icon.svg';
+import filled_star from './common/filled_star.svg';
+import gallery from './choose-shose/gallery.svg';
+import google from './login/google.svg';
+import hamburger_menu from './header/hamburger-menu.svg';
+import heart_empty from './common/heart_empty.svg';
+import heart_filled from './common/heart_filled.svg';
+import info from './signup/info.svg';
+import kebab from './kebab/kebab.svg';
+import loading from './loading-page/loading.svg';
+import modify from './kebab/modify.svg';
+import more_arrow from './login/more_arrow.svg';
+import my_foot from './foot-info/my_foot.svg';
+import my_foot_info from './foot-info/my_foot_info.svg';
+import mypage_arrow from './mypage/mypage_arrow.svg';
+import mypage_heart from './mypage/mypage_heart.svg';
+import mypage_shose_room from './mypage/mypage_shose_room.svg';
+import noshoes from './empty-shoes-room/noshoes.svg';
+import onboarding1 from './onboarding/onboarding1.svg';
+import onboarding2 from './onboarding/onboarding2.svg';
+import prefitt_symbol from './common/perfitt_symbol.svg';
+import perfittlogo from './common/perfittlogo.svg';
+import picture from './common/picture.svg';
+import plus from './common/plus.svg';
+import polygon2 from './chatbot/polygon_2.svg';
+import rectangle from './choose-shose/rectangle.svg';
+import search from './choose-shose/search_icon.svg';
+import select from './empty-shoes-room/select.svg';
+import select_arrow20 from './common/select_arrow20.svg';
+import share from './kebab/share.svg';
+import shoes_w159 from './choose-shose/shoes_w159.svg';
+import shoes_w182 from './choose-shose/shoes_w182.svg';
+import sidemenu_delete from './sidemenu/sidemenu_delete.svg';
+import sidemenu_linkshare from './sidemenu/sidemenu_linkshare.svg';
+import sidemenu_list from './sidemenu/sidemenu_list.svg';
+import sidemenu_plus from './sidemenu/sidemenu_plus.svg';
+import small_arrow from './chatbot/small_arrow.svg';
+import speech_bubble from './chatbot/speech_bubble.svg';
+import thumbs_down from './chatbot/thumbsDown.svg';
+import tip1 from './foot-info/tip1.svg';
+import tip2 from './foot-info/tip2.svg';
+import tip3 from './foot-info/tip3.svg';
+import tip4 from './foot-info/tip4.svg';
+import tip5 from './foot-info/tip5.svg';
+import tip6 from './foot-info/tip6.svg';
+import tooltip from './chatbot/tooltip.svg';
+import upload from './common/upload.svg';
+import user from './empty-shoes-room/user.svg';
+import user_profile from './mypage/user_profile.svg';
+import user_profile_upload from './mypage/user_profile_upload.svg';
+import warning from './foot-info/warning.svg';
+import warning2 from './foot-info/warning2.svg';
+import copy_left from './common/copy_left.svg';
+import link_angled from './common/link_angled.svg';
 export {
   again,
   ai,
@@ -86,8 +79,6 @@ export {
   analyze2,
   arrow_down,
   arrow_right,
-  arrow_up,
-  asics,
   back_arrow,
   bar,
   brand_abcmart,
@@ -107,9 +98,7 @@ export {
   hamburger_menu,
   heart_empty,
   heart_filled,
-  hoka,
   info,
-  kakao,
   kebab,
   modify,
   more_arrow,
@@ -118,7 +107,6 @@ export {
   mypage_arrow,
   mypage_heart,
   mypage_shose_room,
-  naver,
   noshoes,
   onboarding1,
   onboarding2,
@@ -128,11 +116,9 @@ export {
   polygon2,
   prefitt_symbol,
   rectangle,
-  salomon,
   search,
   select,
   select_arrow20,
-  select_arrow24,
   share,
   shoes_w159,
   shoes_w182,
@@ -157,4 +143,8 @@ export {
   warning,
   warning2,
   google,
+  loading,
+  chatCircle,
+  copy_left,
+  link_angled,
 };
