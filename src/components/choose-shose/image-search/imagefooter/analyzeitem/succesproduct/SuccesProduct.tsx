@@ -23,11 +23,15 @@ import { ImageShoseSearchAPI } from '../../../../../../api/searchRequests';
 import { useMutation } from '@tanstack/react-query';
 import { TProduct } from '../../../../../../types/product';
 import useProductStore from '../../../../../../stores/useProductsStore';
+import useSelectItemStore from '../../../../../../stores/useSelectItemStore';
+import { useNavigate } from 'react-router-dom';
 
 const SuccesProduct = () => {
   const [isSelected, setIsSelected] = useState<number | null>(null);
   const { isSimilar, setIsState, capturedImage, brand, modelName, handleClickAgain } = useImageSearchStore();
   const { products, setProducts } = useProductStore();
+  const { selectProduct } = useSelectItemStore();
+  const navigate = useNavigate();
 
   const handleImageSearchPost = useMutation({
     mutationFn: (data: string) => ImageShoseSearchAPI(data),
@@ -53,6 +57,11 @@ const SuccesProduct = () => {
   const handleClickItemCard = (index: number) => {
     setIsSelected(index);
   };
+
+  const handleNavigate = () => {
+    selectProduct && navigate('/shoes-registry');
+  };
+
   return (
     <>
       {isSimilar ? (
@@ -95,7 +104,7 @@ const SuccesProduct = () => {
             <p className={Product_ProductBrand}>{brand}</p>
             <p className={Product_ProductName}>{modelName}</p>
           </div>
-          <Button text="선택 완료"></Button>
+          <Button text="선택 완료" onClick={handleNavigate}></Button>
         </div>
       )}
     </>
