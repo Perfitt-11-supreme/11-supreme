@@ -59,7 +59,11 @@ const SuccesProduct = () => {
   };
 
   const handleNavigate = () => {
-    selectProduct && navigate('/shoes-registry');
+    if (isSimilar && selectProduct) {
+      navigate('/shoes-registry');
+    } else if (!isSimilar) {
+      navigate('/shoes-registry');
+    }
   };
 
   return (
@@ -79,7 +83,7 @@ const SuccesProduct = () => {
               ))}
             </div>
             <div className={Product_SimilarProductButton}>
-              <Button text="선택 완료"></Button>
+              <Button text="선택 완료" onClick={handleNavigate}></Button>
             </div>
           </div>
         </>

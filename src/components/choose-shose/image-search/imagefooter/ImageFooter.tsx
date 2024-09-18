@@ -1,4 +1,4 @@
-import { camera, gallery } from '../../../../assets/assets';
+import { camera } from '../../../../assets/assets';
 import {
   ImageFooter_CameraIcon,
   ImageFooter_CameraIconBackground,
@@ -9,9 +9,13 @@ import AnalyzeItem from './analyzeitem/AnalyzeItem.tsx';
 import useImageSearchStore from '../../../../stores/useImageSearchStore.ts';
 import { useMutation } from '@tanstack/react-query';
 import { ImageShoseSearchAPI } from '../../../../api/searchRequests.ts';
+import Gallery from '../../gallery/Gallery.tsx';
+import useGalleryStore from '../../../../stores/useGalleryStore.ts';
+import { useEffect } from 'react';
 
 const ImageFooter = () => {
   const { handleCaptureImage, canvasImage, setGetData, isAnalyze, isSuccess, setIsState } = useImageSearchStore();
+  const { galleryImage, setGalleryImage } = useGalleryStore();
 
   const handleImageSearchPost = useMutation({
     mutationFn: (data: string) => {
@@ -34,20 +38,30 @@ const ImageFooter = () => {
     },
   });
 
-  const handleClickCamera = (bol: boolean) => {
-    handleCaptureImage(bol);
+  const handleClickCamera = () => {
+    handleCaptureImage(true);
     if (canvasImage !== 'data:,') {
       handleImageSearchPost.mutate(canvasImage!);
     }
   };
 
+  useEffect(() => {
+    if (galleryImage === null) return;
+
+    setIsState({ isAnalyze: true });
+    if (canvasImage !== 'data:,') {
+      handleImageSearchPost.mutate(galleryImage!);
+      setGalleryImage(null);
+    }
+  }, [galleryImage]);
+
   return (
     <>
       <div className={ImageFooter_CameraIconBackground}>
-        <img className={ImageFooter_CameraIcon} src={camera} alt="camera" onClick={() => handleClickCamera(true)} />
+        <img className={ImageFooter_CameraIcon} src={camera} alt="camera" onClick={handleClickCamera} />
       </div>
       <div className={ImageFooter_GalleryIcon}>
-        <img src={gallery} alt="gallery" />
+        <Gallery />
       </div>
       <AnalyzeItem />
     </>

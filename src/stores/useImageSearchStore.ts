@@ -36,6 +36,7 @@ const useImageSearchStore = create<ImageSearchStore & ImageSerachGetData & Image
   isAnalyze: false,
   isSuccess: false,
   isSimilar: false,
+  isGallery: false,
   setIsState: changedState => set(state => ({ ...state, ...changedState })),
 
   canvasImage: null,

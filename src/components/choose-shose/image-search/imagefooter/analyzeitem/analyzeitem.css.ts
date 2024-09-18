@@ -17,11 +17,12 @@ export const AnalyzeItem_Container = style({
 export const AnalyzeItem_AnalyzerContainerMove = styleVariants({
   success: {
     height: '70vh',
-    transform: 'translateY(0)',
+  },
+  gallery: {
+    height: '40vh',
   },
   analyze: {
     height: '25vh',
-    transform: 'translateY(0)',
   },
   hidden: {
     height: '0',
