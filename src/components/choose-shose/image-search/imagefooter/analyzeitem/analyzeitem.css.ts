@@ -14,27 +14,6 @@ export const AnalyzeItem_Container = style({
   zIndex: '100',
 });
 
-export const AnalyzeItem_AnalyzeCircle = style({
-  position: 'absolute',
-});
-
-export const AnalyzeItem_AnalyzeText = style({
-  height: '24px',
-  fontWeight: '400',
-  fontSize: '15px',
-  lineHeight: '24px',
-  letterSpacing: '-0.003em',
-});
-
-export const AnalyzeItem_AnalyzerWindow = style({
-  position: 'absolute',
-  width: '124px',
-  height: '124px',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-});
-
 export const AnalyzeItem_AnalyzerContainerMove = styleVariants({
   success: {
     height: '70vh',

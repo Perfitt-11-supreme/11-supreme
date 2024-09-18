@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 type textSearchStore = {
-  handleSubmitSearch: (e: React.FormEvent<HTMLFormElement>) => void;
+  handleSubmitSearch: () => void;
   handleCLickRecentRecord: (str: string) => void;
   handleFocusSearchBox: (bol: boolean) => void;
 };
@@ -27,10 +27,8 @@ const useTextSearchStore = create<textSearchStore & textSearchData>(set => ({
   isSubmit: false,
   setState: updateData => set(state => ({ ...state, ...updateData })),
 
-  handleSubmitSearch: e => {
+  handleSubmitSearch: () => {
     set(state => {
-      e.preventDefault();
-
       const text = state.text;
       const record = state.record;
 

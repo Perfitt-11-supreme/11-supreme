@@ -19,7 +19,7 @@ const SearchBox = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isScrollingDown, setIsScrollingDown] = useState(false);
   const { text, postText, setState, handleSubmitSearch, handleFocusSearchBox } = useTextSearchStore();
-  const { setProducts } = useProductStore();
+  const { products, setProducts } = useProductStore();
 
   const navigate = useNavigate();
 
@@ -49,9 +49,12 @@ const SearchBox = () => {
 
   const handleSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (text !== postText) {
       handleTextSearchPost.mutate(text);
-      handleSubmitSearch(e);
+      handleSubmitSearch();
+    } else if (text === '' && products.length === 0) {
+      handleTextSearchPost.mutate(text);
     }
     setState({ focus: false });
     inputRef.current?.blur();

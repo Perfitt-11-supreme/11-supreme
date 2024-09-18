@@ -9,7 +9,7 @@ import {
   MainContainter_Background,
 } from './maincontainer.css';
 import ItemCard from '../../itemcard/ItemCard';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import useTextSearchStore from '../../../../stores/useTextSearchStore';
 import useProductsStore from '../../../../stores/useProductsStore';
 import useSelectItemStore from '../../../../stores/useSelectItemStore';
