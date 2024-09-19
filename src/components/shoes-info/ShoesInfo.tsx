@@ -27,10 +27,10 @@ const ShoesInfo = () => {
     const fetchShoeInfo = async () => {
       try {
         const docSnap = await getDoc(doc(db, 'myshoes', shoesId as string));
-
         if (docSnap.exists()) {
-          setShoeData(docSnap.data()); // 데이터를 상태로 저장
-          console.log('data: ', shoeData);
+          const data = docSnap.data();
+          console.log('Fetched shoe data: ', data); // 데이터 구조 확인
+          setShoeData(data); // 데이터를 상태로 저장
         } else {
           console.log('해당 문서가 없습니다');
         }
@@ -46,50 +46,44 @@ const ShoesInfo = () => {
     <div className={responsiveBox}>
       <div className={container}>
         <Header title="신발 정보" />
-        <div className={imgDiv}>
-          {shoeData && shoeData.selectedItem ? (
-            <img src={shoeData?.selectedItem?.image} alt="신발 이미지" />
-          ) : (
-            '이미지 없음'
-          )}
-        </div>
+        <div className={imgDiv}>{shoeData && <img src={shoeData.image} alt="신발 이미지" />}</div>
         <div className={infoDiv}>
           <div className={starDiv}>
             <img src={filled_star} alt="별점" />
-            <p className={ratingP}>{shoeData?.rating || '0'}</p>
+            <p className={ratingP}>{shoeData?.rating}</p>
           </div>
           <div>
-            <p className={brandP}>{shoeData?.brand || '브랜드 정보 없음'}</p>
-            <p className={shoesP}>{shoeData?.shoesName || '신발 이름 없음'}</p>
+            <p className={brandP}>{shoeData?.brand}</p>
+            <p className={shoesP}>{shoeData?.modelName}</p>
           </div>
         </div>
         <div className={infoDiv}>
           <p className={infoP}>신발 길이</p>
-          <p className={labelP}>{shoeData?.length || '정보 없음'}</p>
+          <p className={labelP}>{shoeData?.length}</p>
         </div>
         <div className={infoDiv}>
           <p className={infoP}>발볼 너비</p>
-          <p className={labelP}>{shoeData?.width || '정보 없음'}</p>
+          <p className={labelP}>{shoeData?.width}</p>
         </div>
         <div className={infoDiv}>
           <p className={infoP}>발등 높이</p>
-          <p className={labelP}>{shoeData?.height || '정보 없음'}</p>
+          <p className={labelP}>{shoeData?.height}</p>
         </div>
         <div className={infoDiv}>
           <p className={infoP}>밑창</p>
-          <p className={labelP}>{shoeData?.sole || '정보 없음'}</p>
+          <p className={labelP}>{shoeData?.sole}</p>
         </div>
         <div className={infoDiv}>
           <p className={infoP}>무게</p>
-          <p className={labelP}>{shoeData?.weight || '정보 없음'}</p>
+          <p className={labelP}>{shoeData?.weight}</p>
         </div>
         <div className={infoDiv}>
           <p className={infoP}>사이즈 추천</p>
-          <p className={labelP}>{shoeData?.recommendation || '추천 정보 없음'}</p>
+          <p className={labelP}>{shoeData?.recommendation}</p>
         </div>
         <div className={reviewDiv}>
           <p className={infoP}>리뷰</p>
-          <p className={reviewP}>{shoeData?.review || '리뷰 없음'}</p>
+          <p className={reviewP}>{shoeData?.review}</p>
         </div>
       </div>
     </div>

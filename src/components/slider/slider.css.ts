@@ -4,12 +4,12 @@ export const sliderContainer = style({
   width: '343px',
   textAlign: 'center',
   position: 'relative',
-  marginBottom: '20px',
+  margin: '12px 0 20px 0',
 });
 
 export const slider = style({
   width: '100%',
-  height: '8px',
+  height: '0px',
   position: 'relative',
   appearance: 'none',
   zIndex: 1,
@@ -22,8 +22,8 @@ export const slider = style({
     cursor: 'pointer',
     borderRadius: '99px',
     border: '3px solid #3f3f46',
-    top: '50%',
-    transform: 'translateY(-50%)',
+    // top: '50%',
+    transform: 'translateY(-75%)',
     zIndex: 2,
   },
   '::-moz-range-thumb': {
@@ -45,7 +45,7 @@ export const track = style({
   height: '8px',
   background: '#e0e0e0',
   position: 'absolute',
-  top: '12%',
+  top: '8%',
   transform: 'translateY(-50%)',
   borderRadius: '2px',
   zIndex: 0,
@@ -56,7 +56,7 @@ export const dotContainer = style({
   justifyContent: 'space-between',
   position: 'absolute',
   width: '315px',
-  top: '12%',
+  top: '8%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
   zIndex: 0,
@@ -76,7 +76,6 @@ export const labels = style({
   justifyContent: 'space-between',
   position: 'relative',
   width: '343px',
-  zIndex: 0,
 });
 
 export const label = style({

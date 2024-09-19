@@ -1,9 +1,9 @@
 export type TProduct = {
   brand: string;
   image: string;
-  link: string;
   modelName: string;
-  modelNo: string;
+  link?: string;
+  modelNo?: string;
   productId?: string;
   gender?: string;
-};
+} | null;

@@ -28,9 +28,9 @@ const ItemCard = ({
   const handleClick = () => {
     handleClickItemCard(index);
     setSelectedItem({
-      image: data.image,
-      brand: data.brand,
-      shoesName: data.modelName,
+      image: data!.image,
+      brand: data!.brand,
+      shoesName: data!.modelName,
     });
     setSelectProduct(data);
   };
@@ -38,11 +38,12 @@ const ItemCard = ({
     <>
       <div className={`${ItemCard_Container} ${index === isSelected ? ItemCard_Select : ''}`} onClick={handleClick}>
         <div className={ItemCard_Rectangle}>
-          <img className={ItemCard_Image} src={data.image} alt="" />
+          <img className={ItemCard_Image} src={data!.image} alt="" />
+          <img src={data!.image} alt="" />
         </div>
         <div className={ItemCard_Frame}>
-          <p className={ItemCard_ShoseBrand}>{data.brand}</p>
-          <p className={ItemCard_ShoseName}>{data.modelName}</p>
+          <p className={ItemCard_ShoseBrand}>{data!.brand}</p>
+          <p className={ItemCard_ShoseName}>{data!.modelName}</p>
         </div>
       </div>
     </>

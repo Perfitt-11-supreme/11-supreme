@@ -32,6 +32,7 @@ export const imgDiv = style({
   justifyContent: 'center',
   alignItems: 'center',
   marginBottom: '20px',
+  overflow: 'hidden',
 });
 
 export const labelP = style({

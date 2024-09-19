@@ -9,13 +9,15 @@ import {
   deleteItem,
 } from './kebab.css';
 import { deleted, kebab, modify, share } from '../../assets/assets';
-import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import { deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../../firebase/firebase';
 import { useNavigate, useParams } from 'react-router-dom';
+// import ToastMessage from '../toastmessage/toastMessage';
 
 const KebabMenu = () => {
   const { shoesId } = useParams();
   const [isOpen, setIsOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const toggleMenu = () => {
@@ -37,8 +39,9 @@ const KebabMenu = () => {
     if (shoesId) {
       try {
         await deleteData(shoesId);
-        alert('삭제되었습니다.');
-        navigate(-1);
+        navigate('/empty-shoesroom', {
+          state: { deleteToastMessage: '삭제되었습니다' },
+        });
       } catch (error) {
         console.error('삭제 실패:', error);
         alert('삭제 중 오류가 발생했습니다.');
@@ -53,10 +56,6 @@ const KebabMenu = () => {
       navigate(`/shoes-registry/${shoesId}`);
     }
     console.log('수정 버튼 클릭됨');
-  };
-
-  const handleShare = () => {
-    console.log('공유 버튼 클릭됨');
   };
 
   // const handleClickOutside = useCallback((event: MouseEvent) => {
@@ -81,12 +80,6 @@ const KebabMenu = () => {
           <p className={menuItemText}>
             <img src={modify} alt="수정" />
             수정하기
-          </p>
-        </div>
-        <div className={menuItem} onClick={handleShare}>
-          <p className={menuItemText}>
-            <img src={share} alt="공유" />
-            공유하기
           </p>
         </div>
       </div>

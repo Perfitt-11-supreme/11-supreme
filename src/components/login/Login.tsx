@@ -1,5 +1,4 @@
 import ChatBotBox from './loginchatbot/chatbotbox/ChatBotBox';
-import ChatbotSearchInput from '../common/chatbot-search-input/ChatbotSearchInput';
 import Header from '../common/header/Header';
 import LoginButton from './loginchatbot/loginbox/LoginButton';
 import { google, hamburger_menu } from '../../assets/assets';
@@ -8,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { signInWithGoogle } from '../../firebase/firebase';
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 import { responsiveBox } from '../../styles/responsive.css';
+import ChatbotSearchInput from '../common/chatbot-search-input/ChatbotSearchInput';
 
 const Login = () => {
   const navigate = useNavigate();
