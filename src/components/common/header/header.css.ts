@@ -8,9 +8,10 @@ export const headerContainer = style({
   position: 'fixed',
   top: '0',
   zIndex: '99',
+  width: '100%',
 });
 export const header = style({
-  width: '375px',
+  width: '100%',
   height: '56px',
   display: 'flex',
   alignItems: 'center',

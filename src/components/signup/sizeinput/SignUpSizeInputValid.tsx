@@ -18,6 +18,7 @@ import {
 import { USER_COLLECTION } from '../../../firebase/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
+import { responsiveBox } from '../../../styles/responsive.css';
 
 const SignUpSizeInputValid = () => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -96,45 +97,47 @@ const SignUpSizeInputValid = () => {
   }, [errors]);
 
   return (
-    <div className={fullContainer}>
-      <div>
-        <Header imageSrc={hamburger_menu} alt="hamburger menu" />
-      </div>
+    <div className={responsiveBox}>
+      <div className={fullContainer}>
+        <div>
+          <Header imageSrc={hamburger_menu} alt="hamburger menu" />
+        </div>
 
-      <div>
-        <Modal title="회원가입" height={modalHeight} initialHeight="492px" animateHeightOnClick={false}>
-          <div className={signupComponentContainer}>
-            <div className={signupSizeTypeContainer}>
-              <label className={signupSizeTypeLabel}>사이즈 타입</label>
-              <div style={{ display: 'flex', gap: '8px' }}>
-                {sizeTypes.map((text, index) =>
-                  selectedIndex === index ? (
-                    <ButtonFill key={index} text={text} onClick={() => handleSelect(index)} />
-                  ) : (
-                    <ButtonBlank key={index} text={text} onClick={() => handleSelect(index)} />
-                  )
-                )}
+        <div>
+          <Modal title="회원가입" height={modalHeight} initialHeight="492px" animateHeightOnClick={false}>
+            <div className={signupComponentContainer}>
+              <div className={signupSizeTypeContainer}>
+                <label className={signupSizeTypeLabel}>사이즈 타입</label>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  {sizeTypes.map((text, index) =>
+                    selectedIndex === index ? (
+                      <ButtonFill key={index} text={text} onClick={() => handleSelect(index)} />
+                    ) : (
+                      <ButtonBlank key={index} text={text} onClick={() => handleSelect(index)} />
+                    )
+                  )}
+                </div>
+                {errors.sizeType && <div className={errorMessage}>{errors.sizeType}</div>}
               </div>
-              {errors.sizeType && <div className={errorMessage}>{errors.sizeType}</div>}
             </div>
-          </div>
 
-          <div className={signupComponentContainer} style={{ marginTop: '24px' }}>
-            <UsualSizeSelect label="평소 신는 스니커즈 사이즈" value={shoeSize} onChange={handleShoeSizeChange} />
-          </div>
-          {errors.shoeSize && (
-            <div className={errorMessage} style={{ marginLeft: '16px' }}>
-              {errors.shoeSize}
+            <div className={signupComponentContainer} style={{ marginTop: '24px' }}>
+              <UsualSizeSelect label="평소 신는 스니커즈 사이즈" value={shoeSize} onChange={handleShoeSizeChange} />
             </div>
-          )}
+            {errors.shoeSize && (
+              <div className={errorMessage} style={{ marginLeft: '16px' }}>
+                {errors.shoeSize}
+              </div>
+            )}
 
-          <div className={infosubmitContainer}>
-            <InfoBox />
-            <form onSubmit={handleSubmit}>
-              <Button text="가입 완료" />
-            </form>
-          </div>
-        </Modal>
+            <div className={infosubmitContainer}>
+              <InfoBox />
+              <form onSubmit={handleSubmit}>
+                <Button text="가입 완료" />
+              </form>
+            </div>
+          </Modal>
+        </div>
       </div>
     </div>
   );

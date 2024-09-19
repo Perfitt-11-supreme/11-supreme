@@ -7,7 +7,6 @@ export const headerDiv = style({
   padding: '6px',
   width: '100%',
   height: '56px',
-  marginTop: '34px',
 });
 
 export const frame = style({

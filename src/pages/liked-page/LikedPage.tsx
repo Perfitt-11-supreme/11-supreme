@@ -11,6 +11,7 @@ import LikedAndViewedHistoryButton from '../../components/mypage/liked-and-viewe
 import { useState } from 'react';
 import ProductAndBrandButton from '../../components/mypage/product-and-brand-button/ProductAndBrandButton';
 import LikedInBrand from '../../components/mypage/liked-in-brand/LikedInBrand';
+import { responsiveBox } from '../../styles/responsive.css';
 
 const LikedPage = () => {
   const [likedOrViewed, setLikedOrViewed] = useState('좋아요');
@@ -26,37 +27,39 @@ const LikedPage = () => {
 
   return (
     <>
-      <section className={likedAndViewedHistoryCointainer}>
-        <Header imageSrc={back_arrow} alt="back arrow" />
+      <div className={responsiveBox}>
+        <section className={likedAndViewedHistoryCointainer}>
+          <Header imageSrc={back_arrow} alt="back arrow" />
 
-        <LikedAndViewedHistoryButton handleClick={handleLikedOrViewedChange} activeTab={likedOrViewed} />
+          <LikedAndViewedHistoryButton handleClick={handleLikedOrViewedChange} activeTab={likedOrViewed} />
 
-        {likedOrViewed === '좋아요' && (
-          <ProductAndBrandButton handleClick={handleProductOrBrandChange} activeTab={productOrBrand} />
-        )}
-
-        <article className={filterProductsAndBrandsQuantityBox}>
-          {productOrBrand === '상품' ? (
-            <div className={filterProductsAndBrandsQuantity}>5개</div>
-          ) : (
-            <>
-              <div className={filterProductsAndBrandsQuantity}>3개</div>
-              <LikedInBrand />
-            </>
+          {likedOrViewed === '좋아요' && (
+            <ProductAndBrandButton handleClick={handleProductOrBrandChange} activeTab={productOrBrand} />
           )}
-        </article>
 
-        {likedOrViewed === '좋아요' && productOrBrand === '상품' && (
-          <article className={likedAndViewedHistoryItemBox}>
-            {/* SizeRecommendationCard에 isHeartFilled prop을 전달 */}
-            <SizeRecommendationCard isHeartFilled />
-            <SizeRecommendationCard isHeartFilled />
-            <SizeRecommendationCard isHeartFilled />
-            <SizeRecommendationCard isHeartFilled />
-            <SizeRecommendationCard isHeartFilled />
+          <article className={filterProductsAndBrandsQuantityBox}>
+            {productOrBrand === '상품' ? (
+              <div className={filterProductsAndBrandsQuantity}>5개</div>
+            ) : (
+              <>
+                <div className={filterProductsAndBrandsQuantity}>3개</div>
+                <LikedInBrand />
+              </>
+            )}
           </article>
-        )}
-      </section>
+
+          {likedOrViewed === '좋아요' && productOrBrand === '상품' && (
+            <article className={likedAndViewedHistoryItemBox}>
+              {/* SizeRecommendationCard에 isHeartFilled prop을 전달 */}
+              <SizeRecommendationCard isHeartFilled />
+              <SizeRecommendationCard isHeartFilled />
+              <SizeRecommendationCard isHeartFilled />
+              <SizeRecommendationCard isHeartFilled />
+              <SizeRecommendationCard isHeartFilled />
+            </article>
+          )}
+        </section>
+      </div>
     </>
   );
 };

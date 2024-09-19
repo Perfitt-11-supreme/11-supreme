@@ -3,7 +3,7 @@ import { theme } from '../../../styles/theme';
 
 export const modalContainerWrapper = style({
   position: 'relative',
-  width: '375px',
+  width: '100%',
   height: 'auto',
 });
 

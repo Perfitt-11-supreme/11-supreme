@@ -23,6 +23,7 @@ import {
   errorText,
 } from './shoesregistry.css';
 import ItemCard from '../choose-shose/itemcard/ItemCard';
+import { responsiveBox } from '../../styles/responsive.css';
 
 const ShoesRegistry = () => {
   const { shoesId } = useParams();
@@ -179,128 +180,130 @@ const ShoesRegistry = () => {
   const reviewRef = useRef<HTMLTextAreaElement>(null);
 
   return (
-    <div className={container}>
-      <Header title="신발 등록" />
-      <p className={descP}>신발을 선택해 주세요</p>
-      {selectedItem === null ? (
-        <button className={imagePlusButton} onClick={handleChooseShoes}>
-          <img src={plus} alt="등록" />
-        </button>
-      ) : (
-        <button className={imagePlusButtonSelected} onClick={handleChooseShoes} disabled={!!shoesId}>
-          <div className={itemCardDiv}>
-            <ItemCard
-              index={0}
-              isSelected={null}
-              handleClickItemCard={() => {}}
-              data={{
-                brand: 'Nike',
-                image: '나이키 슈즈',
-                link: 'https://nike.com',
-                modelName: 'Air Max',
-                modelNo: '123456',
-                Productid: '1',
-              }}
-            />
-          </div>
-        </button>
-      )}
+    <div className={responsiveBox}>
+      <div className={container}>
+        <Header title="신발 등록" />
+        <p className={descP}>신발을 선택해 주세요</p>
+        {selectedItem === null ? (
+          <button className={imagePlusButton} onClick={handleChooseShoes}>
+            <img src={plus} alt="등록" />
+          </button>
+        ) : (
+          <button className={imagePlusButtonSelected} onClick={handleChooseShoes} disabled={!!shoesId}>
+            <div className={itemCardDiv}>
+              <ItemCard
+                index={0}
+                isSelected={null}
+                handleClickItemCard={() => {}}
+                data={{
+                  brand: 'Nike',
+                  image: '나이키 슈즈',
+                  link: 'https://nike.com',
+                  modelName: 'Air Max',
+                  modelNo: '123456',
+                  Productid: '1',
+                }}
+              />
+            </div>
+          </button>
+        )}
 
-      <p className={questionP}>신발은 마음에 드셨나요?</p>
-      <p className={starP}>별점을 눌러 만족도를 알려주세요</p>
-      <div ref={ratingRef}>
-        <StarRating />
-      </div>
-      {errors.rating && <p className={errorText}>{errors.rating}</p>}
+        <p className={questionP}>신발은 마음에 드셨나요?</p>
+        <p className={starP}>별점을 눌러 만족도를 알려주세요</p>
+        <div ref={ratingRef}>
+          <StarRating />
+        </div>
+        {errors.rating && <p className={errorText}>{errors.rating}</p>}
 
-      <p className={questP}>신발 길이가 잘 맞나요?</p>
-      <div ref={lengthRef}>
-        <Choose
-          groupName="length"
-          options={[
-            { id: 'length1', label: '짧아요' },
-            { id: 'length2', label: '잘 맞아요' },
-            { id: 'length3', label: '길어요' },
-          ]}
-          selectedOption={length}
-          setter={setLength}
+        <p className={questP}>신발 길이가 잘 맞나요?</p>
+        <div ref={lengthRef}>
+          <Choose
+            groupName="length"
+            options={[
+              { id: 'length1', label: '짧아요' },
+              { id: 'length2', label: '잘 맞아요' },
+              { id: 'length3', label: '길어요' },
+            ]}
+            selectedOption={length}
+            setter={setLength}
+          />
+          {errors.length && <p className={errorText}>{errors.length}</p>}
+        </div>
+
+        <p className={questP}>발볼 너비가 잘 맞나요?</p>
+        <div ref={widthRef}>
+          <Choose
+            groupName="width"
+            options={[
+              { id: 'width1', label: '좁아요' },
+              { id: 'width2', label: '잘 맞아요' },
+              { id: 'width3', label: '넓어요' },
+            ]}
+            selectedOption={width}
+            setter={setWidth}
+          />
+          {errors.width && <p className={errorText}>{errors.width}</p>}
+        </div>
+
+        <p className={questP}>발등 높이는 어떤가요?</p>
+        <div ref={heightRef}>
+          <Choose
+            groupName="height"
+            options={[
+              { id: 'height1', label: '타이트해요' },
+              { id: 'height2', label: '적당해요' },
+              { id: 'height3', label: '넉넉해요' },
+            ]}
+            selectedOption={height}
+            setter={setHeight}
+          />
+          {errors.height && <p className={errorText}>{errors.height}</p>}
+        </div>
+
+        <p className={questP}>밑창은 푹신한가요?</p>
+        <div ref={soleRef}>
+          <Choose
+            groupName="sole"
+            options={[
+              { id: 'sole1', label: '딱딱해요' },
+              { id: 'sole2', label: '적당해요' },
+              { id: 'sole3', label: '푹신해요' },
+            ]}
+            selectedOption={sole}
+            setter={setSole}
+          />
+          {errors.sole && <p className={errorText}>{errors.sole}</p>}
+        </div>
+
+        <p className={questP}>신발 무게는 어떤가요?</p>
+        <div ref={weightRef}>
+          <Choose
+            groupName="weight"
+            options={[
+              { id: 'weight1', label: '가벼워요' },
+              { id: 'weight2', label: '적당해요' },
+              { id: 'weight3', label: '무거워요' },
+            ]}
+            selectedOption={weight}
+            setter={setWeight}
+          />
+          {errors.weight && <p className={errorText}>{errors.weight}</p>}
+        </div>
+
+        <p className={questP}>이 신발의 추천 사이즈는 무엇인가요?</p>
+        <Slider />
+        <p className={questP}>자세한 사용기를 적어주세요.</p>
+        {errors.review && <p className={errorText}>{errors.review}</p>}
+        <textarea
+          ref={reviewRef}
+          className={area}
+          placeholder="이 신발을 신으면서 느꼈던 장점 및 단점을 솔직하게 알려주세요."
+          value={review}
+          onChange={e => setReview(e.target.value)}
         />
-        {errors.length && <p className={errorText}>{errors.length}</p>}
-      </div>
-
-      <p className={questP}>발볼 너비가 잘 맞나요?</p>
-      <div ref={widthRef}>
-        <Choose
-          groupName="width"
-          options={[
-            { id: 'width1', label: '좁아요' },
-            { id: 'width2', label: '잘 맞아요' },
-            { id: 'width3', label: '넓어요' },
-          ]}
-          selectedOption={width}
-          setter={setWidth}
-        />
-        {errors.width && <p className={errorText}>{errors.width}</p>}
-      </div>
-
-      <p className={questP}>발등 높이는 어떤가요?</p>
-      <div ref={heightRef}>
-        <Choose
-          groupName="height"
-          options={[
-            { id: 'height1', label: '타이트해요' },
-            { id: 'height2', label: '적당해요' },
-            { id: 'height3', label: '넉넉해요' },
-          ]}
-          selectedOption={height}
-          setter={setHeight}
-        />
-        {errors.height && <p className={errorText}>{errors.height}</p>}
-      </div>
-
-      <p className={questP}>밑창은 푹신한가요?</p>
-      <div ref={soleRef}>
-        <Choose
-          groupName="sole"
-          options={[
-            { id: 'sole1', label: '딱딱해요' },
-            { id: 'sole2', label: '적당해요' },
-            { id: 'sole3', label: '푹신해요' },
-          ]}
-          selectedOption={sole}
-          setter={setSole}
-        />
-        {errors.sole && <p className={errorText}>{errors.sole}</p>}
-      </div>
-
-      <p className={questP}>신발 무게는 어떤가요?</p>
-      <div ref={weightRef}>
-        <Choose
-          groupName="weight"
-          options={[
-            { id: 'weight1', label: '가벼워요' },
-            { id: 'weight2', label: '적당해요' },
-            { id: 'weight3', label: '무거워요' },
-          ]}
-          selectedOption={weight}
-          setter={setWeight}
-        />
-        {errors.weight && <p className={errorText}>{errors.weight}</p>}
-      </div>
-
-      <p className={questP}>이 신발의 추천 사이즈는 무엇인가요?</p>
-      <Slider />
-      <p className={questP}>자세한 사용기를 적어주세요.</p>
-      {errors.review && <p className={errorText}>{errors.review}</p>}
-      <textarea
-        ref={reviewRef}
-        className={area}
-        placeholder="이 신발을 신으면서 느꼈던 장점 및 단점을 솔직하게 알려주세요."
-        value={review}
-        onChange={e => setReview(e.target.value)}
-      />
-      <div className={buttonDiv}>
-        <Button text={shoesId ? '수정 완료' : '입력 완료'} onClick={handleSubmit} />
+        <div className={buttonDiv}>
+          <Button text={shoesId ? '수정 완료' : '입력 완료'} onClick={handleSubmit} />
+        </div>
       </div>
     </div>
   );

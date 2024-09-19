@@ -6,6 +6,7 @@ import Header from '../../common/header/Header';
 import { useEffect } from 'react';
 import useProductStore from '../../../stores/useProductsStore';
 import useTextSearchStore from '../../../stores/useTextSearchStore';
+import { responsiveBox } from '../../../styles/responsive.css';
 
 const TextSearch = () => {
   const { setProducts } = useProductStore();
@@ -18,10 +19,12 @@ const TextSearch = () => {
   return (
     <>
       <div>
-        <Header imageSrc={back_arrow} alt="뒤로가기" title="신발검색" nav="/shoes-registry"></Header>
-        <SearchBox />
-        <MainContainer />
-        <TextFooter />
+        <div className={responsiveBox}>
+          <Header imageSrc={back_arrow} alt="뒤로가기" title="신발검색" nav="/shoes-registry"></Header>
+          <SearchBox />
+          <MainContainer />
+          <TextFooter />
+        </div>
       </div>
     </>
   );

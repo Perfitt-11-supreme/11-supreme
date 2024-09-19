@@ -20,8 +20,8 @@ const slideIn = keyframes({
 });
 
 export const sidemenuDimmed = style({
-  width: '375px',
-  height: '812px',
+  width: '100%',
+  height: '100%',
   backgroundColor: `${theme.color.black}99`,
   zIndex: 1000,
   position: 'absolute',
