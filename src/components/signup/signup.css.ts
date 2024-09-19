@@ -4,7 +4,6 @@ import { theme } from '../../styles/theme';
 export const signupFormContainer = style({
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'center',
   width: '100%',
   overflowY: 'auto',
   padding: '0 16px',
