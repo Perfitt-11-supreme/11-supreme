@@ -32,6 +32,7 @@ const ItemCard = ({
       brand: data!.brand,
       shoesName: data!.modelName,
     });
+
     setSelectProduct(data);
   };
   return (
