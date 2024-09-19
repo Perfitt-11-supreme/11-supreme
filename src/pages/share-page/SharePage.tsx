@@ -135,7 +135,7 @@ const SharePage = () => {
           )}
         </div>
         <div className={sharePageButtonContainer}>
-          <Button text="핏톡 시작하기" onClick={handleStartFitTalk} />
+          <Button text="핏톡 시작하기" onClick={handleStartFitTalk} width='100%' />
         </div>
       </div>
     </div>
