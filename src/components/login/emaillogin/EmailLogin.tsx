@@ -1,15 +1,15 @@
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { back_arrow } from '../../../assets/assets';
+import { auth } from '../../../firebase/firebase';
+import { responsiveBox } from '../../../styles/responsive.css';
 import Button from '../../common/button/Button';
 import Header from '../../common/header/Header';
-import { errorMessage, signupFormContainer, signupFormGap, submitbuttonContainer } from '../../signup/signup.css';
-import { accountSearchBox, accountSearchButton } from './emailLogin.css';
-import { useState } from 'react';
 import SignUpInput from '../../signup/infoInput/signupinput/SignUpInput';
+import { errorMessage, signupFormContainer, signupFormGap, submitbuttonContainer } from '../../signup/signup.css';
 import { fullContainer } from '../login.css';
-import { auth } from '../../../firebase/firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { back_arrow } from '../../../assets/assets';
-import { responsiveBox } from '../../../styles/responsive.css';
+import { accountSearchBox, accountSearchButton } from './emailLogin.css';
 
 const EmailLogin = () => {
   type FormErrors = {
@@ -93,18 +93,18 @@ const EmailLogin = () => {
           <div>
             <Header imageSrc={back_arrow} alt="back arrow" title="이메일 로그인" />
             <div className={signupFormContainer} style={{ marginTop: '20px' }}>
-              <div>
-                <SignUpInput
-                  label="아이디"
-                  type="email"
-                  name="userEmail"
-                  id="userEmail1"
-                  placeholder="이메일을 입력해주세요"
-                  value={formData.userEmail}
-                  onChange={handleChange}
-                />
-                {errors.userEmail && <div className={errorMessage}>{errors.userEmail}</div>}
-              </div>
+
+              <SignUpInput
+                label="아이디"
+                type="email"
+                name="userEmail"
+                id="userEmail1"
+                placeholder="이메일을 입력해주세요"
+                value={formData.userEmail}
+                onChange={handleChange}
+              />
+              {errors.userEmail && <div className={errorMessage}>{errors.userEmail}</div>}
+
 
               <div className={signupFormGap}>
                 <SignUpInput
@@ -119,11 +119,11 @@ const EmailLogin = () => {
                 {errors.userPassword && <div className={errorMessage}>{errors.userPassword}</div>}
               </div>
 
-              <div className={submitbuttonContainer}>
-                <form onSubmit={handleSubmit}>
-                  <Button text="로그인" />
-                </form>
-              </div>
+
+              <form onSubmit={handleSubmit} className={submitbuttonContainer}>
+                <Button text="로그인" width='100%' />
+              </form>
+
 
               <div className={accountSearchBox}>
                 {accountSearchButtons.map((button, index) => (

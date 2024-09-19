@@ -3,7 +3,7 @@ import { select_arrow20 } from '../../../assets/assets';
 import { theme } from '../../../styles/theme';
 
 export const dateSelectBox = style({
-  width: '343px',
+  width: '100%',
   display: 'flex',
   flexDirection: 'column',
   gap: '4px',
@@ -21,7 +21,7 @@ export const dateSelectHorizon = style({
 });
 export const dateSelect = style({
   appearance: 'none',
-  width: '112px',
+  width: '100%',
   height: '45px',
   padding: '12.5px 10px',
   display: 'flex',

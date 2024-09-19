@@ -2,7 +2,7 @@ import { style } from '@vanilla-extract/css';
 import { theme } from '../../../styles/theme';
 
 export const inputBox = style({
-  width: '343px',
+  width: '100%',
   display: 'flex',
   flexDirection: 'column',
   gap: '4px',

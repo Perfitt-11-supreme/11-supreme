@@ -1,19 +1,19 @@
-import { useEffect, useState } from 'react';
-import Button from '../../common/button/Button';
-import DateSelect from './signupdateselect/SignUpDateSelect';
-import Header from '../../common/header/Header';
-import Input from './signupinput/SignUpInput';
-import Modal from '../../common/modal/Modal';
-import Select from './signupselect/SignUpSelect';
-import { hamburger_menu } from '../../../assets/assets';
-import { fullContainer } from '../../login/login.css';
-import { errorMessage, signupFormContainer, signupFormGap, submitbuttonContainer } from '../signup.css';
-import { useNavigate } from 'react-router-dom';
-import { auth, USER_COLLECTION } from '../../../firebase/firebase';
+import { FirebaseError } from 'firebase/app';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
-import { FirebaseError } from 'firebase/app';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { hamburger_menu } from '../../../assets/assets';
+import { USER_COLLECTION, auth } from '../../../firebase/firebase';
 import { responsiveBox } from '../../../styles/responsive.css';
+import Button from '../../common/button/Button';
+import Header from '../../common/header/Header';
+import Modal from '../../common/modal/Modal';
+import { fullContainer } from '../../login/login.css';
+import { errorMessage, signupFormContainer, signupFormGap, submitbuttonContainer } from '../signup.css';
+import DateSelect from './signupdateselect/SignUpDateSelect';
+import Input from './signupinput/SignUpInput';
+import Select from './signupselect/SignUpSelect';
 
 const SignUpInfoInputValid = () => {
   type FormErrors = {
@@ -171,18 +171,18 @@ const SignUpInfoInputValid = () => {
         <div>
           <Modal title="회원가입" height={modalHeight} initialHeight="612px" animateHeightOnClick={false}>
             <div className={signupFormContainer}>
-              <div>
-                <Input
-                  label="아이디"
-                  type="email"
-                  name="userEmail"
-                  id="userEmail1"
-                  placeholder="이메일을 입력해주세요"
-                  value={formData.userEmail}
-                  onChange={handleChange}
-                />
-                {errors.userEmail && <div className={errorMessage}>{errors.userEmail}</div>}
-              </div>
+
+              <Input
+                label="아이디"
+                type="email"
+                name="userEmail"
+                id="userEmail1"
+                placeholder="이메일을 입력해주세요"
+                value={formData.userEmail}
+                onChange={handleChange}
+              />
+              {errors.userEmail && <div className={errorMessage}>{errors.userEmail}</div>}
+
 
               <div className={signupFormGap}>
                 <Input
@@ -238,11 +238,10 @@ const SignUpInfoInputValid = () => {
                 {errors.birthDate && <div className={errorMessage}>{errors.birthDate}</div>}
               </div>
 
-              <div className={submitbuttonContainer}>
-                <form onSubmit={handleSubmit}>
-                  <Button text="다음" />
-                </form>
-              </div>
+
+              <form onSubmit={handleSubmit} className={submitbuttonContainer}>
+                <Button text="다음" width='100%' />
+              </form>
             </div>
           </Modal>
         </div>
