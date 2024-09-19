@@ -1,9 +1,16 @@
-import { bridgeBrandGuide, bridgeBrandGuideText, bridgeBrandGuideWrap, bridgeBrandImageContainer, bridgeProductContainer, bridgeWrap } from "./bridgePage.css";
+import { responsiveBox } from '../../styles/responsive.css';
+import {
+  bridgeBrandGuide,
+  bridgeBrandGuideText,
+  bridgeBrandGuideWrap,
+  bridgeBrandImageContainer,
+  bridgeProductContainer,
+} from './bridgePage.css';
 
 const BridgePage = () => {
   return (
     <>
-      <div className={bridgeWrap}>
+      <div className={responsiveBox}>
         <div className={bridgeProductContainer}>
           <div className={bridgeBrandImageContainer}>
             <img />
@@ -20,5 +27,5 @@ const BridgePage = () => {
       </div>
     </>
   );
-}
-export default BridgePage
+};
+export default BridgePage;

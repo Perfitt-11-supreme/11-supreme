@@ -40,6 +40,13 @@ globalStyle('ul,li,ol', {
 globalStyle('body', {
   minHeight: '100vh',
   lineHeight: '1',
+  backgroundColor: theme.color.black500,
+  overflow: 'hidden',
+  '@media': {
+    'screen and (max-width: 480px)': {
+      overflow: 'auto',
+    },
+  },
 });
 
 globalStyle('h1,h2,h3,h4,button,input,label', {

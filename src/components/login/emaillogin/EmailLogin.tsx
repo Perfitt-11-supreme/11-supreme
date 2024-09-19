@@ -9,6 +9,7 @@ import { fullContainer } from '../login.css';
 import { auth } from '../../../firebase/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { back_arrow } from '../../../assets/assets';
+import { responsiveBox } from '../../../styles/responsive.css';
 
 const EmailLogin = () => {
   type FormErrors = {
@@ -87,48 +88,50 @@ const EmailLogin = () => {
 
   return (
     <>
-      <div className={fullContainer}>
-        <div>
-          <Header imageSrc={back_arrow} alt="back arrow" title="이메일 로그인" />
-          <div className={signupFormContainer} style={{ marginTop: '20px' }}>
-            <div>
-              <SignUpInput
-                label="아이디"
-                type="email"
-                name="userEmail"
-                id="userEmail1"
-                placeholder="이메일을 입력해주세요"
-                value={formData.userEmail}
-                onChange={handleChange}
-              />
-              {errors.userEmail && <div className={errorMessage}>{errors.userEmail}</div>}
-            </div>
+      <div className={responsiveBox}>
+        <div className={fullContainer}>
+          <div>
+            <Header imageSrc={back_arrow} alt="back arrow" title="이메일 로그인" />
+            <div className={signupFormContainer} style={{ marginTop: '20px' }}>
+              <div>
+                <SignUpInput
+                  label="아이디"
+                  type="email"
+                  name="userEmail"
+                  id="userEmail1"
+                  placeholder="이메일을 입력해주세요"
+                  value={formData.userEmail}
+                  onChange={handleChange}
+                />
+                {errors.userEmail && <div className={errorMessage}>{errors.userEmail}</div>}
+              </div>
 
-            <div className={signupFormGap}>
-              <SignUpInput
-                label="비밀번호"
-                type="password"
-                name="userPassword"
-                id="userPassword"
-                placeholder="비밀번호를 입력해주세요"
-                value={formData.userPassword}
-                onChange={handleChange}
-              />
-              {errors.userPassword && <div className={errorMessage}>{errors.userPassword}</div>}
-            </div>
+              <div className={signupFormGap}>
+                <SignUpInput
+                  label="비밀번호"
+                  type="password"
+                  name="userPassword"
+                  id="userPassword"
+                  placeholder="비밀번호를 입력해주세요"
+                  value={formData.userPassword}
+                  onChange={handleChange}
+                />
+                {errors.userPassword && <div className={errorMessage}>{errors.userPassword}</div>}
+              </div>
 
-            <div className={submitbuttonContainer}>
-              <form onSubmit={handleSubmit}>
-                <Button text="로그인" />
-              </form>
-            </div>
+              <div className={submitbuttonContainer}>
+                <form onSubmit={handleSubmit}>
+                  <Button text="로그인" />
+                </form>
+              </div>
 
-            <div className={accountSearchBox}>
-              {accountSearchButtons.map((button, index) => (
-                <div key={index} className={accountSearchButton} onClick={() => navigate(button.path)}>
-                  {button.text}
-                </div>
-              ))}
+              <div className={accountSearchBox}>
+                {accountSearchButtons.map((button, index) => (
+                  <div key={index} className={accountSearchButton} onClick={() => navigate(button.path)}>
+                    {button.text}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
