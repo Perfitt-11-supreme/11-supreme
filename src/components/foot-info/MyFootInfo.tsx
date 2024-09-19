@@ -2,8 +2,6 @@ import { useState } from 'react';
 import {
   analyze,
   analyze2,
-  arrow_down,
-  arrow_up,
   my_foot_info,
   tip1,
   tip2,
@@ -12,22 +10,22 @@ import {
   tip5,
   tip6,
   warning,
-  warning2,
+  warning2
 } from '../../assets/assets';
 import Header from '../empty-shoes-room/header/Header';
+import Choose from './choose/Choose';
 import {
+  InfoDiv,
+  InfoP,
   accordion,
   accordionButton,
   accordionContent,
   accordionDiv,
   activeAccordion,
   container,
-  InfoDiv,
-  InfoP,
   textButtonDiv,
   textDiv,
 } from './my-foot-info.css';
-import Choose from './choose/Choose';
 
 const Accordion = ({ title, content }: { title: string; content: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,7 +40,7 @@ const Accordion = ({ title, content }: { title: string; content: React.ReactNode
         <div className={textButtonDiv}>
           <p className={InfoP}>{title}</p>
           <button className={accordionButton} onClick={toggleAccordion}>
-            <img src={isOpen ? arrow_up : arrow_down} alt={isOpen ? '닫기' : '열기'} />
+            {/* <img src={isOpen ? arrow_up : arrow_down} alt={isOpen ? '닫기' : '열기'} /> */}
           </button>
         </div>
         <div className={`${accordionContent} ${isOpen ? activeAccordion : ''}`}>{content}</div>
