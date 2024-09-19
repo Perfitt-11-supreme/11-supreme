@@ -1,18 +1,17 @@
 import { AnalyzeItem_AnalyzerContainerMove, AnalyzeItem_Container } from './analyzeitem.css.ts';
 import { useEffect, useRef } from 'react';
 import SuccesProduct from './succesproduct/SuccesProduct.tsx';
-import useImageSearchStore from '../../../../../stores/useImageSearchStore.ts';
-import IsLoading from '../../../isLoading/IsLoading.tsx';
+import useImageSearchStore from '../../../../stores/useImageSearchStore.ts';
+import IsLoading from '../../isLoading/IsLoading.tsx';
 
 const AnalyzeItem = () => {
   const divRef = useRef<HTMLDivElement>(null);
-  const { isAnalyze, isSuccess, isSimilar, setIsState, handleCaptureImage } = useImageSearchStore();
+  const { isAnalyze, isSuccess, isSimilar, setIsState } = useImageSearchStore();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (isSimilar && divRef.current && !divRef.current.contains(event.target as Node)) {
-        handleCaptureImage(false);
-        setIsState({ isSuccess: false, isSimilar: false });
+        setIsState({ isAnalyze: false, isSuccess: false, isSimilar: false });
       }
     };
 
@@ -27,13 +26,13 @@ const AnalyzeItem = () => {
     <>
       <div
         ref={divRef}
-        className={`${AnalyzeItem_Container} ${
+        className={`${AnalyzeItem_Container} ${AnalyzeItem_AnalyzerContainerMove.hidden} ${
           isAnalyze
-            ? isSuccess
-              ? AnalyzeItem_AnalyzerContainerMove.success
-              : AnalyzeItem_AnalyzerContainerMove.analyze
-            : AnalyzeItem_AnalyzerContainerMove.hidden
-        }`}
+            ? AnalyzeItem_AnalyzerContainerMove.analyze
+            : isSuccess
+            ? AnalyzeItem_AnalyzerContainerMove.success
+            : ''
+        } `}
       >
         {isSuccess ? <SuccesProduct /> : <IsLoading text="분석중" />}
       </div>

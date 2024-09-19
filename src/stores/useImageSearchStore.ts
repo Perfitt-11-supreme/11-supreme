@@ -1,15 +1,9 @@
 import { create } from 'zustand';
-import { RefObject } from 'react';
 
 type ImageSearchStore = {
-  videoRef: RefObject<HTMLVideoElement> | null;
-  setVideoRef: (videoRef: RefObject<HTMLVideoElement>) => void;
-  canvasRef: RefObject<HTMLCanvasElement> | null;
-  setCanvasRef: (canvasRef: RefObject<HTMLCanvasElement>) => void;
-
   canvasImage: string | null;
 
-  handleCaptureImage: (bol: boolean) => void;
+  handleCaptureImage: (canvas: HTMLCanvasElement | null, video: HTMLVideoElement | null) => void;
   handleClickAgain: () => void;
 };
 
@@ -28,14 +22,10 @@ type ImageSearchStateStore = {
 };
 
 const useImageSearchStore = create<ImageSearchStore & ImageSerachGetData & ImageSearchStateStore>(set => ({
-  videoRef: null,
-  setVideoRef: videoRef => set({ videoRef }),
-  canvasRef: null,
-  setCanvasRef: canvasRef => set({ canvasRef }),
-
   isAnalyze: false,
   isSuccess: false,
   isSimilar: false,
+  isGallery: false,
   setIsState: changedState => set(state => ({ ...state, ...changedState })),
 
   canvasImage: null,
@@ -45,12 +35,9 @@ const useImageSearchStore = create<ImageSearchStore & ImageSerachGetData & Image
   modelName: null,
   setGetData: getData => set(state => ({ ...state, ...getData })),
 
-  handleCaptureImage: (bol: boolean) => {
+  handleCaptureImage: (canvas: HTMLCanvasElement | null, video: HTMLVideoElement | null) => {
     set(state => {
-      if (state.videoRef!.current && state.canvasRef!.current) {
-        const canvas: HTMLCanvasElement = state.canvasRef!.current;
-        const video: HTMLVideoElement = state.videoRef!.current;
-
+      if (canvas && video) {
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
 
@@ -62,7 +49,7 @@ const useImageSearchStore = create<ImageSearchStore & ImageSerachGetData & Image
           if (imageData === 'data:,') {
             return {};
           }
-          state.setIsState({ isAnalyze: bol });
+          state.setIsState({ isAnalyze: true });
 
           // 캡처된 이미지를 Zustand 상태로 저장
           return { canvasImage: imageData };

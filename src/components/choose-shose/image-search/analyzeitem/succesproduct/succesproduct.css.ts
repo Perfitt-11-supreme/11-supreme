@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { theme } from '../../../../../../styles/theme';
+import { theme } from '../../../../../styles/theme';
 
 export const Product_SuccesContainer = style({
   width: '100%',
@@ -37,7 +37,7 @@ export const Product_Similar = style({
   display: 'flex',
   gap: '10px',
   background: theme.color.cool_gray600,
-  width: '35vw',
+  width: '35%',
   height: '32px',
   borderRadius: '4px',
   padding: '4px 10px',
@@ -53,14 +53,14 @@ export const Product_SimilarText = style({
 });
 
 export const Product_ProductImage = style({
-  width: '70vw',
+  width: '70%',
 });
 
 export const Product_ProductInfo = style({
   display: 'flex',
   flexDirection: 'column',
   gap: '11px',
-  width: '70vw',
+  width: '70%',
   marginTop: '7%',
   marginBottom: '7%',
 });
@@ -89,7 +89,7 @@ export const Product_ProductPrice = style({
 });
 
 export const Product_SimilarProductContainer = style({
-  width: '100vw',
+  width: '100%',
   height: '100%',
   paddingTop: '29px',
   paddingBottom: '108px',
@@ -99,13 +99,12 @@ export const Product_SimilarProductContainer = style({
 });
 
 export const Product_SimilarProductButton = style({
-  height: '13vh',
+  height: '13%',
   position: 'fixed',
   bottom: '0',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  background: theme.color.white,
 });
 
 export const Product_ScrollableContent = style({

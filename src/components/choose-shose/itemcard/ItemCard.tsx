@@ -1,4 +1,5 @@
 import { useShoesRegistryStore } from '../../../stores/useRegistryStore';
+import useSelectItemStore from '../../../stores/useSelectItemStore';
 import { TProduct } from '../../../types/product';
 import {
   ItemCard_Container,
@@ -21,6 +22,7 @@ const ItemCard = ({
   data: TProduct;
 }) => {
   const setSelectedItem = useShoesRegistryStore(state => state.setSelectedItem);
+  const { setSelectProduct } = useSelectItemStore();
 
   const handleClick = () => {
     handleClickItemCard(index);
@@ -29,6 +31,10 @@ const ItemCard = ({
       brand: data.brand,
       shoesName: data.modelName,
     });
+    console.log(data.image);
+    console.log(data.brand);
+    console.log(data.modelName);
+    setSelectProduct(data);
   };
   return (
     <>
