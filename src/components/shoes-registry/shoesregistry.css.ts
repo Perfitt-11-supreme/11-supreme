@@ -37,6 +37,7 @@ export const imagePlusButtonSelected = style({
 export const itemCardDiv = style({
   display: 'flex',
   textAlign: 'start',
+  width: '343px',
 });
 
 export const questionP = style({

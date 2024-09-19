@@ -4,6 +4,7 @@ import { TProduct } from '../../../types/product';
 import {
   ItemCard_Container,
   ItemCard_Frame,
+  ItemCard_Image,
   ItemCard_Rectangle,
   ItemCard_Select,
   ItemCard_ShoseBrand,
@@ -31,16 +32,13 @@ const ItemCard = ({
       brand: data.brand,
       shoesName: data.modelName,
     });
-    console.log(data.image);
-    console.log(data.brand);
-    console.log(data.modelName);
     setSelectProduct(data);
   };
   return (
     <>
       <div className={`${ItemCard_Container} ${index === isSelected ? ItemCard_Select : ''}`} onClick={handleClick}>
         <div className={ItemCard_Rectangle}>
-          <img src={data.image} alt="" />
+          <img className={ItemCard_Image} src={data.image} alt="" />
         </div>
         <div className={ItemCard_Frame}>
           <p className={ItemCard_ShoseBrand}>{data.brand}</p>

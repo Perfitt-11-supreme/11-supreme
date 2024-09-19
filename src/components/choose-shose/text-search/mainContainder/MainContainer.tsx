@@ -57,7 +57,10 @@ const MainContainer = () => {
             <div className={MainContainer_Container}>
               <div className={MainContainer_Header}>
                 <div className={MainContainer_RecentSearches}>최근 검색어</div>
-                <div className={MainContainer_Remove} onMouseDown={() => setState({ record: [], remove: true })}>
+                <div
+                  className={MainContainer_Remove}
+                  onMouseDown={() => setState({ record: [], postText: '', remove: true })}
+                >
                   전체삭제
                 </div>
               </div>

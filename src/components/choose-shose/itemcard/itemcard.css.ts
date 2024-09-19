@@ -3,19 +3,19 @@ import { theme } from '../../../styles/theme';
 
 export const ItemCard_Container = style({
   display: 'flex',
-  width: '90vw',
-  height: '9.5vh',
-  gap: '1.3vh',
+  width: '90%',
+  height: '78px',
+  gap: '10px',
   alignItems: 'center',
   boxSizing: 'content-box',
-  marginLeft: '2px',
   marginTop: '10px',
+  padding: '4px',
 });
 
 export const ItemCard_Select = style({
   border: `2px solid ${theme.color.black}`,
   borderRadius: '8px',
-  marginLeft: '0',
+  padding: '2px',
 });
 
 export const ItemCard_Rectangle = style({
@@ -26,6 +26,10 @@ export const ItemCard_Rectangle = style({
   aspectRatio: '1 / 1',
   borderRadius: '6px',
   background: theme.color.gray100,
+});
+
+export const ItemCard_Image = style({
+  borderRadius: '6px',
 });
 
 export const ItemCard_Frame = style({

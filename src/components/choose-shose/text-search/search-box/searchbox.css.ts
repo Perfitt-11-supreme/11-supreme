@@ -5,7 +5,8 @@ export const SearchBox_Background = style({
   position: 'fixed',
   display: 'flex',
   justifyContent: 'center',
-  width: '100vw',
+  width: '100%',
+  padding: '0 5%',
   height: '65px',
   top: '56px',
   background: theme.color.white,
@@ -15,7 +16,7 @@ export const SearchBox_Background = style({
 
 export const SearchBox_Container = style({
   display: 'flex',
-  width: '90vw',
+  width: '100%',
   height: '40px',
   background: theme.color.white,
   border: `1px solid ${theme.color.cool_gray100}`,

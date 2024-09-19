@@ -9,10 +9,10 @@ export const AnalyzeItem_Container = style({
   justifyContent: 'center',
   alignItems: 'center',
   borderRadius: '20px 20px 0 0',
-  borderTop: '1px solid black',
   background: theme.color.white,
   transition: 'all 0.3s ease',
   zIndex: '100',
+  boxShadow: '0 -2px 0 0 black',
 });
 
 export const AnalyzeItem_AnalyzerContainerMove = styleVariants({

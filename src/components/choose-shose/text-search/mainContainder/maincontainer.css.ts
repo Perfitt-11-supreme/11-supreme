@@ -13,7 +13,7 @@ export const MainContainer_Container = style({
 });
 
 export const MainContainer_Header = style({
-  margin: '0 7vw',
+  margin: '0 7%',
   display: 'flex',
   justifyContent: 'space-between',
 });
@@ -35,6 +35,7 @@ export const MainContainer_Remove = style({
   alignItems: 'center',
   color: theme.color.gray500,
   paddingTop: '2px',
+  cursor: 'pointer',
 });
 
 export const MainContainer_NoRecord = style({
@@ -53,11 +54,12 @@ export const MainContainer_NoRecord = style({
 
 export const MainContainer_RecentRecord = style({
   height: '24px',
-  margin: '0 7vw',
+  margin: '0 7%',
   marginTop: '10px',
   fontWeight: '400',
   fontSize: '15px',
   color: theme.color.gray300,
+  cursor: 'pointer',
 });
 
 export const MainContainer_Line = style({

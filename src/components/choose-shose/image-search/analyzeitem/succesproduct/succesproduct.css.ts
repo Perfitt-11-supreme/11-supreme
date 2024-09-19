@@ -16,9 +16,11 @@ export const Product_AgainContainder = style({
 });
 
 export const Product_AgainBox = style({
+  width: '72px',
   display: 'flex',
   alignItems: 'center',
   gap: '10px',
+  cursor: 'pointer',
 });
 
 export const Product_AgainIcon = style({
@@ -37,7 +39,7 @@ export const Product_Similar = style({
   display: 'flex',
   gap: '10px',
   background: theme.color.cool_gray600,
-  width: '35%',
+  width: '37%',
   height: '32px',
   borderRadius: '4px',
   padding: '4px 10px',
@@ -50,6 +52,7 @@ export const Product_SimilarText = style({
   fontSize: '15px',
   lineHeight: '24px',
   letterSpacing: '-0.003em',
+  cursor: 'pointer',
 });
 
 export const Product_ProductImage = style({
@@ -108,7 +111,23 @@ export const Product_SimilarProductButton = style({
 });
 
 export const Product_ScrollableContent = style({
-  width: 'calc(90vw + 4px)',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  width: '100%',
   height: '100%',
   overflowY: 'scroll',
+
+  selectors: {
+    '&::-webkit-scrollbar': {
+      width: '6px', // 스크롤바의 너비를 줄임
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: 'rgba(0, 0, 0, 0.4)', // 스크롤바의 색상
+      borderRadius: '10px', // 스크롤바의 모서리를 둥글게
+    },
+    '&::-webkit-scrollbar-track': {
+      backgroundColor: 'transparent', // 스크롤바 트랙의 배경
+    },
+  },
 });

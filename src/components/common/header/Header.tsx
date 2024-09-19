@@ -28,7 +28,7 @@ const Header = ({ imageSrc, alt, title, nav }: THeader) => {
     e.stopPropagation();
     console.log('imageSrc:', imageSrc);
 
-    if (imageSrc?.includes('back')) {
+    if (imageSrc?.includes('back') || imageSrc?.includes('close')) {
       console.log('Navigating...');
       handleNavigate();
     } else if (imageSrc?.includes('hamburger')) {
