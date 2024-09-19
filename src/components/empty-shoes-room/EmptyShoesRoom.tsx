@@ -1,6 +1,5 @@
-// EmptyShoesRoom.tsx
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { collection, query, getDocs, orderBy } from 'firebase/firestore';
 import { noshoes, plus } from '../../assets/assets';
 import Button from '../common/button/Button';
@@ -21,11 +20,49 @@ import {
 } from './emptyshoesroom.css';
 import { db } from '../../firebase/firebase';
 import { responsiveBox } from '../../styles/responsive.css';
+import ToastMessage from '../toastmessage/toastMessage';
 
 const EmptyShoesRoom = () => {
   const [isTrue, setIsTrue] = useState(false);
   const [shoesList, setShoesList] = useState<any[]>([]);
   const [selected, setSelected] = useState('latest');
+  const location = useLocation();
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const showToast = useCallback(() => {
+    if (location.state?.deleteToastMessage) {
+      setToastMessage(location.state.deleteToastMessage);
+    } else if (location.state?.registryToastMessage) {
+      setToastMessage(location.state.registryToastMessage);
+    } else if (location.state?.editToastMessage) {
+      setToastMessage(location.state.editToastMessage);
+    }
+  }, [location.state]);
+
+  useEffect(() => {
+    showToast();
+    const timer = setTimeout(() => setToastMessage(null), 3000);
+    return () => clearTimeout(timer);
+  }, [showToast]);
+  console.log('Location state:', location.state); // 상태 확인용
+  //   if (location.state?.deleteToastMessage) {
+  //     setToastMessage(location.state.deleteToastMessage);
+  //     const timer = setTimeout(() => setToastMessage(null), 3000);
+  //     return () => clearTimeout(timer);
+  //   }
+
+  //   if (location.state?.registryToastMessage) {
+  //     setToastMessage(location.state.registryToastMessage);
+  //     const timer = setTimeout(() => setToastMessage(null), 3000);
+  //     return () => clearTimeout(timer);
+  //   }
+  //   if (location.state?.editToastMessage) {
+  //     setToastMessage(location.state.editToastMessage);
+  //     const timer = setTimeout(() => setToastMessage(null), 3000);
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, [location.state]);
+
   const navigate = useNavigate();
 
   const handleRegistry = () => {
@@ -47,8 +84,13 @@ const EmptyShoesRoom = () => {
         selectedSort = query(shoesCollection, orderBy('timestamp', 'asc'));
       }
       const querySnapshot = await getDocs(selectedSort);
-      const shoes = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      console.log(shoes);
+      const shoes = querySnapshot.docs.map(doc => {
+        const data = doc.data();
+        console.log(doc.id, data);
+        return { id: doc.id, ...data };
+      });
+
+      console.log('shoes: ', shoes);
       setShoesList(shoes);
       setIsTrue(shoes.length > 0);
     } catch (e) {
@@ -56,7 +98,7 @@ const EmptyShoesRoom = () => {
     }
   };
 
-  const handleOrderChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelected(event.target.value);
   };
 
@@ -67,7 +109,8 @@ const EmptyShoesRoom = () => {
   return (
     <div className={responsiveBox}>
       <div className={container}>
-        <Header title="신발장" />
+        {toastMessage && <ToastMessage message={toastMessage} duration={3000} />}
+        <Header title="신발장" customNavigate={() => navigate('/login')} />
         <UserProfile />
         {isTrue ? (
           <>
@@ -75,7 +118,7 @@ const EmptyShoesRoom = () => {
               <p className={countp}>
                 <span className={fontBold}>총 {shoesList.length}</span>개
               </p>
-              <select className={select} value={selected} onChange={handleOrderChange}>
+              <select className={select} value={selected} onChange={handleSelectChange}>
                 <option value="latest">최신순</option>
                 <option value="registered">등록순</option>
               </select>
@@ -86,7 +129,7 @@ const EmptyShoesRoom = () => {
               </button>
               {shoesList.map(shoe => (
                 <button key={shoe.id} className={imagebutton} onClick={() => handleShoesInfo(shoe.id)}>
-                  <img className={buttonImage} src={shoe.imageUrl} alt={shoe.name} />
+                  <img className={buttonImage} src={shoe.image} alt={shoe.name} />
                 </button>
               ))}
             </div>

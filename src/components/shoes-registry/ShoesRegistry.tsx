@@ -24,12 +24,14 @@ import {
 } from './shoesregistry.css';
 import ItemCard from '../choose-shose/itemcard/ItemCard';
 import { responsiveBox } from '../../styles/responsive.css';
+import useSelectItemStore from '../../stores/useSelectItemStore';
 
 const ShoesRegistry = () => {
   const { shoesId } = useParams();
+  const { selectProduct, setSelectProduct } = useSelectItemStore();
 
+  const navigate = useNavigate();
   const {
-    selectedItem,
     rating,
     length,
     width,
@@ -45,11 +47,10 @@ const ShoesRegistry = () => {
     setSole,
     setWeight,
     setReview,
-    setSelectedItem,
     setRecommendation,
   } = useShoesRegistryStore();
+
   const [errors, setErrors] = useState({
-    selectedItem: '',
     rating: '',
     length: '',
     width: '',
@@ -67,10 +68,15 @@ const ShoesRegistry = () => {
         const docSnap = await getDoc(doc(db, 'myshoes', shoesId));
         if (docSnap.exists()) {
           const data = docSnap.data();
+          console.log('Fetched data:', data);
           setEditData(data);
 
           // 폼에 데이터 채우기
-          setSelectedItem(data.selectedItem);
+          setSelectProduct({
+            image: data.image,
+            brand: data.brand,
+            modelName: data.modelName,
+          });
           setRating(data.rating);
           setLength(data.length);
           setWidth(data.width);
@@ -95,12 +101,12 @@ const ShoesRegistry = () => {
   const saveToFirestore = async (data: any) => {
     try {
       if (shoesId) {
-        //신발 정보 수정
+        // 신발 정보 수정
         const shoeDocRef = doc(db, 'myshoes', shoesId);
         await updateDoc(shoeDocRef, data);
         console.log('db 수정 성공 ID: ', shoesId);
       } else {
-        //신발 정보 저장
+        // 신발 정보 저장
         const docRef = await addDoc(collection(db, 'myshoes'), data);
         console.log('db 저장 성공 ID: ', docRef.id);
       }
@@ -109,22 +115,22 @@ const ShoesRegistry = () => {
     }
   };
 
-  const validateForm = () => {
-    const newErrors: any = {};
-    if (!rating) newErrors.rating = '별점을 선택해 주세요';
-    if (!length) newErrors.length = '신발 길이를 선택해 주세요';
-    if (!width) newErrors.width = '발볼 너비를 선택해 주세요';
-    if (!height) newErrors.height = '발등 높이를 선택해 주세요';
-    if (!sole) newErrors.sole = '밑창 상태를 선택해 주세요';
-    if (!weight) newErrors.weight = '신발 무게를 선택해 주세요';
-    if (!review) newErrors.review = '리뷰를 작성해 주세요';
+  const validate = () => {
+    const error: any = {};
+    if (!rating) error.rating = '별점을 선택해 주세요';
+    if (!length) error.length = '신발 길이를 선택해 주세요';
+    if (!width) error.width = '발볼 너비를 선택해 주세요';
+    if (!height) error.height = '발등 높이를 선택해 주세요';
+    if (!sole) error.sole = '밑창 상태를 선택해 주세요';
+    if (!weight) error.weight = '신발 무게를 선택해 주세요';
+    if (!review) error.review = '리뷰를 작성해 주세요';
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    setErrors(error);
+    return Object.keys(error).length === 0;
   };
 
   const handleSubmit = async () => {
-    if (!validateForm()) {
+    if (!validate()) {
       const firstErrorKey = Object.keys(errors)[0];
       const refMap: any = {
         rating: ratingRef,
@@ -140,7 +146,7 @@ const ShoesRegistry = () => {
     }
 
     const data = {
-      ...selectedItem,
+      ...selectProduct,
       rating,
       length,
       width,
@@ -155,7 +161,7 @@ const ShoesRegistry = () => {
     await saveToFirestore(data);
 
     // 상태 초기화
-    setSelectedItem(null);
+    setSelectProduct(null);
     setRating(0);
     setLength('');
     setWidth('');
@@ -165,10 +171,13 @@ const ShoesRegistry = () => {
     setRecommendation('');
     setReview('');
 
-    navigate('/empty-shoesroom');
+    if (shoesId) {
+      navigate('/empty-shoesroom', { state: { editToastMessage: '수정 되었습니다' } });
+    } else {
+      navigate('/empty-shoesroom', { state: { registryToastMessage: '등록 되었습니다' } });
+    }
   };
 
-  const navigate = useNavigate();
   const handleChooseShoes = () => navigate('/text-search');
 
   const ratingRef = useRef<HTMLDivElement>(null);
@@ -182,28 +191,16 @@ const ShoesRegistry = () => {
   return (
     <div className={responsiveBox}>
       <div className={container}>
-        <Header title="신발 등록" />
+        <Header title="신발 등록" customNavigate={() => navigate('/empty-shoesroom')} />
         <p className={descP}>신발을 선택해 주세요</p>
-        {selectedItem === null ? (
+        {selectProduct === null ? (
           <button className={imagePlusButton} onClick={handleChooseShoes}>
             <img src={plus} alt="등록" />
           </button>
         ) : (
           <button className={imagePlusButtonSelected} onClick={handleChooseShoes} disabled={!!shoesId}>
             <div className={itemCardDiv}>
-              <ItemCard
-                index={0}
-                isSelected={null}
-                handleClickItemCard={() => {}}
-                data={{
-                  brand: 'Nike',
-                  image: '나이키 슈즈',
-                  link: 'https://nike.com',
-                  modelName: 'Air Max',
-                  modelNo: '123456',
-                  Productid: '1',
-                }}
-              />
+              <ItemCard index={0} isSelected={null} handleClickItemCard={() => {}} data={selectProduct} />
             </div>
           </button>
         )}

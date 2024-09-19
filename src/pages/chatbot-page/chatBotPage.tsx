@@ -23,7 +23,7 @@ import {
   chatBotCardWrap,
   chatBotContainer,
   chatBotModalWrap,
-  chatBotWrap,
+  // chatBotWrap,
   chatBubbleWrap,
   keywordWrap,
 } from './chatBotPage.css';

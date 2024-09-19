@@ -25,6 +25,7 @@ export const ItemCard_Rectangle = style({
   height: '100%',
   aspectRatio: '1 / 1',
   borderRadius: '6px',
+  overflow: 'hidden',
   background: theme.color.gray100,
 });
 

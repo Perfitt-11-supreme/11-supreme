@@ -3,7 +3,7 @@ import { back_arrow } from '../../../assets/assets';
 import { backButton, frame, headerDiv, headerTitle } from './header.css';
 import Kebab from '../../kebab/Kebab';
 
-const Header = ({ title }: { title?: string }) => {
+const Header = ({ title, customNavigate }: { title?: string; customNavigate?: () => void }) => {
   const navigate = useNavigate();
   const handleNavigate = () => {
     navigate(-1);
@@ -14,7 +14,7 @@ const Header = ({ title }: { title?: string }) => {
     <>
       <header className={headerDiv}>
         <div className={frame}>
-          <button className={backButton} onClick={handleNavigate}>
+          <button className={backButton} onClick={customNavigate ? customNavigate : handleNavigate}>
             <img src={back_arrow} alt="back" />
           </button>
         </div>

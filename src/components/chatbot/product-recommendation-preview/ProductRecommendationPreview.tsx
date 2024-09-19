@@ -1,43 +1,45 @@
 import { motion } from 'framer-motion';
-import { arrow_right, export_icon, thumbs_down } from "../../../assets/assets";
+import { arrow_right, export_icon, thumbs_down } from '../../../assets/assets';
 import useModalStore from '../../../stores/useModalStore';
 import { TProduct } from '../../../types/product';
 import ProductRecommendationCard from '../../common/product-recommendation-card/ProductRecommendationCard';
-import { brandRecommendIcon } from "../brand-recommendation/brandRecommendation.css";
-import { productRecommendPreviewContainer, productRecommendPreviewIcon, productRecommendPreviewIconWrap, productRecommendPreviewMore, productRecommendPreviewMoreIcon, productRecommendPreviewWrap } from "./productRecommendationPreview.css";
+import { brandRecommendIcon } from '../brand-recommendation/brandRecommendation.css';
+import {
+  productRecommendPreviewContainer,
+  productRecommendPreviewIcon,
+  productRecommendPreviewIconWrap,
+  productRecommendPreviewMore,
+  productRecommendPreviewMoreIcon,
+  productRecommendPreviewWrap,
+} from './productRecommendationPreview.css';
 interface ProductRecommendationPreviewProps {
   products: TProduct[];
   id: string;
   onMoreClick: () => void;
-
 }
 
 const ProductRecommendationPreview = ({ products = [], id, onMoreClick }: ProductRecommendationPreviewProps) => {
-  const { setIsOpen, setIsShareModalOpen, setShareModalId } = useModalStore()
+  const { setIsOpen, setIsShareModalOpen, setShareModalId } = useModalStore();
 
   const previewProducts = products.slice(0, 2);
 
   const handleOpenModal = () => {
-    onMoreClick()
-    setIsOpen(true)
-  }
+    onMoreClick();
+    setIsOpen(true);
+  };
 
   const handleOpenShareModal = () => {
     setShareModalId(id);
-    setIsShareModalOpen(true)
-  }
+    setIsShareModalOpen(true);
+  };
 
   return (
     <>
       <div className={productRecommendPreviewWrap}>
-
-
-        <motion.ul className={productRecommendPreviewContainer}
-          drag="x"
-          dragConstraints={{ left: -60, right: 0 }}>
+        <motion.ul className={productRecommendPreviewContainer} drag="x" dragConstraints={{ left: -60, right: 0 }}>
           {previewProducts.length > 0 ? (
-            previewProducts.map((product) => (
-              <li key={product.productId}>
+            previewProducts.map(product => (
+              <li key={product?.productId}>
                 <ProductRecommendationCard product={product} />
               </li>
             ))
@@ -55,9 +57,8 @@ const ProductRecommendationPreview = ({ products = [], id, onMoreClick }: Produc
           <img src={export_icon} alt="" className={productRecommendPreviewIcon} onClick={handleOpenShareModal} />
           <img src={thumbs_down} alt="" className={brandRecommendIcon} />
         </div>
-
       </div>
     </>
   );
-}
-export default ProductRecommendationPreview
+};
+export default ProductRecommendationPreview;
