@@ -17,6 +17,9 @@ import LikedPage from '../pages/liked-page/LikedPage';
 import Mypage from '../pages/mypage/Mypage';
 import SharePage from '../pages/share-page/SharePage';
 import ViewedHistoryPage from '../pages/viewed-history-page/ViewedHistoryPage';
+import GoogleSignUpPlus from '../components/signup/infoInput/GoogleSignUpPlus';
+import FindEmail from '../components/login/find/FindEmail';
+import FindPassword from '../components/login/find/FindPassword';
 
 export const router = createBrowserRouter([
   {
@@ -91,5 +94,16 @@ export const router = createBrowserRouter([
     path: '/footinfo',
     element: <FootInfo />,
   },
-
+  {
+    path: '/googlesignup',
+    element: <GoogleSignUpPlus />,
+  },
+  {
+    path: '/findemail',
+    element: <FindEmail />,
+  },
+  {
+    path: '/findpassword',
+    element: <FindPassword />,
+  },
 ]);

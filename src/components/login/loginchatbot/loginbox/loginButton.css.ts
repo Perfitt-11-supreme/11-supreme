@@ -9,8 +9,8 @@ export const loginButton = style({
   borderRadius: '4px',
   backgroundColor: theme.color.gray100,
   cursor: 'pointer',
-  width: '184px',
-  height: '32px',
+  width: '80%',
+  height: '48px',
   border: 'none',
   boxShadow: 'none',
 });

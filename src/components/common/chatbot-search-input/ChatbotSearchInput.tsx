@@ -9,8 +9,8 @@ import {
 } from './chatbotSearchInput.css';
 
 type ChatbotSearchInputProps = {
-  chatCompletionsMutation: any; // questionMutation의 타입을 정의
-}
+  chatCompletionsMutation?: any; // questionMutation의 타입을 정의
+};
 
 const ChatbotSearchInput = ({ chatCompletionsMutation }: ChatbotSearchInputProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -50,7 +50,7 @@ const ChatbotSearchInput = ({ chatCompletionsMutation }: ChatbotSearchInputProps
             className={chatbotSearchInput}
             type="text"
             placeholder="궁금한 신발 정보 물어보세요!"
-            onKeyDown={(e) => {
+            onKeyDown={e => {
               if (e.key === 'Enter') {
                 handleSubmit((e.target as HTMLInputElement).value);
               }
@@ -65,7 +65,7 @@ const ChatbotSearchInput = ({ chatCompletionsMutation }: ChatbotSearchInputProps
           type="file"
           style={{ display: 'none' }}
           accept="image/*"
-          onChange={(e) => {
+          onChange={e => {
             const file = e.target.files?.[0];
             if (file) {
               console.log('선택한 파일:', file);

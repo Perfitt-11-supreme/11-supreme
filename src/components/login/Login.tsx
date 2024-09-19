@@ -23,18 +23,18 @@ const Login = () => {
       const userDoc = await getDoc(userDocRef);
 
       if (userDoc.exists()) {
-        //기존 가입자: 로그인 성공 후 /hello 페이지로 이동
+        //기존 가입자: 로그인 성공 후 /hello(로그인 후 첫 화면) 페이지로 이동
         navigate('/hello');
       } else {
-        //신규 가입자: /signupsize(추가 정보 입력) 페이지로 이동
+        //신규 가입자: /googleinfo(추가 정보 입력) 페이지로 이동
         await setDoc(userDocRef, {
           uid: user.uid,
           email: user.email,
-          username: user.displayName || '', //구글 프로필에서 사용자 이름 가져오기
-          gender: '', //추가 정보 입력 후 업데이트
-          birthDate: { year: '', month: '', day: '' }, //추가 정보 입력 후 업데이트
+          userName: user.displayName || '', //구글 프로필에서 사용자 이름 가져오기
+          // gender: '',
+          // birthDate: { year: '', month: '', day: '' },
         });
-        navigate('/signupsize');
+        navigate('/googlesignup');
       }
 
       //사용자 ID를 localStorage에 저장
