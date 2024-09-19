@@ -1,11 +1,11 @@
 import { style } from '@vanilla-extract/css';
-import { theme } from '../../../../styles/theme';
 import { perfittlogo } from '../../../../assets/assets';
+import { theme } from '../../../../styles/theme';
 
 export const chatbotContainer = style({
   width: '343px',
   height: 'auto',
-  marginLeft: '16px',
+  
   boxSizing: 'border-box',
   display: 'flex',
   alignItems: 'flex-start',

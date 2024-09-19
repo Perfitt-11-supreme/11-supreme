@@ -15,6 +15,7 @@ import UserBubble from '../../components/chatbot/user-bubble/UserBubble';
 import Button from '../../components/common/button/Button';
 import ProductRecommendationCard from '../../components/common/product-recommendation-card/ProductRecommendationCard';
 import { database } from '../../firebase/firebase'; // Firebase 초기화 파일
+import { responsiveBox } from '../../styles/responsive.css';
 import { chatBotCardWrap } from '../chatbot-page/chatBotPage.css';
 import LoadingPage from '../loading-page/loadingPage';
 import {
@@ -25,7 +26,6 @@ import {
   sharePageTextContainer,
   sharePageTitle,
 } from './sharePage.css';
-import { responsiveBox } from '../../styles/responsive.css';
 
 // 데이터 타입 정의
 type Product = {
@@ -57,6 +57,7 @@ const SharePage = () => {
   const handleStartFitTalk = () => {
     navigate('/onboarding');
   };
+  const isSharePage = location.pathname.startsWith("/share/");
 
   useEffect(() => {
     const fetchData = () => {
@@ -117,13 +118,14 @@ const SharePage = () => {
                         <BrandRecommendation brands={productData.brands} id={id} />
                       </div>
                     )}
-
-                    <div>
-                      <div className={productRecommendPreviewMore}>
-                        <img src={arrow_right} className={productRecommendPreviewMoreIcon} alt="more" />
-                        <p style={{ fontSize: '9px', marginTop: '6px' }}>더보기</p>
+                    {!isSharePage &&
+                      <div>
+                        <div className={productRecommendPreviewMore}>
+                          <img src={arrow_right} className={productRecommendPreviewMoreIcon} alt="more" />
+                          <p style={{ fontSize: '9px', marginTop: '6px' }}>더보기</p>
+                        </div>
                       </div>
-                    </div>
+                    }
                   </motion.ul>
                 </div>
               </div>

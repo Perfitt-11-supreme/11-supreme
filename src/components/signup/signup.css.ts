@@ -7,6 +7,7 @@ export const signupFormContainer = style({
   alignItems: 'center',
   width: '100%',
   overflowY: 'auto',
+  padding: '0 16px',
 });
 
 export const errorMessage = style({
@@ -17,6 +18,7 @@ export const errorMessage = style({
 });
 
 export const signupFormGap = style({
+  width:'100%',
   marginTop: '16px',
 });
 
@@ -26,6 +28,7 @@ export const submitbuttonContainer = style({
   marginTop: '40px',
   marginBottom: '34px',
   justifyContent: 'center',
+  width:'100%'
 });
 
 export const signupComponentContainer = style({

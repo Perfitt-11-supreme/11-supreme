@@ -19,7 +19,7 @@ export const pictureIconBox = style({
 });
 
 export const chatbotSearchInputBox = style({
-  width: '311px',
+  width: '100%',
   height: '48px',
   display: 'flex',
   justifyContent: 'space-between',

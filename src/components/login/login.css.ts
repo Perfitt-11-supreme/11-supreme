@@ -52,4 +52,5 @@ export const loginHelloContainer = style({
   height: '100%',
   overflowY: 'scroll',
   marginBottom: '30px',
+  padding:'0 16px'
 });

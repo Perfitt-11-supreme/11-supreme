@@ -6,7 +6,7 @@ import { brandRecommendContainer, brandRecommendIcon, brandRecommendIconWrap, br
 
 type BrandRecommendationProps = {
   brands: TBrand[] | null;
-  id: string; // id를 추가
+  id: string;
   onBrandClick: (brand: string) => void;
 }
 
@@ -25,6 +25,8 @@ const BrandRecommendation = ({ brands, id, onBrandClick }: BrandRecommendationPr
     setShareModalId(id);
     setIsShareModalOpen(true)
   }
+
+  const isSharePage = location.pathname.startsWith("/share/");
   return (
 
     <div className={brandRecommendWrap}>
@@ -33,10 +35,12 @@ const BrandRecommendation = ({ brands, id, onBrandClick }: BrandRecommendationPr
           <li key={index} onClick={() => handleBrandClick(item.brand)}><BrandRecommendationCard {...item} /></li>
         ))}
       </ul>
-      <div className={brandRecommendIconWrap}>
-        <img src={export_icon} alt="" className={brandRecommendIcon} onClick={handleOpenShareModal} />
-        <img src={thumbs_down} alt="" className={brandRecommendIcon} />
-      </div>
+      {!isSharePage && (
+        <div className={brandRecommendIconWrap}>
+          <img src={export_icon} alt="" className={brandRecommendIcon} onClick={handleOpenShareModal} />
+          <img src={thumbs_down} alt="" className={brandRecommendIcon} />
+        </div>
+      )}
 
     </div>
   );

@@ -3,7 +3,7 @@ import useModalStore from "../../../stores/useModalStore";
 import { TBrand } from "../../../types/brand";
 import { brandRecommendButton, brandRecommendCardWrap, brandRecommendImgContainer, brandRecommendText, brandRecommendTextWrap } from "./brandRecommendationCard.css";
 
-const BrandRecommendationCard = ({ thumbnail, description }: TBrand) => {
+const BrandRecommendationCard = ({ thumbnail, brand }: TBrand) => {
   const { setIsOpen } = useModalStore()
 
   const handleOpenModal = () => {
@@ -13,7 +13,7 @@ const BrandRecommendationCard = ({ thumbnail, description }: TBrand) => {
     <>
       <div className={brandRecommendCardWrap}>
         <div className={brandRecommendImgContainer}>
-          <img src={thumbnail} alt={description} />
+          <img src={thumbnail} alt={brand} />
         </div>
         <div className={brandRecommendButton}>
           <div className={brandRecommendTextWrap} onClick={handleOpenModal}>

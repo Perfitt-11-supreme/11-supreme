@@ -20,23 +20,21 @@ const SignUpInput = ({
   onChange,
 }: TInput & { value: string; onChange: React.ChangeEventHandler<HTMLInputElement> }) => {
   return (
-    <>
-      <div className={inputBox}>
-        <label className={inputLabel} htmlFor={id}>
-          {label}
-        </label>
-        <input
-          type={type}
-          className={input}
-          name={name}
-          id={id}
-          placeholder={placeholder}
-          value={value}
-          onChange={onChange}
-          // required
-        />
-      </div>
-    </>
+    <div className={inputBox}>
+      <label className={inputLabel} htmlFor={id}>
+        {label}
+      </label>
+      <input
+        type={type}
+        className={input}
+        name={name}
+        id={id}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+      // required
+      />
+    </div>
   );
 };
 

@@ -3,7 +3,7 @@ import { select_arrow20 } from '../../../assets/assets';
 import { theme } from '../../../styles/theme';
 
 export const selectBox = style({
-  width: '343px',
+  width: '100%',
   display: 'flex',
   flexDirection: 'column',
   gap: '4px',
