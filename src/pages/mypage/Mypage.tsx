@@ -31,8 +31,32 @@ import {
   myInfoServiceTermBox,
   myInfoServiceTermButton,
 } from './mypage.css';
+import { getDoc, doc, getDocs } from 'firebase/firestore'; // Firestore 관련 함수 import
+import { USER_COLLECTION } from '../../firebase/firebase'; // USER_COLLECTION 경로 수정
+import { useEffect, useState } from 'react';
+import { auth } from '../../firebase/firebase';
+// import { useNavigate } from 'react-router-dom';
 
 const Mypage = () => {
+  // const navigate = useNavigate();
+  const [userData, setUserData] = useState<any>(null);
+  console.log('d', userData);
+  const fetchUserDatas = async () => {
+    try {
+      const userSnapshot = await getDocs(USER_COLLECTION);
+      userSnapshot.forEach(doc => {
+        const data = doc.data();
+        setUserData(data);
+      });
+    } catch (error) {
+      console.error('Error fetching user names: ', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserDatas();
+  }, []);
+
   return (
     <>
       <div className={responsiveBox}>
@@ -49,7 +73,8 @@ const Mypage = () => {
           <article className={userProfileGreetingContainer}>
             <p className={userProfileGreeting}>안녕하세요!</p>
             <p className={userProfileName}>
-              <span className={userProfileNameTextBold}>김&nbsp;이&nbsp;름&nbsp;</span>님
+              {/* <span className={userProfileNameTextBold}>김&nbsp;이&nbsp;름&nbsp;</span>님 */}
+              <span className={userProfileNameTextBold}>{userData?.username}</span>님
             </p>
           </article>
           <article>
@@ -76,10 +101,14 @@ const Mypage = () => {
                 <p>평소사이즈</p>
               </div>
               <div className={myInfoValue}>
-                <p>김이름</p>
-                <p>여</p>
-                <p>1999.10.11</p>
-                <p>235mm</p>
+                <p>{userData ? userData?.username : '-'}</p>
+                <p>{userData ? userData?.gender : '-'}</p>
+                <p>
+                  {userData
+                    ? `${userData?.birthDate.year}.${userData?.birthDate.month}.${userData?.birthDate.day}`
+                    : '-'}
+                </p>
+                <p>{userData ? `${userData?.shoeSize} ${userData?.sizeType}` : '-'}</p>
               </div>
             </div>
           </article>

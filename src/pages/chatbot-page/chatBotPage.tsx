@@ -38,6 +38,7 @@ const ChatBotPage = () => {
   const { setMessage, setProducts } = useProductStore.getState();
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
   const [initialMessageShown, setInitialMessageShown] = useState(false);
+
   // 키워드 리스트 불러오기
   const {
     data: keywordsData,
@@ -135,7 +136,7 @@ const ChatBotPage = () => {
             {isKeywordModalOpen && (
               <Modal height="360px" title="관심 키워드">
                 <div className={keywordWrap}>
-                  {keywordsData &&
+                  {Array.isArray(keywordsData) &&
                     keywordsData.map((item, index) => (
                       <KeywordCard
                         key={index}
