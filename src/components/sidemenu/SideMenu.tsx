@@ -46,7 +46,7 @@ const SideMenu = ({ onClose }: SideMenuProps) => {
   };
 
   const handleNavigation = (path: string) => {
-    navigate(path);
+    navigate(path); // 특정 경로로 이동
   };
 
   return (
