@@ -1,9 +1,10 @@
 import CameraWindow from './camera-window/CameraWindow';
-import ImageFooter from './imagefooter/ImageFooter';
-import CameraView from './cameraview/CameraView';
 import useProductStore from '../../../stores/useProductsStore';
 import { useEffect } from 'react';
 import { responsiveBox } from '../../../styles/responsive.css';
+import { close } from '../../../assets/assets';
+import Header from '../../common/header/Header';
+import AnalyzeItem from './analyzeitem/AnalyzeItem';
 
 const ImageSearch = () => {
   const { setProducts } = useProductStore();
@@ -14,9 +15,9 @@ const ImageSearch = () => {
   return (
     <>
       <div className={responsiveBox}>
-        <CameraView />
+        <Header imageSrc={close} alt="close" nav="/text-search" />
         <CameraWindow />
-        <ImageFooter />
+        <AnalyzeItem />
       </div>
     </>
   );

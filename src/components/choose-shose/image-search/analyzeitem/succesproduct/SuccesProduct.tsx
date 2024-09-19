@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { again } from '../../../../../../assets/assets';
-import Button from '../../../../../common/button/Button';
+import { again } from '../../../../../assets/assets';
+import Button from '../../../../common/button/Button';
 import {
   Product_AgainBox,
   Product_AgainContainder,
@@ -17,13 +17,13 @@ import {
   Product_SimilarText,
   Product_SuccesContainer,
 } from './succesproduct.css';
-import ItemCard from '../../../../itemcard/ItemCard';
-import useImageSearchStore from '../../../../../../stores/useImageSearchStore';
-import { ImageShoseSearchAPI } from '../../../../../../api/searchRequests';
+import ItemCard from '../../../itemcard/ItemCard';
+import useImageSearchStore from '../../../../../stores/useImageSearchStore';
+import { ImageShoseSearchAPI } from '../../../../../api/searchRequests';
 import { useMutation } from '@tanstack/react-query';
-import { TProduct } from '../../../../../../types/product';
-import useProductStore from '../../../../../../stores/useProductsStore';
-import useSelectItemStore from '../../../../../../stores/useSelectItemStore';
+import { TProduct } from '../../../../../types/product';
+import useProductStore from '../../../../../stores/useProductsStore';
+import useSelectItemStore from '../../../../../stores/useSelectItemStore';
 import { useNavigate } from 'react-router-dom';
 
 const SuccesProduct = () => {
@@ -83,7 +83,7 @@ const SuccesProduct = () => {
               ))}
             </div>
             <div className={Product_SimilarProductButton}>
-              <Button text="선택 완료" onClick={handleNavigate}></Button>
+              <Button text="선택 완료" onClick={handleNavigate} />
             </div>
           </div>
         </>
@@ -108,7 +108,7 @@ const SuccesProduct = () => {
             <p className={Product_ProductBrand}>{brand}</p>
             <p className={Product_ProductName}>{modelName}</p>
           </div>
-          <Button text="선택 완료" onClick={handleNavigate}></Button>
+          <Button text="선택 완료" onClick={handleNavigate} />
         </div>
       )}
     </>
