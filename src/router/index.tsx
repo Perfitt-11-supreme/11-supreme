@@ -3,7 +3,6 @@ import ImageSearch from '../components/choose-shose/image-search/ImageSearch';
 import TextSearch from '../components/choose-shose/text-search/TextSearch';
 import EmptyShoesRoom from '../components/empty-shoes-room/EmptyShoesRoom';
 import FootInfo from '../components/foot-info/FootInfo';
-import MyFootInfo from '../components/foot-info/MyFootInfo';
 import Login from '../components/login/Login';
 import LoginHello from '../components/login/LoginHello';
 import EmailLogin from '../components/login/emaillogin/EmailLogin';
@@ -92,8 +91,5 @@ export const router = createBrowserRouter([
     path: '/footinfo',
     element: <FootInfo />,
   },
-  {
-    path: '/myfoot-info',
-    element: <MyFootInfo />
-  }
+
 ]);
