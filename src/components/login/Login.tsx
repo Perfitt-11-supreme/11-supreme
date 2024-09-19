@@ -7,6 +7,7 @@ import { loginbuttonContainer, loginbuttonTextContainer, fullContainer } from '.
 import { useNavigate } from 'react-router-dom';
 import { signInWithGoogle } from '../../firebase/firebase';
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
+import { responsiveBox } from '../../styles/responsive.css';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -46,22 +47,24 @@ const Login = () => {
 
   return (
     <>
-      <div className={fullContainer}>
-        <Header imageSrc={hamburger_menu} alt="hamburger menu" />
+      <div className={responsiveBox}>
+        <div className={fullContainer}>
+          <Header imageSrc={hamburger_menu} alt="hamburger menu" />
 
-        <div style={{ marginTop: '20px' }}>
-          <ChatBotBox text={['안녕하세요 펄핏AI 입니다!', '맞춤 추천을 위해 먼저 로그인을 해주세요.']} />
-        </div>
+          <div style={{ marginTop: '20px' }}>
+            <ChatBotBox text={['안녕하세요 펄핏AI 입니다!', '맞춤 추천을 위해 먼저 로그인을 해주세요.']} />
+          </div>
 
-        <div className={loginbuttonContainer}>
-          <LoginButton imageSrc={google} text="구글" onClick={handleGoogleLogin} />
-          <LoginButton text="이메일 로그인" onClick={() => navigate('/emaillogin')} />
-          <div className={loginbuttonTextContainer}>또는</div>
-          <LoginButton text="회원가입 하기" onClick={() => navigate('/signupinfo')} />
-        </div>
+          <div className={loginbuttonContainer}>
+            <LoginButton imageSrc={google} text="구글" onClick={handleGoogleLogin} />
+            <LoginButton text="이메일 로그인" onClick={() => navigate('/emaillogin')} />
+            <div className={loginbuttonTextContainer}>또는</div>
+            <LoginButton text="회원가입 하기" onClick={() => navigate('/signupinfo')} />
+          </div>
 
-        <div style={{ marginTop: 'auto' }}>
-          <ChatbotSearchInput />
+          <div style={{ marginTop: 'auto' }}>
+            <ChatbotSearchInput />
+          </div>
         </div>
       </div>
     </>

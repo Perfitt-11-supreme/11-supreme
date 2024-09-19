@@ -2,7 +2,7 @@ import { style } from '@vanilla-extract/css';
 import { theme } from '../../styles/theme';
 
 export const mypageContainer = style({
-  width: '375px',
+  width: '100%',
 });
 export const userProfileImageContainer = style({
   width: '100%',

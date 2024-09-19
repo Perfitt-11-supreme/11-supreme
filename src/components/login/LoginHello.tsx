@@ -24,6 +24,7 @@ import ShareModal from '../common/share-modal/ShareModal';
 import { batteryMargin, fullContainer, loginHelloContainer, recommendedquestioncardContainer } from './login.css';
 import ChatBotBox from './loginchatbot/chatbotbox/ChatBotBox';
 import RecommendBox from './loginchatbot/recommendbox/RecommendBox';
+import { responsiveBox } from '../../styles/responsive.css';
 
 type TQuestions = {
   question: string;
@@ -50,7 +51,7 @@ type ChatItem = {
 const LoginHello = () => {
   const { setProducts } = useProductStore.getState();
   const { selectedBrand, setBrands, setSelectedBrand } = useBrandStore();
-  const { isShareModalOpen } = useModalStore()
+  const { isShareModalOpen } = useModalStore();
   const [currentKeywords, setCurrentKeywords] = useState<string>('');
   const [chatHistory, setChatHistory] = useState<ChatItem[]>([]);
   const [showProductRecommendation, setShowProductRecommendation] = useState(false);
@@ -64,7 +65,8 @@ const LoginHello = () => {
       snapshot.forEach(childSnapshot => {
         const data = childSnapshot.val();
         const id = childSnapshot.key; // 고유 키를 가져옴
-        if (id) { // id가 존재할 때만 추가
+        if (id) {
+          // id가 존재할 때만 추가
           chatItems.push({ ...data, id }); // 데이터와 키를 함께 저장
         }
       });
@@ -82,7 +84,6 @@ const LoginHello = () => {
       }
     });
   }, [setProducts, setBrands]);
-
 
   // 추천 질문 불러오는 함수
   const {
@@ -163,73 +164,78 @@ const LoginHello = () => {
     return selectedChat ? selectedChat.keywords : '';
   };
 
-
-
-
   if (isRecommendQuestionLoading) return <LoadingPage />;
   if (recommendQuestionError) return <div>error:{recommendQuestionError?.message}</div>;
 
   return (
-    <div className={fullContainer}>
-      <div className={batteryMargin}></div>
-      <Header imageSrc={hamburger_menu} alt="hamburger menu" />
-      <div className={loginHelloContainer}>
-        <div ref={chatContainerRef} style={{ overflowY: 'auto', overflowX: 'hidden' }}>
-          {' '}
-          {/* 채팅 기록 컨테이너 */}
-          <div style={{ marginTop: '20px' }}>
-            <ChatBotBox text={['반갑습니다 OO님!', 'OO님을 위한 맞춤 상품을 추천해 드릴게요.']} />
-          </div>
-          <div style={{ marginLeft: '44px' }}>
-            <RecommendBox />
-          </div>
-          {chatHistory.map((chat, index) => (
-            <Fragment key={index}>
-              <UserBubble bubbleContent={chat.userQuestion} />
+    <div className={responsiveBox}>
+      <div className={fullContainer}>
+        <div className={batteryMargin}></div>
+        <Header imageSrc={hamburger_menu} alt="hamburger menu" />
+        <div className={loginHelloContainer}>
+          <div ref={chatContainerRef} style={{ overflowY: 'auto', overflowX: 'hidden' }}>
+            {' '}
+            {/* 채팅 기록 컨테이너 */}
+            <div style={{ marginTop: '20px' }}>
+              <ChatBotBox text={['반갑습니다 OO님!', 'OO님을 위한 맞춤 상품을 추천해 드릴게요.']} />
+            </div>
+            <div style={{ marginLeft: '44px' }}>
+              <RecommendBox />
+            </div>
+            {chatHistory.map((chat, index) => (
+              <Fragment key={index}>
+                <UserBubble bubbleContent={chat.userQuestion} />
 
-              <ChatBotBubble bubbleContent={chat.botResponse} />
-              {chat.brands && chat.brands.length > 0 && chat.id && (
-                <div style={{ marginLeft: '28px' }}>
-                  <BrandRecommendation brands={chat.brands} id={chat.id} onBrandClick={handleBrandClick} />
-                </div>
-              )}
-              {chat.products && chat.products.length > 0 && chat.id && (
-                <div style={{ marginLeft: '28px' }}>
-                  <ProductRecommendationPreview products={chat.products} id={chat.id} onMoreClick={() => handleProductMoreClick(chat.id)} />
-                </div>
-              )}
-            </Fragment>
-          ))}
-        </div>
-      </div>
-      {chatHistory.length === 0 && (
-        <motion.div
-          drag="x"
-          dragConstraints={{ right: 0, left: -550 }}
-          whileTap={{ cursor: 'grabbing' }}
-          className={recommendedquestioncardContainer}
-        >
-          {keywordsData &&
-            keywordsData.map((question, index) => (
-              <RecommendedQuestionCard
-                key={index}
-                text={question.question}
-                onClick={() => handleQuestionSelect(question.question)}
-              />
+                <ChatBotBubble bubbleContent={chat.botResponse} />
+                {chat.brands && chat.brands.length > 0 && chat.id && (
+                  <div style={{ marginLeft: '28px' }}>
+                    <BrandRecommendation brands={chat.brands} id={chat.id} onBrandClick={handleBrandClick} />
+                  </div>
+                )}
+                {chat.products && chat.products.length > 0 && chat.id && (
+                  <div style={{ marginLeft: '28px' }}>
+                    <ProductRecommendationPreview
+                      products={chat.products}
+                      id={chat.id}
+                      onMoreClick={() => handleProductMoreClick(chat.id)}
+                    />
+                  </div>
+                )}
+              </Fragment>
             ))}
-        </motion.div>
-      )}
+          </div>
+        </div>
+        {chatHistory.length === 0 && (
+          <motion.div
+            drag="x"
+            dragConstraints={{ right: 0, left: -550 }}
+            whileTap={{ cursor: 'grabbing' }}
+            className={recommendedquestioncardContainer}
+          >
+            {keywordsData &&
+              keywordsData.map((question, index) => (
+                <RecommendedQuestionCard
+                  key={index}
+                  text={question.question}
+                  onClick={() => handleQuestionSelect(question.question)}
+                />
+              ))}
+          </motion.div>
+        )}
 
-      {chatHistory.length > 0 && (
-        <Modal height="700px" initialHeight="25px">
-          {selectedBrand ? <BrandPLP /> :
-            showProductRecommendation ? <ProductRecommendation keywords={getSelectedKeywords()} /> :
-              null}
-        </Modal>
-      )}
-      <ChatbotSearchInput chatCompletionsMutation={chatCompletionsMutation} />
+        {chatHistory.length > 0 && (
+          <Modal height="700px" initialHeight="25px">
+            {selectedBrand ? (
+              <BrandPLP />
+            ) : showProductRecommendation ? (
+              <ProductRecommendation keywords={getSelectedKeywords()} />
+            ) : null}
+          </Modal>
+        )}
+        <ChatbotSearchInput chatCompletionsMutation={chatCompletionsMutation} />
 
-      {isShareModalOpen && <ShareModal />}
+        {isShareModalOpen && <ShareModal />}
+      </div>
     </div>
   );
 };

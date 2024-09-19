@@ -15,11 +15,8 @@ import ChatBotPage from '../pages/chatbot-page/chatBotPage';
 import LikedPage from '../pages/liked-page/LikedPage';
 import Mypage from '../pages/mypage/Mypage';
 import ViewedHistoryPage from '../pages/viewed-history-page/ViewedHistoryPage';
-import EmailLogin from '../components/login/emaillogin/EmailLogin';
-import OnBoarding from '../components/onboarding/OnBoarding';
 import FootInfo from '../components/foot-info/FootInfo';
 import SharePage from '../pages/share-page/SharePage';
-import SideMenu from '../pages/sidemenu/SideMenu';
 
 export const router = createBrowserRouter([
   {

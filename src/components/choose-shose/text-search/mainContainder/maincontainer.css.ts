@@ -61,7 +61,7 @@ export const MainContainer_RecentRecord = style({
 });
 
 export const MainContainer_Line = style({
-  width: '375px',
+  width: '100%',
   height: '6px',
   marginTop: '31px',
   background: theme.color.gray100,

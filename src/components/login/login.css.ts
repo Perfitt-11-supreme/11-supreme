@@ -4,13 +4,12 @@ import { theme } from '../../styles/theme';
 export const fullContainer = style({
   display: 'flex',
   flexDirection: 'column',
-  width: '375px',
-  height: '812px',
-  margin: '0 auto',
+  width: '100%',
+  height: '100%',
   boxSizing: 'border-box',
   justifyContent: 'space-between',
   overflow: 'hidden',
-  position:'relative'
+  position: 'relative',
 });
 
 export const batteryMargin = style({
@@ -44,13 +43,13 @@ export const loginbuttonTextContainer = style({
 export const recommendedquestioncardContainer = style({
   display: 'flex',
   gap: '8px',
-  marginLeft:'16px',
+  marginLeft: '16px',
   cursor: 'grab',
-  marginBottom:'8px'
+  marginBottom: '8px',
 });
 
 export const loginHelloContainer = style({
-  height:'100%',
+  height: '100%',
   overflowY: 'scroll',
-  marginBottom:'30px'
-})
+  marginBottom: '30px',
+});

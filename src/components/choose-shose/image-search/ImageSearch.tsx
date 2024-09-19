@@ -3,6 +3,7 @@ import ImageFooter from './imagefooter/ImageFooter';
 import CameraView from './cameraview/CameraView';
 import useProductStore from '../../../stores/useProductsStore';
 import { useEffect } from 'react';
+import { responsiveBox } from '../../../styles/responsive.css';
 
 const ImageSearch = () => {
   const { setProducts } = useProductStore();
@@ -12,9 +13,11 @@ const ImageSearch = () => {
 
   return (
     <>
-      <CameraView />
-      <CameraWindow />
-      <ImageFooter />
+      <div className={responsiveBox}>
+        <CameraView />
+        <CameraWindow />
+        <ImageFooter />
+      </div>
     </>
   );
 };
