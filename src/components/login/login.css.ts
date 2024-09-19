@@ -17,8 +17,7 @@ export const batteryMargin = style({
 });
 
 export const loginbuttonContainer = style({
-  marginLeft: '44px',
-  width: '200px',
+  width: '100%',
   height: 'auto',
   padding: '8px',
   display: 'flex',
@@ -52,5 +51,14 @@ export const loginHelloContainer = style({
   height: '100%',
   overflowY: 'scroll',
   marginBottom: '30px',
-  padding:'0 16px'
+  padding: '0 16px',
+});
+
+export const foundResultStyle = style({
+  color: theme.color.black,
+  fontSize: '16px',
+  fontWeight: '600',
+  lineHeight: '20px',
+  letterSpacing: '-0.003em',
+  marginBottom: '34px',
 });

@@ -9,7 +9,7 @@ import Header from '../../common/header/Header';
 import SignUpInput from '../../signup/infoInput/signupinput/SignUpInput';
 import { errorMessage, signupFormContainer, signupFormGap, submitbuttonContainer } from '../../signup/signup.css';
 import { fullContainer } from '../login.css';
-import { accountSearchBox, accountSearchButton } from './emailLogin.css';
+import { accountFindBox, accountFindButton } from './emailLogin.css';
 
 const EmailLogin = () => {
   type FormErrors = {
@@ -80,9 +80,9 @@ const EmailLogin = () => {
     }
   };
 
-  const accountSearchButtons = [
-    { text: '이메일 찾기', path: '' },
-    { text: '비밀번호 찾기', path: '' },
+  const accountFindButtons = [
+    { text: '이메일 찾기', path: '/findemail' },
+    { text: '비밀번호 찾기', path: '/findpassword' },
     { text: '회원가입', path: '/signupinfo' },
   ];
 
@@ -93,7 +93,6 @@ const EmailLogin = () => {
           <div>
             <Header imageSrc={back_arrow} alt="back arrow" title="이메일 로그인" />
             <div className={signupFormContainer} style={{ marginTop: '20px' }}>
-
               <SignUpInput
                 label="아이디"
                 type="email"
@@ -104,7 +103,6 @@ const EmailLogin = () => {
                 onChange={handleChange}
               />
               {errors.userEmail && <div className={errorMessage}>{errors.userEmail}</div>}
-
 
               <div className={signupFormGap}>
                 <SignUpInput
@@ -119,15 +117,13 @@ const EmailLogin = () => {
                 {errors.userPassword && <div className={errorMessage}>{errors.userPassword}</div>}
               </div>
 
-
               <form onSubmit={handleSubmit} className={submitbuttonContainer}>
-                <Button text="로그인" width='100%' />
+                <Button text="로그인" width="100%" />
               </form>
 
-
-              <div className={accountSearchBox}>
-                {accountSearchButtons.map((button, index) => (
-                  <div key={index} className={accountSearchButton} onClick={() => navigate(button.path)}>
+              <div className={accountFindBox}>
+                {accountFindButtons.map((button, index) => (
+                  <div key={index} className={accountFindButton} onClick={() => navigate(button.path)}>
                     {button.text}
                   </div>
                 ))}

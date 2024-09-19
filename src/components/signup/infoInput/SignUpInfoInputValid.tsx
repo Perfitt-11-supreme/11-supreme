@@ -119,22 +119,22 @@ const SignUpInfoInputValid = () => {
         const userCredential = await createUserWithEmailAndPassword(auth, formData.userEmail, formData.userPassword);
         const user = userCredential.user;
 
-        //USER Collection에 user.uid를 ID로 사용자 정보 저장 문서 생성
+        //성공 시 이동 (데이터 저장 최적화 위해 페이지 이동 먼저 처리)
+        navigate('/signupsize');
+
+        //USER Collection에 user.uid를 ID로 사용자 정보 저장 (비동기 처리)
         const userDoc = doc(USER_COLLECTION, user.uid);
         //아래 정보 저장
         await setDoc(userDoc, {
           uid: user.uid,
           email: formData.userEmail,
-          username: formData.userName,
+          userName: formData.userName,
           gender: formData.gender,
           birthDate: formData.birthDate,
         });
 
         //사용자 ID를 localStorage에 저장
         localStorage.setItem('userUID', user.uid);
-
-        //성공 시 이동
-        navigate('/signupsize');
       } catch (err) {
         if (err instanceof FirebaseError) {
           switch (err.code) {
@@ -171,18 +171,29 @@ const SignUpInfoInputValid = () => {
         <div>
           <Modal title="회원가입" height={modalHeight} initialHeight="612px" animateHeightOnClick={false}>
             <div className={signupFormContainer}>
-
               <Input
                 label="아이디"
                 type="email"
                 name="userEmail"
                 id="userEmail1"
-                placeholder="이메일을 입력해주세요"
+                placeholder="이메일을 입력해 주세요"
                 value={formData.userEmail}
                 onChange={handleChange}
               />
               {errors.userEmail && <div className={errorMessage}>{errors.userEmail}</div>}
 
+              <div className={signupFormGap}>
+                <Input
+                  label="비밀번호"
+                  type="password"
+                  name="userPassword"
+                  id="userPassword"
+                  placeholder="비밀번호를 입력해 주세요"
+                  value={formData.userPassword}
+                  onChange={handleChange}
+                />
+                {errors.userPassword && <div className={errorMessage}>{errors.userPassword}</div>}
+              </div>
 
               <div className={signupFormGap}>
                 <Input
@@ -238,9 +249,8 @@ const SignUpInfoInputValid = () => {
                 {errors.birthDate && <div className={errorMessage}>{errors.birthDate}</div>}
               </div>
 
-
               <form onSubmit={handleSubmit} className={submitbuttonContainer}>
-                <Button text="다음" width='100%' />
+                <Button text="다음" width="100%" />
               </form>
             </div>
           </Modal>
