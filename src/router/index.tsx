@@ -2,6 +2,8 @@ import { createBrowserRouter } from 'react-router-dom';
 import ImageSearch from '../components/choose-shose/image-search/ImageSearch';
 import TextSearch from '../components/choose-shose/text-search/TextSearch';
 import EmptyShoesRoom from '../components/empty-shoes-room/EmptyShoesRoom';
+import FootInfo from '../components/foot-info/FootInfo';
+import MyFootInfo from '../components/foot-info/MyFootInfo';
 import Login from '../components/login/Login';
 import LoginHello from '../components/login/LoginHello';
 import EmailLogin from '../components/login/emaillogin/EmailLogin';
@@ -14,9 +16,8 @@ import BridgePage from '../pages/bridge-page/bridgePage';
 import ChatBotPage from '../pages/chatbot-page/chatBotPage';
 import LikedPage from '../pages/liked-page/LikedPage';
 import Mypage from '../pages/mypage/Mypage';
-import ViewedHistoryPage from '../pages/viewed-history-page/ViewedHistoryPage';
-import FootInfo from '../components/foot-info/FootInfo';
 import SharePage from '../pages/share-page/SharePage';
+import ViewedHistoryPage from '../pages/viewed-history-page/ViewedHistoryPage';
 
 export const router = createBrowserRouter([
   {
@@ -91,4 +92,8 @@ export const router = createBrowserRouter([
     path: '/footinfo',
     element: <FootInfo />,
   },
+  {
+    path: '/myfoot-info',
+    element: <MyFootInfo />
+  }
 ]);
