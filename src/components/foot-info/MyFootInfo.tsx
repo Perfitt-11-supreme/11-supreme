@@ -15,19 +15,19 @@ import {
   warning2,
 } from '../../assets/assets';
 import Header from '../empty-shoes-room/header/Header';
+import Choose from './choose/Choose';
 import {
+  InfoDiv,
+  InfoP,
   accordion,
   accordionButton,
   accordionContent,
   accordionDiv,
   activeAccordion,
   container,
-  InfoDiv,
-  InfoP,
   textButtonDiv,
   textDiv,
 } from './my-foot-info.css';
-import Choose from './choose/Choose';
 
 const Accordion = ({ title, content }: { title: string; content: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
