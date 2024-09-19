@@ -41,6 +41,7 @@ import user from './empty-shoes-room/user.svg';
 import analyze from './foot-info/analyze.svg';
 import analyze2 from './foot-info/analyze2.svg';
 import arrow_down from './foot-info/arrow_down.svg';
+import foot_loading from './foot-info/foot-loading.gif';
 import my_foot from './foot-info/my_foot.svg';
 import my_foot_info from './foot-info/my_foot_info.svg';
 import tip1 from './foot-info/tip1.svg';
@@ -91,7 +92,7 @@ export {
   detail,
   empty_star,
   export_icon,
-  filled_star, gallery, google, hamburger_menu,
+  filled_star, foot_loading, gallery, google, hamburger_menu,
   heart_empty,
   heart_filled,
   info,
