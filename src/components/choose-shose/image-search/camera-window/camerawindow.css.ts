@@ -66,8 +66,7 @@ export const CameraWindow_View = style({
 });
 
 export const CameraWindow_Canvas = style({
-  position: 'fixed',
-  bottom: '-100%',
+  display: 'none',
   width: '100%',
   height: 'auto',
   zIndex: '-1',

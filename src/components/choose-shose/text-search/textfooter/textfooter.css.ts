@@ -9,5 +9,5 @@ export const TextFooter_Background = style({
   background: theme.color.white,
   bottom: '0',
   height: '108px',
-  width: '100vw',
+  width: '100%',
 });

@@ -34,7 +34,7 @@ const AnalyzeItem = () => {
             : ''
         } `}
       >
-        {isSuccess ? <SuccesProduct /> : <IsLoading text="분석중" />}
+        {isSuccess ? <SuccesProduct /> : isAnalyze && <IsLoading text="분석중" />}
       </div>
     </>
   );
