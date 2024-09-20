@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { responsiveBox } from '../../../styles/responsive.css';
 import { close } from '../../../assets/assets';
 import Header from '../../common/header/Header';
-import AnalyzeItem from './analyzeitem/AnalyzeItem';
+import AnalyzeImage from './analyzeimage/AnalyzeImage';
 
 const ImageSearch = () => {
   const { setProducts } = useProductStore();
@@ -17,7 +17,7 @@ const ImageSearch = () => {
       <div className={responsiveBox}>
         <Header imageSrc={close} alt="close" nav="/text-search" />
         <CameraWindow />
-        <AnalyzeItem />
+        <AnalyzeImage />
       </div>
     </>
   );

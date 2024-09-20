@@ -1,10 +1,11 @@
-import { AnalyzeItem_AnalyzerContainerMove, AnalyzeItem_Container } from './analyzeitem.css.ts';
+import { AnalyzeImage_AnalyzerContainerMove, AnalyzeImage_Container } from './analyzeimage.css.ts';
 import { useEffect, useRef } from 'react';
 import SuccesProduct from './succesproduct/SuccesProduct.tsx';
 import useImageSearchStore from '../../../../stores/useImageSearchStore.ts';
 import IsLoading from '../../isLoading/IsLoading.tsx';
+import SimilarProduct from './similarproduct/SimilarProduct.tsx';
 
-const AnalyzeItem = () => {
+const AnalyzeImage = () => {
   const divRef = useRef<HTMLDivElement>(null);
   const { isAnalyze, isSuccess, isSimilar, setIsState } = useImageSearchStore();
 
@@ -22,21 +23,32 @@ const AnalyzeItem = () => {
     };
   }, [isSimilar]);
 
+  const getClassNames = () => {
+    let classNames = `${AnalyzeImage_Container}`;
+    if (isSuccess) {
+      classNames += ` ${AnalyzeImage_AnalyzerContainerMove.success}`;
+    } else if (isAnalyze) {
+      classNames += ` ${AnalyzeImage_AnalyzerContainerMove.analyze}`;
+    }
+    return classNames;
+  };
+
+  const renderContent = () => {
+    if (isAnalyze) {
+      return <IsLoading text="분석중" />;
+    }
+    if (isSuccess) {
+      return isSimilar ? <SimilarProduct /> : <SuccesProduct />;
+    }
+    return null;
+  };
+
   return (
     <>
-      <div
-        ref={divRef}
-        className={`${AnalyzeItem_Container} ${AnalyzeItem_AnalyzerContainerMove.hidden} ${
-          isAnalyze
-            ? AnalyzeItem_AnalyzerContainerMove.analyze
-            : isSuccess
-            ? AnalyzeItem_AnalyzerContainerMove.success
-            : ''
-        } `}
-      >
-        {isSuccess ? <SuccesProduct /> : isAnalyze && <IsLoading text="분석중" />}
+      <div ref={divRef} className={getClassNames()}>
+        {renderContent()}
       </div>
     </>
   );
 };
-export default AnalyzeItem;
+export default AnalyzeImage;

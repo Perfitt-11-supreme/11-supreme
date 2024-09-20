@@ -1,5 +1,5 @@
 import { ref, uploadString, getDownloadURL, deleteObject } from 'firebase/storage';
-import { storage } from '../../../../firebase/firebase';
+import { storage } from '../../../../../firebase/firebase';
 
 export const ImageUpload = async (canvasImage: string, onSuccess: (url: string) => void, name?: string) => {
   // 이미지의 이름 겹침을 방지하기 위한 현재시간 가져오기
@@ -21,7 +21,16 @@ export const ImageUpload = async (canvasImage: string, onSuccess: (url: string) 
       // 2초뒤 실행
       setTimeout(() => {
         // 이미지 삭제 함수
-        ImageDelete(imagePath);
+        const storageRef = ref(storage, imagePath);
+
+        // 이미지 삭제
+        deleteObject(storageRef)
+          .then(() => {
+            console.log('File deleted successfully');
+          })
+          .catch(error => {
+            console.error('Error deleting file:', error);
+          });
       }, 2000);
     }
   });
@@ -47,20 +56,6 @@ export const handleImageToBase64 = (file: File): Promise<string> => {
     // 파일 읽기
     reader.readAsDataURL(file);
   });
-};
-
-// 이미지 삭제 함수
-export const ImageDelete = (imagePath: string) => {
-  const storageRef = ref(storage, imagePath);
-
-  // 이미지 삭제
-  deleteObject(storageRef)
-    .then(() => {
-      console.log('File deleted successfully');
-    })
-    .catch(error => {
-      console.error('Error deleting file:', error);
-    });
 };
 
 // 카메라로 촬영한 이미지 base64로 변환하는 함수
