@@ -169,13 +169,16 @@ const Mypage = () => {
               </div>
               <div className={myInfoValue}>
                 <p>{userData ? userData?.userName : '-'}</p>
-                <p>{userData ? userData?.gender : '-'}</p>
+                <p>
+                  {userData ? (userData.gender === 'female' ? '여성' : userData.gender === 'male' ? '남성' : '-') : '-'}
+                </p>
+
                 <p>
                   {userData
                     ? `${userData?.birthDate.year}.${userData?.birthDate.month}.${userData?.birthDate.day}`
                     : '-'}
                 </p>
-                <p>{userData ? `${userData?.shoeSize} ${userData?.sizeType}` : '-'}</p>
+                <p>{userData?.shoeSize && userData?.sizeType ? `${userData.shoeSize} ${userData.sizeType}` : '-'}</p>
               </div>
             </div>
           </article>
