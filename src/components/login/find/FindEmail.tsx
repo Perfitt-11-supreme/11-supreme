@@ -11,6 +11,7 @@ import { back_arrow } from '../../../assets/assets';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import SignUpDateSelect from '../../signup/infoInput/signupdateselect/SignUpDateSelect';
 import SignUpSelect from '../../signup/infoInput/signupselect/SignUpSelect';
+import { responsiveBox } from '../../../styles/responsive.css';
 
 const FindEmail = () => {
   type FormErrors = {
@@ -139,58 +140,60 @@ const FindEmail = () => {
 
   return (
     <>
-      <div className={fullContainer}>
-        <div>
-          <Header imageSrc={back_arrow} alt="back arrow" title="이메일 찾기" />
-          <div className={signupFormContainer} style={{ marginTop: '20px' }}>
-            <div>
-              <SignUpInput
-                label="이름"
-                type="text"
-                name="userName"
-                id="userName"
-                placeholder="이름을 입력해 주세요"
-                value={formData.userName}
-                onChange={handleChange}
-              />
-              {errors.userName && <div className={errorMessage}>{errors.userName}</div>}
-            </div>
+      <div className={responsiveBox}>
+        <div className={fullContainer}>
+          <div>
+            <Header imageSrc={back_arrow} alt="back arrow" title="이메일 찾기" />
+            <div className={signupFormContainer} style={{ marginTop: '20px' }}>
+              <div>
+                <SignUpInput
+                  label="이름"
+                  type="text"
+                  name="userName"
+                  id="userName"
+                  placeholder="이름을 입력해 주세요"
+                  value={formData.userName}
+                  onChange={handleChange}
+                />
+                {errors.userName && <div className={errorMessage}>{errors.userName}</div>}
+              </div>
 
-            <div className={signupFormGap}>
-              <SignUpSelect
-                id="gender"
-                label="성별"
-                options={[
-                  { value: '', label: '성별을 선택해 주세요' },
-                  { value: 'male', label: '남성' },
-                  { value: 'female', label: '여성' },
-                ]}
-                value={formData.gender}
-                onChange={handleChange}
-              />
-              {errors.gender && <div className={errorMessage}>{errors.gender}</div>}
-            </div>
+              <div className={signupFormGap}>
+                <SignUpSelect
+                  id="gender"
+                  label="성별"
+                  options={[
+                    { value: '', label: '성별을 선택해 주세요' },
+                    { value: 'male', label: '남성' },
+                    { value: 'female', label: '여성' },
+                  ]}
+                  value={formData.gender}
+                  onChange={handleChange}
+                />
+                {errors.gender && <div className={errorMessage}>{errors.gender}</div>}
+              </div>
 
-            <div className={signupFormGap}>
-              <SignUpDateSelect label="생년월일" value={formData.birthDate} onChange={handleChange} />
-              {errors.birthDate && <div className={errorMessage}>{errors.birthDate}</div>}
-            </div>
+              <div className={signupFormGap}>
+                <SignUpDateSelect label="생년월일" value={formData.birthDate} onChange={handleChange} />
+                {errors.birthDate && <div className={errorMessage}>{errors.birthDate}</div>}
+              </div>
 
-            <div className={submitbuttonContainer}>
-              <form onSubmit={handleFindEmail}>
-                <Button text="이메일 찾기" />
-              </form>
-            </div>
+              <div className={submitbuttonContainer}>
+                <form onSubmit={handleFindEmail}>
+                  <Button text="이메일 찾기" />
+                </form>
+              </div>
 
-            {foundEmail && <div className={foundResultStyle}>{foundEmail}</div>}
-            {error && <div className={foundResultStyle}>{error}</div>}
+              {foundEmail && <div className={foundResultStyle}>{foundEmail}</div>}
+              {error && <div className={foundResultStyle}>{error}</div>}
 
-            <div className={accountFindBox}>
-              {accountFindButtons.map((button, index) => (
-                <div key={index} className={accountFindButton} onClick={() => navigate(button.path)}>
-                  {button.text}
-                </div>
-              ))}
+              <div className={accountFindBox}>
+                {accountFindButtons.map((button, index) => (
+                  <div key={index} className={accountFindButton} onClick={() => navigate(button.path)}>
+                    {button.text}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>

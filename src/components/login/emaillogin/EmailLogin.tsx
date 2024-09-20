@@ -1,5 +1,5 @@
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { back_arrow } from '../../../assets/assets';
 import { auth } from '../../../firebase/firebase';
@@ -10,6 +10,7 @@ import SignUpInput from '../../signup/infoInput/signupinput/SignUpInput';
 import { errorMessage, signupFormContainer, signupFormGap, submitbuttonContainer } from '../../signup/signup.css';
 import { fullContainer } from '../login.css';
 import { accountFindBox, accountFindButton } from './emailLogin.css';
+import ToastMessage from '../../toastmessage/toastMessage';
 
 const EmailLogin = () => {
   type FormErrors = {
@@ -28,6 +29,7 @@ const EmailLogin = () => {
     userEmail: '',
     userPassword: '',
   });
+  const [toastMessage, setToastMessage] = useState<{ message: string; duration: number } | null>(null);
 
   const validate = (data: FormData): FormErrors => {
     const newErrors: FormErrors = {};
@@ -75,7 +77,7 @@ const EmailLogin = () => {
         //로그인 성공 시 이동
         navigate('/hello');
       } catch {
-        alert('입력한 정보를 다시 확인해주세요.');
+        setToastMessage({ message: '입력한 정보를 다시 확인해주세요.', duration: 3000 });
       }
     }
   };
@@ -86,10 +88,18 @@ const EmailLogin = () => {
     { text: '회원가입', path: '/signupinfo' },
   ];
 
+  useEffect(() => {
+    if (toastMessage) {
+      const timer = setTimeout(() => setToastMessage(null), toastMessage.duration);
+      return () => clearTimeout(timer);
+    }
+  }, [toastMessage]);
+
   return (
     <>
       <div className={responsiveBox}>
         <div className={fullContainer}>
+          {toastMessage && <ToastMessage message={toastMessage.message} duration={toastMessage.duration} />}
           <div>
             <Header imageSrc={back_arrow} alt="back arrow" title="이메일 로그인" />
             <div className={signupFormContainer} style={{ marginTop: '20px' }}>

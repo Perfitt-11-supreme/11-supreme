@@ -19,6 +19,7 @@ import { USER_COLLECTION } from '../../../firebase/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { responsiveBox } from '../../../styles/responsive.css';
+import ToastMessage from '../../toastmessage/toastMessage';
 
 const SignUpSizeInputValid = () => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -29,6 +30,8 @@ const SignUpSizeInputValid = () => {
   }>({});
 
   const sizeTypes = ['mm', 'EU', 'US'];
+
+  const [toastMessage, setToastMessage] = useState<{ message: string; duration: number } | null>(null);
 
   const validate = () => {
     const newErrors: { sizeType?: string; shoeSize?: string } = {};
@@ -80,10 +83,10 @@ const SignUpSizeInputValid = () => {
           // 저장 성공
           navigate('/login');
         } else {
-          alert('처음부터 순서대로 회원가입을 진행해주세요.');
+          setToastMessage({ message: '순서대로 회원가입을 진행해주세요.', duration: 3000 });
         }
       } catch {
-        alert('회원가입에 실패했습니다. 다시 시도해 주세요.');
+        setToastMessage({ message: '다시 시도해 주세요.', duration: 3000 });
       }
     }
   };
@@ -94,11 +97,17 @@ const SignUpSizeInputValid = () => {
     const errorMessages = Object.values(errors).filter(Boolean);
     const additionalHeight = errorMessages.length * 20;
     setModalHeight(`${Math.max(492, 492 + additionalHeight)}px`);
-  }, [errors]);
+
+    if (toastMessage) {
+      const timer = setTimeout(() => setToastMessage(null), toastMessage.duration);
+      return () => clearTimeout(timer);
+    }
+  }, [errors, toastMessage]);
 
   return (
     <div className={responsiveBox}>
       <div className={fullContainer}>
+        {toastMessage && <ToastMessage message={toastMessage.message} duration={toastMessage.duration} />}
         <div>
           <Header imageSrc={hamburger_menu} alt="hamburger menu" />
         </div>

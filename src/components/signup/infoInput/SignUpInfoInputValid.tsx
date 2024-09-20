@@ -14,6 +14,7 @@ import { errorMessage, signupFormContainer, signupFormGap, submitbuttonContainer
 import DateSelect from './signupdateselect/SignUpDateSelect';
 import Input from './signupinput/SignUpInput';
 import Select from './signupselect/SignUpSelect';
+import ToastMessage from '../../toastmessage/toastMessage';
 
 const SignUpInfoInputValid = () => {
   type FormErrors = {
@@ -49,6 +50,8 @@ const SignUpInfoInputValid = () => {
       day: '',
     },
   });
+
+  const [toastMessage, setToastMessage] = useState<{ message: string; duration: number } | null>(null);
 
   const validate = (data: FormData): FormErrors => {
     const newErrors: FormErrors = {};
@@ -139,13 +142,13 @@ const SignUpInfoInputValid = () => {
         if (err instanceof FirebaseError) {
           switch (err.code) {
             case 'auth/weak-password':
-              alert('안전하지 않은 비밀번호입니다.');
+              setToastMessage({ message: '안전하지 않은 비밀번호입니다.', duration: 3000 });
               break;
             case 'auth/email-already-in-use':
-              alert('이미 가입된 이메일입니다.');
+              setToastMessage({ message: '이미 가입된 이메일입니다.', duration: 3000 });
               break;
             default:
-              alert('회원가입에 실패했습니다. 다시 시도해 주세요.');
+              setToastMessage({ message: '다시 시도해 주세요.', duration: 3000 });
               break;
           }
         }
@@ -159,11 +162,17 @@ const SignUpInfoInputValid = () => {
     const errorMessages = Object.values(errors).filter(Boolean);
     const additionalHeight = errorMessages.length * 20;
     setModalHeight(`${Math.max(612, 612 + additionalHeight)}px`);
-  }, [errors]);
+
+    if (toastMessage) {
+      const timer = setTimeout(() => setToastMessage(null), toastMessage.duration);
+      return () => clearTimeout(timer);
+    }
+  }, [errors, toastMessage]);
 
   return (
     <div className={responsiveBox}>
       <div className={fullContainer}>
+        {toastMessage && <ToastMessage message={toastMessage.message} duration={toastMessage.duration} />}
         <div>
           <Header imageSrc={hamburger_menu} alt="hamburger menu" />
         </div>
@@ -189,19 +198,6 @@ const SignUpInfoInputValid = () => {
                   name="userPassword"
                   id="userPassword"
                   placeholder="비밀번호를 입력해 주세요"
-                  value={formData.userPassword}
-                  onChange={handleChange}
-                />
-                {errors.userPassword && <div className={errorMessage}>{errors.userPassword}</div>}
-              </div>
-
-              <div className={signupFormGap}>
-                <Input
-                  label="비밀번호"
-                  type="password"
-                  name="userPassword"
-                  id="userPassword"
-                  placeholder="비밀번호를 입력해주세요"
                   value={formData.userPassword}
                   onChange={handleChange}
                 />

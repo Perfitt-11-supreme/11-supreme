@@ -10,6 +10,7 @@ import { sendPasswordResetEmail } from 'firebase/auth';
 import { db, auth } from '../../../firebase/firebase';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { back_arrow } from '../../../assets/assets';
+import { responsiveBox } from '../../../styles/responsive.css';
 
 const FindPassword = () => {
   type FormErrors = {
@@ -107,55 +108,59 @@ const FindPassword = () => {
   ];
 
   return (
-    <div className={fullContainer}>
-      <div>
-        <Header imageSrc={back_arrow} alt="back arrow" title="비밀번호 찾기" />
-        <div className={signupFormContainer} style={{ marginTop: '20px' }}>
-          <form onSubmit={handleFindPassword}>
-            <div>
-              <SignUpInput
-                label="이름"
-                type="text"
-                name="userName"
-                id="userName"
-                placeholder="이름을 입력해 주세요"
-                value={formData.userName}
-                onChange={handleChange}
-              />
-              {errors.userName && <div className={errorMessage}>{errors.userName}</div>}
-            </div>
+    <>
+      <div className={responsiveBox}>
+        <div className={fullContainer}>
+          <div>
+            <Header imageSrc={back_arrow} alt="back arrow" title="비밀번호 찾기" />
+            <div className={signupFormContainer} style={{ marginTop: '20px' }}>
+              <form onSubmit={handleFindPassword}>
+                <div>
+                  <SignUpInput
+                    label="이름"
+                    type="text"
+                    name="userName"
+                    id="userName"
+                    placeholder="이름을 입력해 주세요"
+                    value={formData.userName}
+                    onChange={handleChange}
+                  />
+                  {errors.userName && <div className={errorMessage}>{errors.userName}</div>}
+                </div>
 
-            <div className={signupFormGap}>
-              <SignUpInput
-                label="이메일"
-                type="email"
-                name="userEmail"
-                id="userEmail"
-                placeholder="이메일을 입력해 주세요"
-                value={formData.userEmail}
-                onChange={handleChange}
-              />
-              {errors.userEmail && <div className={errorMessage}>{errors.userEmail}</div>}
-            </div>
+                <div className={signupFormGap}>
+                  <SignUpInput
+                    label="이메일"
+                    type="email"
+                    name="userEmail"
+                    id="userEmail"
+                    placeholder="이메일을 입력해 주세요"
+                    value={formData.userEmail}
+                    onChange={handleChange}
+                  />
+                  {errors.userEmail && <div className={errorMessage}>{errors.userEmail}</div>}
+                </div>
 
-            <div className={submitbuttonContainer}>
-              <Button text="비밀번호 찾기" />
-            </div>
-          </form>
+                <div className={submitbuttonContainer}>
+                  <Button text="비밀번호 찾기" />
+                </div>
+              </form>
 
-          {successMessage && <div className={foundResultStyle}>{successMessage}</div>}
-          {error && <div className={foundResultStyle}>{error}</div>}
+              {successMessage && <div className={foundResultStyle}>{successMessage}</div>}
+              {error && <div className={foundResultStyle}>{error}</div>}
 
-          <div className={accountFindBox}>
-            {accountFindButtons.map((button, index) => (
-              <div key={index} className={accountFindButton} onClick={() => navigate(button.path)}>
-                {button.text}
+              <div className={accountFindBox}>
+                {accountFindButtons.map((button, index) => (
+                  <div key={index} className={accountFindButton} onClick={() => navigate(button.path)}>
+                    {button.text}
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
