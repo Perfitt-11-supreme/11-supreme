@@ -45,8 +45,9 @@ const SideMenu = ({ onClose }: SideMenuProps) => {
     navigate('/login'); // 로그인 페이지로 이동
   };
 
-  const handleNavigation = (path: string) => {
-    navigate(path); // 특정 경로로 이동
+  const handleNavigateChatbot = () => {
+    onClose();
+    navigate('/chatbot');
   };
 
   return (
@@ -61,7 +62,7 @@ const SideMenu = ({ onClose }: SideMenuProps) => {
           </article>
           {/* 새 채팅 */}
           <article className={sidemenuNewChatContainer}>
-            <button className={plusButtonBox} onClick={() => handleNavigation('/chatbot')}>
+            <button className={plusButtonBox} onClick={handleNavigateChatbot}>
               <img src={sidemenu_plus} alt="sidemenu_plus" />
               <p className={newChatText}>새 채팅</p>
             </button>
