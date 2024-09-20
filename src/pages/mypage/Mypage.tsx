@@ -50,6 +50,7 @@ const Mypage = () => {
     navigate('/likedpage');
   };
   console.log('d', userData);
+
   const fetchUserDatas = async () => {
     try {
       const auth = getAuth();
