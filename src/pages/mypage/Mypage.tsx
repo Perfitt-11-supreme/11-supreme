@@ -30,9 +30,10 @@ import {
   myInfoServiceBox,
   myInfoServiceTermBox,
   myInfoServiceTermButton,
+  profileImageBox,
 } from './mypage.css';
 import { collection, getDocs, query, where } from 'firebase/firestore'; // Firestore 관련 함수 import
-import { USER_COLLECTION, db } from '../../firebase/firebase'; // USER_COLLECTION 경로 수정
+import { db } from '../../firebase/firebase';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAuth } from 'firebase/auth';
@@ -49,8 +50,7 @@ const Mypage = () => {
   const handleNavigateLikedPage = () => {
     navigate('/likedpage');
   };
-  console.log('d', userData);
-
+  console.log('userData in Mypage', userData);
   const fetchUserDatas = async () => {
     try {
       const auth = getAuth();
@@ -107,15 +107,17 @@ const Mypage = () => {
     <>
       <div className={responsiveBox}>
         <section className={mypageContainer}>
-          <Header imageSrc={back_arrow} alt="back arrow" />
+          <Header imageSrc={back_arrow} alt="back arrow" nav="/hello" />
           <article className={userProfileImageContainer}>
             <div className={userProfileIconBox}>
-              {/* 조건부 렌더링 */}
-              {profileImage ? (
-                <img src={profileImage} alt="user_profile" /> // 업로드된 이미지가 있으면 보여줌
-              ) : (
-                <img src={user_profile} alt="user_profile" /> // 업로드된 이미지가 없으면 기본 이미지
-              )}
+              <div className={profileImageBox}>
+                {/* 조건부 렌더링 */}
+                {profileImage ? (
+                  <img src={profileImage} alt="user_profile" /> // 업로드된 이미지가 있으면 보여줌
+                ) : (
+                  <img src={user_profile} alt="user_profile" /> // 업로드된 이미지가 없으면 기본 이미지
+                )}
+              </div>
               <div className={userProfileUploadIconBox} onClick={handlePictureClick}>
                 <img src={user_profile_upload} alt="user_profile_upload" />
               </div>
@@ -132,7 +134,14 @@ const Mypage = () => {
           <article className={userProfileGreetingContainer}>
             <p className={userProfileGreeting}>안녕하세요!</p>
             <p className={userProfileName}>
-              <span className={userProfileNameTextBold}>{userData?.userName}</span>님
+              <span className={userProfileNameTextBold}>
+                {userData
+                  ? userData?.userName
+                      .split('')
+                      .map((char: string, index: number) => <span key={index}>{char}&nbsp;</span>)
+                  : '-'}
+              </span>
+              님
             </p>
           </article>
           <article>
