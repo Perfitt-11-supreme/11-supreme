@@ -56,8 +56,9 @@ const MainContainer = () => {
                 </div>
               </div>
               {record.length > 0 ? (
-                record.map(text => (
+                record.map((text, index) => (
                   <div
+                    key={index}
                     className={MainContainer_RecentRecord}
                     onClick={e => {
                       e.preventDefault();

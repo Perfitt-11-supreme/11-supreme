@@ -215,15 +215,15 @@ const ShoesRegistry = () => {
       <div className={container}>
         <Header title="신발 등록" customNavigate={() => navigate('/empty-shoesroom')} />
         <p className={descP}>신발을 선택해 주세요</p>
-        {!selectComplet && selectProduct !== null ? (
-          <button className={imagePlusButton} onClick={handleChooseShoes}>
-            <img src={plus} alt="등록" />
-          </button>
-        ) : (
+        {selectComplet && selectProduct !== null ? (
           <button className={imagePlusButtonSelected} onClick={handleChooseShoes} disabled={!!shoesId}>
             <div className={itemCardDiv}>
               <ItemCard index={0} data={selectProduct} />
             </div>
+          </button>
+        ) : (
+          <button className={imagePlusButton} onClick={handleChooseShoes}>
+            <img src={plus} alt="등록" />
           </button>
         )}
 
