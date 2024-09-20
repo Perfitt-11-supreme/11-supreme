@@ -33,6 +33,7 @@ type Product = {
   productId: string;
   brand: string;
   modelName: string;
+  image: string;
 };
 
 type Brand = {
@@ -46,8 +47,9 @@ type ChatItem = {
   keywords: string;
   userQuestion: string;
   botResponse: string;
-  products: Product[]; // 제품 배열
+  products: Product[];
   brands: Brand[] | null;
+  imageUrl?: string;
 };
 
 const SharePage = () => {
@@ -123,7 +125,7 @@ const SharePage = () => {
                         </li>
                       ))}
                     {/* 브랜드 렌더링 */}
-                    {productData.brands && productData.brands.length > 0 && (
+                    {productData.brands && productData.brands.length > 0 && id && (
                       <div>
                         <BrandRecommendation brands={productData.brands} id={id} />
                       </div>

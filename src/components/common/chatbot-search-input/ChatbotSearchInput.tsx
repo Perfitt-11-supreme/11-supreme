@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { FormEvent, useCallback, useRef, useState } from 'react';
 import { picture, upload } from '../../../assets/assets';
 import {
   chatbotSearchContainer,
@@ -19,39 +19,60 @@ const ChatbotSearchInput: React.FC<ChatbotSearchInputProps> = ({ chatCompletions
   const inputRef = useRef<HTMLInputElement>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [inputValue, setInputValue] = useState<string>('');
+  const [isComposing, setIsComposing] = useState<boolean>(false);
+
+  const debounce = (func: Function, delay: number) => {
+    let timeoutId: NodeJS.Timeout;
+    return (...args: any[]) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => func(...args), delay);
+    };
+  };
+
+  const debouncedSubmit = useCallback(
+    debounce((value: string) => {
+      console.log('Submitting:', value);
+      if (value.trim() !== '') {
+        chatCompletionsMutation.mutate(value.trim());
+      }
+      setInputValue('');
+    }, 300),
+    [chatCompletionsMutation]
+  );
 
   const handlePictureClick = () => {
     fileInputRef.current?.click();
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e?: FormEvent) => {
+    e?.preventDefault();
     if (selectedFile) {
       onImageUpload?.(selectedFile);
-    } else if (inputRef.current) {
-      const question = inputRef.current.value.trim();
-      if (question !== '') {
-        chatCompletionsMutation.mutate(question);
+      setSelectedFile(null);
+      setPreviewImage(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
       }
-    }
-
-    if (inputRef.current) {
-      inputRef.current.value = '';
-    }
-    setPreviewImage(null);
-    setSelectedFile(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+    } else {
+      debouncedSubmit(inputValue);
     }
   };
 
-  const handleButtonClick = () => {
+  const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     handleSubmit();
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && !selectedFile) {
+    if (e.key === 'Enter' && !isComposing && !selectedFile) {
+      e.preventDefault();
       handleSubmit();
     }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,6 +130,10 @@ const ChatbotSearchInput: React.FC<ChatbotSearchInputProps> = ({ chatCompletions
           ref={inputRef}
           className={chatbotSearchInput}
           type="text"
+          value={inputValue}
+          onChange={handleInputChange}
+          onCompositionStart={() => setIsComposing(true)}
+          onCompositionEnd={() => setIsComposing(false)}
           placeholder={selectedFile ? "이미지가 첨부되었습니다" : "궁금한 신발 정보 물어보세요!"}
           style={{ paddingLeft: previewImage ? '80px' : '10px' }}
           onKeyDown={handleKeyDown}

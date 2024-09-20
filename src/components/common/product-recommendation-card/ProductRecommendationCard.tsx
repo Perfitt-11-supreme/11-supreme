@@ -27,15 +27,17 @@ const ProductRecommendationCard = ({ product }: ProductRecommendationCardProps) 
   };
 
   const handleClickProductBrandLink = () => {
-    window.open(product.link, '_blank', 'noopener,noreferrer');
+    window.open(product?.link, '_blank', 'noopener,noreferrer');
   }
+
+
   return (
     <>
       <div className={productRecommendationCardBox}>
         {/* Thumbnail */}
         <div className={productRecommendationThumbnail}>
           <div className={productRecommendationThumbnailContainer}>
-            <img src={product.image} />
+            <img src={product?.image} />
           </div>
           <div className={heartIconBox} onClick={(e) => {
             e.stopPropagation();
@@ -51,8 +53,8 @@ const ProductRecommendationCard = ({ product }: ProductRecommendationCardProps) 
         {/* Product */}
         <div className={productBox} onClick={handleClickProductBrandLink}>
           <div className={productName}>
-            <p className={productBrand}>{product.brand}</p>
-            <p className={productText}>{product.modelName}</p>
+            <p className={productBrand}>{product?.brand}</p>
+            <p className={productText}>{product?.modelName}</p>
           </div>
           <p className={productPrice}>248,000원</p>
         </div>

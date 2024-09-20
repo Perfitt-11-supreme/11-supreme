@@ -10,7 +10,7 @@ import { database } from '../../firebase/firebase';
 import LoadingPage from '../../pages/loading-page/loadingPage';
 import useBrandStore from '../../stores/useBrandStore';
 import useModalStore from '../../stores/useModalStore';
-import useProductStore from '../../stores/useProductsStore';
+import useProductStore, { ProductStoreState } from '../../stores/useProductsStore';
 import { responsiveBox } from '../../styles/responsive.css';
 import { TProduct } from '../../types/product';
 import BrandPLP from '../chatbot/brand-plp/BrandPLP';
@@ -42,6 +42,8 @@ type Brand = {
   thumbnail: string;
 };
 
+
+
 type ChatItem = {
   id: string;
   userQuestion: string;
@@ -50,6 +52,7 @@ type ChatItem = {
   brands: Brand[] | null;
   keywords: string;
   imageUrl?: string;
+  timestamp: string;
 };
 
 const LoginHello = () => {
@@ -79,7 +82,7 @@ const LoginHello = () => {
         setChatHistory(chatItems);
         const lastChatItem = chatItems[chatItems.length - 1];
         if (lastChatItem && lastChatItem.products) {
-          setProducts(lastChatItem.products);
+          setProducts(lastChatItem.products as ProductStoreState['products']);
         }
         if (lastChatItem && lastChatItem.brands) {
           setBrands(lastChatItem.brands);
@@ -124,6 +127,7 @@ const LoginHello = () => {
         products: response.data.products || null,
         brands: response.data.brands || null,
         keywords: question,
+        timestamp: new Date().toISOString(),
       };
       push(ref(database, 'chatHistory'), newChatItem);
       setProducts(response.data.products);
@@ -159,6 +163,7 @@ const LoginHello = () => {
         brands: response.data.brands || null,
         keywords: '이미지 검색',
         imageUrl: imageUrl,
+        timestamp: new Date().toISOString(),
       };
       push(ref(database, 'chatHistory'), newChatItem);
       setProducts(response.data.products);
@@ -199,7 +204,7 @@ const LoginHello = () => {
 
     const selectedChat = chatHistory.find(chat => chat.id === chatItemId);
     if (selectedChat && selectedChat.products) {
-      setProducts(selectedChat.products);
+      setProducts(selectedChat.products as ProductStoreState['products']);
     }
   };
 

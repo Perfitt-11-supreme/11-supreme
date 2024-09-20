@@ -7,7 +7,7 @@ import { brandRecommendContainer, brandRecommendIcon, brandRecommendIconWrap, br
 type BrandRecommendationProps = {
   brands: TBrand[] | null;
   id: string;
-  onBrandClick: (brand: string) => void;
+  onBrandClick?: (brand: string) => void;
 }
 
 const BrandRecommendation = ({ brands, id, onBrandClick }: BrandRecommendationProps) => {
@@ -18,7 +18,9 @@ const BrandRecommendation = ({ brands, id, onBrandClick }: BrandRecommendationPr
   const { setIsShareModalOpen, setShareModalId } = useModalStore()
 
   const handleBrandClick = (brand: string) => {
-    onBrandClick(brand);
+    if (onBrandClick) {
+      onBrandClick(brand); // onBrandClick이 있을 경우에만 호출
+    }
   }
 
   const handleOpenShareModal = () => {
