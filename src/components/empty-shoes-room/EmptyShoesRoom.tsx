@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { collection, query, getDocs, orderBy } from 'firebase/firestore';
+import { collection, query, getDocs, orderBy, where } from 'firebase/firestore';
 import { noshoes, plus } from '../../assets/assets';
 import Button from '../common/button/Button';
 import Header from './header/Header';
@@ -21,47 +21,28 @@ import {
 import { db } from '../../firebase/firebase';
 import { responsiveBox } from '../../styles/responsive.css';
 import ToastMessage from '../toastmessage/toastMessage';
+import { getAuth } from 'firebase/auth';
 
 const EmptyShoesRoom = () => {
   const [isTrue, setIsTrue] = useState(false);
   const [shoesList, setShoesList] = useState<any[]>([]);
   const [selected, setSelected] = useState('latest');
+  const [userData, setUserData] = useState<any>(null);
   const location = useLocation();
   const [toastMessage, setToastMessage] = useState<string | null>(null);
-
-  const showToast = useCallback(() => {
-    if (location.state?.deleteToastMessage) {
-      setToastMessage(location.state.deleteToastMessage);
-    } else if (location.state?.registryToastMessage) {
-      setToastMessage(location.state.registryToastMessage);
-    } else if (location.state?.editToastMessage) {
-      setToastMessage(location.state.editToastMessage);
-    }
-  }, [location.state]);
-
+  const auth = getAuth();
+  const user = auth.currentUser;
   useEffect(() => {
-    showToast();
-    const timer = setTimeout(() => setToastMessage(null), 3000);
-    return () => clearTimeout(timer);
-  }, [showToast]);
-  console.log('Location state:', location.state); // 상태 확인용
-  //   if (location.state?.deleteToastMessage) {
-  //     setToastMessage(location.state.deleteToastMessage);
-  //     const timer = setTimeout(() => setToastMessage(null), 3000);
-  //     return () => clearTimeout(timer);
-  //   }
-
-  //   if (location.state?.registryToastMessage) {
-  //     setToastMessage(location.state.registryToastMessage);
-  //     const timer = setTimeout(() => setToastMessage(null), 3000);
-  //     return () => clearTimeout(timer);
-  //   }
-  //   if (location.state?.editToastMessage) {
-  //     setToastMessage(location.state.editToastMessage);
-  //     const timer = setTimeout(() => setToastMessage(null), 3000);
-  //     return () => clearTimeout(timer);
-  //   }
-  // }, [location.state]);
+    if (!toastMessage && location.state) {
+      if (location.state?.deleteToastMessage) {
+        setToastMessage(location.state.deleteToastMessage);
+      } else if (location.state?.registryToastMessage) {
+        setToastMessage(location.state.registryToastMessage);
+      } else if (location.state?.editToastMessage) {
+        setToastMessage(location.state.editToastMessage);
+      }
+    }
+  }, [location.state, toastMessage]);
 
   const navigate = useNavigate();
 
@@ -73,39 +54,56 @@ const EmptyShoesRoom = () => {
     navigate(`/shoesinfo/${shoesId}`);
   };
 
-  const fetchShoesData = async (order: string) => {
+  const fetchUserData = async (uid: string) => {
+    try {
+      const usersCollection = collection(db, 'users');
+      const userQuery = query(usersCollection, where('uid', '==', uid));
+      const querySnapshot = await getDocs(userQuery);
+      querySnapshot.forEach(doc => {
+        const data = doc.data();
+        setUserData(data); // 사용자 데이터 상태에 저장
+      });
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
+
+  const fetchShoesData = async (order: string, uid: string) => {
     try {
       const shoesCollection = collection(db, 'myshoes');
 
-      let selectedSort = query(shoesCollection);
+      let selectedSort = query(shoesCollection, where('uid', '==', uid)); // uid 필터링 추가
       if (order === 'latest') {
-        selectedSort = query(shoesCollection, orderBy('timestamp', 'desc'));
+        selectedSort = query(shoesCollection, where('uid', '==', uid), orderBy('timestamp', 'desc'));
       } else if (order === 'registered') {
-        selectedSort = query(shoesCollection, orderBy('timestamp', 'asc'));
+        selectedSort = query(shoesCollection, where('uid', '==', uid), orderBy('timestamp', 'asc'));
       }
-      const querySnapshot = await getDocs(selectedSort);
-      const shoes = querySnapshot.docs.map(doc => {
-        const data = doc.data();
-        console.log(doc.id, data);
-        return { id: doc.id, ...data };
-      });
 
-      console.log('shoes: ', shoes);
-      setShoesList(shoes);
-      setIsTrue(shoes.length > 0);
+      const querySnapshot = await getDocs(selectedSort);
+      const shoes = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      if (shoesList.length !== shoes.length) {
+        setShoesList(shoes);
+        setIsTrue(shoes.length > 0);
+      }
     } catch (e) {
       console.error('Error fetching shoes data: ', e);
     }
   };
-
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelected(event.target.value);
   };
 
   useEffect(() => {
-    fetchShoesData(selected);
-  }, [selected]);
-
+    if (user) {
+      const uid = user.uid;
+      fetchUserData(uid);
+      fetchShoesData(selected, uid);
+    }
+  }, [user, selected]);
   return (
     <div className={responsiveBox}>
       <div className={container}>
