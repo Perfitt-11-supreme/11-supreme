@@ -1,27 +1,24 @@
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { hamburger_menu, sidemenu_list, sidemenu_plus } from '../../assets/assets';
 import SidemenuList from '../../components/sidemenu/SidemenuList';
+import useChatHistory from '../../hooks/useChatHistory';
+import Button from '../common/button/Button';
+import SidemenuMypageLinks from './SidemenuMypageLinks';
 import {
   hamburgerIconBox,
-  sidemenuHeaderContainer,
-  sidemenuDimmed,
-  sidemenuContainer,
-  sidemenuNewChatContainer,
   newChatText,
-  sidemenuListsContainer,
-  sidemenuListsBox,
-  sidemenuListsTitle,
   plusButtonBox,
+  sidemenuContainer,
+  sidemenuDimmed,
+  sidemenuHeaderContainer,
+  sidemenuListsBox,
+  sidemenuListsContainer,
+  sidemenuListsTitle,
   sidemenuMypageMoveContainer,
+  sidemenuNewChatContainer,
 } from './sidemenu.css';
-import SidemenuMypageLinks from './SidemenuMypageLinks';
-import { useNavigate } from 'react-router-dom';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import Button from '../common/button/Button';
-import useChatHistory from '../../hooks/useChatHistory';
-import { deleteDoc, doc } from 'firebase/firestore';
-import { database, db } from '../../firebase/firebase';
-import { child, ref, remove } from 'firebase/database';
 
 type SideMenuProps = {
   onClose: () => void;
@@ -39,10 +36,10 @@ type ChatHistoryListProps = SideMenuProps & {
 
 const SideMenu = ({ onClose, ChatHistory }: ChatHistoryListProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [chatHistoryState, setChatHistoryState] = useState('');
+  const [deletedChatIds, setDeletedChatIds] = useState<string[]>([]);
   const navigate = useNavigate();
   const auth = getAuth();
-
+  const { chatHistory } = useChatHistory();
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     const unsubscribe = onAuthStateChanged(auth, user => {
@@ -55,7 +52,7 @@ const SideMenu = ({ onClose, ChatHistory }: ChatHistoryListProps) => {
     };
   }, [auth]);
 
-  const { chatHistory } = useChatHistory();
+
 
   const handleLoginClick = () => {
     onClose(); // 모달 닫기
@@ -67,33 +64,10 @@ const SideMenu = ({ onClose, ChatHistory }: ChatHistoryListProps) => {
     navigate('/chatbot');
   };
 
-  // 특정 ID 데이터를 삭제하는 함수
-  const deleteData = async (id: string) => {
-    // const dataRef = ref(database, `chatHistory/${id}`);
-    const dataRef = child(ref(database, 'chatHistory'), id); // 하위 ID 경로를 참조
-    // await remove(dataRef);
-    try {
-      await remove(dataRef); // 데이터를 비동기로 삭제
-      console.log('데이터가 성공적으로 삭제되었습니다.');
-      setChatHistoryState(prev => prev.filter(chat => chat.id !== id)); // 삭제 후 상태에서 해당 항목 제거
-    } catch (error) {
-      console.error('데이터 삭제 중 오류 발생:', error);
-    }
+  const handleDeleteChat = (chatId: string) => {
+    setDeletedChatIds(prev => [...prev, chatId]); // 삭제된 ID 추가
   };
 
-  const handleDelete = async (id: string) => {
-    console.log('Deleting id:', id); // 삭제할 id 확인
-    if (id) {
-      try {
-        await deleteData(id);
-      } catch (error) {
-        console.error('삭제 실패:', error);
-        alert('삭제 중 오류가 발생했습니다.');
-      }
-    } else {
-      console.error('id가 정의되지 않았습니다.');
-    }
-  };
 
   return (
     <>
@@ -118,14 +92,16 @@ const SideMenu = ({ onClose, ChatHistory }: ChatHistoryListProps) => {
             <h3 className={sidemenuListsTitle}>오늘</h3>
             <ul className={sidemenuListsBox}>
               {chatHistory.map(chat => (
-                <SidemenuList
-                  iconSrc={sidemenu_list}
-                  key={chat.id}
-                  id={chat.id}
-                  keywords={chat.keywords}
-                  timestamp={chat.timestamp}
-                  handleDelete={handleDelete}
-                />
+                !deletedChatIds.includes(chat.id) && ( // 삭제된 ID가 아닐 경우에만 렌더링
+                  <SidemenuList
+                    key={chat.id}
+                    iconSrc={sidemenu_list}
+                    id={chat.id}
+                    keywords={chat.keywords}
+                    timestamp={chat.timestamp}
+                    handleDelete={handleDeleteChat} // 삭제 함수 전달
+                  />
+                )
               ))}
               {/* {chatHistory.map(chat => {
                 console.log('Chat ID:', chat.id); // chat.id 확인
