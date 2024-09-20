@@ -3,7 +3,7 @@ import { theme } from '../../../styles/theme';
 
 export const ItemCard_Container = style({
   display: 'flex',
-  width: '90%',
+  width: '100%',
   height: '78px',
   gap: '10px',
   alignItems: 'center',
