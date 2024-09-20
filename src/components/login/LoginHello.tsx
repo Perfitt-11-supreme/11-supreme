@@ -7,9 +7,11 @@ import { chatCompletionsAPI, recommendQuestionAPI } from '../../api/chatRequests
 import { ImageShoseSearchAPI } from '../../api/searchRequests';
 import { hamburger_menu } from '../../assets/assets';
 import { database } from '../../firebase/firebase';
+import BridgePage from '../../pages/bridge-page/bridgePage';
 import LoadingPage from '../../pages/loading-page/loadingPage';
 import useBrandStore from '../../stores/useBrandStore';
 import useModalStore from '../../stores/useModalStore';
+import useProductDetailStore from '../../stores/useProductDetailStore';
 import useProductStore, { ProductStoreState } from '../../stores/useProductsStore';
 import { responsiveBox } from '../../styles/responsive.css';
 import { TProduct } from '../../types/product';
@@ -59,38 +61,12 @@ const LoginHello = () => {
   const { setProducts } = useProductStore.getState();
   const { selectedBrand, setBrands, setSelectedBrand } = useBrandStore();
   const { isShareModalOpen } = useModalStore();
+  const { showBridgePage, selectedProductLink, setShowBridgePage } = useProductDetailStore();
   const [currentKeywords, setCurrentKeywords] = useState<string>('');
   const [chatHistory, setChatHistory] = useState<ChatItem[]>([]);
   const [showProductRecommendation, setShowProductRecommendation] = useState(false);
   const [selectedChatItemId, setSelectedChatItemId] = useState<string | null>(null);
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
-  // Firebase에서 채팅 기록 불러오기
-  useEffect(() => {
-    const chatRef = ref(database, 'chatHistory');
-    onValue(chatRef, snapshot => {
-      const chatItems: ChatItem[] = [];
-      snapshot.forEach(childSnapshot => {
-        const data = childSnapshot.val();
-        const id = childSnapshot.key; // 고유 키를 가져옴
-        if (id) {
-          // id가 존재할 때만 추가
-          chatItems.push({ ...data, id }); // 데이터와 키를 함께 저장
-        }
-      });
-
-      if (chatItems.length > 0) {
-        setChatHistory(chatItems);
-        const lastChatItem = chatItems[chatItems.length - 1];
-        if (lastChatItem && lastChatItem.products) {
-          setProducts(lastChatItem.products as ProductStoreState['products']);
-        }
-        if (lastChatItem && lastChatItem.brands) {
-          setBrands(lastChatItem.brands);
-        }
-        setCurrentKeywords(lastChatItem.keywords);
-      }
-    });
-  }, [setProducts, setBrands]);
 
   // 추천 질문 불러오는 함수
   const {
@@ -212,6 +188,49 @@ const LoginHello = () => {
     const selectedChat = chatHistory.find(chat => chat.id === selectedChatItemId);
     return selectedChat ? selectedChat.keywords : '';
   };
+
+  // Firebase에서 채팅 기록 불러오기
+  useEffect(() => {
+    const chatRef = ref(database, 'chatHistory');
+    onValue(chatRef, snapshot => {
+      const chatItems: ChatItem[] = [];
+      snapshot.forEach(childSnapshot => {
+        const data = childSnapshot.val();
+        const id = childSnapshot.key; // 고유 키를 가져옴
+        if (id) {
+          // id가 존재할 때만 추가
+          chatItems.push({ ...data, id }); // 데이터와 키를 함께 저장
+        }
+      });
+
+      if (chatItems.length > 0) {
+        setChatHistory(chatItems);
+        const lastChatItem = chatItems[chatItems.length - 1];
+        if (lastChatItem && lastChatItem.products) {
+          setProducts(lastChatItem.products as ProductStoreState['products']);
+        }
+        if (lastChatItem && lastChatItem.brands) {
+          setBrands(lastChatItem.brands);
+        }
+        setCurrentKeywords(lastChatItem.keywords);
+      }
+    });
+  }, [setProducts, setBrands]);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (showBridgePage && selectedProductLink) {
+      timer = setTimeout(() => {
+        window.location.href = selectedProductLink;
+      }, 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [showBridgePage, selectedProductLink]);
+
+
+  if (showBridgePage) {
+    return <BridgePage />;
+  }
 
   if (isRecommendQuestionLoading) return <LoadingPage />;
   if (recommendQuestionError) return <div>error:{recommendQuestionError?.message}</div>;

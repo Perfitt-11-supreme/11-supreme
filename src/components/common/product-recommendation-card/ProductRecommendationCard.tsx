@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { brand_abcmart, heart_empty, heart_filled } from '../../../assets/assets';
+import useProductDetailStore from '../../../stores/useProductDetailStore';
 import { TProduct } from '../../../types/product';
 import {
   brandIconBox,
@@ -21,7 +22,7 @@ interface ProductRecommendationCardProps {
 
 const ProductRecommendationCard = ({ product }: ProductRecommendationCardProps) => {
   const [isChecked, setIsChecked] = useState(false);
-
+  const { handleProductDetailsClick } = useProductDetailStore();
   const handleHeartChecked = () => {
     setIsChecked(!isChecked);
   };
@@ -51,7 +52,7 @@ const ProductRecommendationCard = ({ product }: ProductRecommendationCardProps) 
           </div>
         </div>
         {/* Product */}
-        <div className={productBox} onClick={handleClickProductBrandLink}>
+        <div className={productBox} onClick={() => product && handleProductDetailsClick(product)}>
           <div className={productName}>
             <p className={productBrand}>{product?.brand}</p>
             <p className={productText}>{product?.modelName}</p>

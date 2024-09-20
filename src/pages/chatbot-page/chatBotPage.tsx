@@ -144,9 +144,9 @@ const ChatBotPage = () => {
                         isSelected={selectedKeywords.includes(item)}
                       />
                     ))}
-                  <div style={{ marginTop: '40px' }}>
-                    <Button text={`${selectedKeywords.length}개 선택`} onClick={handleSubmit} />
-                  </div>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'center', padding: '0 16px' }}>
+                  <Button text={`${selectedKeywords.length}개 선택`} onClick={handleSubmit} width='100%' />
                 </div>
               </Modal>
             )}
