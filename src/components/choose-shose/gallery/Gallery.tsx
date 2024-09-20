@@ -10,7 +10,7 @@ export default function Gallery() {
     const inputElement = e.currentTarget;
 
     if (inputElement.files && inputElement.files[0]) {
-      setGalleryImage(inputElement.files[0].name);
+      setGalleryImage(inputElement.files[0]);
 
       //동일한 파일을 다시 선택할 수 있도록 입력 필드 리셋
       inputElement.value = '';

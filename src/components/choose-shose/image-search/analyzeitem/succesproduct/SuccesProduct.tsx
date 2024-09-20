@@ -6,6 +6,7 @@ import {
   Product_AgainContainder,
   Product_AgainIcon,
   Product_AgainText,
+  Product_ItemCardsContainer,
   Product_ProductBrand,
   Product_ProductImage,
   Product_ProductInfo,
@@ -38,6 +39,7 @@ const SuccesProduct = () => {
     onSuccess: response => {
       console.log('키워드 전송 성공');
 
+      console.log(response.data.products);
       const products: TProduct[] = response.data.products;
       setProducts(products);
       setIsState({ isSimilar: true });
@@ -72,15 +74,17 @@ const SuccesProduct = () => {
         <>
           <div className={Product_SimilarProductContainer}>
             <div className={Product_ScrollableContent}>
-              {products!.map((product, index) => (
-                <ItemCard
-                  key={index}
-                  index={index}
-                  isSelected={isSelected}
-                  handleClickItemCard={handleClickItemCard}
-                  data={product}
-                />
-              ))}
+              <div className={Product_ItemCardsContainer}>
+                {products!.map((product, index) => (
+                  <ItemCard
+                    key={index}
+                    index={index}
+                    isSelected={isSelected}
+                    handleClickItemCard={handleClickItemCard}
+                    data={product}
+                  />
+                ))}
+              </div>
             </div>
             <div className={Product_SimilarProductButton}>
               <Button text="선택 완료" onClick={handleNavigate} />

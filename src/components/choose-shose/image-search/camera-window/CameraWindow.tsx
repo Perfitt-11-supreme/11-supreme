@@ -14,16 +14,18 @@ import Gallery from '../../gallery/Gallery';
 import { useMutation } from '@tanstack/react-query';
 import { ImageShoseSearchAPI } from '../../../../api/searchRequests';
 import useGalleryStore from '../../../../stores/useGalleryStore';
+import { handleCaptureImage, handleImageToBase64, ImageUpload } from '../imageupload/ImageUpload';
 
 const CameraWindow = () => {
   //분석중인지 / 포스트 성공 여부 / 캔버스에 그려진 이미지 / 상태 설정 함수 / 포스트 받은 데이터 저장 함수 /
-  const { isAnalyze, isSuccess, canvasImage, setIsState, setGetData, handleCaptureImage } = useImageSearchStore();
+  const { isAnalyze, isSuccess, setIsState, setGetData } = useImageSearchStore();
   const { galleryImage, setGalleryImage } = useGalleryStore();
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const handleImageSearchPost = useMutation({
     mutationFn: (data: string) => {
+      console.log(data);
       const jsonData = JSON.stringify({ image: data });
       return ImageShoseSearchAPI(jsonData);
     },
@@ -47,10 +49,17 @@ const CameraWindow = () => {
     if (canvasRef && videoRef && canvasRef.current && videoRef.current) {
       const canvas: HTMLCanvasElement = canvasRef.current;
       const video: HTMLVideoElement = videoRef.current;
-      handleCaptureImage(canvas, video);
-      if (canvasImage !== 'data:,') {
-        handleImageSearchPost.mutate(canvasImage!);
-      }
+
+      setIsState({ isAnalyze: true });
+      // 찍은 사진을 base64로 변환하는 함수
+      handleCaptureImage(canvas, video, dataURL => {
+        // handleCaptureImage 에서 나온 base64기반 이미지로 ImageUplad 실행
+        if (dataURL && dataURL !== 'data:,') {
+          ImageUpload(dataURL, downloadURL => {
+            handleImageSearchPost.mutate(downloadURL);
+          });
+        }
+      });
     }
   };
 
@@ -83,9 +92,22 @@ const CameraWindow = () => {
     if (galleryImage === null) return;
 
     setIsState({ isAnalyze: true });
-    if (canvasImage !== 'data:,') {
-      handleImageSearchPost.mutate(galleryImage!);
-      setGalleryImage(null);
+    // 갤러리 사진 고르면 이미지 데이타로 변경해서 전달해주고 imageupload진행하기
+    if (galleryImage) {
+      // 갤러리에서 고른 이미지를 base64로 변환
+      handleImageToBase64(galleryImage)
+        // base64로 변환한 이미지로 ImageUpload 실행
+        .then(dataURL =>
+          ImageUpload(
+            dataURL,
+            downloadURL => {
+              handleImageSearchPost.mutate(downloadURL);
+            },
+            galleryImage.name
+          )
+        )
+        // galleryimage에 저장된 이미지를 지우기
+        .then(() => setGalleryImage(null));
     }
   }, [galleryImage]);
 
@@ -94,8 +116,8 @@ const CameraWindow = () => {
       {!isAnalyze && (
         <>
           <img className={CameraWindow_Rectangle} src={rectangle} alt="rectangle" />
-          <div className={CameraWindow_CameraIconBackground}>
-            <img className={CameraWindow_CameraIcon} src={camera} alt="camera" onClick={handleClickCamera} />
+          <div className={CameraWindow_CameraIconBackground} onClick={handleClickCamera}>
+            <img className={CameraWindow_CameraIcon} src={camera} alt="camera" />
           </div>
           <div className={CameraWindow_GalleryIcon}>
             <Gallery />

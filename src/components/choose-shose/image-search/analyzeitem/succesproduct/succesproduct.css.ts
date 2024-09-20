@@ -131,3 +131,7 @@ export const Product_ScrollableContent = style({
     },
   },
 });
+
+export const Product_ItemCardsContainer = style({
+  width: '90%',
+});
