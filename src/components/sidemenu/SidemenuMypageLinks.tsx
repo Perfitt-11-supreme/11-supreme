@@ -29,7 +29,7 @@ const SidemenuMypageLinks = () => {
         const userDoc = await getDoc(doc(USER_COLLECTION, user.uid)); // Firestore에서 유저 정보 가져오기
         if (userDoc.exists()) {
           const userData = userDoc.data();
-          console.log('User Data:', userData); // 가져온 사용자 데이터 출력
+          // console.log('User Data:', userData); // 가져온 사용자 데이터 출력
 
           // Firestore에서 userName 필드를 상태에 저장
           setUserName(userData.userName || userData.username);
