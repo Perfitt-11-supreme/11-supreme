@@ -17,17 +17,16 @@ import Modal from '../../components/common/modal/Modal';
 import useBrandStore from '../../stores/useBrandStore';
 import useModalStore from '../../stores/useModalStore';
 import useProductStore from '../../stores/useProductsStore';
+import { responsiveBox } from '../../styles/responsive.css';
 import { TKeyWordsData } from '../../types/keywords';
 import LoadingPage from '../loading-page/loadingPage';
 import {
   chatBotCardWrap,
   chatBotContainer,
   chatBotModalWrap,
-  // chatBotWrap,
   chatBubbleWrap,
-  keywordWrap,
+  keywordWrap
 } from './chatBotPage.css';
-import { responsiveBox } from '../../styles/responsive.css';
 
 type KeywordsList = string[];
 

@@ -22,7 +22,7 @@ const Modal = ({
   const { isOpen, setIsOpen } = useModalStore();
 
   const handleModalClick = () => {
-    if (title !== '관심 키워드') {
+    if (title !== '관심 키워드' && children) {
       setIsOpen(!isOpen);
     }
   };

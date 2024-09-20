@@ -12,6 +12,7 @@ import {
   productRecommendPreviewWrap,
 } from '../../components/chatbot/product-recommendation-preview/productRecommendationPreview.css';
 import UserBubble from '../../components/chatbot/user-bubble/UserBubble';
+import { userBubble, userBubbleWrap } from '../../components/chatbot/user-bubble/userBubble.css';
 import Button from '../../components/common/button/Button';
 import ProductRecommendationCard from '../../components/common/product-recommendation-card/ProductRecommendationCard';
 import { database } from '../../firebase/firebase'; // Firebase 초기화 파일
@@ -95,7 +96,16 @@ const SharePage = () => {
         <div className={sharePageBubbleContainer}>
           {productData ? (
             <>
-              <UserBubble bubbleContent={productData.userQuestion} />
+              {productData.userQuestion ? (
+                <UserBubble bubbleContent={productData.userQuestion} />
+              ) : (
+                <div className={userBubbleWrap}>
+                  <div className={userBubble}>
+                    <img src={productData.imageUrl} alt="User Question Image" />
+
+                  </div>
+                </div>
+              )}
               <ChatBotBubble bubbleContent={productData.botResponse} />
               <div className={chatBotCardWrap}>
                 <div className={productRecommendPreviewWrap}>

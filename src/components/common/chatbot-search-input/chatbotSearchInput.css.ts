@@ -61,3 +61,12 @@ export const uploadIconBox = style({
   color: 'inherit' /* 상속된 텍스트 색상 사용 */,
   outline: 'none' /* 포커스 아웃라인 없음 */,
 });
+
+export const previewImageContainer = style({
+  position: 'absolute',
+  left: '10px',
+  top: '50%',
+  transform: 'translateY(-50%)',
+  display: 'flex',
+  alignItems: 'center'
+})

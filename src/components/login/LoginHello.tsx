@@ -1,14 +1,17 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { onValue, push, ref } from 'firebase/database';
+import { getDownloadURL, getStorage, ref as storageRef, uploadBytes } from 'firebase/storage';
 import { motion } from 'framer-motion';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { chatCompletionsAPI, recommendQuestionAPI } from '../../api/chatRequests';
+import { ImageShoseSearchAPI } from '../../api/searchRequests';
 import { hamburger_menu } from '../../assets/assets';
 import { database } from '../../firebase/firebase';
 import LoadingPage from '../../pages/loading-page/loadingPage';
 import useBrandStore from '../../stores/useBrandStore';
 import useModalStore from '../../stores/useModalStore';
 import useProductStore from '../../stores/useProductsStore';
+import { responsiveBox } from '../../styles/responsive.css';
 import { TProduct } from '../../types/product';
 import BrandPLP from '../chatbot/brand-plp/BrandPLP';
 import BrandRecommendation from '../chatbot/brand-recommendation/BrandRecommendation';
@@ -16,6 +19,7 @@ import ChatBotBubble from '../chatbot/chatbot-bubble/ChatBotBubble';
 import ProductRecommendationPreview from '../chatbot/product-recommendation-preview/ProductRecommendationPreview';
 import ProductRecommendation from '../chatbot/product-recommendation/ProductRecommendation';
 import UserBubble from '../chatbot/user-bubble/UserBubble';
+import { userBubble, userBubbleText, userBubbleWrap } from '../chatbot/user-bubble/userBubble.css';
 import ChatbotSearchInput from '../common/chatbot-search-input/ChatbotSearchInput';
 import Header from '../common/header/Header';
 import Modal from '../common/modal/Modal';
@@ -24,7 +28,6 @@ import ShareModal from '../common/share-modal/ShareModal';
 import { fullContainer, loginHelloContainer, recommendedquestioncardContainer } from './login.css';
 import ChatBotBox from './loginchatbot/chatbotbox/ChatBotBox';
 import RecommendBox from './loginchatbot/recommendbox/RecommendBox';
-import { responsiveBox } from '../../styles/responsive.css';
 
 type TQuestions = {
   question: string;
@@ -46,6 +49,7 @@ type ChatItem = {
   products: TProduct[] | null;
   brands: Brand[] | null;
   keywords: string;
+  imageUrl?: string;
 };
 
 const LoginHello = () => {
@@ -131,6 +135,46 @@ const LoginHello = () => {
     },
   });
 
+  const imageSearchMutation = useMutation({
+    mutationFn: async (file: File) => {
+      const storage = getStorage();
+      const imageRef = storageRef(storage, `images/${file.name}`);
+      await uploadBytes(imageRef, file);
+      const imageUrl = await getDownloadURL(imageRef);
+
+      const formData = new FormData();
+      formData.append('image', file);
+      const response = await ImageShoseSearchAPI(formData);
+
+      return { response, imageUrl };
+    },
+    onSuccess: ({ response, imageUrl }) => {
+      console.log('이미지 검색 성공:', response);
+
+      const newChatItem: ChatItem = {
+        id: push(ref(database, 'chatHistory')).key || '',
+        userQuestion: '',
+        botResponse: '이미지 검색 결과입니다.',
+        products: response.data.products || null,
+        brands: response.data.brands || null,
+        keywords: '이미지 검색',
+        imageUrl: imageUrl,
+      };
+      push(ref(database, 'chatHistory'), newChatItem);
+      setProducts(response.data.products);
+      setBrands(response.data.brands);
+      setCurrentKeywords('이미지 검색');
+    },
+    onError: (error) => {
+      console.error('이미지 검색 에러:', error);
+    },
+  });
+
+  const handleImageUpload = (file: File) => {
+    imageSearchMutation.mutate(file);
+  };
+
+
   const handleQuestionSelect = (question: string) => {
     setCurrentKeywords(question);
     chatCompletionsMutation.mutate(question);
@@ -183,13 +227,30 @@ const LoginHello = () => {
             </div>
             {chatHistory.map((chat, index) => (
               <Fragment key={index}>
-                <UserBubble bubbleContent={chat.userQuestion} />
+                {chat.imageUrl ? (
+                  <div className={userBubbleWrap}>
+                    <div className={userBubble}>
+                      <img src={chat.imageUrl} alt="Uploaded" style={{ maxWidth: '200px', maxHeight: '200px', borderRadius: '10px' }} className={userBubbleText} />
+
+                    </div>
+                  </div>
+                ) : (
+                  <UserBubble bubbleContent={chat.userQuestion} />
+                )}
 
                 <ChatBotBubble bubbleContent={chat.botResponse} />
                 {chat.brands && chat.brands.length > 0 && chat.id && (
-                  <div style={{ marginLeft: '28px' }}>
+
+                  <motion.div
+                    drag="x"
+                    dragConstraints={{ right: 0, left: -50 }}
+                    whileTap={{ cursor: 'grabbing' }}
+                    className={recommendedquestioncardContainer}
+                  >
                     <BrandRecommendation brands={chat.brands} id={chat.id} onBrandClick={handleBrandClick} />
-                  </div>
+
+                  </motion.div>
+
                 )}
                 {chat.products && chat.products.length > 0 && chat.id && (
                   <div style={{ marginLeft: '28px' }}>
@@ -223,7 +284,7 @@ const LoginHello = () => {
         )}
 
         {chatHistory.length > 0 && (
-          <Modal height="700px" initialHeight="25px">
+          <Modal height="83vh" initialHeight="25px">
             {selectedBrand ? (
               <BrandPLP />
             ) : showProductRecommendation ? (
@@ -231,7 +292,7 @@ const LoginHello = () => {
             ) : null}
           </Modal>
         )}
-        <ChatbotSearchInput chatCompletionsMutation={chatCompletionsMutation} />
+        <ChatbotSearchInput chatCompletionsMutation={chatCompletionsMutation} onImageUpload={handleImageUpload} />
 
         {isShareModalOpen && <ShareModal />}
       </div>
