@@ -28,10 +28,9 @@ import useSelectItemStore from '../../../../../stores/useSelectItemStore';
 import { useNavigate } from 'react-router-dom';
 
 const SuccesProduct = () => {
-  const [isSelected, setIsSelected] = useState<number | null>(null);
-  const { isSimilar, setIsState, capturedImage, brand, modelName, handleClickAgain } = useImageSearchStore();
+  const { isSimilar, setIsState, handleClickAgain } = useImageSearchStore();
   const { products, setProducts } = useProductStore();
-  const { selectProduct } = useSelectItemStore();
+  const { selectProduct, setSelectProduct, setIsSelected, setSelectComplet } = useSelectItemStore();
   const navigate = useNavigate();
 
   const handleImageSearchPost = useMutation({
@@ -42,6 +41,7 @@ const SuccesProduct = () => {
       console.log(response.data.products);
       const products: TProduct[] = response.data.products;
       setProducts(products);
+      setSelectProduct(null);
       setIsState({ isSimilar: true });
     },
     onError: error => {
@@ -53,17 +53,18 @@ const SuccesProduct = () => {
   });
 
   const handleClickSimilar = () => {
-    handleImageSearchPost.mutate(capturedImage!);
-  };
-
-  const handleClickItemCard = (index: number) => {
-    setIsSelected(index);
+    // selectProduct 는 API에서 가져온 데이터로 안에 이미지는 URL로 되어있음
+    handleImageSearchPost.mutate(selectProduct!.image);
   };
 
   const handleNavigate = () => {
+    setIsSelected(null);
+    setSelectComplet(true);
     if (isSimilar && selectProduct) {
       navigate('/shoes-registry');
     } else if (!isSimilar) {
+      setSelectProduct(selectProduct);
+      console.log(selectProduct);
       navigate('/shoes-registry');
     }
   };
@@ -76,18 +77,12 @@ const SuccesProduct = () => {
             <div className={Product_ScrollableContent}>
               <div className={Product_ItemCardsContainer}>
                 {products!.map((product, index) => (
-                  <ItemCard
-                    key={index}
-                    index={index}
-                    isSelected={isSelected}
-                    handleClickItemCard={handleClickItemCard}
-                    data={product}
-                  />
+                  <ItemCard key={index} index={index} data={product} />
                 ))}
               </div>
             </div>
             <div className={Product_SimilarProductButton}>
-              <Button text="선택 완료" onClick={handleNavigate} />
+              {selectProduct && <Button text="선택 완료" onClick={handleNavigate} />}
             </div>
           </div>
         </>
@@ -107,10 +102,10 @@ const SuccesProduct = () => {
           >
             <p className={Product_SimilarText}>비슷한 상품 더보기</p>
           </div>
-          <img className={Product_ProductImage} src={capturedImage!} alt="shoes_w159" />
+          <img className={Product_ProductImage} src={selectProduct!.image} alt="shoes_w159" />
           <div className={Product_ProductInfo}>
-            <p className={Product_ProductBrand}>{brand}</p>
-            <p className={Product_ProductName}>{modelName}</p>
+            <p className={Product_ProductBrand}>{selectProduct!.brand}</p>
+            <p className={Product_ProductName}>{selectProduct!.modelName}</p>
           </div>
           <Button text="선택 완료" onClick={handleNavigate} />
         </div>

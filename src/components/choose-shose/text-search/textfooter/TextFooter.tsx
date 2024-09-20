@@ -6,16 +6,19 @@ import useSelectItemStore from '../../../../stores/useSelectItemStore';
 
 const TextFooter = () => {
   const { focus, isSubmit } = useTextSearchStore();
-  const { selectProduct } = useSelectItemStore();
+  const { selectProduct, setIsSelected, setSelectComplet } = useSelectItemStore();
+
   const navigate = useNavigate();
   const handleNavigate = () => {
-    selectProduct && navigate('/shoes-registry');
+    setSelectComplet(true);
+    setIsSelected(null);
+    navigate('/shoes-registry');
   };
   return (
     <>
       {isSubmit && !focus && (
         <div className={TextFooter_Background}>
-          <Button text="선택 완료" onClick={handleNavigate} />
+          {selectProduct && <Button text="선택 완료" onClick={handleNavigate} />}
         </div>
       )}
     </>
