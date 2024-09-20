@@ -3,6 +3,7 @@ import { descP, nameP, userButton, userDiv } from './userprofile.css';
 
 type UserData = {
   userName?: string;
+  username?: string;
   shoeSize?: number;
   sizeType?: string;
 };
@@ -18,7 +19,7 @@ const UserProfile = ({ userData }: UserProfileProps) => {
         <img src={user} alt="User Profile" />
       </button>
       <div>
-        <p className={nameP}>{userData?.userName || '이름 없음'}</p>
+        <p className={nameP}>{userData?.userName || userData?.username}</p>
         <p className={descP}>
           평소 신는 사이즈 | {userData?.shoeSize} {userData?.sizeType}
         </p>

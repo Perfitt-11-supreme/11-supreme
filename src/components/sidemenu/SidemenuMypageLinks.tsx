@@ -32,7 +32,7 @@ const SidemenuMypageLinks = () => {
           console.log('User Data:', userData); // 가져온 사용자 데이터 출력
 
           // Firestore에서 userName 필드를 상태에 저장
-          setUserName(userData.userName);
+          setUserName(userData.userName || userData.username);
         } else {
           console.log('No such user document!');
           setError('No user document found.');

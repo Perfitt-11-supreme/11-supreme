@@ -145,7 +145,8 @@ const Mypage = () => {
             <p className={userProfileName}>
               <span className={userProfileNameTextBold}>
                 {userData
-                  ? userData?.userName
+                  ? userData?.userName ||
+                    userData?.username
                       .split('')
                       .map((char: string, index: number) => <span key={index}>{char}&nbsp;</span>)
                   : '-'}
@@ -177,7 +178,7 @@ const Mypage = () => {
                 <p>평소사이즈</p>
               </div>
               <div className={myInfoValue}>
-                <p>{userData ? userData?.userName : '-'}</p>
+                <p>{userData ? userData?.userName || userData?.username : '-'}</p>
                 <p>
                   {userData ? (userData.gender === 'female' ? '여성' : userData.gender === 'male' ? '남성' : '-') : '-'}
                 </p>
