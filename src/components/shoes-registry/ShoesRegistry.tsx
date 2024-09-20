@@ -210,10 +210,25 @@ const ShoesRegistry = () => {
   const weightRef = useRef<HTMLDivElement>(null);
   const reviewRef = useRef<HTMLTextAreaElement>(null);
 
+  const handleBack = () => {
+    // 폼 초기화
+    setSelectProduct(null);
+    setRating(0);
+    setLength('');
+    setWidth('');
+    setHeight('');
+    setSole('');
+    setWeight('');
+    setRecommendation('');
+    setReview('');
+
+    navigate('/empty-shoesroom');
+  };
+
   return (
     <div className={responsiveBox}>
       <div className={container}>
-        <Header title="신발 등록" customNavigate={() => navigate('/empty-shoesroom')} />
+        <Header title="신발 등록" customNavigate={handleBack} />
         <p className={descP}>신발을 선택해 주세요</p>
         {selectComplet && selectProduct !== null ? (
           <button className={imagePlusButtonSelected} onClick={handleChooseShoes} disabled={!!shoesId}>

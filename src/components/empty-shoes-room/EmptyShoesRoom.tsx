@@ -83,30 +83,35 @@ const EmptyShoesRoom = () => {
   };
 
   const fetchShoesData = async (order: string) => {
-    try {
-      const shoesCollection = collection(db, 'myshoes');
+    if (user?.uid) {
+      try {
+        const shoesCollection = collection(db, 'myshoes');
 
-      let selectedSort;
-      if (order === 'latest') {
-        selectedSort = query(shoesCollection, orderBy('timestamp', 'desc'));
-      } else if (order === 'registered') {
-        selectedSort = query(shoesCollection, orderBy('timestamp', 'asc'));
-      } else {
-        selectedSort = shoesCollection;
+        const uid = user?.uid; // 현재 사용자의 UID
+        const shoesQuery = query(shoesCollection, where('uid', '==', uid));
+
+        let selectedSort;
+        if (order === 'latest') {
+          selectedSort = query(shoesQuery, orderBy('timestamp', 'desc'));
+        } else if (order === 'registered') {
+          selectedSort = query(shoesQuery, orderBy('timestamp', 'asc'));
+        } else {
+          selectedSort = shoesQuery;
+        }
+
+        const querySnapshot = await getDocs(selectedSort);
+        const shoes = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        if (shoesList.length !== shoes.length || shoesList !== shoes) {
+          setShoesList(shoes); // 상태 업데이트
+          setIsTrue(shoes.length > 0);
+        }
+      } catch (e) {
+        console.error('Error fetching shoes data: ', e);
       }
-
-      const querySnapshot = await getDocs(selectedSort);
-      const shoes = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-
-      if (shoesList.length !== shoes.length || shoesList !== shoes) {
-        setShoesList(shoes); // 상태 업데이트
-        setIsTrue(shoes.length > 0);
-      }
-    } catch (e) {
-      console.error('Error fetching shoes data: ', e);
     }
   };
 
@@ -116,7 +121,7 @@ const EmptyShoesRoom = () => {
 
   useEffect(() => {
     if (user) {
-      const uid = user.uid;
+      const uid = user?.uid;
       fetchUserData(uid);
       fetchShoesData(selected);
     }
