@@ -31,10 +31,11 @@ import {
   myInfoServiceTermBox,
   myInfoServiceTermButton,
 } from './mypage.css';
-import { getDocs } from 'firebase/firestore'; // Firestore 관련 함수 import
-import { USER_COLLECTION } from '../../firebase/firebase'; // USER_COLLECTION 경로 수정
+import { collection, getDocs, query, where } from 'firebase/firestore'; // Firestore 관련 함수 import
+import { USER_COLLECTION, db } from '../../firebase/firebase'; // USER_COLLECTION 경로 수정
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getAuth } from 'firebase/auth';
 
 const Mypage = () => {
   const navigate = useNavigate();
@@ -51,13 +52,32 @@ const Mypage = () => {
   console.log('d', userData);
   const fetchUserDatas = async () => {
     try {
-      const userSnapshot = await getDocs(USER_COLLECTION);
-      userSnapshot.forEach(doc => {
-        const data = doc.data();
-        setUserData(data);
-      });
+      const auth = getAuth();
+      const user = auth.currentUser;
+
+      if (user) {
+        const uid = user.uid;
+        const USER_COLLECTION = collection(db, 'users');
+
+        const userQuery = query(USER_COLLECTION, where('uid', '==', uid));
+        const userSnapshot = await getDocs(userQuery);
+
+        const usersData: any[] = [];
+        userSnapshot.forEach(doc => {
+          const data = doc.data();
+          usersData.push(data);
+        });
+
+        if (usersData.length > 0) {
+          setUserData(usersData[0]);
+        } else {
+          console.log('사용자 데이터를 찾을 수 없습니다.');
+        }
+      } else {
+        console.log('사용자가 로그인하지 않았습니다.');
+      }
     } catch (error) {
-      console.error('Error fetching user names: ', error);
+      console.error('Error fetching user data: ', error);
     }
   };
 
@@ -111,7 +131,7 @@ const Mypage = () => {
           <article className={userProfileGreetingContainer}>
             <p className={userProfileGreeting}>안녕하세요!</p>
             <p className={userProfileName}>
-              <span className={userProfileNameTextBold}>{userData?.username}</span>님
+              <span className={userProfileNameTextBold}>{userData?.userName}</span>님
             </p>
           </article>
           <article>

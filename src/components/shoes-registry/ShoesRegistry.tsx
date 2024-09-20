@@ -25,7 +25,10 @@ import {
 import ItemCard from '../choose-shose/itemcard/ItemCard';
 import { responsiveBox } from '../../styles/responsive.css';
 import useSelectItemStore from '../../stores/useSelectItemStore';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
+const auth = getAuth();
+const user = auth.currentUser;
 const ShoesRegistry = () => {
   const { shoesId } = useParams();
   const { selectProduct, setSelectProduct } = useSelectItemStore();
@@ -59,8 +62,20 @@ const ShoesRegistry = () => {
     weight: '',
     review: '',
   });
-
   const [editData, setEditData] = useState<any>(null);
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const isUser = onAuthStateChanged(auth, currentUser => {
+      if (currentUser) {
+        setUser(currentUser);
+      } else {
+        setUser(null);
+      }
+    });
+
+    return () => isUser();
+  }, []);
 
   const fetchShoeInfo = async () => {
     if (shoesId) {
@@ -100,14 +115,16 @@ const ShoesRegistry = () => {
 
   const saveToFirestore = async (data: any) => {
     try {
+      const dataWithUid = { ...data, uid: user.uid };
+
       if (shoesId) {
         // 신발 정보 수정
         const shoeDocRef = doc(db, 'myshoes', shoesId);
-        await updateDoc(shoeDocRef, data);
+        await updateDoc(shoeDocRef, dataWithUid);
         console.log('db 수정 성공 ID: ', shoesId);
       } else {
         // 신발 정보 저장
-        const docRef = await addDoc(collection(db, 'myshoes'), data);
+        const docRef = await addDoc(collection(db, 'myshoes'), dataWithUid);
         console.log('db 저장 성공 ID: ', docRef.id);
       }
     } catch (e) {
@@ -142,6 +159,11 @@ const ShoesRegistry = () => {
         review: reviewRef,
       };
       refMap[firstErrorKey]?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    if (!user) {
+      console.error('사용자 정보가 없습니다.');
       return;
     }
 
