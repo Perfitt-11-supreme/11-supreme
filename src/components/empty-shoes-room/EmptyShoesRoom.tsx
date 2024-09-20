@@ -21,7 +21,7 @@ import {
 import { db } from '../../firebase/firebase';
 import { responsiveBox } from '../../styles/responsive.css';
 import ToastMessage from '../toastmessage/toastMessage';
-import { getAuth } from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const EmptyShoesRoom = () => {
   const [isTrue, setIsTrue] = useState(false);
@@ -29,11 +29,11 @@ const EmptyShoesRoom = () => {
   const [selected, setSelected] = useState('latest');
   const [userData, setUserData] = useState<any>(null);
   const location = useLocation();
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
   const auth = getAuth();
   const user = auth.currentUser;
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
   useEffect(() => {
-    if (!toastMessage && location.state) {
+    if (location.state) {
       if (location.state?.deleteToastMessage) {
         setToastMessage(location.state.deleteToastMessage);
       } else if (location.state?.registryToastMessage) {
@@ -42,7 +42,21 @@ const EmptyShoesRoom = () => {
         setToastMessage(location.state.editToastMessage);
       }
     }
-  }, [location.state, toastMessage]);
+  }, [toastMessage]);
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, user => {
+      if (user) {
+        fetchUserData(user.uid);
+        fetchShoesData(selected);
+      } else {
+        console.log('No user is signed in');
+      }
+    });
+
+    return () => unsubscribe(); // 컴포넌트 언마운트 시 정리
+  }, [selected]);
 
   const navigate = useNavigate();
 
@@ -68,15 +82,17 @@ const EmptyShoesRoom = () => {
     }
   };
 
-  const fetchShoesData = async (order: string, uid: string) => {
+  const fetchShoesData = async (order: string) => {
     try {
       const shoesCollection = collection(db, 'myshoes');
 
-      let selectedSort = query(shoesCollection, where('uid', '==', uid)); // uid 필터링 추가
+      let selectedSort;
       if (order === 'latest') {
-        selectedSort = query(shoesCollection, where('uid', '==', uid), orderBy('timestamp', 'desc'));
+        selectedSort = query(shoesCollection, orderBy('timestamp', 'desc'));
       } else if (order === 'registered') {
-        selectedSort = query(shoesCollection, where('uid', '==', uid), orderBy('timestamp', 'asc'));
+        selectedSort = query(shoesCollection, orderBy('timestamp', 'asc'));
+      } else {
+        selectedSort = shoesCollection;
       }
 
       const querySnapshot = await getDocs(selectedSort);
@@ -85,14 +101,15 @@ const EmptyShoesRoom = () => {
         ...doc.data(),
       }));
 
-      if (shoesList.length !== shoes.length) {
-        setShoesList(shoes);
+      if (shoesList.length !== shoes.length || shoesList !== shoes) {
+        setShoesList(shoes); // 상태 업데이트
         setIsTrue(shoes.length > 0);
       }
     } catch (e) {
       console.error('Error fetching shoes data: ', e);
     }
   };
+
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelected(event.target.value);
   };
@@ -101,15 +118,15 @@ const EmptyShoesRoom = () => {
     if (user) {
       const uid = user.uid;
       fetchUserData(uid);
-      fetchShoesData(selected, uid);
+      fetchShoesData(selected);
     }
   }, [user, selected]);
   return (
     <div className={responsiveBox}>
       <div className={container}>
         {toastMessage && <ToastMessage message={toastMessage} duration={3000} />}
-        <Header title="신발장" customNavigate={() => navigate('/login')} />
-        <UserProfile />
+        <Header title="신발장" customNavigate={() => navigate('/hello')} />
+        <UserProfile userData={userData} />
         {isTrue ? (
           <>
             <div className={optiondiv}>

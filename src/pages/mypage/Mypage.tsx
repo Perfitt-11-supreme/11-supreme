@@ -159,7 +159,7 @@ const Mypage = () => {
                 <p>평소사이즈</p>
               </div>
               <div className={myInfoValue}>
-                <p>{userData ? userData?.username : '-'}</p>
+                <p>{userData ? userData?.userName : '-'}</p>
                 <p>{userData ? userData?.gender : '-'}</p>
                 <p>
                   {userData
