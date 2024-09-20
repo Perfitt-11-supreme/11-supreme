@@ -3,7 +3,7 @@ import { theme } from './theme';
 
 export const responsiveBox = style({
   width: '375px',
-  height: '812px',
+  height: '100vh',
   backgroundColor: theme.color.white,
   position: 'absolute',
   top: '50%',
