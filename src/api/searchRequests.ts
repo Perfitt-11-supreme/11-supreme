@@ -1,5 +1,5 @@
+import { AxiosResponse } from 'axios';
 import { axiosClient } from './axiosClient';
-
 type SearchRequestPaths = {
   textSearch: string;
   imageSearch: string;
@@ -24,6 +24,6 @@ export const textShoseSearchAPI = (text: string) => {
 };
 
 // 이미지 검색
-export const ImageShoseSearchAPI = (imageUrl: string) => {
+export const ImageShoseSearchAPI = (imageUrl: string| FormData):Promise<AxiosResponse> => {
   return axiosClient.post(serachRequests.getFullPath(serachRequests.imageSearch), imageUrl);
 };
