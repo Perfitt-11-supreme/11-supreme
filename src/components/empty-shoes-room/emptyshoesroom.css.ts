@@ -41,7 +41,7 @@ export const select = style({
   color: 'grey',
   border: 'none',
   appearance: 'none',
-  backgroundImage: 'url(../../assets/select.svg)',
+  backgroundImage: 'url(../../assets/empty-shoes-room/select.svg)',
   backgroundRepeat: 'no-repeat',
   backgroundPosition: 'right center',
   width: '51px',
