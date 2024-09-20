@@ -20,8 +20,8 @@ export const userProfileIconBox = style({
 export const profileImageBox = style({
   width: '100%',
   height: '100%',
-  overflow: 'hidden',
   borderRadius: '50%',
+  overflow: 'hidden',
 });
 export const userProfileUploadIconBox = style({
   width: '20px',
