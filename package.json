@@ -16,7 +16,6 @@
     "axios": "^1.7.7",
     "firebase": "^10.13.1",
     "framer-motion": "^11.3.31",
-    "http-proxy-middleware": "^3.0.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.0",
@@ -26,6 +25,8 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
+    "@types/express": "^4.17.21",
+    "@types/http-proxy-middleware": "^0.19.3",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vanilla-extract/vite-plugin": "^4.0.15",
@@ -39,5 +40,4 @@
     "vite": "^5.4.2"
   },
   "packageManager": "yarn@1.22.22"
- 
 }

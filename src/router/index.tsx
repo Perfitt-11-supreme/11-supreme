@@ -6,20 +6,21 @@ import FootInfo from '../components/foot-info/FootInfo';
 import Login from '../components/login/Login';
 import LoginHello from '../components/login/LoginHello';
 import EmailLogin from '../components/login/emaillogin/EmailLogin';
+import FindEmail from '../components/login/find/FindEmail';
+import FindPassword from '../components/login/find/FindPassword';
 import OnBoarding from '../components/onboarding/OnBoarding';
 import ShoesInfo from '../components/shoes-info/ShoesInfo';
 import ShoesRegistry from '../components/shoes-registry/ShoesRegistry';
+import GoogleSignUpPlus from '../components/signup/infoInput/GoogleSignUpPlus';
 import SignUpInfoInputValid from '../components/signup/infoInput/SignUpInfoInputValid';
 import SignUpSizeInputValid from '../components/signup/sizeinput/SignUpSizeInputValid';
 import BridgePage from '../pages/bridge-page/bridgePage';
 import ChatBotPage from '../pages/chatbot-page/chatBotPage';
 import LikedPage from '../pages/liked-page/LikedPage';
 import Mypage from '../pages/mypage/Mypage';
+import NotFound from '../pages/not-found/notFound';
 import SharePage from '../pages/share-page/SharePage';
 import ViewedHistoryPage from '../pages/viewed-history-page/ViewedHistoryPage';
-import GoogleSignUpPlus from '../components/signup/infoInput/GoogleSignUpPlus';
-import FindEmail from '../components/login/find/FindEmail';
-import FindPassword from '../components/login/find/FindPassword';
 
 export const router = createBrowserRouter([
   {
@@ -87,7 +88,7 @@ export const router = createBrowserRouter([
     element: <EmailLogin />,
   },
   {
-    path: '/onboarding',
+    path: '/',
     element: <OnBoarding />,
   },
   {
@@ -106,4 +107,8 @@ export const router = createBrowserRouter([
     path: '/findpassword',
     element: <FindPassword />,
   },
+  {
+    path: '*',
+    element: <NotFound />
+  }
 ]);

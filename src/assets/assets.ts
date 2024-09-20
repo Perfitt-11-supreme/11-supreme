@@ -29,6 +29,7 @@ import filled_star from './common/filled_star.svg';
 import heart_empty from './common/heart_empty.svg';
 import heart_filled from './common/heart_filled.svg';
 import link_angled from './common/link_angled.svg';
+import prefitt_logo2 from './common/perfitt_logo2.svg';
 import prefitt_symbol from './common/perfitt_symbol.svg';
 import perfittlogo from './common/perfittlogo.svg';
 import picture from './common/picture.svg';
@@ -109,8 +110,7 @@ export {
   perfittlogo,
   picture,
   plus,
-  polygon2,
-  prefitt_symbol,
+  polygon2, prefitt_logo2, prefitt_symbol,
   rectangle,
   search,
   select,
