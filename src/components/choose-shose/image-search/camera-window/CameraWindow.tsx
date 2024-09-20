@@ -11,41 +11,17 @@ import {
 import useImageSearchStore from '../../../../stores/useImageSearchStore';
 import { useEffect, useRef } from 'react';
 import Gallery from '../../gallery/Gallery';
-import { useMutation } from '@tanstack/react-query';
-import { ImageShoseSearchAPI } from '../../../../api/searchRequests';
 import useGalleryStore from '../../../../stores/useGalleryStore';
-import { handleCaptureImage, handleImageToBase64, ImageUpload } from '../imageupload/ImageUpload';
-import useSelectItemStore from '../../../../stores/useSelectItemStore';
+import { handleCaptureImage, handleImageToBase64, ImageUpload } from './imageupload/ImageUpload';
+import useHandleImageSearchPost from '../hooks/useHandleImaeSearchPost';
 
 const CameraWindow = () => {
   //분석중인지 / 포스트 성공 여부 / 캔버스에 그려진 이미지 / 상태 설정 함수 / 포스트 받은 데이터 저장 함수 /
   const { isAnalyze, isSuccess, setIsState } = useImageSearchStore();
-  const { setSelectProduct } = useSelectItemStore();
   const { galleryImage, setGalleryImage } = useGalleryStore();
+  const handleImageSearchPost = useHandleImageSearchPost(isSuccess);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
-  const handleImageSearchPost = useMutation({
-    mutationFn: (data: string) => {
-      console.log(data);
-      const jsonData = JSON.stringify({ image: data });
-      return ImageShoseSearchAPI(jsonData);
-    },
-    onSuccess: response => {
-      console.log('키워드 전송 성공');
-      const product = response.data.products[0];
-      setSelectProduct(product);
-      if (!isAnalyze) return;
-      if (isSuccess) return;
-      setIsState({ isAnalyze: false, isSuccess: true });
-    },
-    onError: error => {
-      console.error('이미지 서칭 실패:', error);
-    },
-    onSettled: () => {
-      console.log('결과에 관계없이 무언가 실행됨');
-    },
-  });
 
   const handleClickCamera = () => {
     if (canvasRef && videoRef && canvasRef.current && videoRef.current) {

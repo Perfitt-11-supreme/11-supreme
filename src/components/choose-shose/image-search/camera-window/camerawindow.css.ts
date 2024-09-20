@@ -3,21 +3,11 @@ import { theme } from '../../../../styles/theme';
 
 export const CameraWindow_Rectangle = style({
   position: 'fixed',
-  filter: 'brightness(0) invert(0)',
+  filter: 'brightness(0) invert(0.3)',
   zIndex: '10',
   top: '50%',
   left: '50%',
   transform: 'translateX(-50%) translateY(-50%)',
-});
-
-export const CameraWindow_CloseIcon = style({
-  position: 'fixed',
-  top: '55px',
-  left: '16px',
-  width: '24px',
-  height: '24px',
-  filter: 'brightness(0) invert(1)',
-  zIndex: '11',
 });
 
 export const CameraWindow_CameraIconBackground = style({

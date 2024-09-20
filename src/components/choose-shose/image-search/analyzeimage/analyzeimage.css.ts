@@ -1,10 +1,11 @@
 import { style, styleVariants } from '@vanilla-extract/css';
 import { theme } from '../../../../styles/theme';
 
-export const AnalyzeItem_Container = style({
+export const AnalyzeImage_Container = style({
   position: 'fixed',
   bottom: '0',
   width: '100%',
+  height: '0',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -15,17 +16,11 @@ export const AnalyzeItem_Container = style({
   boxShadow: '0 -2px 0 0 black',
 });
 
-export const AnalyzeItem_AnalyzerContainerMove = styleVariants({
-  hidden: {
-    height: '0',
-    transform: 'translateY(200px)',
-  },
+export const AnalyzeImage_AnalyzerContainerMove = styleVariants({
   analyze: {
     height: '25%',
-    transform: 'translateY(0)',
   },
   success: {
     height: '70%',
-    transform: 'translateY(0)',
   },
 });
