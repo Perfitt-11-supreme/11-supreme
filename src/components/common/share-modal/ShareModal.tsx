@@ -25,6 +25,7 @@ type ChatItem = {
   botResponse: string;
   products: Product[]; // 제품 배열
   brands: Brand[] | null;
+  imageUrl?: string;
 }
 
 
@@ -49,7 +50,6 @@ const ShareModal = () => {
     }
   };
 
-  console.log(shareModalId)
 
   const renderButtonText = () => {
     if (copyStatus === 'copying') return '링크 복사 중';
@@ -117,7 +117,15 @@ const ShareModal = () => {
               <div>
                 <img src={chatCircle} alt="Chat Circle" />
               </div>
-              <p className={shareContentsTitle}>{productData?.userQuestion}</p>
+              <p className={shareContentsTitle}>
+                {productData ? (
+                  productData.userQuestion ? (
+                    productData.userQuestion
+                  ) : (
+                    <img src={productData.imageUrl} alt="Product Image" />
+                  )
+                ) : null}
+              </p>
               <p className={shareDate}>2024년 10월 30일</p>
             </div>
             <motion.button
