@@ -9,25 +9,16 @@ import {
   MainContainter_Background,
 } from './maincontainer.css';
 import ItemCard from '../../itemcard/ItemCard';
-import { useState } from 'react';
 import useTextSearchStore from '../../../../stores/useTextSearchStore';
 import useProductsStore from '../../../../stores/useProductsStore';
-import useSelectItemStore from '../../../../stores/useSelectItemStore';
 import IsLoading from '../../isLoading/IsLoading';
 import { useMutation } from '@tanstack/react-query';
 import { textShoseSearchAPI } from '../../../../api/searchRequests';
 import { TProduct } from '../../../../types/product';
 
 const MainContainer = () => {
-  const [isSelected, setIsSelected] = useState<number | null>(null);
   const { text, postText, focus, record, isLoading, setState, handleCLickRecentRecord } = useTextSearchStore();
   const { products, setProducts } = useProductsStore();
-  const { setSelectProduct } = useSelectItemStore();
-
-  const handleClickItemCard = (index: number) => {
-    setIsSelected(index);
-    setSelectProduct(products[index]);
-  };
 
   const handleTextSearchPost = useMutation({
     mutationFn: (data: string) => {
@@ -91,13 +82,7 @@ const MainContainer = () => {
         ) : (
           <div>
             {products.map((data, index) => (
-              <ItemCard
-                key={index}
-                index={index}
-                isSelected={isSelected}
-                handleClickItemCard={handleClickItemCard}
-                data={data}
-              />
+              <ItemCard key={index} index={index} data={data} />
             ))}
           </div>
         )}

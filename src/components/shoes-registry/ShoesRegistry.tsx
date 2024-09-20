@@ -26,13 +26,13 @@ import ItemCard from '../choose-shose/itemcard/ItemCard';
 import { responsiveBox } from '../../styles/responsive.css';
 import useSelectItemStore from '../../stores/useSelectItemStore';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import useProductStore from '../../stores/useProductsStore';
 
 const auth = getAuth();
 const user = auth.currentUser;
 const ShoesRegistry = () => {
   const { shoesId } = useParams();
-  const { selectProduct, setSelectProduct } = useSelectItemStore();
-
+  const { selectProduct, selectComplet, setSelectProduct } = useSelectItemStore();
   const navigate = useNavigate();
   const {
     rating,
@@ -215,14 +215,14 @@ const ShoesRegistry = () => {
       <div className={container}>
         <Header title="신발 등록" customNavigate={() => navigate('/empty-shoesroom')} />
         <p className={descP}>신발을 선택해 주세요</p>
-        {selectProduct === null ? (
+        {!selectComplet && selectProduct !== null ? (
           <button className={imagePlusButton} onClick={handleChooseShoes}>
             <img src={plus} alt="등록" />
           </button>
         ) : (
           <button className={imagePlusButtonSelected} onClick={handleChooseShoes} disabled={!!shoesId}>
             <div className={itemCardDiv}>
-              <ItemCard index={0} isSelected={null} handleClickItemCard={() => {}} data={selectProduct} />
+              <ItemCard index={0} data={selectProduct} />
             </div>
           </button>
         )}

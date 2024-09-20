@@ -33,6 +33,7 @@ export const CameraWindow_CameraIconBackground = style({
   borderRadius: '50px',
   background: theme.color.black,
   zIndex: '11',
+  cursor: 'pointer',
 });
 
 export const CameraWindow_CameraIcon = style({
@@ -46,6 +47,7 @@ export const CameraWindow_GalleryIcon = style({
   left: '10.5%',
   bottom: '30px',
   zIndex: '11',
+  cursor: 'pointer',
 });
 
 export const CameraWindow_ViewContainer = style({

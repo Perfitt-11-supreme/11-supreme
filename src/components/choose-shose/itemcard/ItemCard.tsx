@@ -1,4 +1,4 @@
-import { useShoesRegistryStore } from '../../../stores/useRegistryStore';
+// import { useShoesRegistryStore } from '../../../stores/useRegistryStore';
 import useSelectItemStore from '../../../stores/useSelectItemStore';
 import { TProduct } from '../../../types/product';
 import {
@@ -11,28 +11,11 @@ import {
   ItemCard_ShoseName,
 } from './itemcard.css';
 
-const ItemCard = ({
-  index,
-  isSelected,
-  handleClickItemCard,
-  data,
-}: {
-  index: number;
-  isSelected?: number | null;
-  handleClickItemCard: (index: number) => void;
-  data: TProduct;
-}) => {
-  const setSelectedItem = useShoesRegistryStore(state => state.setSelectedItem);
-  const { setSelectProduct } = useSelectItemStore();
+const ItemCard = ({ index, data }: { index: number; data: TProduct }) => {
+  const { isSelected, setIsSelected, setSelectProduct } = useSelectItemStore();
 
   const handleClick = () => {
-    handleClickItemCard(index);
-    setSelectedItem({
-      image: data!.image,
-      brand: data!.brand,
-      shoesName: data!.modelName,
-    });
-
+    setIsSelected(index);
     setSelectProduct(data);
   };
   return (

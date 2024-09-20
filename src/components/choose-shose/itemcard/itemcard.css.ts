@@ -10,6 +10,7 @@ export const ItemCard_Container = style({
   boxSizing: 'content-box',
   marginTop: '10px',
   padding: '4px',
+  cursor: 'pointer',
 });
 
 export const ItemCard_Select = style({

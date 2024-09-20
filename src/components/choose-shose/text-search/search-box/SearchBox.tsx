@@ -96,6 +96,7 @@ const SearchBox = () => {
             onFocus={() => handleFocusSearchBox(true)}
             name="searchText"
             ref={inputRef}
+            autoComplete="off"
           />
           <img className={SearchBox_cameraIcon} src={camera} alt="camera_icon" onClick={handleNavigation} />
         </form>
