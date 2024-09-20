@@ -29,7 +29,7 @@ const LikedPage = () => {
     <>
       <div className={responsiveBox}>
         <section className={likedAndViewedHistoryCointainer}>
-          <Header imageSrc={back_arrow} alt="back arrow" />
+          <Header imageSrc={back_arrow} alt="back arrow" nav="/mypage" />
 
           <LikedAndViewedHistoryButton handleClick={handleLikedOrViewedChange} activeTab={likedOrViewed} />
 

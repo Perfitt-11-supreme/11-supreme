@@ -9,8 +9,7 @@ export const responsiveBox = style({
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  overflowX: 'auto',
-  overflowY: 'hidden',
+  overflow: 'auto',
 
   '@media': {
     'screen and (max-width: 480px)': {

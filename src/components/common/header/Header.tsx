@@ -14,9 +14,12 @@ const Header = ({ imageSrc, alt, title, nav }: THeader) => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const handleNavigate = () => {
-    if (nav?.length! > 0) navigate(nav!);
-    else navigate(-1);
+  const handleNavigate = (path?: string) => {
+    if (path) {
+      navigate(path);
+    } else {
+      navigate(-1);
+    }
   };
 
   const toggleSideMenu = () => {
@@ -29,11 +32,11 @@ const Header = ({ imageSrc, alt, title, nav }: THeader) => {
     console.log('imageSrc:', imageSrc);
 
     if (imageSrc?.includes('back') || imageSrc?.includes('close')) {
-      console.log('Navigating...');
-      handleNavigate();
+      console.log('Navigating back...');
+      handleNavigate(nav); // back 또는 close 이미지일 경우 지정된 경로로 이동
     } else if (imageSrc?.includes('hamburger')) {
       console.log('Opening SideMenu...');
-      toggleSideMenu();
+      toggleSideMenu(); // 햄버거 아이콘일 경우 사이드 메뉴 열기
     } else {
       console.log('No matching imageSrc');
     }
