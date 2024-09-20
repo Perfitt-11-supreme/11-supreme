@@ -36,7 +36,7 @@ import { collection, getDocs, query, where } from 'firebase/firestore'; // Fires
 import { db } from '../../firebase/firebase';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAuth } from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const Mypage = () => {
   const navigate = useNavigate();
@@ -51,7 +51,7 @@ const Mypage = () => {
     navigate('/likedpage');
   };
   console.log('userData in Mypage', userData);
-  const fetchUserDatas = async () => {
+  const fetchUserDatas = async (uid: string) => {
     try {
       const auth = getAuth();
       const user = auth.currentUser;
@@ -83,7 +83,16 @@ const Mypage = () => {
   };
 
   useEffect(() => {
-    fetchUserDatas();
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, user => {
+      if (user) {
+        fetchUserDatas(user.uid);
+      } else {
+        console.log('No user is signed in');
+      }
+    });
+
+    return () => unsubscribe(); // 컴포넌트 언마운트 시 정리
   }, []);
 
   // 파일 선택 창을 여는 함수
