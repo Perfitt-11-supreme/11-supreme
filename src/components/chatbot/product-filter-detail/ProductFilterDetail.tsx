@@ -1,5 +1,6 @@
 import { ChangeEvent, useState } from "react";
 import useModalStore from "../../../stores/useModalStore";
+import useProductStore from "../../../stores/useProductsStore";
 import Button from "../../common/button/Button";
 import FilterButton from "../../common/filter-button/FilterButton";
 import { filterDetailButtonContainer, filterDetailCategoryTitle, filterDetailContainer, priceFilterContainer, priceFilterPriceDisplay, priceLabel, rangeContainer, rangeInput } from "./productFilterDetail.css";
@@ -12,6 +13,7 @@ const ProductFilterDetail = () => {
   const [minPrice, setMinPrice] = useState(10000);
   const [maxPrice, setMaxPrice] = useState(1000000);
   const { setFilterOpen } = useModalStore();
+  const { products } = useProductStore();
 
   const handleCloseClick = () => {
     setFilterOpen(false);
@@ -30,6 +32,7 @@ const ProductFilterDetail = () => {
     const value = Math.max(Number(e.target.value), minPrice + 1000);
     setMaxPrice(value);
   };
+
 
   return (
     <div className={filterDetailContainer}>
@@ -73,7 +76,7 @@ const ProductFilterDetail = () => {
           {minPrice.toLocaleString()}원 ~ {maxPrice.toLocaleString()}원
         </span>
       </div>
-      <Button text="125개의 상품보기" onClick={handleCloseClick} />
+      <Button text={`${products.length}개의 상품보기`} onClick={handleCloseClick} />
     </div>
   );
 }

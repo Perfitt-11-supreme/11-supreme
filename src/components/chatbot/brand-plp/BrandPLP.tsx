@@ -17,6 +17,7 @@ const BrandPLP = () => {
   const { selectedBrand } = useBrandStore()
   const [activeFilter, setActiveFilter] = useState('ALL');
   const { setProducts } = useProductStore()
+
   const handleFilterButtonClick = (filter: string) => {
     setActiveFilter(filter);
   };
@@ -44,12 +45,22 @@ const BrandPLP = () => {
 
   })
 
+  const filteredProducts = (brandInfoData && brandInfoData.products) ?
+    (activeFilter === 'ALL'
+      ? brandInfoData.products
+      : brandInfoData.products.filter((product: { gender: string; }) => {
+        if (activeFilter === 'MEN') return product.gender === 'MM';
+        if (activeFilter === 'WOMEN') return product.gender === 'WW'; // 여성의 경우 WW로 가정
+        if (activeFilter === 'KIDS') return product.gender === 'KK';
+        return true;
+      }))
+    : [];
+
 
 
   if (brandInfoIsLoading) return <LoadingPage />;
   if (brandInfoError) return <div>에러 발생: {(brandInfoError as Error).message}</div>;
-  if (!brandInfoData) return <div>데이터가 없습니다.</div>;
-
+  if (!brandInfoData || !brandInfoData.products) return <div>데이터가 없습니다.</div>;
 
   return (
     <>
@@ -71,7 +82,7 @@ const BrandPLP = () => {
             />
           ))}
         </div>
-        <ProductFilter />
+        <ProductFilter filterProducts={filteredProducts} />
       </div>
     </>
   );
