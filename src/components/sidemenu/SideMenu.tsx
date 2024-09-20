@@ -18,9 +18,17 @@ import SidemenuMypageLinks from './SidemenuMypageLinks';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import Button from '../common/button/Button';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../firebase/firebase';
 
 type SideMenuProps = {
   onClose: () => void;
+};
+
+type ChatHistory = {
+  id: string;
+  botResponse: string;
+  keywords: string;
 };
 
 const SideMenu = ({ onClose }: SideMenuProps) => {
@@ -40,13 +48,44 @@ const SideMenu = ({ onClose }: SideMenuProps) => {
     };
   }, [auth]);
 
+  // const [chatData, setChatData] = useState<ChatHistory | null>(null);
+  // const [error, setError] = useState<string | null>(null);
+
+  // Firestore에서 가져올 문서의 ID
+  // const documentId = '-O7DMW-cqjs1-EBsl2WX'; // 실제 Firestore에서 존재하는 ID를 입력
+
+  // const fetchChatHistory = async () => {
+  //   try {
+  //     console.log('Fetching document with ID:', documentId); // documentId를 콘솔에 출력
+  //     const docRef = doc(db, 'chatHistory', documentId); // Firestore에서 문서 참조
+  //     const docSnap = await getDoc(docRef); // 문서 데이터를 가져옴
+
+  //     if (docSnap.exists()) {
+  //       console.log('Document data:', docSnap.data()); // 문서 데이터를 콘솔에 출력
+  //       const chatData = docSnap.data() as ChatHistory;
+  //       setChatData(chatData); // 데이터를 상태에 저장
+  //     } else {
+  //       console.log('No such document!');
+  //       setError('No such document!');
+  //     }
+  //   } catch (err) {
+  //     console.error('Error fetching document:', err);
+  //     setError('Failed to fetch chat history');
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchChatHistory(); // 컴포넌트가 마운트되면 데이터 가져오기
+  // }, []);
+
   const handleLoginClick = () => {
     onClose(); // 모달 닫기
     navigate('/login'); // 로그인 페이지로 이동
   };
 
-  const handleNavigation = (path: string) => {
-    navigate(path); // 특정 경로로 이동
+  const handleNavigateChatbot = () => {
+    onClose();
+    navigate('/chatbot');
   };
 
   return (
@@ -60,8 +99,22 @@ const SideMenu = ({ onClose }: SideMenuProps) => {
             </button>
           </article>
           {/* 새 채팅 */}
+
+          {/* <div>
+            {error && <p>{error}</p>}
+            {chatData ? (
+              <div>
+                <p>Chat ID: {chatData.id}</p>
+                <p>Bot Response: {chatData.botResponse}</p>
+                <p>Keywords: {chatData.keywords}</p>
+              </div>
+            ) : (
+              <p>Loading...</p>
+            )}
+          </div> */}
+
           <article className={sidemenuNewChatContainer}>
-            <button className={plusButtonBox} onClick={() => handleNavigation('/chatbot')}>
+            <button className={plusButtonBox} onClick={handleNavigateChatbot}>
               <img src={sidemenu_plus} alt="sidemenu_plus" />
               <p className={newChatText}>새 채팅</p>
             </button>

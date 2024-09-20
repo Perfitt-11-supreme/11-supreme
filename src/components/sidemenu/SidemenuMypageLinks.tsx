@@ -29,10 +29,10 @@ const SidemenuMypageLinks = () => {
         const userDoc = await getDoc(doc(USER_COLLECTION, user.uid)); // Firestore에서 유저 정보 가져오기
         if (userDoc.exists()) {
           const userData = userDoc.data();
-          console.log('User Data:', userData); // 가져온 사용자 데이터 출력
+          // console.log('User Data:', userData); // 가져온 사용자 데이터 출력
 
           // Firestore에서 userName 필드를 상태에 저장
-          setUserName(userData.userName);
+          setUserName(userData.userName || userData.username);
         } else {
           console.log('No such user document!');
           setError('No user document found.');
@@ -61,36 +61,48 @@ const SidemenuMypageLinks = () => {
       });
   };
 
-  const handleNavigation = (path: string) => {
-    navigate(path); // 특정 경로로 이동
+  const handleNavigateLikedPage = () => {
+    navigate('/likedpage');
+  };
+  const handleNavigateViewedhistoryPage = () => {
+    navigate('/viewedhistorypage');
+  };
+  const handleNavigateEmptyShoesroom = () => {
+    navigate('/empty-shoesroom');
+  };
+  const handleNavigateFootinfo = () => {
+    navigate('/footinfo');
+  };
+  const handleNavigateMypage = () => {
+    navigate('/mypage');
   };
 
   return (
     <>
       <hr className={sidemenuMypageLine} />
       <div>
-        <button className={sidemenuMypageMoveButton} onClick={() => handleNavigation('/likedpage')}>
+        <button className={sidemenuMypageMoveButton} onClick={handleNavigateLikedPage}>
           좋아요
         </button>
         <span>|</span>
-        <button className={sidemenuMypageMoveButton} onClick={() => handleNavigation('/viewedhistorypage')}>
+        <button className={sidemenuMypageMoveButton} onClick={handleNavigateViewedhistoryPage}>
           최근 본
         </button>
       </div>
       <div>
-        <button className={sidemenuMypageMoveButton} onClick={() => handleNavigation('/empty-shoesroom')}>
+        <button className={sidemenuMypageMoveButton} onClick={handleNavigateEmptyShoesroom}>
           신발장
         </button>
       </div>
       <div>
-        <button className={sidemenuMypageMoveButton} onClick={() => handleNavigation('/footinfo')}>
+        <button className={sidemenuMypageMoveButton} onClick={handleNavigateFootinfo}>
           내 발 정보
         </button>
       </div>
       <hr className={sidemenuMypageLine} />
 
       <div className={sidemenuUserProfileBox}>
-        <button className={sidemenuUserProfileButton} onClick={() => handleNavigation('/mypage')}>
+        <button className={sidemenuUserProfileButton} onClick={handleNavigateMypage}>
           <img className={sidemenuUserProfileIcon} src={user_profile} alt="user_profile" />
           {/* Firestore에서 받아온 사용자 이름을 표시 */}
           <span className={sidemenuUserProfileText}>{userName}</span>

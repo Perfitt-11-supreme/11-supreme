@@ -17,6 +17,12 @@ export const userProfileIconBox = style({
   position: 'relative',
   color: theme.color.gray400,
 });
+export const profileImageBox = style({
+  width: '100%',
+  height: '100%',
+  borderRadius: '50%',
+  overflow: 'hidden',
+});
 export const userProfileUploadIconBox = style({
   width: '20px',
   height: '20px',
