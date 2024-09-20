@@ -1,6 +1,7 @@
 import { detail } from '../../../assets/assets';
 import useModalStore from '../../../stores/useModalStore';
 import useProductStore from '../../../stores/useProductsStore';
+import { TProduct } from '../../../types/product';
 import SizeRecommendationCard from '../../mypage/size-recommendation-card/SizeRecommendationCard';
 import ProductFilterDetail from '../product-filter-detail/ProductFilterDetail';
 import ProductFilterModal from '../product-filter-modal/ProductFilterModal';
@@ -14,7 +15,11 @@ import {
   productRecommendWrapper,
 } from './productFilter.css';
 
-const ProductFilter = () => {
+type filterProducts = {
+  filterProducts: TProduct[]
+}
+
+const ProductFilter = ({ filterProducts }: filterProducts) => {
   const { setFilterOpen, filterOpen } = useModalStore();
   const { products = [] } = useProductStore()
 
@@ -24,13 +29,14 @@ const ProductFilter = () => {
     console.log("필터")
   };
 
-  // console.log("상태전달", products)
+
+  console.log("상태전달", products)
 
   return (
     <>
       <div className={productRecommendFilterWrap}>
         <p style={{ fontSize: '14px' }}>
-          <span className={ProductRecommendResult}>{products.length}</span>개 상품
+          <span className={ProductRecommendResult}>{filterProducts.length}</span>개 상품
         </p>
         <div className={productRecommendFilterContainer}>
           <select className={productRecommendFiltering}>
@@ -41,7 +47,7 @@ const ProductFilter = () => {
       </div>
       <div className={productRecommendWrapper}>
         <ul className={productRecommend}>
-          {products.map((product, index) => (
+          {filterProducts.map((product, index) => (
             <li key={index}><SizeRecommendationCard product={product} /></li>
           ))}
         </ul>
