@@ -17,6 +17,8 @@ import {
 const ProductFilter = () => {
   const { setFilterOpen, filterOpen } = useModalStore();
   const { products = [] } = useProductStore()
+
+
   const handleDetailClick = () => {
     setFilterOpen(true); // detail 버튼 클릭 시 Modal 열기
     console.log("필터")

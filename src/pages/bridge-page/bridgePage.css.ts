@@ -4,15 +4,16 @@ import { theme } from '../../styles/theme';
 export const bridgeBrandImageContainer = style({
   width: '120px',
   height: '120px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems:'center',
   backgroundColor: theme.color.ai_blue500,
-  marginBottom: '38px',
 });
 
 export const bridgeProductContainer = style({
   width: '100%',
-  height: '100%',
+  height: '100vh',
   backgroundColor: 'white',
-  paddingTop: '34px',
   display: 'flex',
   justifyContent: 'center',
   flexDirection: 'column',

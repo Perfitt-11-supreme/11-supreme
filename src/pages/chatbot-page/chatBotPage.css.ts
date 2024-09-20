@@ -1,8 +1,8 @@
 import { style } from '@vanilla-extract/css';
 
 export const chatBotContainer = style({
-  width: '375px',
-  height: '812px',
+  width: '100%',
+  height: '100vh',
   backgroundColor: 'white',
   paddingTop: '34px',
   display: 'flex',
