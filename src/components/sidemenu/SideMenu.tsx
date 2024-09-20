@@ -18,21 +18,28 @@ import SidemenuMypageLinks from './SidemenuMypageLinks';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import Button from '../common/button/Button';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../../firebase/firebase';
+import useChatHistory from '../../hooks/useChatHistory';
+import { deleteDoc, doc } from 'firebase/firestore';
+import { database, db } from '../../firebase/firebase';
+import { child, ref, remove } from 'firebase/database';
 
 type SideMenuProps = {
   onClose: () => void;
 };
 
-type ChatHistory = {
+type ChatHistoryProps = {
   id: string;
-  botResponse: string;
   keywords: string;
+  timestamp: string;
 };
 
-const SideMenu = ({ onClose }: SideMenuProps) => {
+type ChatHistoryListProps = SideMenuProps & {
+  ChatHistory: ChatHistoryProps[];
+};
+
+const SideMenu = ({ onClose, ChatHistory }: ChatHistoryListProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [chatHistoryState, setChatHistoryState] = useState('');
   const navigate = useNavigate();
   const auth = getAuth();
 
@@ -48,35 +55,7 @@ const SideMenu = ({ onClose }: SideMenuProps) => {
     };
   }, [auth]);
 
-  // const [chatData, setChatData] = useState<ChatHistory | null>(null);
-  // const [error, setError] = useState<string | null>(null);
-
-  // Firestore에서 가져올 문서의 ID
-  // const documentId = '-O7DMW-cqjs1-EBsl2WX'; // 실제 Firestore에서 존재하는 ID를 입력
-
-  // const fetchChatHistory = async () => {
-  //   try {
-  //     console.log('Fetching document with ID:', documentId); // documentId를 콘솔에 출력
-  //     const docRef = doc(db, 'chatHistory', documentId); // Firestore에서 문서 참조
-  //     const docSnap = await getDoc(docRef); // 문서 데이터를 가져옴
-
-  //     if (docSnap.exists()) {
-  //       console.log('Document data:', docSnap.data()); // 문서 데이터를 콘솔에 출력
-  //       const chatData = docSnap.data() as ChatHistory;
-  //       setChatData(chatData); // 데이터를 상태에 저장
-  //     } else {
-  //       console.log('No such document!');
-  //       setError('No such document!');
-  //     }
-  //   } catch (err) {
-  //     console.error('Error fetching document:', err);
-  //     setError('Failed to fetch chat history');
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchChatHistory(); // 컴포넌트가 마운트되면 데이터 가져오기
-  // }, []);
+  const { chatHistory } = useChatHistory();
 
   const handleLoginClick = () => {
     onClose(); // 모달 닫기
@@ -86,6 +65,34 @@ const SideMenu = ({ onClose }: SideMenuProps) => {
   const handleNavigateChatbot = () => {
     onClose();
     navigate('/chatbot');
+  };
+
+  // 특정 ID 데이터를 삭제하는 함수
+  const deleteData = async (id: string) => {
+    // const dataRef = ref(database, `chatHistory/${id}`);
+    const dataRef = child(ref(database, 'chatHistory'), id); // 하위 ID 경로를 참조
+    // await remove(dataRef);
+    try {
+      await remove(dataRef); // 데이터를 비동기로 삭제
+      console.log('데이터가 성공적으로 삭제되었습니다.');
+      setChatHistoryState(prev => prev.filter(chat => chat.id !== id)); // 삭제 후 상태에서 해당 항목 제거
+    } catch (error) {
+      console.error('데이터 삭제 중 오류 발생:', error);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    console.log('Deleting id:', id); // 삭제할 id 확인
+    if (id) {
+      try {
+        await deleteData(id);
+      } catch (error) {
+        console.error('삭제 실패:', error);
+        alert('삭제 중 오류가 발생했습니다.');
+      }
+    } else {
+      console.error('id가 정의되지 않았습니다.');
+    }
   };
 
   return (
@@ -100,19 +107,6 @@ const SideMenu = ({ onClose }: SideMenuProps) => {
           </article>
           {/* 새 채팅 */}
 
-          {/* <div>
-            {error && <p>{error}</p>}
-            {chatData ? (
-              <div>
-                <p>Chat ID: {chatData.id}</p>
-                <p>Bot Response: {chatData.botResponse}</p>
-                <p>Keywords: {chatData.keywords}</p>
-              </div>
-            ) : (
-              <p>Loading...</p>
-            )}
-          </div> */}
-
           <article className={sidemenuNewChatContainer}>
             <button className={plusButtonBox} onClick={handleNavigateChatbot}>
               <img src={sidemenu_plus} alt="sidemenu_plus" />
@@ -123,14 +117,35 @@ const SideMenu = ({ onClose }: SideMenuProps) => {
           <article className={sidemenuListsContainer}>
             <h3 className={sidemenuListsTitle}>오늘</h3>
             <ul className={sidemenuListsBox}>
-              <SidemenuList iconSrc={sidemenu_list} text="최근 가장 인기있는 여성 운동화" />
-              <SidemenuList iconSrc={sidemenu_list} text="비오는 날 신기 좋은 레인부츠 추천" />
+              {chatHistory.map(chat => (
+                <SidemenuList
+                  iconSrc={sidemenu_list}
+                  key={chat.id}
+                  id={chat.id}
+                  keywords={chat.keywords}
+                  timestamp={chat.timestamp}
+                  handleDelete={handleDelete}
+                />
+              ))}
+              {/* {chatHistory.map(chat => {
+                console.log('Chat ID:', chat.id); // chat.id 확인
+                return (
+                  <SidemenuList
+                    iconSrc={sidemenu_list}
+                    key={chat.id}
+                    id={chat.id}
+                    keywords={chat.keywords}
+                    timestamp={chat.timestamp}
+                    handleDelete={handleDelete}
+                  />
+                );
+              })} */}
             </ul>
             <h3 className={sidemenuListsTitle}>지난 7일</h3>
             <ul className={sidemenuListsBox}>
-              <SidemenuList iconSrc={sidemenu_list} text="여름 슬리퍼 추천" />
+              {/* <SidemenuList iconSrc={sidemenu_list} text="여름 슬리퍼 추천" />
               <SidemenuList iconSrc={sidemenu_list} text="가벼운 러닝화" />
-              <SidemenuList iconSrc={sidemenu_list} text="20대 여성이 많이 찾는 브랜드" />
+              <SidemenuList iconSrc={sidemenu_list} text="20대 여성이 많이 찾는 브랜드" /> */}
             </ul>
           </article>
           {/* mypage 링크 또는 로그인 버튼 */}
