@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
- type ProductStoreState = {
+ export type ProductStoreState = {
   message: string;
   products: Array<{
     brand: string;
