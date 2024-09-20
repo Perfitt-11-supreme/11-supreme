@@ -12,10 +12,6 @@ export const fullContainer = style({
   position: 'relative',
 });
 
-export const batteryMargin = style({
-  height: '34px',
-});
-
 export const loginbuttonContainer = style({
   width: '100%',
   height: 'auto',

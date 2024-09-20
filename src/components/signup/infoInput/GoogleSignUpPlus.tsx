@@ -10,6 +10,8 @@ import { errorMessage, signupFormContainer, signupFormGap, submitbuttonContainer
 import { useNavigate } from 'react-router-dom';
 import { USER_COLLECTION } from '../../../firebase/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
+import { responsiveBox } from '../../../styles/responsive.css';
+import ToastMessage from '../../toastmessage/toastMessage';
 
 const GoogleSignUpPlus = () => {
   type FormErrors = {
@@ -36,6 +38,7 @@ const GoogleSignUpPlus = () => {
       day: '',
     },
   });
+  const [toastMessage, setToastMessage] = useState<{ message: string; duration: number } | null>(null);
 
   const validate = (data: FormData): FormErrors => {
     const newErrors: FormErrors = {};
@@ -107,10 +110,10 @@ const GoogleSignUpPlus = () => {
 
           navigate('/signupsize');
         } else {
-          alert('처음부터 순서대로 회원가입을 진행해주세요.');
+          setToastMessage({ message: '순서대로 회원가입을 진행해주세요.', duration: 3000 });
         }
       } catch {
-        alert('회원가입에 실패했습니다. 다시 시도해 주세요.');
+        setToastMessage({ message: '다시 시도해 주세요.', duration: 3000 });
       }
     }
   };
@@ -121,54 +124,64 @@ const GoogleSignUpPlus = () => {
     const errorMessages = Object.values(errors).filter(Boolean);
     const additionalHeight = errorMessages.length * 20;
     setModalHeight(`${Math.max(357, 357 + additionalHeight)}px`);
-  }, [errors]);
+
+    if (toastMessage) {
+      const timer = setTimeout(() => setToastMessage(null), toastMessage.duration);
+      return () => clearTimeout(timer);
+    }
+  }, [errors, toastMessage]);
 
   return (
-    <div className={fullContainer}>
-      <div>
-        <Header imageSrc={hamburger_menu} alt="hamburger menu" />
-      </div>
-
-      <div>
-        <Modal title="회원가입" height={modalHeight} initialHeight="357px" animateHeightOnClick={false}>
-          <div className={signupFormContainer}>
-            <div>
-              <Select
-                id="gender"
-                label="성별"
-                options={[
-                  { value: '', label: '성별을 선택해 주세요' },
-                  { value: 'male', label: '남성' },
-                  { value: 'female', label: '여성' },
-                ]}
-                value={formData.gender}
-                onChange={handleChange}
-              />
-              {errors.gender && <div className={errorMessage}>{errors.gender}</div>}
-            </div>
-
-            <div className={signupFormGap}>
-              <DateSelect
-                label="생년월일"
-                value={{
-                  year: formData.birthDate.year,
-                  month: formData.birthDate.month,
-                  day: formData.birthDate.day,
-                }}
-                onChange={handleChange}
-              />
-              {errors.birthDate && <div className={errorMessage}>{errors.birthDate}</div>}
-            </div>
-
-            <div className={submitbuttonContainer}>
-              <form onSubmit={handleSubmit}>
-                <Button text="다음" />
-              </form>
-            </div>
+    <>
+      <div className={responsiveBox}>
+        <div className={fullContainer}>
+          {toastMessage && <ToastMessage message={toastMessage.message} duration={toastMessage.duration} />}
+          <div>
+            <Header imageSrc={hamburger_menu} alt="hamburger menu" />
           </div>
-        </Modal>
+
+          <div>
+            <Modal title="회원가입" height={modalHeight} initialHeight="357px" animateHeightOnClick={false}>
+              <div className={signupFormContainer}>
+                <div>
+                  <Select
+                    id="gender"
+                    label="성별"
+                    options={[
+                      { value: '', label: '성별을 선택해 주세요' },
+                      { value: 'male', label: '남성' },
+                      { value: 'female', label: '여성' },
+                    ]}
+                    value={formData.gender}
+                    onChange={handleChange}
+                  />
+                  {errors.gender && <div className={errorMessage}>{errors.gender}</div>}
+                </div>
+
+                <div className={signupFormGap}>
+                  <DateSelect
+                    label="생년월일"
+                    value={{
+                      year: formData.birthDate.year,
+                      month: formData.birthDate.month,
+                      day: formData.birthDate.day,
+                    }}
+                    onChange={handleChange}
+                  />
+                  {errors.birthDate && <div className={errorMessage}>{errors.birthDate}</div>}
+                </div>
+
+                <div className={submitbuttonContainer}>
+                  <form onSubmit={handleSubmit}>
+                    <Button text="다음" />
+                  </form>
+                </div>
+              </div>
+            </Modal>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

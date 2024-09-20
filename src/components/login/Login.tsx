@@ -8,10 +8,14 @@ import { signInWithGoogle } from '../../firebase/firebase';
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 import { responsiveBox } from '../../styles/responsive.css';
 import ChatbotSearchInput from '../common/chatbot-search-input/ChatbotSearchInput';
+import { useEffect, useState } from 'react';
+import ToastMessage from '../toastmessage/toastMessage';
 
 const Login = () => {
   const navigate = useNavigate();
   const db = getFirestore();
+
+  const [toastMessage, setToastMessage] = useState<{ message: string; duration: number } | null>(null);
 
   const handleGoogleLogin = async () => {
     try {
@@ -41,17 +45,24 @@ const Login = () => {
       localStorage.setItem('userUID', user.uid);
     } catch (error) {
       console.error('구글 로그인 실패:', error);
-      alert('구글 로그인에 실패했습니다. 다시 시도해 주세요.');
+      setToastMessage({ message: '다시 시도해 주세요.', duration: 3000 });
     }
   };
+
+  useEffect(() => {
+    if (toastMessage) {
+      const timer = setTimeout(() => setToastMessage(null), toastMessage.duration);
+      return () => clearTimeout(timer);
+    }
+  }, [toastMessage]);
 
   return (
     <>
       <div className={responsiveBox}>
         <div className={fullContainer}>
+          {toastMessage && <ToastMessage message={toastMessage.message} duration={toastMessage.duration} />}
           <Header imageSrc={hamburger_menu} alt="hamburger menu" />
-
-          <div style={{ marginTop: '20px' }}>
+          <div style={{ marginTop: '20px', marginLeft: '16px' }}>
             <ChatBotBox text={['안녕하세요 펄핏AI 입니다!', '맞춤 추천을 위해 먼저 로그인을 해주세요.']} />
           </div>
 

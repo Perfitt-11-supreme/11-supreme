@@ -21,7 +21,7 @@ import Header from '../common/header/Header';
 import Modal from '../common/modal/Modal';
 import RecommendedQuestionCard from '../common/recommended-question-card/RecommendedQuestionCard';
 import ShareModal from '../common/share-modal/ShareModal';
-import { batteryMargin, fullContainer, loginHelloContainer, recommendedquestioncardContainer } from './login.css';
+import { fullContainer, loginHelloContainer, recommendedquestioncardContainer } from './login.css';
 import ChatBotBox from './loginchatbot/chatbotbox/ChatBotBox';
 import RecommendBox from './loginchatbot/recommendbox/RecommendBox';
 import { responsiveBox } from '../../styles/responsive.css';
@@ -170,7 +170,6 @@ const LoginHello = () => {
   return (
     <div className={responsiveBox}>
       <div className={fullContainer}>
-        <div className={batteryMargin}></div>
         <Header imageSrc={hamburger_menu} alt="hamburger menu" />
         <div className={loginHelloContainer}>
           <div ref={chatContainerRef} style={{ overflowY: 'auto', overflowX: 'hidden' }}>
