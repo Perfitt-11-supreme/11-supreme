@@ -14,8 +14,8 @@ import {
 } from './productRecommendationPreview.css';
 interface ProductRecommendationPreviewProps {
   products: TProduct[];
-  id: string;
-  onMoreClick: () => void;
+  id?: string;
+  onMoreClick?: () => void | null;
 }
 
 const ProductRecommendationPreview = ({ products = [], id, onMoreClick }: ProductRecommendationPreviewProps) => {
@@ -24,13 +24,17 @@ const ProductRecommendationPreview = ({ products = [], id, onMoreClick }: Produc
   const previewProducts = products.slice(0, 2);
 
   const handleOpenModal = () => {
-    onMoreClick();
+    if (onMoreClick) {
+      onMoreClick();
+    }
     setIsOpen(true);
   };
 
   const handleOpenShareModal = () => {
-    setShareModalId(id);
-    setIsShareModalOpen(true);
+    if (id) {
+      setShareModalId(id);
+      setIsShareModalOpen(true);
+    }
   };
 
   return (

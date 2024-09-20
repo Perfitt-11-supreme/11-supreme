@@ -31,8 +31,57 @@ import {
   myInfoServiceTermBox,
   myInfoServiceTermButton,
 } from './mypage.css';
+import { getDocs } from 'firebase/firestore'; // Firestore 관련 함수 import
+import { USER_COLLECTION } from '../../firebase/firebase'; // USER_COLLECTION 경로 수정
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Mypage = () => {
+  const navigate = useNavigate();
+  const [userData, setUserData] = useState<any>(null);
+  const [profileImage, setProfileImage] = useState<string>(user_profile); // 기본 이미지로 설정
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const handleNavigateShoesroom = () => {
+    navigate('/empty-shoesroom');
+  };
+  const handleNavigateLikedPage = () => {
+    navigate('/likedpage');
+  };
+  console.log('d', userData);
+  const fetchUserDatas = async () => {
+    try {
+      const userSnapshot = await getDocs(USER_COLLECTION);
+      userSnapshot.forEach(doc => {
+        const data = doc.data();
+        setUserData(data);
+      });
+    } catch (error) {
+      console.error('Error fetching user names: ', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserDatas();
+  }, []);
+
+  // 파일 선택 창을 여는 함수
+  const handlePictureClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click(); // 숨겨진 파일 입력창을 열기
+    }
+  };
+
+  // 파일 선택 후 파일을 처리하는 함수
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file); // 선택한 파일의 URL 생성
+      setProfileImage(imageUrl); // 이미지 URL을 상태에 저장
+      console.log('선택한 파일:', file);
+    }
+  };
+
   return (
     <>
       <div className={responsiveBox}>
@@ -40,26 +89,39 @@ const Mypage = () => {
           <Header imageSrc={back_arrow} alt="back arrow" />
           <article className={userProfileImageContainer}>
             <div className={userProfileIconBox}>
-              <img src={user_profile} alt="user_profile" />
-              <div className={userProfileUploadIconBox}>
+              {/* 조건부 렌더링 */}
+              {profileImage ? (
+                <img src={profileImage} alt="user_profile" /> // 업로드된 이미지가 있으면 보여줌
+              ) : (
+                <img src={user_profile} alt="user_profile" /> // 업로드된 이미지가 없으면 기본 이미지
+              )}
+              <div className={userProfileUploadIconBox} onClick={handlePictureClick}>
                 <img src={user_profile_upload} alt="user_profile_upload" />
               </div>
+              {/* 숨겨진 파일 입력창 */}
+              <input
+                ref={fileInputRef} // 파일 입력창에 대한 참조
+                type="file"
+                style={{ display: 'none' }}
+                accept="image/*"
+                onChange={handleFileChange} // 파일이 선택되면 handleFileChange 호출
+              />
             </div>
           </article>
           <article className={userProfileGreetingContainer}>
             <p className={userProfileGreeting}>안녕하세요!</p>
             <p className={userProfileName}>
-              <span className={userProfileNameTextBold}>김&nbsp;이&nbsp;름&nbsp;</span>님
+              <span className={userProfileNameTextBold}>{userData?.username}</span>님
             </p>
           </article>
           <article>
             <hr className={borderLine} />
             <div className={mypageButtonBox}>
-              <button className={mypageButton} type="button">
+              <button className={mypageButton} type="button" onClick={handleNavigateLikedPage}>
                 <img className={mypageButtonIcon} src={mypage_heart} alt="mypage_heart" />
                 <span>좋아요</span>
               </button>
-              <button className={mypageButton} type="button">
+              <button className={mypageButton} type="button" onClick={handleNavigateShoesroom}>
                 <img className={mypageButtonIcon} src={mypage_shose_room} alt="mypage_shose_room" />
                 <span>신발장</span>
               </button>
@@ -76,10 +138,14 @@ const Mypage = () => {
                 <p>평소사이즈</p>
               </div>
               <div className={myInfoValue}>
-                <p>김이름</p>
-                <p>여</p>
-                <p>1999.10.11</p>
-                <p>235mm</p>
+                <p>{userData ? userData?.username : '-'}</p>
+                <p>{userData ? userData?.gender : '-'}</p>
+                <p>
+                  {userData
+                    ? `${userData?.birthDate.year}.${userData?.birthDate.month}.${userData?.birthDate.day}`
+                    : '-'}
+                </p>
+                <p>{userData ? `${userData?.shoeSize} ${userData?.sizeType}` : '-'}</p>
               </div>
             </div>
           </article>
