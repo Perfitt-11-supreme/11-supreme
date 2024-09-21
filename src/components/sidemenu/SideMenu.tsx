@@ -21,6 +21,12 @@ import {
   sidemenuMypageMoveContainer,
   sidemenuNewChatContainer,
 } from './sidemenu.css';
+import ShareModal from '../common/share-modal/ShareModal';
+import useModalStore from '../../stores/useModalStore';
+import Modal from '../common/modal/Modal';
+import BrandPLP from '../chatbot/brand-plp/BrandPLP';
+import ProductRecommendation from '../chatbot/product-recommendation/ProductRecommendation';
+import { sidemenuUserProfileLogin } from './sidemenuMypageLinks.css';
 
 type SideMenuProps = {
   onClose: () => void;
@@ -39,6 +45,7 @@ type ChatHistoryListProps = SideMenuProps & {
 const SideMenu = ({ onClose }: ChatHistoryListProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [deletedChatIds, setDeletedChatIds] = useState<string[]>([]);
+  const { isShareModalOpen } = useModalStore();
   const navigate = useNavigate();
   const auth = getAuth();
   const { chatHistory, deleteChatHistory } = useChatHistoryHook();
@@ -133,7 +140,13 @@ const SideMenu = ({ onClose }: ChatHistoryListProps) => {
           </article>
           {/* mypage 링크 또는 로그인 버튼 */}
           <article className={sidemenuMypageMoveContainer}>
-            {isLoggedIn ? <SidemenuMypageLinks /> : <Button onClick={handleLoginClick} text="로그인" width="100%" />}
+            {isLoggedIn ? (
+              <SidemenuMypageLinks />
+            ) : (
+              <button className={sidemenuUserProfileLogin} onClick={handleLoginClick}>
+                로그인
+              </button>
+            )}
           </article>
         </div>
       </section>

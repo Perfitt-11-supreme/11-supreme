@@ -9,6 +9,8 @@ import {
   sidemenuListText,
   sidemenuSwiperHiddenBox,
 } from './sidemenuList.css';
+import useModalStore from '../../stores/useModalStore';
+import { useNavigate } from 'react-router-dom';
 
 type SidemenuListProps = {
   iconSrc: string;
@@ -18,10 +20,11 @@ type SidemenuListProps = {
   handleDelete: (id: string) => void;
 };
 
-const SidemenuList = ({ iconSrc, keywords, timestamp, id, handleDelete }: SidemenuListProps) => {
+const SidemenuList = ({ iconSrc, keywords, id, handleDelete }: SidemenuListProps) => {
   const [isSwiped, setIsSwiped] = useState(false);
   const startX = useRef<number | null>(null);
   const threshold = 50; // 스와이프 임계값
+  const { setIsShareModalOpen, setShareModalId, shareModalId } = useModalStore();
 
   const handleTouchStart = (e: React.TouchEvent) => {
     startX.current = e.touches[0].clientX;
@@ -57,6 +60,19 @@ const SidemenuList = ({ iconSrc, keywords, timestamp, id, handleDelete }: Sideme
     startX.current = null; // 스와이프 동작 종료
   };
 
+  const handleOpenShareModal = () => {
+    if (id) {
+      setShareModalId(id);
+      setIsShareModalOpen(true);
+    }
+  };
+
+  const navigate = useNavigate();
+  const handleChatLink = async () => {
+    const shareUrl = `/share/${id}`;
+    navigate(shareUrl);
+  };
+
   return (
     <li
       className={sidemenuListContainer}
@@ -74,7 +90,9 @@ const SidemenuList = ({ iconSrc, keywords, timestamp, id, handleDelete }: Sideme
         }}
       >
         <img className={sidemenuListIcon} src={iconSrc} alt="sidemenu_list" />
-        <span className={sidemenuListText}>{keywords}</span>
+        <span className={sidemenuListText} onClick={handleChatLink}>
+          {keywords}
+        </span>
       </div>
       <div
         className={sidemenuSwiperHiddenBox}
@@ -83,7 +101,7 @@ const SidemenuList = ({ iconSrc, keywords, timestamp, id, handleDelete }: Sideme
           transition: 'transform 0.3s ease',
         }}
       >
-        <button className={sidemenuLinkShareIconBox}>
+        <button className={sidemenuLinkShareIconBox} onClick={handleOpenShareModal}>
           <img src={sidemenu_linkshare} alt="sidemenu_linkshare" />
         </button>
         <button className={sidemenuDeleteIconBox} onClick={() => handleDelete(id)}>
