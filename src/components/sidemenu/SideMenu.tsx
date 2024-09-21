@@ -99,6 +99,10 @@ const SideMenu = ({ onClose }: ChatHistoryListProps) => {
     })
     .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()); // timestamp로 내림차순 정렬
 
+  const handleDeleteChat = (chatId: string) => {
+    setDeletedChatIds(prev => [...prev, chatId]); // 삭제된 ID 추가
+  };
+
   return (
     <>
       <section className={sidemenuDimmed} onClick={onClose}>
