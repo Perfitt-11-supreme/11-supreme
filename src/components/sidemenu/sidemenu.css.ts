@@ -59,6 +59,26 @@ export const hamburgerIconBox = style({
   backgroundColor: theme.color.white,
   border: 'none',
   cursor: 'pointer',
+  filter: 'invert(95%) sepia(0%) saturate(0%) hue-rotate(140deg) brightness(104%) contrast(107%)',
+});
+
+export const logoIconBox = style({
+  height: '44px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  position: 'absolute',
+  top: '3px',
+  left: '6px',
+  backgroundColor: theme.color.white,
+  border: 'none',
+  cursor: 'pointer',
+});
+export const logoIcon = style({
+  height: '25px',
+  marginTop: '8px',
+  marginLeft: '4px',
+  filter: 'invert(95%) sepia(0%) saturate(0%) hue-rotate(140deg) brightness(104%) contrast(107%)',
 });
 
 export const sidemenuNewChatContainer = style({

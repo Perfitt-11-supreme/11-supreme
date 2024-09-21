@@ -1,13 +1,13 @@
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { hamburger_menu, sidemenu_list, sidemenu_plus } from '../../assets/assets';
+import { prefitt_logo2, sidemenu_list, sidemenu_plus } from '../../assets/assets';
 import SidemenuList from '../../components/sidemenu/SidemenuList';
 import useChatHistoryHook from '../../hooks/useChatHistoryHook';
-import Button from '../common/button/Button';
 import SidemenuMypageLinks from './SidemenuMypageLinks';
 import {
-  hamburgerIconBox,
+  logoIcon,
+  logoIconBox,
   newChatText,
   plusButtonBox,
   sidemenuContainer,
@@ -21,11 +21,7 @@ import {
   sidemenuMypageMoveContainer,
   sidemenuNewChatContainer,
 } from './sidemenu.css';
-import ShareModal from '../common/share-modal/ShareModal';
 import useModalStore from '../../stores/useModalStore';
-import Modal from '../common/modal/Modal';
-import BrandPLP from '../chatbot/brand-plp/BrandPLP';
-import ProductRecommendation from '../chatbot/product-recommendation/ProductRecommendation';
 import { sidemenuUserProfileLogin } from './sidemenuMypageLinks.css';
 
 type SideMenuProps = {
@@ -80,64 +76,70 @@ const SideMenu = ({ onClose }: ChatHistoryListProps) => {
         <div className={sidemenuContainer} onClick={e => e.stopPropagation()}>
           {/* 헤더 */}
           <article className={sidemenuHeaderContainer}>
-            <button className={hamburgerIconBox} onClick={onClose}>
-              <img src={hamburger_menu} alt="hamburger_menu" />
+            <button className={logoIconBox} onClick={onClose}>
+              <img className={logoIcon} src={prefitt_logo2} alt="hamburger_menu" />
             </button>
           </article>
-          {/* 새 채팅 */}
-          <article className={sidemenuNewChatContainer}>
-            <button className={plusButtonBox} onClick={handleNavigateChatbot}>
-              <img src={sidemenu_plus} alt="sidemenu_plus" />
-              <p className={newChatText}>새 채팅</p>
-            </button>
-          </article>
-          {/* 리스트 */}
-          <article className={sidemenuListsContainer}>
-            <div>
-              <h3 className={sidemenuListsTitle}>오늘</h3>
-              <div className={sidemenuListsItem3ScrollAuto}>
-                <ul className={sidemenuListsBox}>
-                  {chatHistory
-                    .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()) // timestamp로 내림차순 정렬
-                    .map(
-                      chat =>
-                        !deletedChatIds.includes(chat.id) && ( // 삭제된 ID가 아닐 경우에만 렌더링
-                          <SidemenuList
-                            key={chat.id}
-                            iconSrc={sidemenu_list}
-                            id={chat.id}
-                            keywords={chat.keywords}
-                            timestamp={chat.timestamp}
-                            handleDelete={deleteChatHistory} // 삭제 함수 전달
-                          />
-                        )
-                    )}
-                </ul>
-              </div>
-            </div>
-            <div>
-              <h3 className={sidemenuListsTitle}>지난 7일</h3>
-              <div className={sidemenuListsItem5ScrollAuto}>
-                <ul className={sidemenuListsBox}>
-                  {chatHistory
-                    .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()) // timestamp로 내림차순 정렬
-                    .map(
-                      chat =>
-                        !deletedChatIds.includes(chat.id) && ( // 삭제된 ID가 아닐 경우에만 렌더링
-                          <SidemenuList
-                            key={chat.id}
-                            iconSrc={sidemenu_list}
-                            id={chat.id}
-                            keywords={chat.keywords}
-                            timestamp={chat.timestamp}
-                            handleDelete={deleteChatHistory} // 삭제 함수 전달
-                          />
-                        )
-                    )}
-                </ul>
-              </div>
-            </div>
-          </article>
+          {isLoggedIn ? (
+            <>
+              {/* 새 채팅 */}
+              <article className={sidemenuNewChatContainer}>
+                <button className={plusButtonBox} onClick={handleNavigateChatbot}>
+                  <img src={sidemenu_plus} alt="sidemenu_plus" />
+                  <p className={newChatText}>새 채팅</p>
+                </button>
+              </article>
+              {/* 리스트 */}
+              <article className={sidemenuListsContainer}>
+                <div>
+                  <h3 className={sidemenuListsTitle}>오늘</h3>
+                  <div className={sidemenuListsItem3ScrollAuto}>
+                    <ul className={sidemenuListsBox}>
+                      {chatHistory
+                        .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()) // timestamp로 내림차순 정렬
+                        .map(
+                          chat =>
+                            !deletedChatIds.includes(chat.id) && ( // 삭제된 ID가 아닐 경우에만 렌더링
+                              <SidemenuList
+                                key={chat.id}
+                                iconSrc={sidemenu_list}
+                                id={chat.id}
+                                keywords={chat.keywords}
+                                timestamp={chat.timestamp}
+                                handleDelete={deleteChatHistory} // 삭제 함수 전달
+                              />
+                            )
+                        )}
+                    </ul>
+                  </div>
+                </div>
+                <div>
+                  <h3 className={sidemenuListsTitle}>지난 7일</h3>
+                  <div className={sidemenuListsItem5ScrollAuto}>
+                    <ul className={sidemenuListsBox}>
+                      {chatHistory
+                        .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()) // timestamp로 내림차순 정렬
+                        .map(
+                          chat =>
+                            !deletedChatIds.includes(chat.id) && ( // 삭제된 ID가 아닐 경우에만 렌더링
+                              <SidemenuList
+                                key={chat.id}
+                                iconSrc={sidemenu_list}
+                                id={chat.id}
+                                keywords={chat.keywords}
+                                timestamp={chat.timestamp}
+                                handleDelete={deleteChatHistory} // 삭제 함수 전달
+                              />
+                            )
+                        )}
+                    </ul>
+                  </div>
+                </div>
+              </article>
+            </>
+          ) : (
+            <></>
+          )}
           {/* mypage 링크 또는 로그인 버튼 */}
           <article className={sidemenuMypageMoveContainer}>
             {isLoggedIn ? (
