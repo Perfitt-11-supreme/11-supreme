@@ -21,7 +21,6 @@ import {
   sidemenuMypageMoveContainer,
   sidemenuNewChatContainer,
 } from './sidemenu.css';
-import useModalStore from '../../stores/useModalStore';
 import { sidemenuUserProfileLogin } from './sidemenuMypageLinks.css';
 
 type SideMenuProps = {
@@ -41,10 +40,13 @@ type ChatHistoryListProps = SideMenuProps & {
 const SideMenu = ({ onClose }: ChatHistoryListProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [deletedChatIds, setDeletedChatIds] = useState<string[]>([]);
-  const { isShareModalOpen } = useModalStore();
   const navigate = useNavigate();
   const auth = getAuth();
   const { chatHistory, deleteChatHistory } = useChatHistoryHook();
+  // 현재 UTC 시간으로 오늘 날짜 계산
+  const today = new Date();
+  const utcToday = new Date(today.getTime() + today.getTimezoneOffset() * 60 * 1000); // UTC 시간
+  const sevenDaysAgo = new Date(utcToday.getTime() - 7 * 24 * 60 * 60 * 1000); // UTC 기준 7일 전 시간
   console.log('chatHistoryData', chatHistory);
 
   useEffect(() => {
@@ -70,6 +72,33 @@ const SideMenu = ({ onClose }: ChatHistoryListProps) => {
   };
   console.log('handleNavigateChatbot', handleNavigateChatbot);
 
+  // chatHistory.timestamp 오늘날짜 필터링
+  const filteredTodayChatHistory = chatHistory
+    .filter(chat => {
+      const chatDate = new Date(chat.timestamp); // chat.timestamp를 UTC 시간으로 처리
+      // UTC 기준으로 오늘 날짜와 동일한지 비교 (년, 월, 일만 비교)
+      return (
+        chatDate.getUTCFullYear() === utcToday.getUTCFullYear() &&
+        chatDate.getUTCMonth() === utcToday.getUTCMonth() &&
+        chatDate.getUTCDate() === utcToday.getUTCDate()
+      );
+    })
+    .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()); // timestamp로 내림차순 정렬
+
+  // chatHistory.timestamp 오늘 제외 7일이내 필터링
+  const filtered7DaysChatHistory = chatHistory
+    .filter(chat => {
+      const chatDate = new Date(chat.timestamp); // chat.timestamp를 UTC 시간으로 처리
+      // 7일 이내이고 오늘은 제외 (UTC 기준으로 비교)
+      return (
+        chatDate > sevenDaysAgo &&
+        (chatDate.getUTCFullYear() !== utcToday.getUTCFullYear() ||
+          chatDate.getUTCMonth() !== utcToday.getUTCMonth() ||
+          chatDate.getUTCDate() !== utcToday.getUTCDate())
+      );
+    })
+    .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()); // timestamp로 내림차순 정렬
+
   return (
     <>
       <section className={sidemenuDimmed} onClick={onClose}>
@@ -92,10 +121,22 @@ const SideMenu = ({ onClose }: ChatHistoryListProps) => {
               {/* 리스트 */}
               <article className={sidemenuListsContainer}>
                 <div>
-                  <h3 className={sidemenuListsTitle}>오늘</h3>
+                  <h3
+                    className={sidemenuListsTitle}
+                    style={{
+                      display: filteredTodayChatHistory.length === 0 ? 'none' : 'block',
+                    }}
+                  >
+                    오늘
+                  </h3>
                   <div className={sidemenuListsItem3ScrollAuto}>
-                    <ul className={sidemenuListsBox}>
-                      {chatHistory
+                    <ul
+                      className={sidemenuListsBox}
+                      style={{
+                        display: filteredTodayChatHistory.length === 0 ? 'none' : 'block',
+                      }}
+                    >
+                      {filteredTodayChatHistory
                         .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()) // timestamp로 내림차순 정렬
                         .map(
                           chat =>
@@ -114,24 +155,34 @@ const SideMenu = ({ onClose }: ChatHistoryListProps) => {
                   </div>
                 </div>
                 <div>
-                  <h3 className={sidemenuListsTitle}>지난 7일</h3>
+                  <h3
+                    className={sidemenuListsTitle}
+                    style={{
+                      display: filtered7DaysChatHistory.length === 0 ? 'none' : 'block',
+                    }}
+                  >
+                    지난 7일
+                  </h3>
                   <div className={sidemenuListsItem5ScrollAuto}>
-                    <ul className={sidemenuListsBox}>
-                      {chatHistory
-                        .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()) // timestamp로 내림차순 정렬
-                        .map(
-                          chat =>
-                            !deletedChatIds.includes(chat.id) && ( // 삭제된 ID가 아닐 경우에만 렌더링
-                              <SidemenuList
-                                key={chat.id}
-                                iconSrc={sidemenu_list}
-                                id={chat.id}
-                                keywords={chat.keywords}
-                                timestamp={chat.timestamp}
-                                handleDelete={deleteChatHistory} // 삭제 함수 전달
-                              />
-                            )
-                        )}
+                    <ul
+                      className={sidemenuListsBox}
+                      style={{
+                        display: filtered7DaysChatHistory.length === 0 ? 'none' : 'block',
+                      }}
+                    >
+                      {filtered7DaysChatHistory.map(
+                        chat =>
+                          !deletedChatIds.includes(chat.id) && ( // 삭제된 ID가 아닐 경우에만 렌더링
+                            <SidemenuList
+                              key={chat.id}
+                              iconSrc={sidemenu_list}
+                              id={chat.id}
+                              keywords={chat.keywords}
+                              timestamp={chat.timestamp}
+                              handleDelete={deleteChatHistory} // 삭제 함수 전달
+                            />
+                          )
+                      )}
                     </ul>
                   </div>
                 </div>
