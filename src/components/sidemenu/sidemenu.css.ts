@@ -95,6 +95,15 @@ export const sidemenuListsTitle = style({
   marginBottom: '8px',
   margin: '15px 0',
 });
+
+export const sidemenuListsItem3ScrollAuto = style({
+  height: '122px',
+  overflow: 'auto',
+});
+export const sidemenuListsItem5ScrollAuto = style({
+  height: '210px',
+  overflow: 'auto',
+});
 export const sidemenuListsBox = style({
   display: 'flex',
   flexDirection: 'column',
