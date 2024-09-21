@@ -74,7 +74,6 @@ const SidemenuList = ({ iconSrc, keywords, timestamp, id, handleDelete }: Sideme
         }}
       >
         <img className={sidemenuListIcon} src={iconSrc} alt="sidemenu_list" />
-        {/* <span className={sidemenuListText}>{text}</span> */}
         <span className={sidemenuListText}>{keywords}</span>
       </div>
       <div
@@ -94,25 +93,5 @@ const SidemenuList = ({ iconSrc, keywords, timestamp, id, handleDelete }: Sideme
     </li>
   );
 };
-
-// const SidemenuList = ({ iconSrc, keywords, timestamp, id, handleDelete }: SidemenuListProps) => {
-//   console.log('Received id:', id); // id가 제대로 전달되는지 확인
-//   return (
-//     <li className={sidemenuListContainer}>
-//       <div className={sidemenuListBox}>
-//         <img className={sidemenuListIcon} src={iconSrc} alt="sidemenu_list" />
-//         <span className={sidemenuListText}>{keywords}</span>
-//       </div>
-//       <div className={sidemenuSwiperHiddenBox}>
-//         <button className={sidemenuLinkShareIconBox}>
-//           <img src={sidemenu_linkshare} alt="sidemenu_linkshare" />
-//         </button>
-//         <button className={sidemenuDeleteIconBox} onClick={() => handleDelete(id)}>
-//           <img src={sidemenu_delete} alt="sidemenu_delete" />
-//         </button>
-//       </div>
-//     </li>
-//   );
-// };
 
 export default SidemenuList;

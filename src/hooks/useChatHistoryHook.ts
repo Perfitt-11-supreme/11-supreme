@@ -1,6 +1,6 @@
 // useChatHistory.ts (데이터 가져오는 로직)
 import { useEffect, useState } from 'react';
-import { ref, get } from 'firebase/database';
+import { ref, get, remove } from 'firebase/database';
 import { database } from '../firebase/firebase';
 
 type ChatHistory = {
@@ -9,7 +9,7 @@ type ChatHistory = {
   id: string;
 };
 
-const useChatHistory = () => {
+const useChatHistoryHook = () => {
   const [chatHistory, setChatHistory] = useState<ChatHistory[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null | string>(null);
@@ -21,9 +21,11 @@ const useChatHistory = () => {
         const snapshot = await get(chatHistoryRef);
         if (snapshot.exists()) {
           const data = snapshot.val();
+          // chatHistory 의 각 객체를 감싼 id값에 접근
           const chatList = Object.keys(data).map(key => ({
             id: key,
-            ...data[key],
+            keywords: data[key].keywords,
+            timestamp: data[key].timestamp,
           }));
           setChatHistory(chatList);
         } else {
@@ -39,7 +41,20 @@ const useChatHistory = () => {
     fetchChatHistory();
   }, []);
 
-  return { chatHistory, loading, error };
+  // 데이터 삭제 함수 추가
+  const deleteChatHistory = async (id: string) => {
+    try {
+      const chatHistoryRef = ref(database, `chatHistory/${id}`);
+      await remove(chatHistoryRef);
+      // 삭제 후 상태 업데이트
+      setChatHistory(prev => prev.filter(chat => chat.id !== id));
+      console.log('chatHistory', chatHistory);
+    } catch (error) {
+      setError('데이터를 삭제하는 중 오류가 발생했습니다.');
+    }
+  };
+
+  return { chatHistory, loading, error, deleteChatHistory };
 };
 
-export default useChatHistory;
+export default useChatHistoryHook;

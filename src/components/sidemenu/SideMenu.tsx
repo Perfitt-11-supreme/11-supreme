@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { hamburger_menu, sidemenu_list, sidemenu_plus } from '../../assets/assets';
 import SidemenuList from '../../components/sidemenu/SidemenuList';
-import useChatHistory from '../../hooks/useChatHistory';
+import useChatHistoryHook from '../../hooks/useChatHistoryHook';
 import Button from '../common/button/Button';
 import SidemenuMypageLinks from './SidemenuMypageLinks';
 import {
@@ -15,6 +15,8 @@ import {
   sidemenuHeaderContainer,
   sidemenuListsBox,
   sidemenuListsContainer,
+  sidemenuListsItem3ScrollAuto,
+  sidemenuListsItem5ScrollAuto,
   sidemenuListsTitle,
   sidemenuMypageMoveContainer,
   sidemenuNewChatContainer,
@@ -34,12 +36,14 @@ type ChatHistoryListProps = SideMenuProps & {
   ChatHistory: ChatHistoryProps[];
 };
 
-const SideMenu = ({ onClose, ChatHistory }: ChatHistoryListProps) => {
+const SideMenu = ({ onClose }: ChatHistoryListProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [deletedChatIds, setDeletedChatIds] = useState<string[]>([]);
   const navigate = useNavigate();
   const auth = getAuth();
-  const { chatHistory } = useChatHistory();
+  const { chatHistory, deleteChatHistory } = useChatHistoryHook();
+  console.log('chatHistoryData', chatHistory);
+
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     const unsubscribe = onAuthStateChanged(auth, user => {
@@ -52,22 +56,16 @@ const SideMenu = ({ onClose, ChatHistory }: ChatHistoryListProps) => {
     };
   }, [auth]);
 
-
-
   const handleLoginClick = () => {
     onClose(); // 모달 닫기
     navigate('/login'); // 로그인 페이지로 이동
   };
 
   const handleNavigateChatbot = () => {
-    onClose();
     navigate('/chatbot');
+    onClose();
   };
-
-  const handleDeleteChat = (chatId: string) => {
-    setDeletedChatIds(prev => [...prev, chatId]); // 삭제된 ID 추가
-  };
-
+  console.log('handleNavigateChatbot', handleNavigateChatbot);
 
   return (
     <>
@@ -80,7 +78,6 @@ const SideMenu = ({ onClose, ChatHistory }: ChatHistoryListProps) => {
             </button>
           </article>
           {/* 새 채팅 */}
-
           <article className={sidemenuNewChatContainer}>
             <button className={plusButtonBox} onClick={handleNavigateChatbot}>
               <img src={sidemenu_plus} alt="sidemenu_plus" />
@@ -89,40 +86,50 @@ const SideMenu = ({ onClose, ChatHistory }: ChatHistoryListProps) => {
           </article>
           {/* 리스트 */}
           <article className={sidemenuListsContainer}>
-            <h3 className={sidemenuListsTitle}>오늘</h3>
-            <ul className={sidemenuListsBox}>
-              {chatHistory.map(chat => (
-                !deletedChatIds.includes(chat.id) && ( // 삭제된 ID가 아닐 경우에만 렌더링
-                  <SidemenuList
-                    key={chat.id}
-                    iconSrc={sidemenu_list}
-                    id={chat.id}
-                    keywords={chat.keywords}
-                    timestamp={chat.timestamp}
-                    handleDelete={handleDeleteChat} // 삭제 함수 전달
-                  />
-                )
-              ))}
-              {/* {chatHistory.map(chat => {
-                console.log('Chat ID:', chat.id); // chat.id 확인
-                return (
-                  <SidemenuList
-                    iconSrc={sidemenu_list}
-                    key={chat.id}
-                    id={chat.id}
-                    keywords={chat.keywords}
-                    timestamp={chat.timestamp}
-                    handleDelete={handleDelete}
-                  />
-                );
-              })} */}
-            </ul>
-            <h3 className={sidemenuListsTitle}>지난 7일</h3>
-            <ul className={sidemenuListsBox}>
-              {/* <SidemenuList iconSrc={sidemenu_list} text="여름 슬리퍼 추천" />
-              <SidemenuList iconSrc={sidemenu_list} text="가벼운 러닝화" />
-              <SidemenuList iconSrc={sidemenu_list} text="20대 여성이 많이 찾는 브랜드" /> */}
-            </ul>
+            <div>
+              <h3 className={sidemenuListsTitle}>오늘</h3>
+              <div className={sidemenuListsItem3ScrollAuto}>
+                <ul className={sidemenuListsBox}>
+                  {chatHistory
+                    .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()) // timestamp로 내림차순 정렬
+                    .map(
+                      chat =>
+                        !deletedChatIds.includes(chat.id) && ( // 삭제된 ID가 아닐 경우에만 렌더링
+                          <SidemenuList
+                            key={chat.id}
+                            iconSrc={sidemenu_list}
+                            id={chat.id}
+                            keywords={chat.keywords}
+                            timestamp={chat.timestamp}
+                            handleDelete={deleteChatHistory} // 삭제 함수 전달
+                          />
+                        )
+                    )}
+                </ul>
+              </div>
+            </div>
+            <div>
+              <h3 className={sidemenuListsTitle}>지난 7일</h3>
+              <div className={sidemenuListsItem5ScrollAuto}>
+                <ul className={sidemenuListsBox}>
+                  {chatHistory
+                    .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()) // timestamp로 내림차순 정렬
+                    .map(
+                      chat =>
+                        !deletedChatIds.includes(chat.id) && ( // 삭제된 ID가 아닐 경우에만 렌더링
+                          <SidemenuList
+                            key={chat.id}
+                            iconSrc={sidemenu_list}
+                            id={chat.id}
+                            keywords={chat.keywords}
+                            timestamp={chat.timestamp}
+                            handleDelete={deleteChatHistory} // 삭제 함수 전달
+                          />
+                        )
+                    )}
+                </ul>
+              </div>
+            </div>
           </article>
           {/* mypage 링크 또는 로그인 버튼 */}
           <article className={sidemenuMypageMoveContainer}>
