@@ -124,7 +124,7 @@ const SideMenu = ({ onClose }: ChatHistoryListProps) => {
                   <h3
                     className={sidemenuListsTitle}
                     style={{
-                      display: filteredTodayChatHistory.length === 0 ? 'none' : 'block',
+                      display: filteredTodayChatHistory.length === 0 ? 'none' : 'flex',
                     }}
                   >
                     오늘
@@ -133,7 +133,7 @@ const SideMenu = ({ onClose }: ChatHistoryListProps) => {
                     <ul
                       className={sidemenuListsBox}
                       style={{
-                        display: filteredTodayChatHistory.length === 0 ? 'none' : 'block',
+                        display: filteredTodayChatHistory.length === 0 ? 'none' : 'flex',
                       }}
                     >
                       {filteredTodayChatHistory
@@ -158,7 +158,7 @@ const SideMenu = ({ onClose }: ChatHistoryListProps) => {
                   <h3
                     className={sidemenuListsTitle}
                     style={{
-                      display: filtered7DaysChatHistory.length === 0 ? 'none' : 'block',
+                      display: filtered7DaysChatHistory.length === 0 ? 'none' : 'flex',
                     }}
                   >
                     지난 7일
@@ -167,7 +167,7 @@ const SideMenu = ({ onClose }: ChatHistoryListProps) => {
                     <ul
                       className={sidemenuListsBox}
                       style={{
-                        display: filtered7DaysChatHistory.length === 0 ? 'none' : 'block',
+                        display: filtered7DaysChatHistory.length === 0 ? 'none' : 'flex',
                       }}
                     >
                       {filtered7DaysChatHistory.map(
