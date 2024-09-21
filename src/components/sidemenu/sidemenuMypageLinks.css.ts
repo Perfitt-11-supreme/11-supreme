@@ -59,3 +59,18 @@ export const sidemenuUserProfileLogout = style({
   backgroundColor: theme.color.white,
   cursor: 'pointer',
 });
+export const sidemenuUserProfileLogin = style({
+  fontWeight: '400',
+  fontSize: '14px',
+  lineHeight: '16.71px',
+  letterSpacing: '-0.003em',
+  color: theme.color.black500,
+  border: 'none',
+  backgroundColor: theme.color.white,
+  cursor: 'pointer',
+  textAlign: 'right',
+  height: '32px',
+  verticalAlign: 'middle',
+  paddingTop: '14px',
+  borderTop: '1px solid #E5E4E2',
+});
