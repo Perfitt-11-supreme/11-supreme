@@ -40,7 +40,7 @@ globalStyle('ul,li,ol', {
 globalStyle('body', {
   minHeight: '100vh',
   lineHeight: '1',
-  backgroundColor: theme.color.black500,
+  backgroundColor: theme.color.slate200,
   overflow: 'hidden',
   '@media': {
     'screen and (max-width: 480px)': {

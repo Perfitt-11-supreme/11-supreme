@@ -30,6 +30,9 @@ export const sidemenuListText = style({
   lineHeight: '24px',
   letterSpacing: '-0.003em',
   color: theme.color.black800,
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
 });
 
 export const sidemenuSwiperHiddenBox = style({

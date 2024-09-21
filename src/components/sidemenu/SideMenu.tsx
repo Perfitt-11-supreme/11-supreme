@@ -1,40 +1,53 @@
-import { useEffect, useState } from 'react';
-import { hamburger_menu, sidemenu_list, sidemenu_plus } from '../../assets/assets';
-import SidemenuList from '../../components/sidemenu/SidemenuList';
-import {
-  hamburgerIconBox,
-  sidemenuHeaderContainer,
-  sidemenuDimmed,
-  sidemenuContainer,
-  sidemenuNewChatContainer,
-  newChatText,
-  sidemenuListsContainer,
-  sidemenuListsBox,
-  sidemenuListsTitle,
-  plusButtonBox,
-  sidemenuMypageMoveContainer,
-} from './sidemenu.css';
-import SidemenuMypageLinks from './SidemenuMypageLinks';
-import { useNavigate } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import Button from '../common/button/Button';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../../firebase/firebase';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { prefitt_logo2, sidemenu_list, sidemenu_plus } from '../../assets/assets';
+import SidemenuList from '../../components/sidemenu/SidemenuList';
+import useChatHistoryHook from '../../hooks/useChatHistoryHook';
+import SidemenuMypageLinks from './SidemenuMypageLinks';
+import {
+  logoIcon,
+  logoIconBox,
+  newChatText,
+  plusButtonBox,
+  sidemenuContainer,
+  sidemenuDimmed,
+  sidemenuHeaderContainer,
+  sidemenuListsBox,
+  sidemenuListsContainer,
+  sidemenuListsItem3ScrollAuto,
+  sidemenuListsItem5ScrollAuto,
+  sidemenuListsTitle,
+  sidemenuMypageMoveContainer,
+  sidemenuNewChatContainer,
+} from './sidemenu.css';
+import { sidemenuUserProfileLogin } from './sidemenuMypageLinks.css';
 
 type SideMenuProps = {
   onClose: () => void;
 };
 
-type ChatHistory = {
+type ChatHistoryProps = {
   id: string;
-  botResponse: string;
   keywords: string;
+  timestamp: string;
 };
 
-const SideMenu = ({ onClose }: SideMenuProps) => {
+type ChatHistoryListProps = SideMenuProps & {
+  ChatHistory: ChatHistoryProps[];
+};
+
+const SideMenu = ({ onClose }: ChatHistoryListProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [deletedChatIds, setDeletedChatIds] = useState<string[]>([]);
   const navigate = useNavigate();
   const auth = getAuth();
+  const { chatHistory, deleteChatHistory } = useChatHistoryHook();
+  // 현재 UTC 시간으로 오늘 날짜 계산
+  const today = new Date();
+  const utcToday = new Date(today.getTime() + today.getTimezoneOffset() * 60 * 1000); // UTC 시간
+  const sevenDaysAgo = new Date(utcToday.getTime() - 7 * 24 * 60 * 60 * 1000); // UTC 기준 7일 전 시간
+  console.log('chatHistoryData', chatHistory);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -48,44 +61,46 @@ const SideMenu = ({ onClose }: SideMenuProps) => {
     };
   }, [auth]);
 
-  // const [chatData, setChatData] = useState<ChatHistory | null>(null);
-  // const [error, setError] = useState<string | null>(null);
-
-  // Firestore에서 가져올 문서의 ID
-  // const documentId = '-O7DMW-cqjs1-EBsl2WX'; // 실제 Firestore에서 존재하는 ID를 입력
-
-  // const fetchChatHistory = async () => {
-  //   try {
-  //     console.log('Fetching document with ID:', documentId); // documentId를 콘솔에 출력
-  //     const docRef = doc(db, 'chatHistory', documentId); // Firestore에서 문서 참조
-  //     const docSnap = await getDoc(docRef); // 문서 데이터를 가져옴
-
-  //     if (docSnap.exists()) {
-  //       console.log('Document data:', docSnap.data()); // 문서 데이터를 콘솔에 출력
-  //       const chatData = docSnap.data() as ChatHistory;
-  //       setChatData(chatData); // 데이터를 상태에 저장
-  //     } else {
-  //       console.log('No such document!');
-  //       setError('No such document!');
-  //     }
-  //   } catch (err) {
-  //     console.error('Error fetching document:', err);
-  //     setError('Failed to fetch chat history');
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchChatHistory(); // 컴포넌트가 마운트되면 데이터 가져오기
-  // }, []);
-
   const handleLoginClick = () => {
     onClose(); // 모달 닫기
     navigate('/login'); // 로그인 페이지로 이동
   };
 
   const handleNavigateChatbot = () => {
-    onClose();
     navigate('/chatbot');
+    onClose();
+  };
+  console.log('handleNavigateChatbot', handleNavigateChatbot);
+
+  // chatHistory.timestamp 오늘날짜 필터링
+  const filteredTodayChatHistory = chatHistory
+    .filter(chat => {
+      const chatDate = new Date(chat.timestamp); // chat.timestamp를 UTC 시간으로 처리
+      // UTC 기준으로 오늘 날짜와 동일한지 비교 (년, 월, 일만 비교)
+      return (
+        chatDate.getUTCFullYear() === utcToday.getUTCFullYear() &&
+        chatDate.getUTCMonth() === utcToday.getUTCMonth() &&
+        chatDate.getUTCDate() === utcToday.getUTCDate()
+      );
+    })
+    .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()); // timestamp로 내림차순 정렬
+
+  // chatHistory.timestamp 오늘 제외 7일이내 필터링
+  const filtered7DaysChatHistory = chatHistory
+    .filter(chat => {
+      const chatDate = new Date(chat.timestamp); // chat.timestamp를 UTC 시간으로 처리
+      // 7일 이내이고 오늘은 제외 (UTC 기준으로 비교)
+      return (
+        chatDate > sevenDaysAgo &&
+        (chatDate.getUTCFullYear() !== utcToday.getUTCFullYear() ||
+          chatDate.getUTCMonth() !== utcToday.getUTCMonth() ||
+          chatDate.getUTCDate() !== utcToday.getUTCDate())
+      );
+    })
+    .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()); // timestamp로 내림차순 정렬
+
+  const handleDeleteChat = (chatId: string) => {
+    setDeletedChatIds(prev => [...prev, chatId]); // 삭제된 ID 추가
   };
 
   return (
@@ -94,48 +109,101 @@ const SideMenu = ({ onClose }: SideMenuProps) => {
         <div className={sidemenuContainer} onClick={e => e.stopPropagation()}>
           {/* 헤더 */}
           <article className={sidemenuHeaderContainer}>
-            <button className={hamburgerIconBox} onClick={onClose}>
-              <img src={hamburger_menu} alt="hamburger_menu" />
+            <button className={logoIconBox} onClick={onClose}>
+              <img className={logoIcon} src={prefitt_logo2} alt="hamburger_menu" />
             </button>
           </article>
-          {/* 새 채팅 */}
-
-          {/* <div>
-            {error && <p>{error}</p>}
-            {chatData ? (
-              <div>
-                <p>Chat ID: {chatData.id}</p>
-                <p>Bot Response: {chatData.botResponse}</p>
-                <p>Keywords: {chatData.keywords}</p>
-              </div>
-            ) : (
-              <p>Loading...</p>
-            )}
-          </div> */}
-
-          <article className={sidemenuNewChatContainer}>
-            <button className={plusButtonBox} onClick={handleNavigateChatbot}>
-              <img src={sidemenu_plus} alt="sidemenu_plus" />
-              <p className={newChatText}>새 채팅</p>
-            </button>
-          </article>
-          {/* 리스트 */}
-          <article className={sidemenuListsContainer}>
-            <h3 className={sidemenuListsTitle}>오늘</h3>
-            <ul className={sidemenuListsBox}>
-              <SidemenuList iconSrc={sidemenu_list} text="최근 가장 인기있는 여성 운동화" />
-              <SidemenuList iconSrc={sidemenu_list} text="비오는 날 신기 좋은 레인부츠 추천" />
-            </ul>
-            <h3 className={sidemenuListsTitle}>지난 7일</h3>
-            <ul className={sidemenuListsBox}>
-              <SidemenuList iconSrc={sidemenu_list} text="여름 슬리퍼 추천" />
-              <SidemenuList iconSrc={sidemenu_list} text="가벼운 러닝화" />
-              <SidemenuList iconSrc={sidemenu_list} text="20대 여성이 많이 찾는 브랜드" />
-            </ul>
-          </article>
+          {isLoggedIn ? (
+            <>
+              {/* 새 채팅 */}
+              <article className={sidemenuNewChatContainer}>
+                <button className={plusButtonBox} onClick={handleNavigateChatbot}>
+                  <img src={sidemenu_plus} alt="sidemenu_plus" />
+                  <p className={newChatText}>새 채팅</p>
+                </button>
+              </article>
+              {/* 리스트 */}
+              <article className={sidemenuListsContainer}>
+                <div>
+                  <h3
+                    className={sidemenuListsTitle}
+                    style={{
+                      display: filteredTodayChatHistory.length === 0 ? 'none' : 'flex',
+                    }}
+                  >
+                    오늘
+                  </h3>
+                  <div className={sidemenuListsItem3ScrollAuto}>
+                    <ul
+                      className={sidemenuListsBox}
+                      style={{
+                        display: filteredTodayChatHistory.length === 0 ? 'none' : 'flex',
+                      }}
+                    >
+                      {filteredTodayChatHistory
+                        .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()) // timestamp로 내림차순 정렬
+                        .map(
+                          chat =>
+                            !deletedChatIds.includes(chat.id) && ( // 삭제된 ID가 아닐 경우에만 렌더링
+                              <SidemenuList
+                                key={chat.id}
+                                iconSrc={sidemenu_list}
+                                id={chat.id}
+                                keywords={chat.keywords}
+                                timestamp={chat.timestamp}
+                                handleDelete={deleteChatHistory} // 삭제 함수 전달
+                              />
+                            )
+                        )}
+                    </ul>
+                  </div>
+                </div>
+                <div>
+                  <h3
+                    className={sidemenuListsTitle}
+                    style={{
+                      display: filtered7DaysChatHistory.length === 0 ? 'none' : 'flex',
+                    }}
+                  >
+                    지난 7일
+                  </h3>
+                  <div className={sidemenuListsItem5ScrollAuto}>
+                    <ul
+                      className={sidemenuListsBox}
+                      style={{
+                        display: filtered7DaysChatHistory.length === 0 ? 'none' : 'flex',
+                      }}
+                    >
+                      {filtered7DaysChatHistory.map(
+                        chat =>
+                          !deletedChatIds.includes(chat.id) && ( // 삭제된 ID가 아닐 경우에만 렌더링
+                            <SidemenuList
+                              key={chat.id}
+                              iconSrc={sidemenu_list}
+                              id={chat.id}
+                              keywords={chat.keywords}
+                              timestamp={chat.timestamp}
+                              handleDelete={deleteChatHistory} // 삭제 함수 전달
+                            />
+                          )
+                      )}
+                    </ul>
+                  </div>
+                </div>
+              </article>
+            </>
+          ) : (
+            <></>
+          )}
           {/* mypage 링크 또는 로그인 버튼 */}
           <article className={sidemenuMypageMoveContainer}>
-            {isLoggedIn ? <SidemenuMypageLinks /> : <Button onClick={handleLoginClick} text="로그인" width="100%" />}
+            {isLoggedIn ? (
+              <SidemenuMypageLinks />
+            ) : (
+              <button className={sidemenuUserProfileLogin} onClick={handleLoginClick}>
+                로그인
+              </button>
+            )}
           </article>
         </div>
       </section>
