@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ai, brand_abcmart, heart_empty, heart_filled, user } from '../../../assets/assets';
+import { ai, brand_abcmart, heart_empty, heart_filled } from '../../../assets/assets';
 import useProductDetailStore from '../../../stores/useProductDetailStore';
 import { TProduct } from '../../../types/product';
 import {
@@ -42,14 +42,6 @@ const SizeRecommendationCard = ({
     e.stopPropagation();
     setIsChecked(prev => !prev);
 
-    // if (isChecked) {
-    //   console.log('Deleting product with productId:', product?.productId); // productId 확인
-    //   if (product?.productId) {
-    //     onDelete?.(product.productId); // 삭제 함수 호출
-    //   } else {
-    //     console.log('Product ID is undefined');
-    //   }
-    // }
     // 하트가 채워져 있을 때 (삭제 이벤트)
     if (isChecked && product?.productId) {
       console.log('Deleting product with productId:', product?.productId); // productId 확인
