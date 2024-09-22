@@ -5,44 +5,48 @@ import { google, hamburger_menu } from '../../assets/assets';
 import { loginbuttonContainer, loginbuttonTextContainer, fullContainer } from './login.css';
 import { useNavigate } from 'react-router-dom';
 import { signInWithGoogle } from '../../firebase/firebase';
-import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { responsiveBox } from '../../styles/responsive.css';
 import ChatbotSearchInput from '../common/chatbot-search-input/ChatbotSearchInput';
 import { useEffect, useState } from 'react';
 import ToastMessage from '../toastmessage/toastMessage';
+import { TUser } from '../../types/user';
+import useUserStore from '../../stores/useUserStore';
 
 const Login = () => {
   const navigate = useNavigate();
   const db = getFirestore();
-
+  const { setUser } = useUserStore();
   const [toastMessage, setToastMessage] = useState<{ message: string; duration: number } | null>(null);
 
   const handleGoogleLogin = async () => {
     try {
-      const userCredential = await signInWithGoogle();
-      const user = userCredential.user;
+      //로그인
+      const { user } = await signInWithGoogle();
 
-      //Firestore에서 사용자 정보 존재 유무를 조회
+      //Firestore에서 사용자 정보 존재 유무를 uid로 조회
       const userDocRef = doc(db, 'users', user.uid);
       const userDoc = await getDoc(userDocRef);
 
       if (userDoc.exists()) {
-        //기존 가입자: 로그인 성공 후 /hello(로그인 후 첫 화면) 페이지로 이동
-        navigate('/hello');
+        //Firestore에서 가져온 사용자 정보를 userData로 받기
+        const userData: TUser = {
+          ...userDoc.data(),
+        };
+        setUser(userData); //userData를 zustand에 저장
+        console.log('로그인한 사용자:', userData);
+        navigate('/hello'); //기존 사용자: 로그인 성공 후 /hello(로그인 후 첫 화면) 페이지로 이동
       } else {
-        //신규 가입자: /googleinfo(추가 정보 입력) 페이지로 이동
-        await setDoc(userDocRef, {
-          uid: user.uid,
-          email: user.email,
-          userName: user.displayName || '', //구글 프로필에서 사용자 이름 가져오기
-          // gender: '',
-          // birthDate: { year: '', month: '', day: '' },
-        });
-        navigate('/googlesignup');
-      }
+        const newGoogleUser = {
+          uid: user.uid, //구글 회원가입 시 자동 생성된 uid 저장
+          email: user.email || '',
+          userName: user.displayName || '',
+          // isGoogle: true,
+        };
 
-      //사용자 ID를 localStorage에 저장
-      localStorage.setItem('userUID', user.uid);
+        setUser(newGoogleUser); //신규 사용자 정보를 zustand에 저장
+        navigate('/googlesignup'); //신규 사용자: /googlesignup(추가 정보 입력) 페이지로 이동
+      }
     } catch (error) {
       console.error('구글 로그인 실패:', error);
       setToastMessage({ message: '다시 시도해 주세요.', duration: 3000 });

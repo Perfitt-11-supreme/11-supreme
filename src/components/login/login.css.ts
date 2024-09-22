@@ -57,4 +57,5 @@ export const foundResultStyle = style({
   lineHeight: '20px',
   letterSpacing: '-0.003em',
   marginBottom: '34px',
+  textAlign: 'center',
 });

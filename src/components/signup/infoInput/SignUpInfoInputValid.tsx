@@ -1,155 +1,84 @@
-import { FirebaseError } from 'firebase/app';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { hamburger_menu } from '../../../assets/assets';
-import { USER_COLLECTION, auth } from '../../../firebase/firebase';
+import useUserStore from '../../../stores/useUserStore';
 import { responsiveBox } from '../../../styles/responsive.css';
-import Button from '../../common/button/Button';
-import Header from '../../common/header/Header';
-import Modal from '../../common/modal/Modal';
 import { fullContainer } from '../../login/login.css';
-import { errorMessage, signupFormContainer, signupFormGap, submitbuttonContainer } from '../signup.css';
-import DateSelect from './signupdateselect/SignUpDateSelect';
-import Input from './signupinput/SignUpInput';
-import Select from './signupselect/SignUpSelect';
 import ToastMessage from '../../toastmessage/toastMessage';
+import Header from '../../common/header/Header';
+import { hamburger_menu } from '../../../assets/assets';
+import Modal from '../../common/modal/Modal';
+import { errorMessage, signupFormContainer, signupFormGap, submitbuttonContainer } from '../signup.css';
+import SignUpInput from './signupinput/SignUpInput';
+import SignUpSelect from './signupselect/SignUpSelect';
+import SignUpDateSelect from './signupdateselect/SignUpDateSelect';
+import Button from '../../common/button/Button';
+import { auth } from '../../../firebase/firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { FirebaseError } from 'firebase/app';
 
 const SignUpInfoInputValid = () => {
-  type FormErrors = {
-    userEmail?: string;
-    userPassword?: string;
-    userName?: string;
-    gender?: string;
-    birthDate?: string;
-    [key: string]: string | undefined;
-  };
+  const navigate = useNavigate();
+  const { setUser } = useUserStore();
 
-  type FormData = {
-    userEmail: string;
-    userPassword: string;
-    userName: string;
-    gender: string;
-    birthDate: {
-      year: string;
-      month: string;
-      day: string;
-    };
-  };
+  const [userName, setUserName] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [birthDate, setBirthDate] = useState({ year: '', month: '', day: '' });
+  const [gender, setGender] = useState('');
 
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [formData, setFormData] = useState<FormData>({
-    userEmail: '',
-    userPassword: '',
-    userName: '',
-    gender: '',
-    birthDate: {
-      year: '',
-      month: '',
-      day: '',
-    },
-  });
-
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [toastMessage, setToastMessage] = useState<{ message: string; duration: number } | null>(null);
 
-  const validate = (data: FormData): FormErrors => {
-    const newErrors: FormErrors = {};
-    if (!data.userEmail) {
-      newErrors.userEmail = '이메일을 입력해주세요';
-    } else if (!/\S+@\S+\.\S+/.test(data.userEmail)) {
-      newErrors.userEmail = '유효한 형식의 이메일을 입력해주세요';
+  const validate = () => {
+    const newErrors: { [key: string]: string } = {};
+
+    if (!email) {
+      newErrors.email = '이메일을 입력해 주세요';
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = '유효한 형식의 이메일을 입력해 주세요';
     }
-    if (!data.userPassword) newErrors.userPassword = '비밀번호를 입력해주세요';
-    if (!data.userName) newErrors.userName = '이름을 입력해주세요';
-    if (!data.gender) newErrors.gender = '성별을 선택해주세요';
-    const { year, month, day } = data.birthDate;
-    if (!year || !month || !day) newErrors.birthDate = '생년월일을 입력해주세요';
+    if (!password) newErrors.password = '비밀번호를 입력해 주세요';
+    if (!userName) newErrors.userName = '이름을 입력해 주세요';
+    if (!birthDate.year || !birthDate.month || !birthDate.day) newErrors.birthDate = '생년월일을 입력해 주세요';
+    if (!gender) newErrors.gender = '성별을 선택해 주세요';
     return newErrors;
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-
-    if (name === 'year' || name === 'month' || name === 'day') {
-      setFormData(prev => ({
-        ...prev,
-        birthDate: {
-          ...prev.birthDate,
-          [name]: value,
-        },
-      }));
-
-      const updatedErrors = validate({
-        ...formData,
-        birthDate: {
-          ...formData.birthDate,
-          [name]: value,
-        },
-      });
-      setErrors(prev => ({
-        ...prev,
-        birthDate: updatedErrors.birthDate,
-      }));
-    } else {
-      setFormData(prev => ({
-        ...prev,
-        [name]: value,
-      }));
-
-      const updatedErrors = validate({
-        ...formData,
-        [name]: value,
-      });
-      setErrors(prev => ({
-        ...prev,
-        [name]: updatedErrors[name],
-      }));
-    }
-  };
-
-  const navigate = useNavigate();
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const validationErrors = validate(formData);
+  const handleNextPage = async () => {
+    const validationErrors = validate();
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
       try {
-        //회원가입
-        const userCredential = await createUserWithEmailAndPassword(auth, formData.userEmail, formData.userPassword);
+        //사용자 생성 (uid 자동 생성 위함)
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        //성공 시 이동 (데이터 저장 최적화 위해 페이지 이동 먼저 처리)
+        //zustand에 사용자 정보 저장
+        const newEmailUser = {
+          ...user,
+          uid: user.uid, //위 메서드 통해 자동 생성된 uid 저장
+          birthDate: {
+            year: birthDate.year,
+            month: birthDate.month,
+            day: birthDate.day,
+          },
+          email: email,
+          gender: gender,
+          userName: userName,
+          // password: password,
+        };
+        setUser(newEmailUser);
+
         navigate('/signupsize');
-
-        //USER Collection에 user.uid를 ID로 사용자 정보 저장 (비동기 처리)
-        const userDoc = doc(USER_COLLECTION, user.uid);
-        //아래 정보 저장
-        await setDoc(userDoc, {
-          uid: user.uid,
-          email: formData.userEmail,
-          userName: formData.userName,
-          gender: formData.gender,
-          birthDate: formData.birthDate,
-        });
-
-        //사용자 ID를 localStorage에 저장
-        localStorage.setItem('userUID', user.uid);
-      } catch (err) {
-        if (err instanceof FirebaseError) {
-          switch (err.code) {
-            case 'auth/weak-password':
-              setToastMessage({ message: '안전하지 않은 비밀번호입니다.', duration: 3000 });
-              break;
-            case 'auth/email-already-in-use':
-              setToastMessage({ message: '이미 가입된 이메일입니다.', duration: 3000 });
-              break;
-            default:
-              setToastMessage({ message: '다시 시도해 주세요.', duration: 3000 });
-              break;
+      } catch (error) {
+        if (error instanceof FirebaseError) {
+          if (error.code === 'auth/email-already-in-use') {
+            setToastMessage({ message: '이미 가입된 이메일입니다.', duration: 3000 });
+          } else if (error.code === 'auth/weak-password') {
+            setToastMessage({ message: '안전하지 않은 비밀번호입니다.', duration: 3000 });
+          } else {
+            setToastMessage({ message: '다시 시도해 주세요.', duration: 3000 });
           }
         }
       }
@@ -180,45 +109,45 @@ const SignUpInfoInputValid = () => {
         <div>
           <Modal title="회원가입" height={modalHeight} initialHeight="612px" animateHeightOnClick={false}>
             <div className={signupFormContainer}>
-              <Input
+              <SignUpInput
                 label="아이디"
                 type="email"
-                name="userEmail"
-                id="userEmail1"
+                name="email"
+                id="email"
                 placeholder="이메일을 입력해 주세요"
-                value={formData.userEmail}
-                onChange={handleChange}
+                value={email}
+                onChange={e => setEmail(e.target.value)}
               />
-              {errors.userEmail && <div className={errorMessage}>{errors.userEmail}</div>}
+              {errors.email && <div className={errorMessage}>{errors.email}</div>}
 
               <div className={signupFormGap}>
-                <Input
+                <SignUpInput
                   label="비밀번호"
                   type="password"
-                  name="userPassword"
-                  id="userPassword"
+                  name="password"
+                  id="password"
                   placeholder="비밀번호를 입력해 주세요"
-                  value={formData.userPassword}
-                  onChange={handleChange}
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
                 />
-                {errors.userPassword && <div className={errorMessage}>{errors.userPassword}</div>}
+                {errors.password && <div className={errorMessage}>{errors.password}</div>}
               </div>
 
               <div className={signupFormGap}>
-                <Input
+                <SignUpInput
                   label="이름"
                   type="text"
                   name="userName"
                   id="userName"
                   placeholder="이름을 입력해 주세요"
-                  value={formData.userName}
-                  onChange={handleChange}
+                  value={userName}
+                  onChange={e => setUserName(e.target.value)}
                 />
                 {errors.userName && <div className={errorMessage}>{errors.userName}</div>}
               </div>
 
               <div className={signupFormGap}>
-                <Select
+                <SignUpSelect
                   id="gender"
                   label="성별"
                   options={[
@@ -226,28 +155,28 @@ const SignUpInfoInputValid = () => {
                     { value: 'male', label: '남성' },
                     { value: 'female', label: '여성' },
                   ]}
-                  value={formData.gender}
-                  onChange={handleChange}
+                  value={gender}
+                  onChange={e => setGender(e.target.value)}
                 />
                 {errors.gender && <div className={errorMessage}>{errors.gender}</div>}
               </div>
 
               <div className={signupFormGap}>
-                <DateSelect
+                <SignUpDateSelect
                   label="생년월일"
                   value={{
-                    year: formData.birthDate.year,
-                    month: formData.birthDate.month,
-                    day: formData.birthDate.day,
+                    year: birthDate.year,
+                    month: birthDate.month,
+                    day: birthDate.day,
                   }}
-                  onChange={handleChange}
+                  onChange={(field, value) => setBirthDate(prev => ({ ...prev, [field]: value }))}
                 />
                 {errors.birthDate && <div className={errorMessage}>{errors.birthDate}</div>}
               </div>
 
-              <form onSubmit={handleSubmit} className={submitbuttonContainer}>
-                <Button text="다음" width="100%" />
-              </form>
+              <div className={submitbuttonContainer}>
+                <Button text="다음" width="100%" onClick={handleNextPage} />
+              </div>
             </div>
           </Modal>
         </div>

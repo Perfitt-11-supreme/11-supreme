@@ -32,7 +32,7 @@ const SignUpInput = ({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-      // required
+        onFocus={e => e.target.select()}
       />
     </div>
   );

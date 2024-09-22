@@ -1,13 +1,9 @@
+import { useNavigate } from 'react-router-dom';
+import useUserStore from '../../../stores/useUserStore';
 import { useEffect, useState } from 'react';
-import Button from '../../common/button/Button';
-import ButtonBlank from './sizetypebutton/buttonblank/ButtonBlank';
-import ButtonFill from './sizetypebutton/buttonfill/ButtonFill';
-import Header from '../../common/header/Header';
-import Modal from '../../common/modal/Modal';
-import UsualSizeSelect from './usualsizeselect/UsualSizeSelect';
-import InfoBox from './infobox/InfoBox';
-import { hamburger_menu } from '../../../assets/assets';
-import { fullContainer } from '../../login/login.css';
+import { USER_COLLECTION } from '../../../firebase/firebase';
+import { doc, setDoc } from 'firebase/firestore';
+import ToastMessage from '../../toastmessage/toastMessage';
 import {
   errorMessage,
   infosubmitContainer,
@@ -15,23 +11,29 @@ import {
   signupSizeTypeContainer,
   signupSizeTypeLabel,
 } from '../signup.css';
-import { USER_COLLECTION } from '../../../firebase/firebase';
-import { doc, updateDoc } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom';
+import UsualSizeSelect from './usualsizeselect/UsualSizeSelect';
 import { responsiveBox } from '../../../styles/responsive.css';
-import ToastMessage from '../../toastmessage/toastMessage';
+import { fullContainer } from '../../login/login.css';
+import { hamburger_menu } from '../../../assets/assets';
+import ButtonFill from './sizetypebutton/buttonfill/ButtonFill';
+import ButtonBlank from './sizetypebutton/buttonblank/ButtonBlank';
+import InfoBox from './infobox/InfoBox';
+import Button from '../../common/button/Button';
+import Modal from '../../common/modal/Modal';
+import Header from '../../common/header/Header';
 
 const SignUpSizeInputValid = () => {
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const navigate = useNavigate();
+  const { setUser, user } = useUserStore();
+
+  const sizeTypes = ['mm', 'EU', 'US'];
   const [shoeSize, setShoeSize] = useState<number | ''>('');
   const [errors, setErrors] = useState<{
     sizeType?: string;
     shoeSize?: string;
   }>({});
-
-  const sizeTypes = ['mm', 'EU', 'US'];
-
   const [toastMessage, setToastMessage] = useState<{ message: string; duration: number } | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const validate = () => {
     const newErrors: { sizeType?: string; shoeSize?: string } = {};
@@ -40,52 +42,45 @@ const SignUpSizeInputValid = () => {
     return newErrors;
   };
 
-  const handleSelect = (index: number) => {
+  const handleTypeSelect = (index: number) => {
     const newSelectedIndex = selectedIndex === index ? null : index;
     setSelectedIndex(newSelectedIndex);
-
-    setErrors(prev => ({
-      ...prev,
-      sizeType: newSelectedIndex === null ? '사이즈 타입을 선택해 주세요.' : '',
-    }));
   };
 
-  const handleShoeSizeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleSizeSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value ? Number(event.target.value) : '';
     setShoeSize(value);
-
-    setErrors(prev => ({
-      ...prev,
-      shoeSize: !value || isNaN(value) ? '평소 신는 스니커즈 사이즈를 선택해 주세요.' : '',
-    }));
   };
 
-  const navigate = useNavigate();
-  //localStorage에서 사용자 ID 가져오기
-  const userUID = localStorage.getItem('userUID');
-
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-
+  const handleSubmit = async () => {
     const validationErrors = validate();
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
       try {
-        if (userUID) {
-          //USER Collection에 데이터 저장
-          const userDocRef = doc(USER_COLLECTION, userUID); //사용자 ID로 문서 참조
-          await updateDoc(userDocRef, {
-            sizeType: sizeTypes[selectedIndex || 0],
-            shoeSize: shoeSize,
-          });
+        //zustand에 사용자 정보 업데이트
+        const realUser = {
+          ...user,
+          shoeSize: shoeSize || undefined,
+          sizeType: sizeTypes[selectedIndex || 0],
+        };
+        setUser(realUser);
 
-          // 저장 성공
-          navigate('/login');
-        } else {
-          setToastMessage({ message: '순서대로 회원가입을 진행해주세요.', duration: 3000 });
-        }
-      } catch {
+        //Firestore에 uid를 ID로 사용자 등록
+        const userDoc = doc(USER_COLLECTION, realUser.uid);
+        await setDoc(userDoc, {
+          email: realUser.email,
+          userName: realUser.userName,
+          gender: realUser.gender,
+          birthDate: realUser.birthDate,
+          shoeSize: realUser.shoeSize,
+          sizeType: realUser.sizeType,
+          uid: realUser.uid,
+        });
+
+        navigate('/login');
+      } catch (error) {
+        console.error('사용자 등록 실패:', error);
         setToastMessage({ message: '다시 시도해 주세요.', duration: 3000 });
       }
     }
@@ -118,11 +113,11 @@ const SignUpSizeInputValid = () => {
               <div className={signupSizeTypeContainer}>
                 <label className={signupSizeTypeLabel}>사이즈 타입</label>
                 <div style={{ display: 'flex', gap: '8px' }}>
-                  {sizeTypes.map((text, index) =>
+                  {sizeTypes.map((sizeType, index) =>
                     selectedIndex === index ? (
-                      <ButtonFill key={index} text={text} onClick={() => handleSelect(index)} />
+                      <ButtonFill key={index} text={sizeType} onClick={() => handleTypeSelect(index)} />
                     ) : (
-                      <ButtonBlank key={index} text={text} onClick={() => handleSelect(index)} />
+                      <ButtonBlank key={index} text={sizeType} onClick={() => handleTypeSelect(index)} />
                     )
                   )}
                 </div>
@@ -131,7 +126,7 @@ const SignUpSizeInputValid = () => {
             </div>
 
             <div className={signupComponentContainer} style={{ marginTop: '24px' }}>
-              <UsualSizeSelect label="평소 신는 스니커즈 사이즈" value={shoeSize} onChange={handleShoeSizeChange} />
+              <UsualSizeSelect label="평소 신는 스니커즈 사이즈" value={shoeSize} onChange={handleSizeSelect} />
             </div>
             {errors.shoeSize && (
               <div className={errorMessage} style={{ marginLeft: '16px' }}>
@@ -141,9 +136,7 @@ const SignUpSizeInputValid = () => {
 
             <div className={infosubmitContainer}>
               <InfoBox />
-              <form onSubmit={handleSubmit}>
-                <Button text="가입 완료" />
-              </form>
+              <Button text="가입 완료" onClick={handleSubmit} />
             </div>
           </Modal>
         </div>
