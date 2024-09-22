@@ -1,4 +1,5 @@
-import { get, limitToLast, orderByKey, query, ref, remove } from 'firebase/database';
+// useChatHistoryHook.ts (데이터 가져오는 로직)
+import { get, ref, remove } from 'firebase/database';
 import { useEffect, useState } from 'react';
 import { database } from '../firebase/firebase';
 import useUserStore from '../stores/useUserStore';
@@ -41,7 +42,7 @@ const useChatHistoryHook = () => {
               limitToLast(1)
             );
             const messageSnapshot = await get(messagesRef);
-            
+
             if (messageSnapshot.exists()) {
               const messageData = messageSnapshot.val();
               const messageId = Object.keys(messageData)[0];
@@ -51,7 +52,7 @@ const useChatHistoryHook = () => {
                 id: chatId,
                 keywords: message.keywords || '',
                 timestamp: message.timestamp || '',
-                shareId: message.shareId || ''
+                shareId: message.shareId || '',
               });
             }
           }
@@ -84,8 +85,7 @@ const useChatHistoryHook = () => {
     }
   };
 
-
-  return { chatHistory, loading, error, deleteChatHistory};
+  return { chatHistory, loading, error, deleteChatHistory };
 };
 
 export default useChatHistoryHook;

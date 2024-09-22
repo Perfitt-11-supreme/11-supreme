@@ -34,7 +34,6 @@ type SideMenuProps = {
 //   timestamp: string;
 // };
 
-
 const SideMenu = ({ onClose }: SideMenuProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [deletedChatIds] = useState<string[]>([]);
@@ -99,11 +98,6 @@ const SideMenu = ({ onClose }: SideMenuProps) => {
     })
     .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()); // timestamp로 내림차순 정렬
 
-
-  // const handleDeleteChat = (chatId: string) => {
-  //   setDeletedChatIds(prev => [...prev, chatId]); // 삭제된 ID 추가
-  // };
-
   return (
     <>
       <section className={sidemenuDimmed} onClick={onClose}>
@@ -141,23 +135,19 @@ const SideMenu = ({ onClose }: SideMenuProps) => {
                         display: filteredTodayChatHistory.length === 0 ? 'none' : 'flex',
                       }}
                     >
-                      {filteredTodayChatHistory
-                        .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()) // timestamp로 내림차순 정렬
-                        .map(
-                          chat =>
-                            !deletedChatIds.includes(chat.id) && ( // 삭제된 ID가 아닐 경우에만 렌더링
-                              <SidemenuList
-                                key={chat.id}
-                                iconSrc={sidemenu_list}
-                                shareId={chat.shareId}
-                                id={chat.id}
-                                keywords={chat.keywords}
-                                timestamp={chat.timestamp}
-                                onClose={onClose}
-                                handleDelete={deleteChatHistory} // 삭제 함수 전달
-                              />
-                            )
-                        )}
+                      {filteredTodayChatHistory.map(
+                        chat =>
+                          !deletedChatIds.includes(chat.id) && ( // 삭제된 ID가 아닐 경우에만 렌더링
+                            <SidemenuList
+                              key={chat.id}
+                              iconSrc={sidemenu_list}
+                              id={chat.id}
+                              keywords={chat.keywords}
+                              timestamp={chat.timestamp}
+                              handleDelete={deleteChatHistory} // 삭제 함수 전달
+                            />
+                          )
+                      )}
                     </ul>
                   </div>
                 </div>
