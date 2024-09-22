@@ -17,23 +17,18 @@ import {
   sizeRecommendationThumbnailContainer,
 } from './sizeRecommendationCard.css';
 
-
 type SizeRecommendationCardProps = {
   isHeartFilled?: boolean;
   product?: TProduct;
-
 };
 
 const SizeRecommendationCard = ({ product, isHeartFilled = false }: SizeRecommendationCardProps) => {
   const [isChecked, setIsChecked] = useState(false);
   const { handleProductDetailsClick } = useProductDetailStore();
 
-
   const handleHeartChecked = () => {
     setIsChecked(!isChecked);
   };
-
-
 
   return (
     <div className={sizeRecommendationCardBox}>
@@ -60,8 +55,8 @@ const SizeRecommendationCard = ({ product, isHeartFilled = false }: SizeRecommen
       </div>
       <div className={productBox}>
         <div className={productName}>
-          <p className={productBrand}>{product?.brand}</p>
-          <p className={productText}>{product?.modelName}</p>
+          <p className={productBrand}>{product?.brand}Hoka</p>
+          <p className={productText}>{product?.modelName}호카 카하 2 로우 고어텍스</p>
         </div>
         <p className={productText}>100,000원</p>
       </div>
