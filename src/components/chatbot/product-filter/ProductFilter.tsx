@@ -15,28 +15,28 @@ import {
   productRecommendWrapper,
 } from './productFilter.css';
 
-type filterProducts = {
-  filterProducts: TProduct[]
+type ProductFilterProps = {
+  filterProducts?: TProduct[]
 }
 
-const ProductFilter = ({ filterProducts }: filterProducts) => {
+const ProductFilter = ({ filterProducts }: ProductFilterProps) => {
   const { setFilterOpen, filterOpen } = useModalStore();
   const { products = [] } = useProductStore()
 
-
   const handleDetailClick = () => {
-    setFilterOpen(true); // detail 버튼 클릭 시 Modal 열기
+    setFilterOpen(true);
     console.log("필터")
   };
 
+  const displayProducts = filterProducts || products;
 
-  console.log("상태전달", products)
+  console.log("상태전달", displayProducts)
 
   return (
     <>
       <div className={productRecommendFilterWrap}>
         <p style={{ fontSize: '14px' }}>
-          <span className={ProductRecommendResult}>{filterProducts.length}</span>개 상품
+          <span className={ProductRecommendResult}>{displayProducts.length}</span>개 상품
         </p>
         <div className={productRecommendFilterContainer}>
           <select className={productRecommendFiltering}>
@@ -47,7 +47,7 @@ const ProductFilter = ({ filterProducts }: filterProducts) => {
       </div>
       <div className={productRecommendWrapper}>
         <ul className={productRecommend}>
-          {filterProducts.map((product, index) => (
+          {displayProducts.map((product, index) => (
             <li key={index}><SizeRecommendationCard product={product} /></li>
           ))}
         </ul>
@@ -60,4 +60,5 @@ const ProductFilter = ({ filterProducts }: filterProducts) => {
     </>
   );
 };
+
 export default ProductFilter;

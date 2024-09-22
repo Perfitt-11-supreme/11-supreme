@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { arrow_right, export_icon, thumbs_down } from '../../../assets/assets';
 import useModalStore from '../../../stores/useModalStore';
 import { TProduct } from '../../../types/product';
+import { fetchShareId } from '../../../utils/sharedChatHistoryUtils';
 import ProductRecommendationCard from '../../common/product-recommendation-card/ProductRecommendationCard';
 import { brandRecommendIcon } from '../brand-recommendation/brandRecommendation.css';
 import {
@@ -14,11 +15,11 @@ import {
 } from './productRecommendationPreview.css';
 interface ProductRecommendationPreviewProps {
   products: TProduct[];
-  id?: string;
+  shareId?: string;
   onMoreClick?: () => void | null;
 }
 
-const ProductRecommendationPreview = ({ products = [], id, onMoreClick }: ProductRecommendationPreviewProps) => {
+const ProductRecommendationPreview = ({ products = [], shareId, onMoreClick }: ProductRecommendationPreviewProps) => {
   const { setIsOpen, setIsShareModalOpen, setShareModalId } = useModalStore();
 
   const previewProducts = products.slice(0, 2);
@@ -30,12 +31,25 @@ const ProductRecommendationPreview = ({ products = [], id, onMoreClick }: Produc
     setIsOpen(true);
   };
 
-  const handleOpenShareModal = () => {
-    if (id) {
-      setShareModalId(id);
-      setIsShareModalOpen(true);
+
+  const handleOpenShareModal = async () => {
+    if (shareId) {
+      const fetchedShareId = await fetchShareId(shareId);
+
+      if (fetchedShareId) {
+        setShareModalId(fetchedShareId);
+        setIsShareModalOpen(true);
+      } else {
+        console.log("공유 ID를 찾을 수 없습니다.");
+      }
+    } else {
+      console.log("shareId가 제공되지 않았습니다.");
     }
   };
+
+
+
+
 
   return (
     <>

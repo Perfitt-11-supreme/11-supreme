@@ -33,6 +33,7 @@ const ShareModal = () => {
   const [copyStatus, setCopyStatus] = useState<'default' | 'copying' | 'copied'>('default');
   const { isShareModalOpen, setIsShareModalOpen, shareModalId } = useModalStore();
   const [productData, setProductData] = useState<ChatItem | null>(null);
+
   const handleCloseShareModal = () => {
     setIsShareModalOpen(false);
   };
@@ -66,7 +67,8 @@ const ShareModal = () => {
 
   useEffect(() => {
     const fetchData = () => {
-      const productRef = ref(database, `chatHistory/${shareModalId}`); // 해당 아이디에 맞는 경로 설정
+
+      const productRef = ref(database, `sharedChatHistory/${shareModalId}`);
       onValue(productRef, (snapshot) => {
         const data = snapshot.val();
         if (data) {
