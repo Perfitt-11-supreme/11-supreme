@@ -30,6 +30,9 @@ import ShareModal from '../common/share-modal/ShareModal';
 import { fullContainer, loginHelloContainer, recommendedquestioncardContainer } from './login.css';
 import ChatBotBox from './loginchatbot/chatbotbox/ChatBotBox';
 import RecommendBox from './loginchatbot/recommendbox/RecommendBox';
+import useUserStore from '../../stores/useUserStore';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { fetchUserDatas } from '../../services/fetchUserDatasService';
 
 type TQuestions = {
   question: string;
@@ -43,8 +46,6 @@ type Brand = {
   link: string;
   thumbnail: string;
 };
-
-
 
 type ChatItem = {
   id: string;
@@ -67,6 +68,28 @@ const LoginHello = () => {
   const [showProductRecommendation, setShowProductRecommendation] = useState(false);
   const [selectedChatItemId, setSelectedChatItemId] = useState<string | null>(null);
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
+
+  const { user, setUser } = useUserStore();
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, async user => {
+      if (user) {
+        const uid = user.uid;
+        //상태에 user 데이터가 없을 때만 fetchUserDatas 호출
+        if (!user) {
+          const userData = await fetchUserDatas(uid);
+          if (userData) {
+            setUser(userData);
+          }
+        }
+      } else {
+        console.log('로그인한 사용자가 없습니다.');
+      }
+    });
+
+    return () => unsubscribe();
+  }, [setUser]);
 
   // 추천 질문 불러오는 함수
   const {
@@ -146,7 +169,7 @@ const LoginHello = () => {
       setBrands(response.data.brands);
       setCurrentKeywords('이미지 검색');
     },
-    onError: (error) => {
+    onError: error => {
       console.error('이미지 검색 에러:', error);
     },
   });
@@ -154,7 +177,6 @@ const LoginHello = () => {
   const handleImageUpload = (file: File) => {
     imageSearchMutation.mutate(file);
   };
-
 
   const handleQuestionSelect = (question: string) => {
     setCurrentKeywords(question);
@@ -227,7 +249,6 @@ const LoginHello = () => {
     return () => clearTimeout(timer);
   }, [showBridgePage, selectedProductLink]);
 
-
   if (showBridgePage) {
     return <BridgePage />;
   }
@@ -244,7 +265,9 @@ const LoginHello = () => {
             {' '}
             {/* 채팅 기록 컨테이너 */}
             <div style={{ marginTop: '20px' }}>
-              <ChatBotBox text={['반갑습니다 OO님!', 'OO님을 위한 맞춤 상품을 추천해 드릴게요.']} />
+              <ChatBotBox
+                text={[`반갑습니다 ${user?.userName}님!`, `${user?.userName}님을 위한 맞춤 상품을 추천해 드릴게요.`]}
+              />
             </div>
             <div style={{ marginLeft: '44px' }}>
               <RecommendBox />
@@ -254,8 +277,12 @@ const LoginHello = () => {
                 {chat.imageUrl ? (
                   <div className={userBubbleWrap}>
                     <div className={userBubble}>
-                      <img src={chat.imageUrl} alt="Uploaded" style={{ maxWidth: '200px', maxHeight: '200px', borderRadius: '10px' }} className={userBubbleText} />
-
+                      <img
+                        src={chat.imageUrl}
+                        alt="Uploaded"
+                        style={{ maxWidth: '200px', maxHeight: '200px', borderRadius: '10px' }}
+                        className={userBubbleText}
+                      />
                     </div>
                   </div>
                 ) : (
@@ -264,7 +291,6 @@ const LoginHello = () => {
 
                 <ChatBotBubble bubbleContent={chat.botResponse} />
                 {chat.brands && chat.brands.length > 0 && chat.id && (
-
                   <motion.div
                     drag="x"
                     dragConstraints={{ right: 0, left: -50 }}
@@ -272,9 +298,7 @@ const LoginHello = () => {
                     className={recommendedquestioncardContainer}
                   >
                     <BrandRecommendation brands={chat.brands} id={chat.id} onBrandClick={handleBrandClick} />
-
                   </motion.div>
-
                 )}
                 {chat.products && chat.products.length > 0 && chat.id && (
                   <div style={{ marginLeft: '28px' }}>

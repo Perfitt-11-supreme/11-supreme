@@ -8,7 +8,7 @@ import {
 type TDateSelect = {
   label: string;
   value: { year: string; month: string; day: string };
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  onChange: (field: string, value: string) => void;
 };
 
 const SignUpDateSelect = ({ label, value, onChange }: TDateSelect) => {
@@ -45,15 +45,33 @@ const SignUpDateSelect = ({ label, value, onChange }: TDateSelect) => {
         {label}
       </label>
       <div className={dateSelectHorizon}>
-        <select id="year" name="year" className={dateSelect} value={value.year} onChange={onChange}>
+        <select
+          id="year"
+          name="year"
+          className={dateSelect}
+          value={value.year}
+          onChange={e => onChange('year', e.target.value)}
+        >
           <option value="">년</option>
           {years}
         </select>
-        <select id="month" name="month" className={dateSelect} value={value.month} onChange={onChange}>
+        <select
+          id="month"
+          name="month"
+          className={dateSelect}
+          value={value.month}
+          onChange={e => onChange('month', e.target.value)}
+        >
           <option value="">월</option>
           {months}
         </select>
-        <select id="day" name="day" className={dateSelect} value={value.day} onChange={onChange}>
+        <select
+          id="day"
+          name="day"
+          className={dateSelect}
+          value={value.day}
+          onChange={e => onChange('day', e.target.value)}
+        >
           <option value="">일</option>
           {days}
         </select>

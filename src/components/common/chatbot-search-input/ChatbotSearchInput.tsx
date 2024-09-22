@@ -10,9 +10,9 @@ import {
 } from './chatbotSearchInput.css';
 
 type ChatbotSearchInputProps = {
-  chatCompletionsMutation: any;
+  chatCompletionsMutation?: any;
   onImageUpload?: (file: File) => void;
-}
+};
 
 const ChatbotSearchInput: React.FC<ChatbotSearchInputProps> = ({ chatCompletionsMutation, onImageUpload }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -80,7 +80,7 @@ const ChatbotSearchInput: React.FC<ChatbotSearchInputProps> = ({ chatCompletions
     if (file) {
       setSelectedFile(file);
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = e => {
         setPreviewImage(e.target?.result as string);
       };
       reader.readAsDataURL(file);
@@ -110,7 +110,7 @@ const ChatbotSearchInput: React.FC<ChatbotSearchInputProps> = ({ chatCompletions
                 width: '30px',
                 height: '30px',
                 objectFit: 'cover',
-                marginRight: '5px'
+                marginRight: '5px',
               }}
             />
             <button
@@ -119,7 +119,7 @@ const ChatbotSearchInput: React.FC<ChatbotSearchInputProps> = ({ chatCompletions
                 background: 'none',
                 border: 'none',
                 cursor: 'pointer',
-                fontSize: '16px'
+                fontSize: '16px',
               }}
             >
               ×
@@ -134,7 +134,7 @@ const ChatbotSearchInput: React.FC<ChatbotSearchInputProps> = ({ chatCompletions
           onChange={handleInputChange}
           onCompositionStart={() => setIsComposing(true)}
           onCompositionEnd={() => setIsComposing(false)}
-          placeholder={selectedFile ? "이미지가 첨부되었습니다" : "궁금한 신발 정보 물어보세요!"}
+          placeholder={selectedFile ? '이미지가 첨부되었습니다' : '궁금한 신발 정보 물어보세요!'}
           style={{ paddingLeft: previewImage ? '80px' : '10px' }}
           onKeyDown={handleKeyDown}
           disabled={selectedFile !== null}
@@ -143,13 +143,7 @@ const ChatbotSearchInput: React.FC<ChatbotSearchInputProps> = ({ chatCompletions
           <img src={upload} alt="upload" />
         </button>
       </div>
-      <input
-        ref={fileInputRef}
-        type="file"
-        style={{ display: 'none' }}
-        accept="image/*"
-        onChange={handleFileChange}
-      />
+      <input ref={fileInputRef} type="file" style={{ display: 'none' }} accept="image/*" onChange={handleFileChange} />
     </div>
   );
 };

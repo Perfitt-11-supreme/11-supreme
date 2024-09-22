@@ -1,8 +1,8 @@
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { deleteUser, signInWithEmailAndPassword } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { back_arrow } from '../../../assets/assets';
-import { auth } from '../../../firebase/firebase';
+import { auth, db } from '../../../firebase/firebase';
 import { responsiveBox } from '../../../styles/responsive.css';
 import Button from '../../common/button/Button';
 import Header from '../../common/header/Header';
@@ -11,73 +11,83 @@ import { errorMessage, signupFormContainer, signupFormGap, submitbuttonContainer
 import { fullContainer } from '../login.css';
 import { accountFindBox, accountFindButton } from './emailLogin.css';
 import ToastMessage from '../../toastmessage/toastMessage';
+import useUserStore from '../../../stores/useUserStore';
+import { doc, getDoc } from 'firebase/firestore';
+import { TUser } from '../../../types/user';
 
 const EmailLogin = () => {
-  type FormErrors = {
-    userEmail?: string;
-    userPassword?: string;
-    [key: string]: string | undefined;
-  };
-
   type FormData = {
-    userEmail: string;
-    userPassword: string;
+    email: string;
+    password: string;
   };
 
+  type FormErrors = {
+    email?: string;
+    password?: string;
+  };
+
+  const [formData, setFormData] = useState<FormData>({ email: '', password: '' });
   const [errors, setErrors] = useState<FormErrors>({});
-  const [formData, setFormData] = useState<FormData>({
-    userEmail: '',
-    userPassword: '',
-  });
   const [toastMessage, setToastMessage] = useState<{ message: string; duration: number } | null>(null);
 
-  const validate = (data: FormData): FormErrors => {
+  const { setUser } = useUserStore();
+  const navigate = useNavigate();
+
+  const validate = () => {
     const newErrors: FormErrors = {};
-    if (!data.userEmail) {
-      newErrors.userEmail = '이메일을 입력해주세요';
-    } else if (!/\S+@\S+\.\S+/.test(data.userEmail)) {
-      newErrors.userEmail = '유효한 형식의 이메일을 입력해주세요';
+    const { email, password } = formData;
+
+    if (!email) {
+      newErrors.email = '이메일을 입력해 주세요';
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = '유효한 형식의 이메일을 입력해 주세요';
     }
-    if (!data.userPassword) newErrors.userPassword = '비밀번호를 입력해주세요';
+    if (!password) newErrors.password = '비밀번호를 입력해 주세요';
+
     return newErrors;
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-
-    setFormData(prev => ({
-      ...prev,
-      [name]: value,
-    }));
-
-    const updatedErrors = validate({
-      ...formData,
-      [name]: value,
-    });
+    setFormData(prev => ({ ...prev, [name]: value }));
     setErrors(prev => ({
       ...prev,
-      [name]: updatedErrors[name],
+      [name]: value ? undefined : prev[name as keyof FormErrors],
     }));
   };
-
-  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const validationErrors = validate(formData);
+    const validationErrors = validate();
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
       try {
         //로그인
-        const { user } = await signInWithEmailAndPassword(auth, formData.userEmail, formData.userPassword);
-        console.log('로그인한 사용자:', user);
+        const { user } = await signInWithEmailAndPassword(auth, formData.email, formData.password);
 
-        //로그인 성공 시 이동
-        navigate('/hello');
-      } catch {
-        setToastMessage({ message: '입력한 정보를 다시 확인해주세요.', duration: 3000 });
+        //Firestore에서 사용자 정보 존재 유무를 uid로 조회
+        const userDocRef = doc(db, 'users', user.uid);
+        const userDoc = await getDoc(userDocRef);
+
+        if (userDoc.exists()) {
+          //Firestore에서 가져온 사용자 정보를 userData로 받기
+          const userData: TUser = {
+            ...userDoc.data(),
+          };
+          setUser(userData); //userData를 zustand에 저장
+          console.log('로그인한 사용자:', userData);
+          navigate('/hello'); //로그인 성공 시 이동
+        } else {
+          //인증은 되었으나 Firestore에는 사용자 등록이 되어있지 않은 경우
+          await deleteUser(user); //사용자 인증 데이터 삭제
+          console.log('사용자 인증 데이터 삭제');
+          setToastMessage({ message: '입력한 정보를 다시 확인해 주세요.', duration: 3000 });
+        }
+      } catch (error) {
+        console.error('이메일 로그인 실패:', error);
+        setToastMessage({ message: '입력한 정보를 다시 확인해 주세요.', duration: 3000 });
       }
     }
   };
@@ -106,25 +116,25 @@ const EmailLogin = () => {
               <SignUpInput
                 label="아이디"
                 type="email"
-                name="userEmail"
-                id="userEmail1"
-                placeholder="이메일을 입력해주세요"
-                value={formData.userEmail}
+                name="email"
+                id="email"
+                placeholder="이메일을 입력해 주세요"
+                value={formData.email}
                 onChange={handleChange}
               />
-              {errors.userEmail && <div className={errorMessage}>{errors.userEmail}</div>}
+              {errors.email && <div className={errorMessage}>{errors.email}</div>}
 
               <div className={signupFormGap}>
                 <SignUpInput
                   label="비밀번호"
                   type="password"
-                  name="userPassword"
-                  id="userPassword"
-                  placeholder="비밀번호를 입력해주세요"
-                  value={formData.userPassword}
+                  name="password"
+                  id="password"
+                  placeholder="비밀번호를 입력해 주세요"
+                  value={formData.password}
                   onChange={handleChange}
                 />
-                {errors.userPassword && <div className={errorMessage}>{errors.userPassword}</div>}
+                {errors.password && <div className={errorMessage}>{errors.password}</div>}
               </div>
 
               <form onSubmit={handleSubmit} className={submitbuttonContainer}>

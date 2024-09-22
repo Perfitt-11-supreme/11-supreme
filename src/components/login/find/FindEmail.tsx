@@ -6,9 +6,9 @@ import { accountFindBox, accountFindButton } from '../emaillogin/emailLogin.css'
 import { useState } from 'react';
 import SignUpInput from '../../signup/infoInput/signupinput/SignUpInput';
 import { foundResultStyle, fullContainer } from '../login.css';
-import { db } from '../../../firebase/firebase';
+import { USER_COLLECTION } from '../../../firebase/firebase';
 import { back_arrow } from '../../../assets/assets';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { getDocs, query, where } from 'firebase/firestore';
 import SignUpDateSelect from '../../signup/infoInput/signupdateselect/SignUpDateSelect';
 import SignUpSelect from '../../signup/infoInput/signupselect/SignUpSelect';
 import { responsiveBox } from '../../../styles/responsive.css';
@@ -51,42 +51,19 @@ const FindEmail = () => {
     return newErrors;
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-
-    if (name === 'year' || name === 'month' || name === 'day') {
+  const handleChange = (field: string, value: string) => {
+    if (field === 'year' || field === 'month' || field === 'day') {
       setFormData(prev => ({
         ...prev,
         birthDate: {
           ...prev.birthDate,
-          [name]: value,
+          [field]: value,
         },
-      }));
-
-      const updatedErrors = validate({
-        ...formData,
-        birthDate: {
-          ...formData.birthDate,
-          [name]: value,
-        },
-      });
-      setErrors(prev => ({
-        ...prev,
-        birthDate: updatedErrors.birthDate,
       }));
     } else {
       setFormData(prev => ({
         ...prev,
-        [name]: value,
-      }));
-
-      const updatedErrors = validate({
-        ...formData,
-        [name]: value,
-      });
-      setErrors(prev => ({
-        ...prev,
-        [name]: updatedErrors[name],
+        [field]: value,
       }));
     }
   };
@@ -94,8 +71,8 @@ const FindEmail = () => {
   const [foundEmail, setFoundEmail] = useState<string | null>(null);
   const [error, setError] = useState<string>('');
 
-  const handleFindEmail = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleFindEmail = async () => {
+    setErrors({});
 
     const errors = validate(formData);
     if (Object.keys(errors).length) {
@@ -104,8 +81,9 @@ const FindEmail = () => {
     }
 
     try {
+      //일치하는 사용자 정보 찾기
       const userQuery = query(
-        collection(db, 'users'),
+        USER_COLLECTION,
         where('userName', '==', formData.userName),
         where('gender', '==', formData.gender),
         where('birthDate.year', '==', formData.birthDate.year),
@@ -126,7 +104,7 @@ const FindEmail = () => {
       }
     } catch (error) {
       console.error('이메일 찾기 오류:', error);
-      setError('이메일 찾기에 실패했습니다. 다시 시도해 주세요.');
+      setError('다시 시도해 주세요.');
     }
   };
 
@@ -153,7 +131,7 @@ const FindEmail = () => {
                   id="userName"
                   placeholder="이름을 입력해 주세요"
                   value={formData.userName}
-                  onChange={handleChange}
+                  onChange={e => handleChange('userName', e.target.value)}
                 />
                 {errors.userName && <div className={errorMessage}>{errors.userName}</div>}
               </div>
@@ -168,7 +146,7 @@ const FindEmail = () => {
                     { value: 'female', label: '여성' },
                   ]}
                   value={formData.gender}
-                  onChange={handleChange}
+                  onChange={e => handleChange('gender', e.target.value)}
                 />
                 {errors.gender && <div className={errorMessage}>{errors.gender}</div>}
               </div>
@@ -179,9 +157,7 @@ const FindEmail = () => {
               </div>
 
               <div className={submitbuttonContainer}>
-                <form onSubmit={handleFindEmail}>
-                  <Button text="이메일 찾기" />
-                </form>
+                <Button text="이메일 찾기" onClick={handleFindEmail} />
               </div>
 
               {foundEmail && <div className={foundResultStyle}>{foundEmail}</div>}

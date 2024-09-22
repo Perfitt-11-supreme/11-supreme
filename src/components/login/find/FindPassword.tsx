@@ -47,25 +47,14 @@ const FindPassword = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    setFormData(prev => {
-      const updatedFormData = {
-        ...prev,
-        [name]: value,
-      };
-
-      const updatedErrors = validate(updatedFormData);
-
-      setErrors(prevErrors => ({
-        ...prevErrors,
-        [name as keyof FormErrors]: updatedErrors[name as keyof FormErrors],
-      }));
-
-      return updatedFormData;
-    });
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const handleFindPassword = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleFindPassword = async () => {
+    setErrors({});
 
     const errors = validate(formData);
     if (Object.keys(errors).length) {
@@ -94,7 +83,7 @@ const FindPassword = () => {
       }
     } catch (error) {
       console.error('비밀번호 찾기 오류:', error);
-      setError('비밀번호 찾기에 실패했습니다. 다시 시도해 주세요.');
+      setError('다시 시도해 주세요.');
       setSuccessMessage(null);
     }
   };
@@ -114,37 +103,35 @@ const FindPassword = () => {
           <div>
             <Header imageSrc={back_arrow} alt="back arrow" title="비밀번호 찾기" />
             <div className={signupFormContainer} style={{ marginTop: '20px' }}>
-              <form onSubmit={handleFindPassword}>
-                <div>
-                  <SignUpInput
-                    label="이름"
-                    type="text"
-                    name="userName"
-                    id="userName"
-                    placeholder="이름을 입력해 주세요"
-                    value={formData.userName}
-                    onChange={handleChange}
-                  />
-                  {errors.userName && <div className={errorMessage}>{errors.userName}</div>}
-                </div>
+              <div>
+                <SignUpInput
+                  label="이름"
+                  type="text"
+                  name="userName"
+                  id="userName"
+                  placeholder="이름을 입력해 주세요"
+                  value={formData.userName}
+                  onChange={handleChange}
+                />
+                {errors.userName && <div className={errorMessage}>{errors.userName}</div>}
+              </div>
 
-                <div className={signupFormGap}>
-                  <SignUpInput
-                    label="이메일"
-                    type="email"
-                    name="userEmail"
-                    id="userEmail"
-                    placeholder="이메일을 입력해 주세요"
-                    value={formData.userEmail}
-                    onChange={handleChange}
-                  />
-                  {errors.userEmail && <div className={errorMessage}>{errors.userEmail}</div>}
-                </div>
+              <div className={signupFormGap}>
+                <SignUpInput
+                  label="이메일"
+                  type="email"
+                  name="userEmail"
+                  id="userEmail"
+                  placeholder="이메일을 입력해 주세요"
+                  value={formData.userEmail}
+                  onChange={handleChange}
+                />
+                {errors.userEmail && <div className={errorMessage}>{errors.userEmail}</div>}
+              </div>
 
-                <div className={submitbuttonContainer}>
-                  <Button text="비밀번호 찾기" />
-                </div>
-              </form>
+              <div className={submitbuttonContainer}>
+                <Button text="비밀번호 찾기" onClick={handleFindPassword} />
+              </div>
 
               {successMessage && <div className={foundResultStyle}>{successMessage}</div>}
               {error && <div className={foundResultStyle}>{error}</div>}
