@@ -169,6 +169,7 @@ const LikedPage = () => {
                         ...product,
                         brand: product.brand || 'Unknown Brand', // brand가 없으면 기본 값 할당
                       }}
+                      // onCardClick={() => handleCardClick(key)} // 클릭 시 시간 기록 함수 호출
                     />
                   );
                 })

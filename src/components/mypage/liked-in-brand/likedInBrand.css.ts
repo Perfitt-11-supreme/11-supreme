@@ -10,6 +10,7 @@ export const brandLists = style({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
+  cursor: 'pointer',
 });
 export const brandListBox = style({
   display: 'flex',

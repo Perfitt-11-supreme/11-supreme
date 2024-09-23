@@ -29,11 +29,15 @@ const SizeRecommendationCard = ({ product, isHeartFilled = false, onCardClick }:
     return null;
   }
   // console.log('Product in SizeRecommendationCard:', product); // 전달된 product 확인
-  const [isChecked, setIsChecked] = useState(false);
+  // const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(isHeartFilled);
   const { handleProductDetailsClick } = useProductDetailStore();
 
+  // const handleHeartChecked = () => {
+  //   setIsChecked(!isChecked);
+  // };
   const handleHeartChecked = () => {
-    setIsChecked(!isChecked);
+    setIsChecked(prev => !prev); // 클릭 시 상태를 반전
   };
 
   return (
@@ -57,10 +61,11 @@ const SizeRecommendationCard = ({ product, isHeartFilled = false, onCardClick }:
           className={heartIconBox}
           onClick={e => {
             e.stopPropagation();
-            handleHeartChecked();
+            handleHeartChecked(); // 클릭 시 하트 상태 변경
           }}
         >
-          <img src={isHeartFilled || isChecked ? heart_filled : heart_empty} alt="heart" />
+          {/* <img src={isHeartFilled || isChecked ? heart_filled : heart_empty} alt="heart" /> */}
+          <img src={isChecked ? heart_filled : heart_empty} alt="heart" />
         </div>
 
         <div className={brandIconBox}>

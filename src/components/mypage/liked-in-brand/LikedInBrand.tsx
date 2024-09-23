@@ -1,5 +1,5 @@
 import { getDownloadURL, getStorage, listAll, ref } from 'firebase/storage';
-import { heart_filled } from '../../../assets/assets';
+import { heart_filled, heart_empty } from '../../../assets/assets';
 import {
   brandListBox,
   brandLists,
@@ -28,6 +28,7 @@ const storage = getStorage();
 const LikedInBrand = ({ brands }: LikedInBrandProps) => {
   const [logos, setLogos] = useState<{ name: string; url: string }[]>([]);
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태 관리
+  const [heartStates, setHeartStates] = useState<{ [key: string]: boolean }>({}); // 각 브랜드의 하트 상태 관리
 
   useEffect(() => {
     // 'logos' 폴더 안의 파일 목록 가져오기
@@ -55,6 +56,23 @@ const LikedInBrand = ({ brands }: LikedInBrandProps) => {
     return logo ? logo.url : ''; // 로고가 없을 경우 빈 문자열 반환
   };
 
+  // 브랜드의 초기 하트 상태를 설정
+  useEffect(() => {
+    const initialHeartStates: { [key: string]: boolean } = {};
+    Object.keys(brands).forEach(brandKey => {
+      initialHeartStates[brandKey] = true; // 기본적으로 heart_filled 상태로 설정
+    });
+    setHeartStates(initialHeartStates);
+  }, [brands]);
+
+  // 하트 상태를 토글하는 함수
+  const toggleHeart = (brandKey: string) => {
+    setHeartStates(prevState => ({
+      ...prevState,
+      [brandKey]: !prevState[brandKey], // 해당 브랜드의 하트 상태를 토글
+    }));
+  };
+
   return (
     <>
       <section className={brandsContainer}>
@@ -79,7 +97,12 @@ const LikedInBrand = ({ brands }: LikedInBrandProps) => {
                 </div>
               </div>
               <div>
-                <img className={heartFilledIcon} src={heart_filled} alt="heart_filled" />
+                <img
+                  className={heartFilledIcon}
+                  src={heartStates[brandKey] ? heart_filled : heart_empty} // 하트 상태에 따라 아이콘 변경
+                  alt="heart"
+                  onClick={() => toggleHeart(brandKey)} // 클릭 시 하트 상태 토글
+                />
               </div>
             </article>
           );
