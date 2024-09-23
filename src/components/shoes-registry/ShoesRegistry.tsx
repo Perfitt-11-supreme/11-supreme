@@ -28,7 +28,7 @@ import useSelectItemStore from '../../stores/useSelectItemStore';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { Errors, ShoeData, User } from '../../types/registry';
 import { useForm } from 'react-hook-form';
-// import { TextUpload } from '../choose-shose/firebase/textupload/TextUpload';
+import { TextUpload } from '../choose-shose/firebase/textupload/TextUpload';
 
 const auth = getAuth();
 const user = auth.currentUser;
@@ -80,10 +80,10 @@ const ShoesRegistry = () => {
   const [editData, setEditData] = useState<ShoeData | null>(null);
   const [user, setUser] = useState<User | null>(null);
 
-  // const { handleTextUpload } = TextUpload();
+  const { handleTextUpload } = TextUpload();
 
   useEffect(() => {
-    // handleTextUpload();
+    handleTextUpload();
     const isUser = onAuthStateChanged(auth, currentUser => {
       if (currentUser) {
         setUser(currentUser);
