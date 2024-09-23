@@ -20,9 +20,10 @@ import {
 type SizeRecommendationCardProps = {
   product: TProduct | null;
   isHeartFilled?: boolean;
+  onCardClick: () => void; // 클릭 이벤트를 처리하는 함수
 };
 
-const SizeRecommendationCard = ({ product, isHeartFilled = false }: SizeRecommendationCardProps) => {
+const SizeRecommendationCard = ({ product, isHeartFilled = false, onCardClick }: SizeRecommendationCardProps) => {
   // product가 null일 경우 아무것도 렌더링하지 않음
   if (!product) {
     return null;
@@ -36,7 +37,14 @@ const SizeRecommendationCard = ({ product, isHeartFilled = false }: SizeRecommen
   };
 
   return (
-    <div className={sizeRecommendationCardBox}>
+    // <div className={sizeRecommendationCardBox} onClick={() => (window.location.href = product.link)}>
+    <div
+      className={sizeRecommendationCardBox}
+      onClick={() => {
+        window.open(product.link, '_blank'); // 새 창에서 링크 열기
+        onCardClick(); // 클릭한 시간을 기록하는 함수 호출
+      }}
+    >
       <div className={sizeRecommendationThumbnail}>
         <div className={sizeRecommendationThumbnailContainer}>
           <img src={product.image} alt={product.modelName} />
@@ -54,6 +62,7 @@ const SizeRecommendationCard = ({ product, isHeartFilled = false }: SizeRecommen
         >
           <img src={isHeartFilled || isChecked ? heart_filled : heart_empty} alt="heart" />
         </div>
+
         <div className={brandIconBox}>
           <img src={brand_abcmart} alt="brand_abcmart" />
         </div>
@@ -66,7 +75,13 @@ const SizeRecommendationCard = ({ product, isHeartFilled = false }: SizeRecommen
         </div>
         <p className={productText}>{product?.price}원</p>
       </div>
-      <button className={productDetailsButton} onClick={() => handleProductDetailsClick(product)}>
+      <button
+        className={productDetailsButton}
+        onClick={e => {
+          e.stopPropagation(); // 부모의 onClick이 실행되지 않도록 방지
+          handleProductDetailsClick(product);
+        }}
+      >
         <img src={ai} alt="ai" />이 신발 더 알아보기
       </button>
     </div>
