@@ -1,5 +1,4 @@
-// useChatHistoryHook.ts (데이터 가져오는 로직)
-import { get, ref, remove } from 'firebase/database';
+import { get, limitToLast, orderByKey, query, ref, remove } from 'firebase/database';
 import { useEffect, useState } from 'react';
 import { database } from '../firebase/firebase';
 import useUserStore from '../stores/useUserStore';
@@ -12,6 +11,7 @@ type ChatHistory = {
 };
 
 const useChatHistoryHook = () => {
+  const { user } = useUserStore(); // user 정보 가져오기
   const [chatHistory, setChatHistory] = useState<ChatHistory[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null | string>(null);
@@ -20,12 +20,20 @@ const useChatHistoryHook = () => {
   useEffect(() => {
     const fetchChatHistory = async () => {
       if (!user?.uid) {
+        setLoading(false);
+        return; // user가 없는 경우 중단
+      }
+
+      if (!user?.uid) {
         setChatHistory([]);
         setLoading(false);
         return;
       }
 
       try {
+        // const chatHistoryRef = ref(database, 'chatHistory');
+        const chatHistoryRef = ref(database, `chatHistory/${user.uid}`);
+        const snapshot = await get(chatHistoryRef);
         setLoading(true);
         // 모든 채팅방의 마지막 메시지를 가져오기
         const userChatsRef = ref(database, `users/${user.uid}/chats`);
@@ -69,13 +77,20 @@ const useChatHistoryHook = () => {
     };
 
     fetchChatHistory();
+  }, [user?.uid]); // user가 변경될 때마다 데이터를 다시 가져옴
   }, [user?.uid]); // user?.uid가 변경될 때마다 실행
 
   // 데이터 삭제 함수 수정
   const deleteChatHistory = async (chatId: string) => {
     if (!user?.uid) return;
 
+  // 데이터 삭제 함수 추가
+  const deleteChatHistory = async (id: string) => {
+    if (!user?.uid) return; // user가 없으면 중단
+
     try {
+      const chatHistoryRef = ref(database, `chatHistory/${user.uid}/${id}`);
+      await remove(chatHistoryRef);
       const chatRef = ref(database, `users/${user.uid}/chats/${chatId}`);
       await remove(chatRef);
       // 삭제 후 상태 업데이트
