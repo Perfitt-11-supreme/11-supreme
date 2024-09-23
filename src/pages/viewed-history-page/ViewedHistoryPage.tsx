@@ -8,7 +8,6 @@ import {
   viewedHistoryItemBox,
 } from './viewedHistoryPage.css';
 import LikedAndViewedHistoryButton from '../../components/mypage/liked-and-viewed-history-button/LikedAndViewedHistoryButton';
-import { responsiveBox } from '../../styles/responsive.css';
 import { useViewedHistoryStore } from '../../stores/useViewedHistoryStore';
 import { back_arrow } from '../../assets/assets';
 // import useAddUserIdToFirestoreHook from '../../hooks/useAddUserIdToFirestoreHook';

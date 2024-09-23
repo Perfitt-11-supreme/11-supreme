@@ -67,7 +67,6 @@ type LikedData = {
 
 const LikedPage = () => {
   const [likedOrViewed, setLikedOrViewed] = useState('좋아요');
-  // const [productOrBrand, setProductOrBrand] = useState('상품');
   const [productOrBrand, setProductOrBrand] = useState('상품');
   const [logos, setLogos] = useState<{ [key: string]: string }>({}); // 브랜드 이름과 로고 URL을 매핑하는 객체
   // Zustand store에서 데이터와 메서드 가져오기
@@ -78,11 +77,6 @@ const LikedPage = () => {
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
   // UseUserStore로부터 유저 정보 가져오기
   const { user } = useUserStore();
-
-  // 데이터 가져오기: 컴포넌트 마운트 시 Firestore에서 liked 데이터를 가져옵니다.
-  // useEffect(() => {
-  //   fetchLikedData();
-  // }, []);
 
   useEffect(() => {
     // firebase storage의 'logos' 폴더 안의 파일 목록 가져오기
