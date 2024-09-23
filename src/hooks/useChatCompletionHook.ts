@@ -21,11 +21,11 @@ export const useChatCompletion = () => {
       console.log('채팅 응답 성공:', response);
 
       const chatItemWithoutIds = {
-        userQuestion: question,
+        userQuestion: question || '',
         botResponse: response.data.message,
         products: response.data.products || null,
         brands: response.data.brands || null,
-        keywords: question,
+        keywords: question || '',
         timestamp: new Date().toISOString(),
       };
 
