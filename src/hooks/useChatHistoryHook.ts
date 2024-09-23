@@ -15,15 +15,9 @@ const useChatHistoryHook = () => {
   const [chatHistory, setChatHistory] = useState<ChatHistory[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null | string>(null);
-  const { user } = useUserStore();
 
   useEffect(() => {
     const fetchChatHistory = async () => {
-      if (!user?.uid) {
-        setLoading(false);
-        return; // user가 없는 경우 중단
-      }
-
       if (!user?.uid) {
         setChatHistory([]);
         setLoading(false);
@@ -31,10 +25,6 @@ const useChatHistoryHook = () => {
       }
 
       try {
-        // const chatHistoryRef = ref(database, 'chatHistory');
-        const chatHistoryRef = ref(database, `chatHistory/${user.uid}`);
-        const snapshot = await get(chatHistoryRef);
-        setLoading(true);
         // 모든 채팅방의 마지막 메시지를 가져오기
         const userChatsRef = ref(database, `users/${user.uid}/chats`);
         const snapshot = await get(userChatsRef);
@@ -78,19 +68,12 @@ const useChatHistoryHook = () => {
 
     fetchChatHistory();
   }, [user?.uid]); // user가 변경될 때마다 데이터를 다시 가져옴
-  }, [user?.uid]); // user?.uid가 변경될 때마다 실행
-
-  // 데이터 삭제 함수 수정
-  const deleteChatHistory = async (chatId: string) => {
-    if (!user?.uid) return;
 
   // 데이터 삭제 함수 추가
-  const deleteChatHistory = async (id: string) => {
+  const deleteChatHistory = async (chatId: string) => {
     if (!user?.uid) return; // user가 없으면 중단
 
     try {
-      const chatHistoryRef = ref(database, `chatHistory/${user.uid}/${id}`);
-      await remove(chatHistoryRef);
       const chatRef = ref(database, `users/${user.uid}/chats/${chatId}`);
       await remove(chatRef);
       // 삭제 후 상태 업데이트

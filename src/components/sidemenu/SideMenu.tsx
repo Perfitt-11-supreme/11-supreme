@@ -160,9 +160,11 @@ const SideMenu = ({ onClose }: SideMenuProps) => {
                             <SidemenuList
                               key={chat.id}
                               iconSrc={sidemenu_list}
+                              shareId={chat.shareId}
                               id={chat.id}
                               keywords={chat.keywords}
                               timestamp={chat.timestamp}
+                              onClose={onClose}
                               handleDelete={deleteChatHistory} // 삭제 함수 전달
                             />
                           )
