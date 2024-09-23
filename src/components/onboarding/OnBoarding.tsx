@@ -9,6 +9,7 @@ import { TUser } from '../../types/user';
 import { browserLocalPersistence, onAuthStateChanged, setPersistence } from 'firebase/auth';
 import { auth, db } from '../../firebase/firebase';
 import { doc, getDoc } from 'firebase/firestore';
+import useTextSearchStore from '../../stores/useTextSearchStore';
 
 const OnBoarding = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -17,6 +18,7 @@ const OnBoarding = () => {
   //로그인 지속성
   const setUser = useUserStore(state => state.setUser);
   const clearUser = useUserStore(state => state.clearUser);
+  const downloadTextRecord = useTextSearchStore(state => state.downloadTextRecord);
 
   useEffect(() => {
     //로그인 상태에 따라 특정 작업을 수행
@@ -34,6 +36,7 @@ const OnBoarding = () => {
                   ...userDoc.data(),
                 };
                 setUser(userData); //zustand에 로그인한 사용자 정보를 userData로 저장
+                userData.textSearchRecord && downloadTextRecord(userData.textSearchRecord);
                 console.log('현재 로그인한 사용자:', userData); //로그인되어 있는 경우
               } else {
                 clearUser(); //상태 초기화
