@@ -1,10 +1,10 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { createJSONStorage, persist } from 'zustand/middleware';
 import { TUser } from '../types/user';
 
 type userStore = {
   user: TUser | null;
-  setUser: (user: TUser| null) => void;
+  setUser: (user: TUser | null) => void;
   clearUser: () => void;
 };
 
@@ -17,7 +17,7 @@ const useUserStore = create(
     }),
     {
       name: 'userLocalStorage', //localStorage에 저장될 키 이름
-      getStorage: () => localStorage, //localStorage를 사용
+      storage: createJSONStorage(() => localStorage), //localStorage를 사용
     }
   )
 );

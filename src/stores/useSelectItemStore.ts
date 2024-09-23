@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { TProduct } from '../types/product';
-import { persist } from 'zustand/middleware';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 type SelectItemStore = {
   isSelected: number | null;
@@ -37,7 +37,7 @@ const useSelectItemStore = create(
     }),
     {
       name: 'selectItemStorage',
-      getStorage: () => localStorage,
+      storage: createJSONStorage(() => localStorage),
     }
   )
 );

@@ -11,11 +11,13 @@ import {
 import { useNavigate } from 'react-router-dom';
 import useTextSearchStore from '../../../../stores/useTextSearchStore';
 import { useTextSearchHooks } from '../hooks/useTextSearchHooks';
+import { TextUpload } from '../../firebase/textupload/TextUpload';
 
 const SearchBox = () => {
   const [isScrollingDown, setIsScrollingDown] = useState(false);
   const { text, setState } = useTextSearchStore();
   const { inputRef, handleSubmitForm } = useTextSearchHooks();
+  const { handleTextUpload } = TextUpload();
   const navigate = useNavigate();
 
   let lastScrollY = 0;
@@ -61,7 +63,10 @@ const SearchBox = () => {
             className={SearchBox_cameraIcon}
             src={camera}
             alt="camera_icon"
-            onClick={() => navigate('/image-search')}
+            onClick={() => {
+              handleTextUpload();
+              navigate('/image-search');
+            }}
           />
         </form>
       </div>
