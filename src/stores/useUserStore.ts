@@ -1,10 +1,10 @@
 import { create } from 'zustand';
-import { TUser } from '../types/user';
 import { persist } from 'zustand/middleware';
+import { TUser } from '../types/user';
 
 type userStore = {
   user: TUser | null;
-  setUser: (user: TUser) => void;
+  setUser: (user: TUser| null) => void;
   clearUser: () => void;
 };
 

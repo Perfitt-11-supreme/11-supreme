@@ -56,15 +56,15 @@ const SharePage = () => {
   const { id } = useParams<{ id: string }>(); // URL에서 id를 가져옴
   const [productData, setProductData] = useState<ChatItem | null>(null); // 상태의 타입을 ChatItem | null로 설정
   const navigate = useNavigate();
-
   const handleStartFitTalk = () => {
-    navigate('/onboarding');
+    navigate('/', { replace: true });
   };
   const isSharePage = location.pathname.startsWith("/share/");
 
   useEffect(() => {
     const fetchData = () => {
-      const productRef = ref(database, `chatHistory/${id}`); // 해당 아이디에 맞는 경로 설정
+
+      const productRef = ref(database, `sharedChatHistory/${id}`); // 해당 아이디에 맞는 경로 설정
       onValue(
         productRef,
         snapshot => {
@@ -127,7 +127,7 @@ const SharePage = () => {
                     {/* 브랜드 렌더링 */}
                     {productData.brands && productData.brands.length > 0 && id && (
                       <div>
-                        <BrandRecommendation brands={productData.brands} id={id} />
+                        <BrandRecommendation brands={productData.brands} shareId={id} />
                       </div>
                     )}
                     {!isSharePage &&

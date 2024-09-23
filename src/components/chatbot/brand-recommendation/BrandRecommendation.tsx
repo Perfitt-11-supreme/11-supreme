@@ -1,16 +1,16 @@
 import { export_icon, thumbs_down } from "../../../assets/assets";
 import useModalStore from "../../../stores/useModalStore";
 import { TBrand } from "../../../types/brand";
+import { fetchShareId } from '../../../utils/sharedChatHistoryUtils';
 import BrandRecommendationCard from "../brand-recommendation-card/BrandRecommendationCard";
 import { brandRecommendContainer, brandRecommendIcon, brandRecommendIconWrap, brandRecommendWrap } from "./brandRecommendation.css";
-
 type BrandRecommendationProps = {
   brands: TBrand[] | null;
-  id: string;
+  shareId: string;
   onBrandClick?: (brand: string) => void;
 }
 
-const BrandRecommendation = ({ brands, id, onBrandClick }: BrandRecommendationProps) => {
+const BrandRecommendation = ({ brands, shareId, onBrandClick }: BrandRecommendationProps) => {
   if (!brands || brands.length === 0) {
     return null; // brands가 없을 때는 아무것도 렌더링하지 않음
   }
@@ -23,10 +23,22 @@ const BrandRecommendation = ({ brands, id, onBrandClick }: BrandRecommendationPr
     }
   }
 
-  const handleOpenShareModal = () => {
-    setShareModalId(id);
-    setIsShareModalOpen(true)
-  }
+  const handleOpenShareModal = async () => {
+    if (shareId) {
+      const fetchedShareId = await fetchShareId(shareId);
+
+      if (fetchedShareId) {
+        setShareModalId(fetchedShareId);
+        setIsShareModalOpen(true);
+      } else {
+        console.log("공유 ID를 찾을 수 없습니다.");
+      }
+    } else {
+      console.log("shareId가 제공되지 않았습니다.");
+    }
+  };
+
+
 
   const isSharePage = location.pathname.startsWith("/share/");
   return (

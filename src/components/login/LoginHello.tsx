@@ -1,20 +1,23 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { onValue, push, ref } from 'firebase/database';
-import { getDownloadURL, getStorage, ref as storageRef, uploadBytes } from 'firebase/storage';
+import { useQuery } from '@tanstack/react-query';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { onValue, ref } from 'firebase/database';
+import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import { motion } from 'framer-motion';
 import { Fragment, useEffect, useRef, useState } from 'react';
-import { chatCompletionsAPI, recommendQuestionAPI } from '../../api/chatRequests';
-import { ImageShoseSearchAPI } from '../../api/searchRequests';
+import { recommendQuestionAPI } from '../../api/chatRequests';
 import { hamburger_menu } from '../../assets/assets';
 import { database } from '../../firebase/firebase';
+import { useChatCompletion } from '../../hooks/useChatCompletionHook';
 import BridgePage from '../../pages/bridge-page/bridgePage';
 import LoadingPage from '../../pages/loading-page/loadingPage';
 import useBrandStore from '../../stores/useBrandStore';
+import useChatStore from '../../stores/useChatStore';
 import useModalStore from '../../stores/useModalStore';
 import useProductDetailStore from '../../stores/useProductDetailStore';
 import useProductStore, { ProductStoreState } from '../../stores/useProductsStore';
+import useUserStore from '../../stores/useUserStore';
 import { responsiveBox } from '../../styles/responsive.css';
-import { TProduct } from '../../types/product';
+import { ChatItem } from '../../types/chatItem';
 import BrandPLP from '../chatbot/brand-plp/BrandPLP';
 import BrandRecommendation from '../chatbot/brand-recommendation/BrandRecommendation';
 import ChatBotBubble from '../chatbot/chatbot-bubble/ChatBotBubble';
@@ -30,9 +33,6 @@ import ShareModal from '../common/share-modal/ShareModal';
 import { fullContainer, loginHelloContainer, recommendedquestioncardContainer } from './login.css';
 import ChatBotBox from './loginchatbot/chatbotbox/ChatBotBox';
 import RecommendBox from './loginchatbot/recommendbox/RecommendBox';
-import useUserStore from '../../stores/useUserStore';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { fetchUserDatas } from '../../services/fetchUserDatasService';
 
 type TQuestions = {
   question: string;
@@ -47,49 +47,20 @@ type Brand = {
   thumbnail: string;
 };
 
-type ChatItem = {
-  id: string;
-  userQuestion: string;
-  botResponse: string;
-  products: TProduct[] | null;
-  brands: Brand[] | null;
-  keywords: string;
-  imageUrl?: string;
-  timestamp: string;
-};
+
 
 const LoginHello = () => {
   const { setProducts } = useProductStore.getState();
   const { selectedBrand, setBrands, setSelectedBrand } = useBrandStore();
   const { isShareModalOpen } = useModalStore();
-  const { showBridgePage, selectedProductLink, setShowBridgePage } = useProductDetailStore();
-  const [currentKeywords, setCurrentKeywords] = useState<string>('');
-  const [chatHistory, setChatHistory] = useState<ChatItem[]>([]);
+  const { showBridgePage, selectedProductLink } = useProductDetailStore();
   const [showProductRecommendation, setShowProductRecommendation] = useState(false);
   const [selectedChatItemId, setSelectedChatItemId] = useState<string | null>(null);
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
-
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { user, setUser } = useUserStore();
-
-  useEffect(() => {
-    const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, async user => {
-      if (user) {
-        const uid = user.uid;
-        //상태에 user 데이터가 없을 때만 fetchUserDatas 호출
-        if (!user) {
-          const userData = await fetchUserDatas(uid);
-          if (userData) {
-            setUser(userData);
-          }
-        }
-      } else {
-        console.log('로그인한 사용자가 없습니다.');
-      }
-    });
-
-    return () => unsubscribe();
-  }, [setUser]);
+  const { chatHistory, setCurrentKeywords, setChatHistory } = useChatStore();
+  const { handleQuestionSelect } = useChatCompletion();
 
   // 추천 질문 불러오는 함수
   const {
@@ -113,75 +84,6 @@ const LoginHello = () => {
     refetchOnWindowFocus: false,
   });
 
-  // 채팅 응답 함수
-  const chatCompletionsMutation = useMutation({
-    mutationFn: (question: string) => chatCompletionsAPI({ message: { content: question } }),
-    onSuccess: (response, question) => {
-      console.log('채팅 응답 성공:', response);
-
-      const newChatItem: ChatItem = {
-        id: push(ref(database, 'chatHistory')).key || '',
-        userQuestion: question,
-        botResponse: response.data.message,
-        products: response.data.products || null,
-        brands: response.data.brands || null,
-        keywords: question,
-        timestamp: new Date().toISOString(),
-      };
-      push(ref(database, 'chatHistory'), newChatItem);
-      setProducts(response.data.products);
-      setBrands(response.data.brands);
-      setCurrentKeywords(question);
-    },
-    onError: error => {
-      console.error('채팅 응답 에러:', error);
-    },
-  });
-
-  const imageSearchMutation = useMutation({
-    mutationFn: async (file: File) => {
-      const storage = getStorage();
-      const imageRef = storageRef(storage, `images/${file.name}`);
-      await uploadBytes(imageRef, file);
-      const imageUrl = await getDownloadURL(imageRef);
-
-      const formData = new FormData();
-      formData.append('image', file);
-      const response = await ImageShoseSearchAPI(formData);
-
-      return { response, imageUrl };
-    },
-    onSuccess: ({ response, imageUrl }) => {
-      console.log('이미지 검색 성공:', response);
-
-      const newChatItem: ChatItem = {
-        id: push(ref(database, 'chatHistory')).key || '',
-        userQuestion: '',
-        botResponse: '이미지 검색 결과입니다.',
-        products: response.data.products || null,
-        brands: response.data.brands || null,
-        keywords: '이미지 검색',
-        imageUrl: imageUrl,
-        timestamp: new Date().toISOString(),
-      };
-      push(ref(database, 'chatHistory'), newChatItem);
-      setProducts(response.data.products);
-      setBrands(response.data.brands);
-      setCurrentKeywords('이미지 검색');
-    },
-    onError: error => {
-      console.error('이미지 검색 에러:', error);
-    },
-  });
-
-  const handleImageUpload = (file: File) => {
-    imageSearchMutation.mutate(file);
-  };
-
-  const handleQuestionSelect = (question: string) => {
-    setCurrentKeywords(question);
-    chatCompletionsMutation.mutate(question);
-  };
 
   // 채팅 기록 변경 시 스크롤을 맨 아래로 이동
   useEffect(() => {
@@ -203,6 +105,9 @@ const LoginHello = () => {
     const selectedChat = chatHistory.find(chat => chat.id === chatItemId);
     if (selectedChat && selectedChat.products) {
       setProducts(selectedChat.products as ProductStoreState['products']);
+    } else {
+      // 선택된 채팅 항목에 제품이 없는 경우 빈 배열을 설정
+      setProducts([]);
     }
   };
 
@@ -211,33 +116,86 @@ const LoginHello = () => {
     return selectedChat ? selectedChat.keywords : '';
   };
 
+
+
+  useEffect(() => {
+    const auth = getAuth();
+    const firestore = getFirestore();
+
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        let userName = 'User';
+
+        if (firebaseUser.displayName) {
+          // 소셜 로그인의 경우
+          userName = firebaseUser.displayName;
+        } else {
+          // 일반 이메일 로그인의 경우 Firestore에서 사용자 이름 가져오기
+          try {
+            const userDoc = await getDoc(doc(firestore, 'users', firebaseUser.uid));
+            if (userDoc.exists()) {
+              userName = userDoc.data().userName || 'User';
+            }
+          } catch (error) {
+            console.error('Firestore에서 사용자 정보를 가져오는 중 오류 발생:', error);
+          }
+        }
+
+        setUser({
+          uid: firebaseUser.uid,
+          userName: userName,
+          // 필요한 다른 사용자 정보를 여기에 추가
+        });
+        setIsAuthenticated(true);
+      } else {
+        // 사용자가 로그아웃한 경우
+        setUser(null);
+        setIsAuthenticated(false);
+      }
+    });
+
+    // 컴포넌트가 언마운트될 때 구독 해제
+    return () => unsubscribe();
+  }, [setUser]);
+
+
   // Firebase에서 채팅 기록 불러오기
   useEffect(() => {
-    const chatRef = ref(database, 'chatHistory');
-    onValue(chatRef, snapshot => {
-      const chatItems: ChatItem[] = [];
-      snapshot.forEach(childSnapshot => {
-        const data = childSnapshot.val();
-        const id = childSnapshot.key; // 고유 키를 가져옴
-        if (id) {
-          // id가 존재할 때만 추가
-          chatItems.push({ ...data, id }); // 데이터와 키를 함께 저장
+    if (user?.uid) {
+      const chatRef = ref(database, `chatHistory/${user.uid}`);
+      const unsubscribe = onValue(chatRef, snapshot => {
+        const chatItems: ChatItem[] = [];
+        snapshot.forEach(childSnapshot => {
+          const data = childSnapshot.val();
+          const id = childSnapshot.key;
+          if (id) {
+            chatItems.push({ ...data, id });
+          }
+        });
+
+        if (chatItems.length > 0) {
+          setChatHistory(chatItems);
+          const lastChatItem = chatItems[chatItems.length - 1];
+          if (lastChatItem && lastChatItem.products) {
+            setProducts(lastChatItem.products as ProductStoreState['products']);
+          }
+          if (lastChatItem && lastChatItem.brands) {
+            setBrands(lastChatItem.brands);
+          }
+          setCurrentKeywords(lastChatItem.keywords);
         }
       });
 
-      if (chatItems.length > 0) {
-        setChatHistory(chatItems);
-        const lastChatItem = chatItems[chatItems.length - 1];
-        if (lastChatItem && lastChatItem.products) {
-          setProducts(lastChatItem.products as ProductStoreState['products']);
-        }
-        if (lastChatItem && lastChatItem.brands) {
-          setBrands(lastChatItem.brands);
-        }
-        setCurrentKeywords(lastChatItem.keywords);
-      }
-    });
-  }, [setProducts, setBrands]);
+
+      return () => unsubscribe();
+    } else {
+
+      setChatHistory([]);
+      setProducts([]);
+      setBrands([]);
+      setCurrentKeywords('');
+    }
+  }, [user, setProducts, setBrands]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -297,14 +255,14 @@ const LoginHello = () => {
                     whileTap={{ cursor: 'grabbing' }}
                     className={recommendedquestioncardContainer}
                   >
-                    <BrandRecommendation brands={chat.brands} id={chat.id} onBrandClick={handleBrandClick} />
+                    <BrandRecommendation brands={chat.brands} shareId={chat.shareId} onBrandClick={handleBrandClick} />
                   </motion.div>
                 )}
                 {chat.products && chat.products.length > 0 && chat.id && (
                   <div style={{ marginLeft: '28px' }}>
                     <ProductRecommendationPreview
                       products={chat.products}
-                      id={chat.id}
+                      shareId={chat.shareId}
                       onMoreClick={() => handleProductMoreClick(chat.id)}
                     />
                   </div>
@@ -340,7 +298,7 @@ const LoginHello = () => {
             ) : null}
           </Modal>
         )}
-        <ChatbotSearchInput chatCompletionsMutation={chatCompletionsMutation} onImageUpload={handleImageUpload} />
+        <ChatbotSearchInput />
 
         {isShareModalOpen && <ShareModal />}
       </div>
