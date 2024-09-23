@@ -91,33 +91,6 @@ const SideMenu = ({ onClose }: SideMenuProps) => {
     onClose();
   };
 
-  // // chatHistory.timestamp 오늘날짜 필터링
-  // const filteredTodayChatHistory = chatHistory
-  //   .filter(chat => {
-  //     const chatDate = new Date(chat.timestamp); // chat.timestamp를 UTC 시간으로 처리
-  //     // UTC 기준으로 오늘 날짜와 동일한지 비교 (년, 월, 일만 비교)
-  //     return (
-  //       chatDate.getUTCFullYear() === utcToday.getUTCFullYear() &&
-  //       chatDate.getUTCMonth() === utcToday.getUTCMonth() &&
-  //       chatDate.getUTCDate() === utcToday.getUTCDate()
-  //     );
-  //   })
-  //   .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()); // timestamp로 내림차순 정렬
-
-  // // chatHistory.timestamp 오늘 제외 7일이내 필터링
-  // const filtered7DaysChatHistory = chatHistory
-  //   .filter(chat => {
-  //     const chatDate = new Date(chat.timestamp); // chat.timestamp를 UTC 시간으로 처리
-  //     // 7일 이내이고 오늘은 제외 (UTC 기준으로 비교)
-  //     return (
-  //       chatDate > sevenDaysAgo &&
-  //       (chatDate.getUTCFullYear() !== utcToday.getUTCFullYear() ||
-  //         chatDate.getUTCMonth() !== utcToday.getUTCMonth() ||
-  //         chatDate.getUTCDate() !== utcToday.getUTCDate())
-  //     );
-  //   })
-  //   .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()); // timestamp로 내림차순 정렬
-
   const filteredTodayChatHistory = chatHistory
     .filter(chat => {
       const chatDate = new Date(chat.timestamp);
