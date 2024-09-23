@@ -363,7 +363,7 @@ const LoginHello = () => {
               {showWelcomeMessage ? (
                 <div className={userBubbleWrap}>
                   <ChatBotBubble
-                    bubbleContent={`OO님, 가입을 환영합니다!\n선택하신 키워드에 따라 OO님께 맞춤형 상품을\n추천해드립니다! 관심 있는 키워드를 골라주세요.`}
+                    bubbleContent={`${user?.userName}님, 가입을 환영합니다!\n선택하신 키워드에 따라 OO님께 맞춤형 상품을\n추천해드립니다! 관심 있는 키워드를 골라주세요.`}
                   />
                 </div>
               ) : (
