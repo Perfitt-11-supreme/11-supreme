@@ -7,7 +7,7 @@ type ModalStore = {
   setFilterOpen: (filterOpen: boolean) => void;
   fitOpen: boolean;
   setFitOpen: (fitOpen: boolean) => void;
-  isKeywordModalOpen: boolean; 
+  isKeywordModalOpen: boolean;
   setKeywordModalOpen: (isOpen: boolean) => void;
   isShareModalOpen: boolean;
   setIsShareModalOpen: (isShareModalOpen: boolean) => void;
@@ -15,19 +15,19 @@ type ModalStore = {
   setShareModalId: (id: string | null) => void;
 };
 
-const useModalStore = create<ModalStore>((set) => ({
+const useModalStore = create<ModalStore>(set => ({
   isOpen: false,
-  setIsOpen: (isOpen) => set({ isOpen }),
+  setIsOpen: isOpen => set({ isOpen }),
   filterOpen: false,
-  setFilterOpen: (filterOpen) => set({ filterOpen }),
+  setFilterOpen: filterOpen => set({ filterOpen }),
   fitOpen: false,
-  setFitOpen: (fitOpen) => set({ fitOpen }),
-  isKeywordModalOpen: true, 
-  setKeywordModalOpen: (isOpen) => set({ isKeywordModalOpen: isOpen }),
-  isShareModalOpen: false, 
-  setIsShareModalOpen: (isShareModalOpen) => set({ isShareModalOpen }),
+  setFitOpen: fitOpen => set({ fitOpen }),
+  isKeywordModalOpen: true,
+  setKeywordModalOpen: isOpen => set({ isKeywordModalOpen: isOpen }),
+  isShareModalOpen: false,
+  setIsShareModalOpen: isShareModalOpen => set({ isShareModalOpen }),
   shareModalId: null,
-  setShareModalId: (id) => set({ shareModalId: id }),
+  setShareModalId: id => set({ shareModalId: id }),
 }));
 
 export default useModalStore;

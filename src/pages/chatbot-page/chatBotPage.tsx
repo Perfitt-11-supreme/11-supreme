@@ -20,13 +20,11 @@ import useProductStore from '../../stores/useProductsStore';
 import { responsiveBox } from '../../styles/responsive.css';
 import { TKeyWordsData } from '../../types/keywords';
 import LoadingPage from '../loading-page/loadingPage';
-import {
-  chatBotCardWrap,
-  chatBotContainer,
-  chatBotModalWrap,
-  chatBubbleWrap,
-  keywordWrap
-} from './chatBotPage.css';
+import { chatBotCardWrap, chatBotContainer, chatBotModalWrap, chatBubbleWrap, keywordWrap } from './chatBotPage.css';
+import useUserStore from '../../stores/useUserStore';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../../firebase/firebase';
+import { fetchUserDatas } from '../../services/fetchUserDatasService';
 
 type KeywordsList = string[];
 
@@ -37,6 +35,27 @@ const ChatBotPage = () => {
   const { setMessage, setProducts } = useProductStore.getState();
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
   const [initialMessageShown, setInitialMessageShown] = useState(false);
+
+  const { user, setUser } = useUserStore();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async user => {
+      if (user) {
+        const uid = user.uid;
+        //상태에 user 데이터가 없을 때만 fetchUserDatas 호출
+        if (!user) {
+          const userData = await fetchUserDatas(uid);
+          if (userData) {
+            setUser(userData);
+          }
+        }
+      } else {
+        console.log('로그인한 사용자가 없습니다.');
+      }
+    });
+
+    return () => unsubscribe();
+  }, [setUser]);
 
   // 키워드 리스트 불러오기
   const {
@@ -63,11 +82,11 @@ const ChatBotPage = () => {
   useEffect(() => {
     if (!initialMessageShown) {
       setMessage(
-        `OO님, 가입을 환영합니다!\n선택하신 키워드에 따라 OO님께 맞춤형 상품을\n추천해드립니다! 관심 있는 키워드를 골라주세요.`
+        `${user?.userName}님, 가입을 환영합니다!\n선택하신 키워드에 따라 ${user?.userName}님께 맞춤형 상품을\n추천해드립니다! 관심 있는 키워드를 골라주세요.`
       );
       setInitialMessageShown(true);
     }
-  }, [initialMessageShown, setMessage]);
+  }, [initialMessageShown, setMessage, user?.userName]);
 
   /**키워드 선택 함수 */
   const handleKeywordSelect = (keyword: string) => {
@@ -146,7 +165,7 @@ const ChatBotPage = () => {
                     ))}
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'center', padding: '0 16px' }}>
-                  <Button text={`${selectedKeywords.length}개 선택`} onClick={handleSubmit} width='100%' />
+                  <Button text={`${selectedKeywords.length}개 선택`} onClick={handleSubmit} width="100%" />
                 </div>
               </Modal>
             )}

@@ -1,5 +1,5 @@
 import { push, ref, set } from 'firebase/database';
-import React, { FormEvent, useCallback, useRef, useState } from 'react';
+import React, { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { picture, upload } from '../../../assets/assets';
 import { database } from '../../../firebase/firebase';
 import useBrandStore from '../../../stores/useBrandStore';
@@ -20,7 +20,7 @@ import { ImageShoseSearchAPI } from '../../../api/searchRequests';
 import { useChatCompletion } from '../../../hooks/useChatCompletionHook';
 import useChatStore from '../../../stores/useChatStore';
 import { ChatItem } from '../../../types/chatItem';
-
+import ToastMessage from '../../toastmessage/toastMessage';
 
 export type Brand = {
   brand: string;
@@ -28,8 +28,6 @@ export type Brand = {
   link: string;
   thumbnail: string;
 };
-
-
 
 const ChatbotSearchInput = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -41,10 +39,8 @@ const ChatbotSearchInput = () => {
   const { user } = useUserStore();
   const { setProducts } = useProductStore();
   const { setBrands } = useBrandStore();
-  const { addChatItem, setCurrentKeywords, } = useChatStore();
+  const { addChatItem, setCurrentKeywords } = useChatStore();
   const { chatCompletionsMutation } = useChatCompletion();
-
-
 
   const imageSearchMutation = useMutation({
     mutationFn: async (file: File) => {
@@ -108,7 +104,6 @@ const ChatbotSearchInput = () => {
     imageSearchMutation.mutate(file);
   };
 
-
   const debounce = (func: Function, delay: number) => {
     let timeoutId: NodeJS.Timeout;
     return (...args: any[]) => {
@@ -158,9 +153,9 @@ const ChatbotSearchInput = () => {
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  };
+  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setInputValue(e.target.value);
+  // };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -182,8 +177,29 @@ const ChatbotSearchInput = () => {
     }
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!user) {
+      //로그인 상태가 아닐 때 입력값 초기화 및 토스트 메시지 표시
+      setToastMessage({ message: '먼저 로그인을 해주세요.', duration: 3000 });
+      return; //입력 차단
+    } else {
+      //로그인 상태일 때만 입력값 업데이트
+      setInputValue(e.target.value);
+    }
+  };
+
+  const [toastMessage, setToastMessage] = useState<{ message: string; duration: number } | null>(null);
+
+  useEffect(() => {
+    if (toastMessage) {
+      const timer = setTimeout(() => setToastMessage(null), toastMessage.duration);
+      return () => clearTimeout(timer);
+    }
+  }, [toastMessage]);
+
   return (
     <div className={chatbotSearchContainer}>
+      {toastMessage && <ToastMessage message={toastMessage.message} duration={toastMessage.duration} />}
       <div className={pictureIconBox} onClick={handlePictureClick}>
         <img src={picture} alt="picture" />
       </div>

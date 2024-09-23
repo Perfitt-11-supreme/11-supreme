@@ -8,10 +8,13 @@ import { signInWithGoogle } from '../../firebase/firebase';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { responsiveBox } from '../../styles/responsive.css';
 import ChatbotSearchInput from '../common/chatbot-search-input/ChatbotSearchInput';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ToastMessage from '../toastmessage/toastMessage';
 import { TUser } from '../../types/user';
 import useUserStore from '../../stores/useUserStore';
+import SignUpInfoModal from '../signup/infoInput/SignUpInfoModal';
+import SignUpSizeModal from '../signup/sizeinput/SignUpSizeModal';
+import GoogleSignUpModal from '../signup/infoInput/GoogleSignUpModal';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -45,7 +48,7 @@ const Login = () => {
         };
 
         setUser(newGoogleUser); //신규 사용자 정보를 zustand에 저장
-        navigate('/googlesignup'); //신규 사용자: /googlesignup(추가 정보 입력) 페이지로 이동
+        setIsGoogleModalOpen(true); //신규 사용자: /googlesignup(추가 정보 입력) 페이지로 이동
       }
     } catch (error) {
       console.error('구글 로그인 실패:', error);
@@ -60,9 +63,40 @@ const Login = () => {
     }
   }, [toastMessage]);
 
+  //모달 외부 클릭 시 모달 닫기
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const [isSizeModalOpen, setIsSizeModalOpen] = useState(false);
+  const [isGoogleModalOpen, setIsGoogleModalOpen] = useState(false);
+  const infoModalRef = useRef<HTMLDivElement | null>(null);
+  const sizeModalRef = useRef<HTMLDivElement | null>(null);
+  const googleModalRef = useRef<HTMLDivElement | null>(null); //ref 생성
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (isInfoModalOpen && infoModalRef.current && !infoModalRef.current.contains(event.target as Node)) {
+        setIsInfoModalOpen(false);
+      }
+      if (isSizeModalOpen && sizeModalRef.current && !sizeModalRef.current.contains(event.target as Node)) {
+        setIsSizeModalOpen(false);
+      }
+      if (isGoogleModalOpen && googleModalRef.current && !googleModalRef.current.contains(event.target as Node)) {
+        setIsSizeModalOpen(false);
+      }
+    };
+
+    if (isInfoModalOpen || isSizeModalOpen || isGoogleModalOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isInfoModalOpen, isSizeModalOpen, isGoogleModalOpen]);
+
   return (
     <>
-      <div className={responsiveBox}>
+      <div className={responsiveBox} style={{ overflow: 'hidden' }}>
         <div className={fullContainer}>
           {toastMessage && <ToastMessage message={toastMessage.message} duration={toastMessage.duration} />}
           <Header imageSrc={hamburger_menu} alt="hamburger menu" />
@@ -74,13 +108,40 @@ const Login = () => {
             <LoginButton imageSrc={google} text="구글" onClick={handleGoogleLogin} />
             <LoginButton text="이메일 로그인" onClick={() => navigate('/emaillogin')} />
             <div className={loginbuttonTextContainer}>또는</div>
-            <LoginButton text="회원가입 하기" onClick={() => navigate('/signupinfo')} />
+            <LoginButton text="회원가입 하기" onClick={() => setIsInfoModalOpen(true)} />
           </div>
 
           <div style={{ marginTop: 'auto' }}>
             <ChatbotSearchInput />
           </div>
         </div>
+        {isInfoModalOpen && (
+          <div ref={infoModalRef}>
+            <SignUpInfoModal
+              isOpen={isInfoModalOpen}
+              onNext={() => {
+                setIsInfoModalOpen(false);
+                setIsSizeModalOpen(true);
+              }}
+            />
+          </div>
+        )}
+        {isGoogleModalOpen && (
+          <div ref={googleModalRef}>
+            <GoogleSignUpModal
+              isOpen={isGoogleModalOpen}
+              onNext={() => {
+                setIsGoogleModalOpen(false);
+                setIsSizeModalOpen(true);
+              }}
+            />
+          </div>
+        )}
+        {isSizeModalOpen && (
+          <div ref={sizeModalRef}>
+            <SignUpSizeModal isOpen={isSizeModalOpen} onClose={() => navigate('/hello')} />
+          </div>
+        )}
       </div>
     </>
   );
