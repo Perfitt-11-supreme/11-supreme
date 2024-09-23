@@ -12,22 +12,10 @@ import LikedAndViewedHistoryButton from '../../components/mypage/liked-and-viewe
 import { useEffect, useState } from 'react';
 import ProductAndBrandButton from '../../components/mypage/product-and-brand-button/ProductAndBrandButton';
 import LikedInBrand from '../../components/mypage/liked-in-brand/LikedInBrand';
-import { responsiveBox } from '../../styles/responsive.css';
 import { getDownloadURL, getStorage, listAll, ref } from 'firebase/storage';
 import useUserStore from '../../stores/useUserStore';
-import {
-  FieldValue,
-  collection,
-  deleteDoc,
-  deleteField,
-  doc,
-  getDoc,
-  getFirestore,
-  setDoc,
-  updateDoc,
-} from 'firebase/firestore';
+import { collection, deleteField, doc, getDoc, getFirestore, setDoc, updateDoc } from 'firebase/firestore';
 import LoadingPage from '../loading-page/loadingPage';
-import { set } from 'firebase/database';
 
 // Firebase 초기화
 const db = getFirestore();
@@ -52,17 +40,6 @@ type Brand = {
   brandId?: string;
   timestamp?: string; // 클릭한 시간을 기록하는 필드
   logos?: string;
-};
-
-type LikedData = {
-  brands: {
-    adidas: Brand;
-    crocs: Brand;
-    nike: Brand;
-  };
-  products: {
-    [key: string]: Product;
-  };
 };
 
 const LikedPage = () => {

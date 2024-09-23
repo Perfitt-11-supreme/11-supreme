@@ -1,4 +1,4 @@
-import { heart_filled, heart_empty } from '../../../assets/assets';
+import { heart_filled } from '../../../assets/assets';
 import {
   brandListBox,
   brandLists,
