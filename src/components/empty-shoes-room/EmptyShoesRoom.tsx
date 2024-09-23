@@ -22,12 +22,13 @@ import { db } from '../../firebase/firebase';
 import { responsiveBox } from '../../styles/responsive.css';
 import ToastMessage from '../toastmessage/toastMessage';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { ShoesList, UserData } from '../../types/shoesroom';
 
 const EmptyShoesRoom = () => {
   const [isTrue, setIsTrue] = useState(false);
-  const [shoesList, setShoesList] = useState<any[]>([]);
+  const [shoesList, setShoesList] = useState<ShoesList[]>([]);
   const [selected, setSelected] = useState('latest');
-  const [userData, setUserData] = useState<any>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
   const location = useLocation();
   const auth = getAuth();
   const user = auth.currentUser;
@@ -41,6 +42,7 @@ const EmptyShoesRoom = () => {
       } else if (location.state?.editToastMessage) {
         setToastMessage(location.state.editToastMessage);
       }
+      navigate(location.pathname, { replace: true, state: null });
     }
   }, [toastMessage]);
 
@@ -74,7 +76,7 @@ const EmptyShoesRoom = () => {
       const userQuery = query(usersCollection, where('uid', '==', uid));
       const querySnapshot = await getDocs(userQuery);
       querySnapshot.forEach(doc => {
-        const data = doc.data();
+        const data = doc.data() as UserData;
         setUserData(data); // 사용자 데이터 상태에 저장
       });
     } catch (error) {
@@ -103,7 +105,7 @@ const EmptyShoesRoom = () => {
         const shoes = querySnapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data(),
-        }));
+        })) as ShoesList[];
 
         if (shoesList.length !== shoes.length || shoesList !== shoes) {
           setShoesList(shoes); // 상태 업데이트

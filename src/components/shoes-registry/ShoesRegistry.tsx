@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useShoesRegistryStore } from '../../stores/useRegistryStore';
 import { plus } from '../../assets/assets';
 import Choose from '../empty-shoes-room/choose/Choose';
@@ -7,7 +7,7 @@ import Header from '../empty-shoes-room/header/Header';
 import Button from '../common/button/Button';
 import Slider from '../slider/Slider';
 import { useNavigate, useParams } from 'react-router-dom';
-import { addDoc, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDoc, Timestamp, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase/firebase';
 import {
   area,
@@ -26,14 +26,26 @@ import ItemCard from '../choose-shose/itemcard/ItemCard';
 import { responsiveBox } from '../../styles/responsive.css';
 import useSelectItemStore from '../../stores/useSelectItemStore';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import useProductStore from '../../stores/useProductsStore';
+import { Errors, ShoeData, User } from '../../types/registry';
+import { useForm } from 'react-hook-form';
+// import { TextUpload } from '../choose-shose/firebase/textupload/TextUpload';
 
 const auth = getAuth();
 const user = auth.currentUser;
+
 const ShoesRegistry = () => {
-  const { shoesId } = useParams();
+  console.log('렌더링됨');
+  const { shoesId } = useParams<{ shoesId: string }>();
   const { selectProduct, selectComplet, setSelectProduct } = useSelectItemStore();
   const navigate = useNavigate();
+  const ratingRef = useRef<HTMLDivElement>(null);
+  const lengthRef = useRef<HTMLDivElement>(null);
+  const widthRef = useRef<HTMLDivElement>(null);
+  const heightRef = useRef<HTMLDivElement>(null);
+  const soleRef = useRef<HTMLDivElement>(null);
+  const weightRef = useRef<HTMLDivElement>(null);
+  const reviewRef = useRef<HTMLTextAreaElement>(null);
+  const { register, handleSubmit: formHandleSubmit, getValues } = useForm<ShoeData>();
   const {
     rating,
     length,
@@ -53,7 +65,10 @@ const ShoesRegistry = () => {
     setRecommendation,
   } = useShoesRegistryStore();
 
-  const [errors, setErrors] = useState({
+  const onSubmit = (data: ShoeData) => {
+    console.log('제출된 데이터:', data);
+  };
+  const [errors, setErrors] = useState<Errors>({
     rating: '',
     length: '',
     width: '',
@@ -62,10 +77,13 @@ const ShoesRegistry = () => {
     weight: '',
     review: '',
   });
-  const [editData, setEditData] = useState<any>(null);
-  const [user, setUser] = useState<any>(null);
+  const [editData, setEditData] = useState<ShoeData | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+
+  // const { handleTextUpload } = TextUpload();
 
   useEffect(() => {
+    // handleTextUpload();
     const isUser = onAuthStateChanged(auth, currentUser => {
       if (currentUser) {
         setUser(currentUser);
@@ -73,24 +91,23 @@ const ShoesRegistry = () => {
         setUser(null);
       }
     });
-
     return () => isUser();
   }, []);
 
-  const fetchShoeInfo = async () => {
+  const fetchShoeInfo = useCallback(async () => {
     if (shoesId) {
       try {
         const docSnap = await getDoc(doc(db, 'myshoes', shoesId));
         if (docSnap.exists()) {
-          const data = docSnap.data();
+          const data = docSnap.data() as ShoeData;
           console.log('Fetched data:', data);
           setEditData(data);
 
           // 폼에 데이터 채우기
           setSelectProduct({
-            image: data.image,
-            brand: data.brand,
-            modelName: data.modelName,
+            image: data.image || '',
+            brand: data.brand || '',
+            modelName: data.modelName || '',
           });
           setRating(data.rating);
           setLength(data.length);
@@ -107,33 +124,47 @@ const ShoesRegistry = () => {
         console.error('문서를 가져오는 중 오류 발생: ', e);
       }
     }
-  };
+  }, [
+    shoesId,
+    setSelectProduct,
+    setRating,
+    setLength,
+    setWidth,
+    setHeight,
+    setSole,
+    setWeight,
+    setReview,
+    setRecommendation,
+  ]);
 
   useEffect(() => {
     fetchShoeInfo();
   }, [shoesId]);
 
-  const saveToFirestore = async (data: any) => {
-    try {
-      const dataWithUid = { ...data, uid: user.uid };
+  const saveToFirestore = useCallback(
+    async (data: ShoeData) => {
+      try {
+        const dataWithUid = { ...data, uid: user?.uid };
 
-      if (shoesId) {
-        // 신발 정보 수정
-        const shoeDocRef = doc(db, 'myshoes', shoesId);
-        await updateDoc(shoeDocRef, dataWithUid);
-        console.log('db 수정 성공 ID: ', shoesId);
-      } else {
-        // 신발 정보 저장
-        const docRef = await addDoc(collection(db, 'myshoes'), dataWithUid);
-        console.log('db 저장 성공 ID: ', docRef.id);
+        if (shoesId) {
+          // 신발 정보 수정
+          const shoeDocRef = doc(db, 'myshoes', shoesId);
+          await updateDoc(shoeDocRef, dataWithUid);
+          console.log('db 수정 성공 ID: ', shoesId);
+        } else {
+          // 신발 정보 저장
+          const docRef = await addDoc(collection(db, 'myshoes'), dataWithUid);
+          console.log('db 저장 성공 ID: ', docRef.id);
+        }
+      } catch (e) {
+        console.error('db 저장/수정 에러: ', e);
       }
-    } catch (e) {
-      console.error('db 저장/수정 에러: ', e);
-    }
-  };
+    },
+    [shoesId, user]
+  );
 
-  const validate = () => {
-    const error: any = {};
+  const validate = useCallback(() => {
+    const error: Errors = {};
     if (!rating) error.rating = '별점을 선택해 주세요';
     if (!length) error.length = '신발 길이를 선택해 주세요';
     if (!width) error.width = '발볼 너비를 선택해 주세요';
@@ -144,9 +175,12 @@ const ShoesRegistry = () => {
 
     setErrors(error);
     return Object.keys(error).length === 0;
-  };
+  }, [rating, length, width, height, sole, weight, review]);
 
   const handleSubmit = async () => {
+    const isValid = validate();
+    console.log('폼 유효성 검사 결과:', isValid);
+    console.log({ rating, length, width, height, sole, weight, review });
     if (!validate()) {
       const firstErrorKey = Object.keys(errors)[0];
       const refMap: any = {
@@ -167,7 +201,7 @@ const ShoesRegistry = () => {
       return;
     }
 
-    const data = {
+    const data: ShoeData = {
       ...selectProduct,
       rating,
       length,
@@ -176,13 +210,15 @@ const ShoesRegistry = () => {
       sole,
       weight,
       recommendation,
-      review,
-      timestamp: new Date(),
+      review: getValues('review'), // reviewRef에서 값을 가져옴
+      timestamp: Timestamp.now(),
     };
+
+    setReview(data.review); // review 상태 업데이트
 
     await saveToFirestore(data);
 
-    // 상태 초기화
+    // 완료 폼 초기화
     setSelectProduct(null);
     setRating(0);
     setLength('');
@@ -202,16 +238,8 @@ const ShoesRegistry = () => {
 
   const handleChooseShoes = () => navigate('/text-search');
 
-  const ratingRef = useRef<HTMLDivElement>(null);
-  const lengthRef = useRef<HTMLDivElement>(null);
-  const widthRef = useRef<HTMLDivElement>(null);
-  const heightRef = useRef<HTMLDivElement>(null);
-  const soleRef = useRef<HTMLDivElement>(null);
-  const weightRef = useRef<HTMLDivElement>(null);
-  const reviewRef = useRef<HTMLTextAreaElement>(null);
-
   const handleBack = () => {
-    // 폼 초기화
+    // 뒤로 나갈 경우 폼 초기화
     setSelectProduct(null);
     setRating(0);
     setLength('');
@@ -328,19 +356,19 @@ const ShoesRegistry = () => {
         <Slider />
         <p className={questP}>자세한 사용기를 적어주세요.</p>
         {errors.review && <p className={errorText}>{errors.review}</p>}
-        <textarea
-          ref={reviewRef}
-          className={area}
-          placeholder="이 신발을 신으면서 느꼈던 장점 및 단점을 솔직하게 알려주세요."
-          value={review}
-          onChange={e => setReview(e.target.value)}
-        />
-        <div className={buttonDiv}>
-          <Button text={shoesId ? '수정 완료' : '입력 완료'} onClick={handleSubmit} />
-        </div>
+        <form onSubmit={formHandleSubmit(handleSubmit)}>
+          <textarea
+            {...register('review', { required: true })}
+            className={area}
+            placeholder="이 신발을 신으면서 느꼈던 장점 및 단점을 솔직하게 알려주세요."
+          />
+          <div className={buttonDiv}>
+            <Button type="submit" text={shoesId ? '수정 완료' : '입력 완료'} />
+          </div>
+        </form>
       </div>
     </div>
   );
 };
 
-export default ShoesRegistry;
+export default React.memo(ShoesRegistry);
