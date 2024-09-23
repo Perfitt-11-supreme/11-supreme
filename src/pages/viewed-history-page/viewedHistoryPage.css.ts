@@ -19,4 +19,5 @@ export const viewedHistoryItemBox = style({
   display: 'grid',
   gridTemplateColumns: '1fr 1fr',
   gap: '16px',
+  paddingBottom: '64px',
 });

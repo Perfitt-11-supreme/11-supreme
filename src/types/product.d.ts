@@ -6,4 +6,6 @@ export type TProduct = {
   modelNo?: string;
   productId?: string;
   gender?: string;
+  price: number;
+  sizeRecommend: string;
 } | null;

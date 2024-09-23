@@ -19,4 +19,12 @@ export const likedAndViewedHistoryItemBox = style({
   display: 'grid',
   gridTemplateColumns: '1fr 1fr',
   gap: '16px',
+  paddingBottom: '64px',
+});
+export const likedInBrandsItemBox = style({
+  padding: '0 16px',
+  display: 'grid',
+  gridTemplateColumns: '1fr',
+  gap: '16px',
+  paddingBottom: '64px',
 });

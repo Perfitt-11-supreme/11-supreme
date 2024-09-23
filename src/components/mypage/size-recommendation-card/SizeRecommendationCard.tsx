@@ -18,11 +18,16 @@ import {
 } from './sizeRecommendationCard.css';
 
 type SizeRecommendationCardProps = {
+  product: TProduct | null;
   isHeartFilled?: boolean;
-  product?: TProduct;
 };
 
 const SizeRecommendationCard = ({ product, isHeartFilled = false }: SizeRecommendationCardProps) => {
+  // product가 null일 경우 아무것도 렌더링하지 않음
+  if (!product) {
+    return null;
+  }
+  // console.log('Product in SizeRecommendationCard:', product); // 전달된 product 확인
   const [isChecked, setIsChecked] = useState(false);
   const { handleProductDetailsClick } = useProductDetailStore();
 
@@ -34,10 +39,10 @@ const SizeRecommendationCard = ({ product, isHeartFilled = false }: SizeRecommen
     <div className={sizeRecommendationCardBox}>
       <div className={sizeRecommendationThumbnail}>
         <div className={sizeRecommendationThumbnailContainer}>
-          <img src={product?.image} alt={product?.modelName} />
+          <img src={product.image} alt={product.modelName} />
         </div>
         <div className={sizeRecommendationBadge}>
-          <p className={sizeRecommendationBadgeTag}>240mm 추천</p>
+          <p className={sizeRecommendationBadgeTag}>{product?.sizeRecommend} 추천</p>
         </div>
 
         <div
@@ -55,12 +60,13 @@ const SizeRecommendationCard = ({ product, isHeartFilled = false }: SizeRecommen
       </div>
       <div className={productBox}>
         <div className={productName}>
-          <p className={productBrand}>{product?.brand}Hoka</p>
-          <p className={productText}>{product?.modelName}호카 카하 2 로우 고어텍스</p>
+          {/* brand가 없을 경우 'Unknown Brand'로 기본값 설정 */}
+          <p className={productBrand}>{product.brand || 'Unknown Brand'}</p>
+          <p className={productText}>{product.modelName}</p>
         </div>
-        <p className={productText}>100,000원</p>
+        <p className={productText}>{product?.price}원</p>
       </div>
-      <button className={productDetailsButton} onClick={() => product && handleProductDetailsClick(product)}>
+      <button className={productDetailsButton} onClick={() => handleProductDetailsClick(product)}>
         <img src={ai} alt="ai" />이 신발 더 알아보기
       </button>
     </div>
