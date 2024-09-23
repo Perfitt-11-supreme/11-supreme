@@ -50,6 +50,7 @@ type ChatItem = {
   products: Product[];
   brands: Brand[] | null;
   imageUrl?: string;
+  timestamp: Date;
 };
 
 const SharePage = () => {
@@ -93,7 +94,11 @@ const SharePage = () => {
             <img src={chatCircle} alt="chat icon" />
           </div>
           <p className={sharePageTitle}>{productData ? productData.keywords : <LoadingPage />}</p>
-          <p className={sharePageDate}>2024년 10월 30일</p>
+          <p className={sharePageDate}> {productData?.timestamp ? new Date(productData.timestamp).toLocaleDateString('ko-KR', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          }) : null}</p>
         </div>
         <div className={sharePageBubbleContainer}>
           {productData ? (

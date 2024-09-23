@@ -1,14 +1,15 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { onValue, ref } from 'firebase/database';
-import { doc, getDoc, getFirestore } from 'firebase/firestore';
+import { onValue, push, ref, set } from 'firebase/database';
+import { doc, getDoc, getFirestore, updateDoc } from 'firebase/firestore';
 import { motion } from 'framer-motion';
 import { Fragment, useEffect, useRef, useState } from 'react';
-import { recommendQuestionAPI } from '../../api/chatRequests';
+import { chatKeywordsAPI, keywordsListAPI, recommendQuestionAPI } from '../../api/chatRequests';
 import { hamburger_menu } from '../../assets/assets';
-import { database } from '../../firebase/firebase';
+import { database, db } from '../../firebase/firebase';
 import { useChatCompletion } from '../../hooks/useChatCompletionHook';
 import BridgePage from '../../pages/bridge-page/bridgePage';
+import { keywordWrap } from '../../pages/chatbot-page/chatBotPage.css';
 import LoadingPage from '../../pages/loading-page/loadingPage';
 import useBrandStore from '../../stores/useBrandStore';
 import useChatStore from '../../stores/useChatStore';
@@ -18,6 +19,7 @@ import useProductStore, { ProductStoreState } from '../../stores/useProductsStor
 import useUserStore from '../../stores/useUserStore';
 import { responsiveBox } from '../../styles/responsive.css';
 import { ChatItem } from '../../types/chatItem';
+import { TKeyWordsData } from '../../types/keywords';
 import BrandPLP from '../chatbot/brand-plp/BrandPLP';
 import BrandRecommendation from '../chatbot/brand-recommendation/BrandRecommendation';
 import ChatBotBubble from '../chatbot/chatbot-bubble/ChatBotBubble';
@@ -25,8 +27,10 @@ import ProductRecommendationPreview from '../chatbot/product-recommendation-prev
 import ProductRecommendation from '../chatbot/product-recommendation/ProductRecommendation';
 import UserBubble from '../chatbot/user-bubble/UserBubble';
 import { userBubble, userBubbleText, userBubbleWrap } from '../chatbot/user-bubble/userBubble.css';
+import Button from '../common/button/Button';
 import ChatbotSearchInput from '../common/chatbot-search-input/ChatbotSearchInput';
 import Header from '../common/header/Header';
+import KeywordCard from '../common/keyword-card/KeywordCard';
 import Modal from '../common/modal/Modal';
 import RecommendedQuestionCard from '../common/recommended-question-card/RecommendedQuestionCard';
 import ShareModal from '../common/share-modal/ShareModal';
@@ -47,20 +51,115 @@ type Brand = {
   thumbnail: string;
 };
 
-
+type KeywordsList = string[];
 
 const LoginHello = () => {
   const { setProducts } = useProductStore.getState();
   const { selectedBrand, setBrands, setSelectedBrand } = useBrandStore();
-  const { isShareModalOpen } = useModalStore();
+  const { isShareModalOpen, isKeywordModalOpen, setKeywordModalOpen } = useModalStore();
   const { showBridgePage, selectedProductLink } = useProductDetailStore();
+  const { setMessage } = useProductStore();
+  const { chatHistory, setCurrentKeywords, setChatHistory } = useChatStore();
+  const { user, setUser } = useUserStore();
+
+  const { handleQuestionSelect } = useChatCompletion();
+
+  const chatContainerRef = useRef<HTMLDivElement | null>(null);
+
   const [showProductRecommendation, setShowProductRecommendation] = useState(false);
   const [selectedChatItemId, setSelectedChatItemId] = useState<string | null>(null);
-  const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const { user, setUser } = useUserStore();
-  const { chatHistory, setCurrentKeywords, setChatHistory } = useChatStore();
-  const { handleQuestionSelect } = useChatCompletion();
+  const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
+  const [showWelcomeMessage, setShowWelcomeMessage] = useState(true);
+  const [hasSelectedKeywords, setHasSelectedKeywords] = useState(false);
+  const [hasSetInitialKeywords, setHasSetInitialKeywords] = useState(false);
+  const [hasAskedQuestion, setHasAskedQuestion] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // 키워드 리스트 불러오기
+  const {
+    data: keywordsListData,
+    isLoading: isKeywordsListLoading,
+    error: keywordsListError,
+  } = useQuery<KeywordsList>({
+    queryKey: ['keywordsList'],
+    queryFn: async () => {
+      try {
+        const response = await keywordsListAPI();
+        console.log(' 키워드 리스트 데이터 확인용', response);
+        return response.data;
+      } catch (error) {
+        console.error('키워드 정보 불러오기 에러', error);
+        throw error;
+      }
+    },
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  });
+  // 키워드 전송 mutation
+  const keywordMutation = useMutation({
+    mutationFn: (data: TKeyWordsData) => chatKeywordsAPI(data),
+    onSuccess: response => {
+      console.log('키워드 전송 성공:', response);
+      setKeywordModalOpen(false);
+      setMessage(response.data.message);
+      setProducts(response.data.products);
+
+
+      if (user?.uid) {
+        const newChatRef = push(ref(database, `chatHistory/${user.uid}`));
+        const newChatItem = {
+          userQuestion: `${formattedKeywords}`,
+          botResponse: response.data.message,
+          products: response.data.products,
+          brands: [],
+          keywords: formattedKeywords,
+          timestamp: new Date().toISOString(),
+        };
+        set(newChatRef, newChatItem);
+
+        // 선택된 키워드를 사용자 데이터에 저장
+        set(ref(database, `users/${user.uid}/selectedKeywords`), selectedKeywords);
+      }
+      setHasSelectedKeywords(true);
+    },
+    onError: error => {
+      console.error('키워드 전송 실패:', error);
+    },
+  });
+
+  /**키워드 선택 함수 */
+  const handleKeywordSelect = (keyword: string) => {
+    setSelectedKeywords(
+      prevSelected =>
+        prevSelected.includes(keyword)
+          ? prevSelected.filter(item => item !== keyword) // 선택 해제
+          : [...prevSelected, keyword] // 선택 추가
+    );
+  };
+
+  // 키워드 제출 함수
+  const handleSubmit = () => {
+    const chat: TKeyWordsData = { keywords: selectedKeywords };
+    keywordMutation.mutate(chat);
+    setKeywordModalOpen(false);
+    setShowWelcomeMessage(false);
+    setHasSetInitialKeywords(true);
+
+    if (user?.uid) {
+      saveSelectedKeywordsToFirestore(user.uid, selectedKeywords);
+    }
+  };
+
+  // Firestore에 selectedKeywords 저장
+  const saveSelectedKeywordsToFirestore = async (uid: string, keywords: string[]): Promise<void> => {
+    const userRef = doc(db, 'users', uid);
+    await updateDoc(userRef, { selectedKeywords: keywords });
+  };
+  //키워드 포맷
+  const formattedKeywords = selectedKeywords.join(', ');
+
 
   // 추천 질문 불러오는 함수
   const {
@@ -68,7 +167,7 @@ const LoginHello = () => {
     isLoading: isRecommendQuestionLoading,
     error: recommendQuestionError,
   } = useQuery<QuestionList>({
-    queryKey: ['keywords'],
+    queryKey: ['recommendedQuestions'],
     queryFn: async () => {
       try {
         const response = await recommendQuestionAPI();
@@ -92,11 +191,13 @@ const LoginHello = () => {
     }
   }, [chatHistory]);
 
+  // 브랜드 클릭 핸들러
   const handleBrandClick = (brand: string) => {
     setSelectedBrand(brand);
     setShowProductRecommendation(false);
   };
 
+  // 제품 더보기 클릭 핸들러
   const handleProductMoreClick = (chatItemId: string) => {
     setShowProductRecommendation(true);
     setSelectedBrand(null);
@@ -111,13 +212,27 @@ const LoginHello = () => {
     }
   };
 
+  // 선택된 키워드 가져오기
   const getSelectedKeywords = () => {
     const selectedChat = chatHistory.find(chat => chat.id === selectedChatItemId);
     return selectedChat ? selectedChat.keywords : '';
   };
 
+  // 추천 질문 선택 핸들러
+  const handleRecommendedQuestionSelect = (question: string) => {
+    handleQuestionSelect(question);
+    setHasAskedQuestion(true);
+    localStorage.setItem('hasAskedQuestion', 'true');
+  };
 
+  useEffect(() => {
+    const storedHasAskedQuestion = localStorage.getItem('hasAskedQuestion');
+    if (storedHasAskedQuestion === 'true') {
+      setHasAskedQuestion(true);
+    }
+  }, []);
 
+  // 사용자 인증 및 키워드 로드
   useEffect(() => {
     const auth = getAuth();
     const firestore = getFirestore();
@@ -144,13 +259,28 @@ const LoginHello = () => {
         setUser({
           uid: firebaseUser.uid,
           userName: userName,
-          // 필요한 다른 사용자 정보를 여기에 추가
+
         });
         setIsAuthenticated(true);
+
+
+        // Firestore에서 selectedKeywords 확인
+        const userDoc = await getDoc(doc(firestore, 'users', firebaseUser.uid));
+        if (userDoc.exists() && userDoc.data().selectedKeywords) {
+          setSelectedKeywords(userDoc.data().selectedKeywords);
+          setHasSetInitialKeywords(true);
+          setKeywordModalOpen(false);
+        } else {
+          // 처음 로그인하는 경우
+          setKeywordModalOpen(true);
+        }
+        setIsLoading(false);
       } else {
         // 사용자가 로그아웃한 경우
         setUser(null);
         setIsAuthenticated(false);
+        setHasSetInitialKeywords(false);
+        setSelectedKeywords([]);
       }
     });
 
@@ -197,6 +327,7 @@ const LoginHello = () => {
     }
   }, [user, setProducts, setBrands]);
 
+  // 브릿지 페이지 타이머 설정
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (showBridgePage && selectedProductLink) {
@@ -211,8 +342,14 @@ const LoginHello = () => {
     return <BridgePage />;
   }
 
+  if (isLoading) {
+    return <LoadingPage />;
+  }
+
   if (isRecommendQuestionLoading) return <LoadingPage />;
   if (recommendQuestionError) return <div>error:{recommendQuestionError?.message}</div>;
+  if (isKeywordsListLoading) return <LoadingPage />;
+  if (keywordsListError) return <div>error:{keywordsListError?.message}</div>;
 
   return (
     <div className={responsiveBox}>
@@ -223,12 +360,24 @@ const LoginHello = () => {
             {' '}
             {/* 채팅 기록 컨테이너 */}
             <div style={{ marginTop: '20px' }}>
-              <ChatBotBox
-                text={[`반갑습니다 ${user?.userName}님!`, `${user?.userName}님을 위한 맞춤 상품을 추천해 드릴게요.`]}
-              />
-            </div>
-            <div style={{ marginLeft: '44px' }}>
-              <RecommendBox />
+              {showWelcomeMessage ? (
+                <div className={userBubbleWrap}>
+                  <ChatBotBubble
+                    bubbleContent={`${user?.userName}님, 가입을 환영합니다!\n선택하신 키워드에 따라 OO님께 맞춤형 상품을\n추천해드립니다! 관심 있는 키워드를 골라주세요.`}
+                  />
+                </div>
+              ) : (
+                // ChatBotBox는 키워드 선택 후에만 표시
+                <>
+                  <ChatBotBox
+                    text={[`반갑습니다 ${user?.userName}님!`, `${user?.userName}님을 위한 맞춤 상품을 추천해 드릴게요.`]}
+                  />
+                  <div style={{ marginLeft: '44px' }}>
+                    <RecommendBox />
+                  </div>
+                </>
+
+              )}
             </div>
             {chatHistory.map((chat, index) => (
               <Fragment key={index}>
@@ -271,7 +420,7 @@ const LoginHello = () => {
             ))}
           </div>
         </div>
-        {chatHistory.length === 0 && (
+        {!hasAskedQuestion && (chatHistory.length === 0 || hasSetInitialKeywords) && (
           <motion.div
             drag="x"
             dragConstraints={{ right: 0, left: -550 }}
@@ -283,13 +432,14 @@ const LoginHello = () => {
                 <RecommendedQuestionCard
                   key={index}
                   text={question.question}
-                  onClick={() => handleQuestionSelect(question.question)}
+                  onClick={() => handleRecommendedQuestionSelect(question.question)}
                 />
               ))}
           </motion.div>
         )}
 
-        {chatHistory.length > 0 && (
+
+        {chatHistory.length > 0 && hasAskedQuestion && (
           <Modal height="83vh" initialHeight="25px">
             {selectedBrand ? (
               <BrandPLP />
@@ -298,9 +448,30 @@ const LoginHello = () => {
             ) : null}
           </Modal>
         )}
-        <ChatbotSearchInput />
+        {!isKeywordModalOpen && <ChatbotSearchInput />}
+
 
         {isShareModalOpen && <ShareModal />}
+
+        {!isLoading && isKeywordModalOpen && !hasSetInitialKeywords && (
+          <Modal height="360px" title="관심 키워드">
+            <div className={keywordWrap}>
+              {Array.isArray(keywordsListData) &&
+                keywordsListData.map((item, index) => (
+                  <KeywordCard
+                    key={index}
+                    text={item}
+                    onClick={() => handleKeywordSelect(item)}
+                    isSelected={selectedKeywords.includes(item)}
+                  />
+                ))}
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'center', padding: '0 16px' }}>
+              <Button text={`${selectedKeywords.length}개 선택`} onClick={handleSubmit} width='100%' />
+            </div>
+          </Modal>
+        )}
+
       </div>
     </div>
   );
