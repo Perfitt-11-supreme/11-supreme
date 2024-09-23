@@ -7,8 +7,8 @@ import useSelectItemStore from '../../../../stores/useSelectItemStore';
 const TextFooter = () => {
   const { focus, isSubmit } = useTextSearchStore();
   const { selectProduct, setIsSelected, setSelectComplet } = useSelectItemStore();
-
   const navigate = useNavigate();
+
   const handleNavigate = () => {
     setSelectComplet(true);
     setIsSelected(null);

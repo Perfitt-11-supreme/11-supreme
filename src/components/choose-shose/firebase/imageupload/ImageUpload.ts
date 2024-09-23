@@ -1,10 +1,9 @@
 import { ref, uploadString, getDownloadURL, deleteObject } from 'firebase/storage';
-import { storage } from '../../../../../firebase/firebase';
+import { storage } from '../../../../firebase/firebase';
 
-export const ImageUpload = async (canvasImage: string, onSuccess: (url: string) => void, name?: string) => {
-  // 이미지의 이름 겹침을 방지하기 위한 현재시간 가져오기
+export const ImageUpload = async (canvasImage: string, onSuccess: (url: string) => void, userId?: string) => {
   const timestamp = new Date().getTime();
-  const imagePath = `images/${name ? name : 'uploadImage'}_${timestamp}.png`;
+  const imagePath = `images/${userId ? userId : 'guest'}/${timestamp}.png`;
   // 이미지 저장 위치
   const storageRef = ref(storage, imagePath);
   const dataURL: string = canvasImage;
@@ -18,6 +17,7 @@ export const ImageUpload = async (canvasImage: string, onSuccess: (url: string) 
       // Post 함수
       onSuccess(downloadURL);
 
+      console.log(imagePath);
       // 2초뒤 실행
       setTimeout(() => {
         // 이미지 삭제 함수

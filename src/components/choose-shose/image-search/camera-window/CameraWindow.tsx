@@ -12,13 +12,15 @@ import useImageSearchStore from '../../../../stores/useImageSearchStore';
 import { useEffect, useRef } from 'react';
 import Gallery from '../../gallery/Gallery';
 import useGalleryStore from '../../../../stores/useGalleryStore';
-import { handleCaptureImage, handleImageToBase64, ImageUpload } from './imageupload/ImageUpload';
+import { handleCaptureImage, handleImageToBase64, ImageUpload } from '../../firebase/imageupload/ImageUpload';
 import useHandleImageSearchPost from '../hooks/useHandleImaeSearchPost';
+import useUserStore from '../../../../stores/useUserStore';
 
 const CameraWindow = () => {
   //분석중인지 / 포스트 성공 여부 / 캔버스에 그려진 이미지 / 상태 설정 함수 / 포스트 받은 데이터 저장 함수 /
   const { isAnalyze, isSuccess, setIsState } = useImageSearchStore();
   const { galleryImage, setGalleryImage } = useGalleryStore();
+  const userId = useUserStore(state => state.user?.uid);
   const handleImageSearchPost = useHandleImageSearchPost(isSuccess);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -33,9 +35,13 @@ const CameraWindow = () => {
       handleCaptureImage(canvas, video, dataURL => {
         // handleCaptureImage 에서 나온 base64기반 이미지로 ImageUplad 실행
         if (dataURL && dataURL !== 'data:,') {
-          ImageUpload(dataURL, downloadURL => {
-            handleImageSearchPost.mutate(downloadURL);
-          });
+          ImageUpload(
+            dataURL,
+            downloadURL => {
+              handleImageSearchPost.mutate(downloadURL);
+            },
+            userId && userId
+          );
         }
       });
     }
@@ -81,7 +87,7 @@ const CameraWindow = () => {
             downloadURL => {
               handleImageSearchPost.mutate(downloadURL);
             },
-            galleryImage.name
+            userId && userId
           )
         )
         // galleryimage에 저장된 이미지를 지우기

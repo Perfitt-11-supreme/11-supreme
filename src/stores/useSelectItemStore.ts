@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { TProduct } from '../types/product';
+import { persist } from 'zustand/middleware';
 
 type SelectItemStore = {
   isSelected: number | null;
@@ -8,15 +9,37 @@ type SelectItemStore = {
   setSelectProduct: (selectProduct: TProduct | null) => void;
   selectComplet: boolean;
   setSelectComplet: (selectComplet: boolean) => void;
+  resetItem: () => void;
 };
 
-const useSelectItemStore = create<SelectItemStore>(set => ({
-  isSelected: null,
-  setIsSelected: isSelected => set({ isSelected }),
-  selectProduct: null,
-  setSelectProduct: selectProduct => set({ selectProduct }),
-  selectComplet: false,
-  setSelectComplet: selectComplet => set({ selectComplet }),
-}));
+const useSelectItemStore = create(
+  persist<SelectItemStore>(
+    set => ({
+      isSelected: null,
+      setIsSelected: isSelected => {
+        set({ isSelected });
+      },
+      selectProduct: null,
+      setSelectProduct: selectProduct => {
+        set({ selectProduct });
+      },
+      selectComplet: false,
+      setSelectComplet: selectComplet => {
+        set({ selectComplet });
+      },
+      resetItem: () => {
+        set({
+          isSelected: null,
+          selectProduct: null,
+          selectComplet: false,
+        });
+      },
+    }),
+    {
+      name: 'selectItemStorage',
+      getStorage: () => localStorage,
+    }
+  )
+);
 
 export default useSelectItemStore;
