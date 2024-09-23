@@ -12,33 +12,14 @@ import ItemCard from '../../itemcard/ItemCard';
 import useTextSearchStore from '../../../../stores/useTextSearchStore';
 import useProductsStore from '../../../../stores/useProductsStore';
 import IsLoading from '../../isLoading/IsLoading';
-import { useMutation } from '@tanstack/react-query';
-import { textShoseSearchAPI } from '../../../../api/searchRequests';
-import { TProduct } from '../../../../types/product';
+import { useTextSearchHooks } from '../hooks/useTextSearchHooks';
+import { useHandleTextSearchPost } from '../hooks/useHandleTextSearchPost';
 
 const MainContainer = () => {
-  const { text, postText, focus, record, isLoading, setState, handleCLickRecentRecord } = useTextSearchStore();
-  const { products, setProducts } = useProductsStore();
-
-  const handleTextSearchPost = useMutation({
-    mutationFn: (data: string) => {
-      setState({ isLoading: true, focus: false });
-      return textShoseSearchAPI(data);
-    },
-    onSuccess: response => {
-      console.log('키워드 전송 성공');
-
-      const products: TProduct[] = response.data.products;
-      setProducts(products);
-      setState({ isLoading: false, postText: text, isSubmit: true });
-    },
-    onError: error => {
-      console.error('이미지 서칭 실패:', error);
-    },
-    onSettled: () => {
-      console.log('결과에 관계없이 무언가 실행됨');
-    },
-  });
+  const { postText, focus, textRecord, isLoading, setState, clearTextRecord } = useTextSearchStore();
+  const { products } = useProductsStore();
+  const { handleClickRecord } = useTextSearchHooks();
+  const { handleTextSearchPost } = useHandleTextSearchPost();
 
   return (
     <>
@@ -48,29 +29,29 @@ const MainContainer = () => {
             <div className={MainContainer_Container}>
               <div className={MainContainer_Header}>
                 <div className={MainContainer_RecentSearches}>최근 검색어</div>
-                <div
-                  className={MainContainer_Remove}
-                  onMouseDown={() => setState({ record: [], postText: '', remove: true })}
-                >
+                <div className={MainContainer_Remove} onMouseDown={() => clearTextRecord()}>
                   전체삭제
                 </div>
               </div>
-              {record.length > 0 ? (
-                record.map((text, index) => (
-                  <div
+              {textRecord.length > 0 ? (
+                textRecord.map((text, index) => (
+                  <p
                     key={index}
                     className={MainContainer_RecentRecord}
                     onClick={e => {
                       e.preventDefault();
-                      handleCLickRecentRecord(text);
+                      setState({ text });
+
                       if (text !== postText) {
+                        handleClickRecord(text);
                         handleTextSearchPost.mutate(text);
+                      } else {
+                        setState({ focus: false });
                       }
-                      setState({ focus: false });
                     }}
                   >
                     {text}
-                  </div>
+                  </p>
                 ))
               ) : (
                 <div className={MainContainer_NoRecord}>최근 검색어가 없습니다.</div>

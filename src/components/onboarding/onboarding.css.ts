@@ -4,8 +4,8 @@ export const container = style({
   display: 'flex',
   flexDirection: 'column',
   overflow: 'hidden',
-  width: '100vw',
-  height: '100vh',
+  width: '100%',
+  height: '100%',
   position: 'relative',
 });
 
@@ -42,5 +42,5 @@ export const slide0 = style({
 });
 
 export const slide1 = style({
-  transform: 'translateX(-100vw)',
+  transform: 'translateX(-50%)',
 });

@@ -1,24 +1,23 @@
+import { back_arrow } from '../../../assets/assets';
+import { useEffect } from 'react';
+import { responsiveBox } from '../../../styles/responsive.css';
 import MainContainer from './mainContainder/MainContainer';
 import TextFooter from './textfooter/TextFooter';
 import SearchBox from './search-box/SearchBox';
-import { back_arrow } from '../../../assets/assets';
 import Header from '../../common/header/Header';
-import { useEffect } from 'react';
+// 전역상태관리
 import useProductStore from '../../../stores/useProductsStore';
 import useTextSearchStore from '../../../stores/useTextSearchStore';
-import { responsiveBox } from '../../../styles/responsive.css';
 import useSelectItemStore from '../../../stores/useSelectItemStore';
 
 const TextSearch = () => {
   const { setProducts } = useProductStore();
-  const { setState } = useTextSearchStore();
-  const { setIsSelected, setSelectProduct, setSelectComplet } = useSelectItemStore();
+  const { resetState } = useTextSearchStore();
+  const { resetItem } = useSelectItemStore();
   useEffect(() => {
     setProducts([]);
-    setState({ focus: true, text: '', postText: '', remove: false, isLoading: true, isSubmit: false });
-    setIsSelected(null);
-    setSelectProduct(null);
-    setSelectComplet(false);
+    resetState();
+    resetItem();
   }, []);
 
   return (
