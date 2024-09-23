@@ -26,6 +26,7 @@ type ChatItem = {
   products: Product[]; // 제품 배열
   brands: Brand[] | null;
   imageUrl?: string;
+  timestamp: Date;
 }
 
 
@@ -77,6 +78,7 @@ const ShareModal = () => {
           console.error('데이터가 없습니다.');
           setProductData(null); // 데이터가 없을 경우 null로 설정
         }
+        console.log(data)
       }, (error) => {
         console.error('데이터 불러오기 에러:', error);
       });
@@ -128,7 +130,13 @@ const ShareModal = () => {
                   )
                 ) : null}
               </p>
-              <p className={shareDate}>2024년 10월 30일</p>
+              <p className={shareDate}>
+                {productData?.timestamp ? new Date(productData.timestamp).toLocaleDateString('ko-KR', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                }) : null}
+              </p>
             </div>
             <motion.button
               className={copyStatus === 'default' ? shareModalButton : copyingButton}
