@@ -20,7 +20,7 @@ import {
 type SizeRecommendationCardProps = {
   product: TProduct | null;
   isHeartFilled?: boolean;
-  onCardClick: () => void; // 클릭 이벤트를 처리하는 함수
+  onCardClick?: () => void; // 클릭 이벤트를 처리하는 함수
 };
 
 const SizeRecommendationCard = ({ product, isHeartFilled = false, onCardClick }: SizeRecommendationCardProps) => {
@@ -46,7 +46,7 @@ const SizeRecommendationCard = ({ product, isHeartFilled = false, onCardClick }:
       className={sizeRecommendationCardBox}
       onClick={() => {
         window.open(product.link, '_blank'); // 새 창에서 링크 열기
-        onCardClick(); // 클릭한 시간을 기록하는 함수 호출
+        onCardClick?.(); // 클릭한 시간을 기록하는 함수 호출 (옵셔널 체이닝 처리)
       }}
     >
       <div className={sizeRecommendationThumbnail}>
