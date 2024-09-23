@@ -1,23 +1,23 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { onValue, push, ref, set } from 'firebase/database';
+import { onValue, ref } from 'firebase/database';
 import { doc, getDoc, getFirestore } from 'firebase/firestore';
-import { getDownloadURL, getStorage, ref as storageRef, uploadBytes } from 'firebase/storage';
 import { motion } from 'framer-motion';
 import { Fragment, useEffect, useRef, useState } from 'react';
-import { chatCompletionsAPI, recommendQuestionAPI } from '../../api/chatRequests';
-import { ImageShoseSearchAPI } from '../../api/searchRequests';
+import { recommendQuestionAPI } from '../../api/chatRequests';
 import { hamburger_menu } from '../../assets/assets';
 import { database } from '../../firebase/firebase';
+import { useChatCompletion } from '../../hooks/useChatCompletionHook';
 import BridgePage from '../../pages/bridge-page/bridgePage';
 import LoadingPage from '../../pages/loading-page/loadingPage';
 import useBrandStore from '../../stores/useBrandStore';
+import useChatStore from '../../stores/useChatStore';
 import useModalStore from '../../stores/useModalStore';
 import useProductDetailStore from '../../stores/useProductDetailStore';
 import useProductStore, { ProductStoreState } from '../../stores/useProductsStore';
 import useUserStore from '../../stores/useUserStore';
 import { responsiveBox } from '../../styles/responsive.css';
-import { TProduct } from '../../types/product';
+import { ChatItem } from '../../types/chatItem';
 import BrandPLP from '../chatbot/brand-plp/BrandPLP';
 import BrandRecommendation from '../chatbot/brand-recommendation/BrandRecommendation';
 import ChatBotBubble from '../chatbot/chatbot-bubble/ChatBotBubble';
@@ -47,32 +47,20 @@ type Brand = {
   thumbnail: string;
 };
 
-type ChatItem = {
-  id: string;
-  shareId: string;
-  userQuestion: string;
-  botResponse: string;
-  products: TProduct[] | null;
-  brands: Brand[] | null;
-  keywords: string;
-  imageUrl?: string;
-  timestamp: string;
-};
+
 
 const LoginHello = () => {
   const { setProducts } = useProductStore.getState();
   const { selectedBrand, setBrands, setSelectedBrand } = useBrandStore();
   const { isShareModalOpen } = useModalStore();
   const { showBridgePage, selectedProductLink } = useProductDetailStore();
-  const [currentKeywords, setCurrentKeywords] = useState<string>('');
-  const [chatHistory, setChatHistory] = useState<ChatItem[]>([]);
   const [showProductRecommendation, setShowProductRecommendation] = useState(false);
   const [selectedChatItemId, setSelectedChatItemId] = useState<string | null>(null);
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { user, setUser } = useUserStore();
-
-
+  const { chatHistory, setCurrentKeywords, setChatHistory } = useChatStore();
+  const { handleQuestionSelect } = useChatCompletion();
 
   // 추천 질문 불러오는 함수
   const {
@@ -96,101 +84,6 @@ const LoginHello = () => {
     refetchOnWindowFocus: false,
   });
 
-  // 채팅 응답 함수
-  const chatCompletionsMutation = useMutation({
-    mutationFn: (question: string) => chatCompletionsAPI({ message: { content: question } }),
-    onSuccess: async (response, question) => {
-      console.log('채팅 응답 성공:', response);
-
-      const chatItemWithoutIds = {
-        userQuestion: question,
-        botResponse: response.data.message,
-        products: response.data.products || null,
-        brands: response.data.brands || null,
-        keywords: question,
-        timestamp: new Date().toISOString(),
-      };
-
-      const shareId = await saveSharedChatHistory(chatItemWithoutIds);
-
-      const newChatItem: ChatItem = {
-        id: push(ref(database, 'chatHistory')).key || '',
-        shareId,
-        ...chatItemWithoutIds,
-      };
-
-      if (user?.uid) {
-        push(ref(database, `chatHistory/${user.uid}`), newChatItem);
-      }
-      setProducts(response.data.products);
-      setBrands(response.data.brands);
-      setCurrentKeywords(question);
-
-      // Update chat history state
-      setChatHistory(prevHistory => [...prevHistory, newChatItem]);
-    },
-    onError: error => {
-      console.error('채팅 응답 에러:', error);
-    },
-  });
-
-  const imageSearchMutation = useMutation({
-    mutationFn: async (file: File) => {
-      const storage = getStorage();
-      const imageRef = storageRef(storage, `images/${file.name}`);
-      await uploadBytes(imageRef, file);
-      const imageUrl = await getDownloadURL(imageRef);
-
-      const formData = new FormData();
-      formData.append('image', file);
-      const response = await ImageShoseSearchAPI(formData);
-
-      return { response, imageUrl };
-    },
-    onSuccess: async ({ response, imageUrl }) => {
-      console.log('이미지 검색 성공:', response);
-
-      const chatItemWithoutIds = {
-        userQuestion: '',
-        botResponse: '이미지 검색 결과입니다.',
-        products: response.data.products || null,
-        brands: response.data.brands || null,
-        keywords: '이미지 검색',
-        imageUrl: imageUrl,
-        timestamp: new Date().toISOString(),
-      };
-
-      const shareId = await saveSharedChatHistory(chatItemWithoutIds);
-
-      const newChatItem: ChatItem = {
-        id: push(ref(database, 'chatHistory')).key || '',
-        shareId,
-        ...chatItemWithoutIds,
-      };
-
-      if (user?.uid) {
-        push(ref(database, `chatHistory/${user.uid}`), newChatItem);
-      }
-      setProducts(response.data.products);
-      setBrands(response.data.brands);
-      setCurrentKeywords('이미지 검색');
-
-      // Update chat history state
-      setChatHistory(prevHistory => [...prevHistory, newChatItem]);
-    },
-    onError: error => {
-      console.error('이미지 검색 에러:', error);
-    },
-  });
-
-  const handleImageUpload = (file: File) => {
-    imageSearchMutation.mutate(file);
-  };
-
-  const handleQuestionSelect = (question: string) => {
-    setCurrentKeywords(question);
-    chatCompletionsMutation.mutate(question);
-  };
 
   // 채팅 기록 변경 시 스크롤을 맨 아래로 이동
   useEffect(() => {
@@ -223,16 +116,7 @@ const LoginHello = () => {
     return selectedChat ? selectedChat.keywords : '';
   };
 
-  //공유용 채팅 히스토리 저장하는 함수
-  const saveSharedChatHistory = async (chatItem: Omit<ChatItem, 'id' | 'shareId'>): Promise<string> => {
-    const shareId = push(ref(database, 'sharedChatHistory')).key;
-    if (shareId) {
-      await set(ref(database, `sharedChatHistory/${shareId}`), chatItem);
-      console.log('공유용 채팅 히스토리 저장 성공:', shareId);
-      return shareId;
-    }
-    throw new Error('Failed to generate shareId');
-  };
+
 
   useEffect(() => {
     const auth = getAuth();
@@ -414,7 +298,7 @@ const LoginHello = () => {
             ) : null}
           </Modal>
         )}
-        <ChatbotSearchInput chatCompletionsMutation={chatCompletionsMutation} onImageUpload={handleImageUpload} />
+        <ChatbotSearchInput />
 
         {isShareModalOpen && <ShareModal />}
       </div>
