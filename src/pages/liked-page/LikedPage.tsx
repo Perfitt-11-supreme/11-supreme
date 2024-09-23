@@ -59,6 +59,74 @@ const LikedPage = () => {
     setProductOrBrand(buttonType);
   };
 
+  // Firestore에서 liked 필드 데이터를 가져오기
+  const fetchLikedData = async () => {
+    try {
+      const docRef = doc(db, 'myproducts', 'FS7MVRUbVXZ9j6GZnrbF'); // liked는 문서의 필드
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const data = docSnap.data(); // 문서의 데이터를 가져옴
+        const likedData = data?.liked; // liked 필드에 접근
+        console.log('Firestore liked data:', likedData); // Firestore에서 가져온 liked 필드 확인
+
+        if (likedData && likedData.products && Object.keys(likedData.products).length > 0) {
+          setProductsData(likedData.products); // 비어있지 않은 경우에만 상태 업데이트
+        } else {
+          console.log('No products found in Firestore liked field');
+          setProductsData({}); // 비어있을 때 빈 객체 설정
+        }
+
+        if (likedData.brands && Object.keys(likedData.brands).length > 0) {
+          setBrandsData(likedData.brands); // brands 상태 업데이트
+        } else {
+          console.log('No brands found in Firestore liked field');
+          setBrandsData(null); // 비어있을 때 null로 설정
+        }
+      } else {
+        console.log('myproducts 문서가 존재하지 않음');
+        setProductsData({}); // 문서가 없을 때 빈 객체 설정
+        setBrandsData(null); // 문서가 없을 때 빈 객체로 설정
+      }
+    } catch (error) {
+      console.error('Error fetching Firestore data:', error);
+      setProductsData({}); // 에러 발생 시에도 빈 객체 설정
+      setBrandsData(null); // 문서가 없을 때 빈 객체로 설정
+    }
+  };
+
+  useEffect(() => {
+    fetchLikedData(); // 컴포넌트 마운트 시 데이터 가져오기
+  }, []);
+
+  // 브랜드 필터링
+  const [logos, setLogos] = useState<{ name: string; url: string }[]>([]);
+
+  useEffect(() => {
+    // 'logos' 폴더 안의 파일 목록 가져오기
+    const fetchLogos = async () => {
+      const logosRef = ref(storage, 'logos');
+      const result = await listAll(logosRef);
+      const logoPromises = result.items.map(async item => {
+        const url = await getDownloadURL(item);
+        return {
+          name: item.name.replace('.svg', ''), // 파일 이름에서 확장자 제거
+          url: url,
+        };
+      });
+      const logoList = await Promise.all(logoPromises);
+      setLogos(logoList);
+    };
+
+    fetchLogos();
+  }, []);
+
+  // 브랜드 이름과 로고를 매칭하는 함수
+  const getLogoUrl = (brandNameEn: string) => {
+    const logo = logos.find(logo => logo.name.toLowerCase() === brandNameEn.toLowerCase());
+    return logo ? logo.url : ''; // 로고가 없을 경우 빈 문자열 반환
+  };
+
   return (
     <>
       <section className={likedAndViewedHistoryCointainer}>
