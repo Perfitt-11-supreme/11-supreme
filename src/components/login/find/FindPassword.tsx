@@ -3,7 +3,7 @@ import Button from '../../common/button/Button';
 import Header from '../../common/header/Header';
 import { errorMessage, signupFormContainer, signupFormGap, submitbuttonContainer } from '../../signup/signup.css';
 import { accountFindBox, accountFindButton } from '../emaillogin/emailLogin.css';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import SignUpInput from '../../signup/infoInput/signupinput/SignUpInput';
 import { foundResultStyle, fullContainer } from '../login.css';
 import { sendPasswordResetEmail } from 'firebase/auth';
@@ -11,8 +11,6 @@ import { db, auth } from '../../../firebase/firebase';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { back_arrow } from '../../../assets/assets';
 import { responsiveBox } from '../../../styles/responsive.css';
-import SignUpInfoModal from '../../signup/infoInput/SignUpInfoModal';
-import SignUpSizeModal from '../../signup/sizeinput/SignUpSizeModal';
 
 const FindPassword = () => {
   type FormErrors = {
@@ -92,36 +90,9 @@ const FindPassword = () => {
     }
   };
 
-  //모달 외부 클릭 시 모달 닫기
-  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
-  const [isSizeModalOpen, setIsSizeModalOpen] = useState(false);
-  const infoModalRef = useRef<HTMLDivElement | null>(null);
-  const sizeModalRef = useRef<HTMLDivElement | null>(null); //ref 생성
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (isInfoModalOpen && infoModalRef.current && !infoModalRef.current.contains(event.target as Node)) {
-        setIsInfoModalOpen(false);
-      }
-      if (isSizeModalOpen && sizeModalRef.current && !sizeModalRef.current.contains(event.target as Node)) {
-        setIsSizeModalOpen(false);
-      }
-    };
-
-    if (isInfoModalOpen || isSizeModalOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isInfoModalOpen, isSizeModalOpen]);
-
   const accountFindButtons = [
-    { text: '이메일 로그인', path: () => navigate('/emaillogin') },
     { text: '이메일 찾기', path: () => navigate('/findemail') },
-    { text: '회원가입', path: () => setIsInfoModalOpen(true) },
+    { text: '이메일 로그인', path: () => navigate('/emaillogin') },
   ];
 
   return (
@@ -158,7 +129,7 @@ const FindPassword = () => {
               </div>
 
               <div className={submitbuttonContainer}>
-                <Button text="비밀번호 찾기" onClick={handleFindPassword} />
+                <Button type="button" text="비밀번호 찾기" onClick={handleFindPassword} />
               </div>
 
               {successMessage && <div className={foundResultStyle}>{successMessage}</div>}
@@ -174,22 +145,6 @@ const FindPassword = () => {
             </div>
           </div>
         </div>
-        {isInfoModalOpen && (
-          <div ref={infoModalRef}>
-            <SignUpInfoModal
-              isOpen={isInfoModalOpen}
-              onNext={() => {
-                setIsInfoModalOpen(false);
-                setIsSizeModalOpen(true);
-              }}
-            />
-          </div>
-        )}
-        {isSizeModalOpen && (
-          <div ref={sizeModalRef}>
-            <SignUpSizeModal isOpen={isSizeModalOpen} onClose={() => navigate('/hello')} />
-          </div>
-        )}
       </div>
     </>
   );

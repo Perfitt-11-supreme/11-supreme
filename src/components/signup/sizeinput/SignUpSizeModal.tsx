@@ -1,21 +1,26 @@
-import { doc, setDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { USER_COLLECTION } from '../../../firebase/firebase';
 import useUserStore from '../../../stores/useUserStore';
 import Button from '../../common/button/Button';
 import Modal from '../../common/modal/Modal';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import ToastMessage from '../../toastmessage/toastMessage';
 import {
   errorMessage,
   infosubmitContainer,
   signupComponentContainer,
+  signupModalContainer,
   signupSizeTypeContainer,
   signupSizeTypeLabel,
+  signupWrap,
 } from '../signup.css';
 import InfoBox from './infobox/InfoBox';
 import ButtonBlank from './sizetypebutton/buttonblank/ButtonBlank';
 import ButtonFill from './sizetypebutton/buttonfill/ButtonFill';
 import UsualSizeSelect from './usualsizeselect/UsualSizeSelect';
+import { AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import { useChatCompletion } from '../../../hooks/useChatCompletionHook';
 
 type SignUpSizeModalProps = {
   isOpen: boolean; //부모로부터 전달받은 isModalOpen 상태
@@ -33,6 +38,7 @@ const SignUpSizeModal: React.FC<SignUpSizeModalProps> = ({ isOpen, onClose }) =>
   }>({});
   const [toastMessage, setToastMessage] = useState<{ message: string; duration: number } | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const { handleNewChat } = useChatCompletion();
 
   const validate = () => {
     const newErrors: { sizeType?: string; shoeSize?: string } = {};
@@ -51,6 +57,8 @@ const SignUpSizeModal: React.FC<SignUpSizeModalProps> = ({ isOpen, onClose }) =>
     setShoeSize(value);
   };
 
+  const navigate = useNavigate();
+
   const handleSubmit = async () => {
     const validationErrors = validate();
     setErrors(validationErrors);
@@ -66,8 +74,8 @@ const SignUpSizeModal: React.FC<SignUpSizeModalProps> = ({ isOpen, onClose }) =>
         setUser(realUser);
 
         //Firestore에 uid를 ID로 사용자 등록
-        const userDoc = doc(USER_COLLECTION, realUser.uid);
-        await setDoc(userDoc, {
+        const userDocRef = doc(USER_COLLECTION, realUser.uid);
+        await setDoc(userDocRef, {
           email: realUser.email,
           userName: realUser.userName,
           gender: realUser.gender,
@@ -77,7 +85,17 @@ const SignUpSizeModal: React.FC<SignUpSizeModalProps> = ({ isOpen, onClose }) =>
           uid: realUser.uid,
         });
 
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+          console.log('회원가입한 사용자:', userDoc.data());
+        } else {
+          console.log('회원가입한 사용자 정보를 찾을 수 없습니다.');
+        }
+
+        const newChatId = await handleNewChat();
+
         onClose();
+        navigate(`/hello/${newChatId}`, { replace: true });
       } catch (error) {
         console.error('사용자 등록 실패:', error);
         setToastMessage({ message: '다시 시도해 주세요.', duration: 3000 });
@@ -118,37 +136,45 @@ const SignUpSizeModal: React.FC<SignUpSizeModalProps> = ({ isOpen, onClose }) =>
   return (
     <div>
       {toastMessage && <ToastMessage message={toastMessage.message} duration={toastMessage.duration} />}
-      <Modal title="회원가입" height={modalHeight} initialHeight="492px" animateHeightOnClick={false}>
-        <div className={signupComponentContainer}>
-          <div className={signupSizeTypeContainer}>
-            <label className={signupSizeTypeLabel}>사이즈 타입</label>
-            <div style={{ display: 'flex', gap: '8px' }}>
-              {sizeTypes.map((sizeType, index) =>
-                selectedIndex === index ? (
-                  <ButtonFill key={index} text={sizeType} onClick={() => handleTypeSelect(index)} />
-                ) : (
-                  <ButtonBlank key={index} text={sizeType} onClick={() => handleTypeSelect(index)} />
-                )
-              )}
-            </div>
-            {errors.sizeType && <div className={errorMessage}>{errors.sizeType}</div>}
-          </div>
-        </div>
+      <AnimatePresence>
+        {isOpen && (
+          <div className={signupWrap} onClick={onClose}>
+            <div className={signupModalContainer} onClick={e => e.stopPropagation()}>
+              <Modal title="회원가입" height={modalHeight} initialHeight="492px" animateHeightOnClick={false}>
+                <div className={signupComponentContainer}>
+                  <div className={signupSizeTypeContainer}>
+                    <label className={signupSizeTypeLabel}>사이즈 타입</label>
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      {sizeTypes.map((sizeType, index) =>
+                        selectedIndex === index ? (
+                          <ButtonFill key={index} text={sizeType} onClick={() => handleTypeSelect(index)} />
+                        ) : (
+                          <ButtonBlank key={index} text={sizeType} onClick={() => handleTypeSelect(index)} />
+                        )
+                      )}
+                    </div>
+                    {errors.sizeType && <div className={errorMessage}>{errors.sizeType}</div>}
+                  </div>
+                </div>
 
-        <div className={signupComponentContainer} style={{ marginTop: '24px' }}>
-          <UsualSizeSelect label="평소 신는 스니커즈 사이즈" value={shoeSize} onChange={handleSizeSelect} />
-        </div>
-        {errors.shoeSize && (
-          <div className={errorMessage} style={{ marginLeft: '16px' }}>
-            {errors.shoeSize}
+                <div className={signupComponentContainer} style={{ marginTop: '24px' }}>
+                  <UsualSizeSelect label="평소 신는 스니커즈 사이즈" value={shoeSize} onChange={handleSizeSelect} />
+                </div>
+                {errors.shoeSize && (
+                  <div className={errorMessage} style={{ marginLeft: '16px' }}>
+                    {errors.shoeSize}
+                  </div>
+                )}
+
+                <div className={infosubmitContainer}>
+                  <InfoBox />
+                  <Button type="button" text="가입 완료" onClick={handleSubmit} />
+                </div>
+              </Modal>
+            </div>
           </div>
         )}
-
-        <div className={infosubmitContainer}>
-          <InfoBox />
-          <Button text="가입 완료" onClick={handleSubmit} />
-        </div>
-      </Modal>
+      </AnimatePresence>
     </div>
   );
 };

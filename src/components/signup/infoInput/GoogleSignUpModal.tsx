@@ -3,16 +3,25 @@ import Button from '../../common/button/Button';
 import DateSelect from './signupdateselect/SignUpDateSelect';
 import Modal from '../../common/modal/Modal';
 import Select from './signupselect/SignUpSelect';
-import { errorMessage, signupFormContainer, signupFormGap, submitbuttonContainer } from '../signup.css';
+import {
+  errorMessage,
+  signupFormContainer,
+  signupFormGap,
+  signupModalContainer,
+  signupWrap,
+  submitbuttonContainer,
+} from '../signup.css';
 import ToastMessage from '../../toastmessage/toastMessage';
 import useUserStore from '../../../stores/useUserStore';
+import { AnimatePresence, motion } from 'framer-motion';
 
 type GoogleSignUpModalProps = {
   isOpen: boolean; //부모로부터 전달받은 isModalOpen 상태
   onNext: () => void;
+  onClose: () => void;
 };
 
-const GoogleSignUpModal: React.FC<GoogleSignUpModalProps> = ({ isOpen, onNext }) => {
+const GoogleSignUpModal: React.FC<GoogleSignUpModalProps> = ({ isOpen, onNext, onClose }) => {
   const { setUser, user } = useUserStore();
 
   const [birthDate, setBirthDate] = useState({ year: '', month: '', day: '' });
@@ -46,8 +55,9 @@ const GoogleSignUpModal: React.FC<GoogleSignUpModalProps> = ({ isOpen, onNext })
           gender: gender,
         };
         setUser(updatedGoogleUser);
-
-        onNext();
+        setTimeout(() => {
+          onNext();
+        }, 1000);
       } catch (error) {
         console.error('상태 업데이트 실패:', error);
         setToastMessage({ message: '다시 시도해 주세요.', duration: 3000 });
@@ -86,46 +96,59 @@ const GoogleSignUpModal: React.FC<GoogleSignUpModalProps> = ({ isOpen, onNext })
   }, [isOpen]);
 
   return (
-    <>
-      <div>
-        {toastMessage && <ToastMessage message={toastMessage.message} duration={toastMessage.duration} />}
-        <Modal title="회원가입" height={modalHeight} initialHeight="357px" animateHeightOnClick={false}>
-          <div className={signupFormContainer}>
-            <div>
-              <Select
-                id="gender"
-                label="성별"
-                options={[
-                  { value: '', label: '성별을 선택해 주세요' },
-                  { value: 'male', label: '남성' },
-                  { value: 'female', label: '여성' },
-                ]}
-                value={gender}
-                onChange={e => setGender(e.target.value)}
-              />
-              {errors.gender && <div className={errorMessage}>{errors.gender}</div>}
-            </div>
+    <div>
+      {toastMessage && <ToastMessage message={toastMessage.message} duration={toastMessage.duration} />}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            className={signupWrap}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            onClick={onClose}
+          >
+            <div className={signupModalContainer} onClick={e => e.stopPropagation()}>
+              <Modal title="회원가입" height={modalHeight} initialHeight="357px" animateHeightOnClick={false}>
+                <div className={signupFormContainer}>
+                  <div>
+                    <Select
+                      id="gender"
+                      label="성별"
+                      options={[
+                        { value: '', label: '성별을 선택해 주세요' },
+                        { value: 'male', label: '남성' },
+                        { value: 'female', label: '여성' },
+                      ]}
+                      value={gender}
+                      onChange={e => setGender(e.target.value)}
+                    />
+                    {errors.gender && <div className={errorMessage}>{errors.gender}</div>}
+                  </div>
 
-            <div className={signupFormGap}>
-              <DateSelect
-                label="생년월일"
-                value={{
-                  year: birthDate.year,
-                  month: birthDate.month,
-                  day: birthDate.day,
-                }}
-                onChange={(field, value) => setBirthDate(prev => ({ ...prev, [field]: value }))}
-              />
-              {errors.birthDate && <div className={errorMessage}>{errors.birthDate}</div>}
-            </div>
+                  <div className={signupFormGap}>
+                    <DateSelect
+                      label="생년월일"
+                      value={{
+                        year: birthDate.year,
+                        month: birthDate.month,
+                        day: birthDate.day,
+                      }}
+                      onChange={(field, value) => setBirthDate(prev => ({ ...prev, [field]: value }))}
+                    />
+                    {errors.birthDate && <div className={errorMessage}>{errors.birthDate}</div>}
+                  </div>
 
-            <div className={submitbuttonContainer}>
-              <Button text="다음" width="100%" onClick={handleNextPage} />
+                  <div className={submitbuttonContainer}>
+                    <Button type="button" text="다음" width="100%" onClick={handleNextPage} />
+                  </div>
+                </div>
+              </Modal>
             </div>
-          </div>
-        </Modal>
-      </div>
-    </>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 };
 

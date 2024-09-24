@@ -2,7 +2,14 @@ import { useEffect, useState } from 'react';
 import useUserStore from '../../../stores/useUserStore';
 import ToastMessage from '../../toastmessage/toastMessage';
 import Modal from '../../common/modal/Modal';
-import { errorMessage, signupFormContainer, signupFormGap, submitbuttonContainer } from '../signup.css';
+import {
+  errorMessage,
+  signupFormContainer,
+  signupFormGap,
+  signupModalContainer,
+  signupWrap,
+  submitbuttonContainer,
+} from '../signup.css';
 import SignUpInput from './signupinput/SignUpInput';
 import SignUpSelect from './signupselect/SignUpSelect';
 import SignUpDateSelect from './signupdateselect/SignUpDateSelect';
@@ -11,13 +18,15 @@ import { auth, USER_COLLECTION } from '../../../firebase/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { FirebaseError } from 'firebase/app';
 import { getDocs, query, where } from 'firebase/firestore';
+import { AnimatePresence, motion } from 'framer-motion';
 
 type SignUpInfoModalProps = {
   isOpen: boolean; //부모로부터 전달받은 isModalOpen 상태
   onNext: () => void;
+  onClose: () => void;
 };
 
-const SignUpInfoModal: React.FC<SignUpInfoModalProps> = ({ isOpen, onNext }) => {
+const SignUpInfoModal: React.FC<SignUpInfoModalProps> = ({ isOpen, onNext, onClose }) => {
   const { setUser } = useUserStore();
 
   const [userName, setUserName] = useState('');
@@ -78,7 +87,6 @@ const SignUpInfoModal: React.FC<SignUpInfoModalProps> = ({ isOpen, onNext }) => 
             // password: password,
           };
           setUser(existingEmailUser);
-
           onNext();
         } else {
           //쌩 신규 사용자인 경우
@@ -101,8 +109,9 @@ const SignUpInfoModal: React.FC<SignUpInfoModalProps> = ({ isOpen, onNext }) => 
             // password: password,
           };
           setUser(newEmailUser);
-
-          onNext();
+          setTimeout(() => {
+            onNext();
+          }, 1000);
         }
       } catch (error) {
         if (error instanceof FirebaseError) {
@@ -151,78 +160,93 @@ const SignUpInfoModal: React.FC<SignUpInfoModalProps> = ({ isOpen, onNext }) => 
   return (
     <div>
       {toastMessage && <ToastMessage message={toastMessage.message} duration={toastMessage.duration} />}
-      <Modal title="회원가입" height={modalHeight} initialHeight="0px" animateHeightOnClick={false}>
-        <div className={signupFormContainer}>
-          <SignUpInput
-            label="아이디"
-            type="email"
-            name="email"
-            id="email"
-            placeholder="이메일을 입력해 주세요"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-          />
-          {errors.email && <div className={errorMessage}>{errors.email}</div>}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            className={signupWrap}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            onClick={onClose}
+          >
+            <div className={signupModalContainer} onClick={e => e.stopPropagation()}>
+              <Modal title="회원가입" height={modalHeight} initialHeight="0px" animateHeightOnClick={false}>
+                <div className={signupFormContainer}>
+                  <SignUpInput
+                    label="아이디"
+                    type="email"
+                    name="email"
+                    id="email"
+                    placeholder="이메일을 입력해 주세요"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                  />
+                  {errors.email && <div className={errorMessage}>{errors.email}</div>}
 
-          <div className={signupFormGap}>
-            <SignUpInput
-              label="비밀번호"
-              type="password"
-              name="password"
-              id="password"
-              placeholder="비밀번호를 입력해 주세요"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-            />
-            {errors.password && <div className={errorMessage}>{errors.password}</div>}
-          </div>
+                  <div className={signupFormGap}>
+                    <SignUpInput
+                      label="비밀번호"
+                      type="password"
+                      name="password"
+                      id="password"
+                      placeholder="비밀번호를 입력해 주세요"
+                      value={password}
+                      onChange={e => setPassword(e.target.value)}
+                    />
+                    {errors.password && <div className={errorMessage}>{errors.password}</div>}
+                  </div>
 
-          <div className={signupFormGap}>
-            <SignUpInput
-              label="이름"
-              type="text"
-              name="userName"
-              id="userName"
-              placeholder="이름을 입력해 주세요"
-              value={userName}
-              onChange={e => setUserName(e.target.value)}
-            />
-            {errors.userName && <div className={errorMessage}>{errors.userName}</div>}
-          </div>
+                  <div className={signupFormGap}>
+                    <SignUpInput
+                      label="이름"
+                      type="text"
+                      name="userName"
+                      id="userName"
+                      placeholder="이름을 입력해 주세요"
+                      value={userName}
+                      onChange={e => setUserName(e.target.value)}
+                    />
+                    {errors.userName && <div className={errorMessage}>{errors.userName}</div>}
+                  </div>
 
-          <div className={signupFormGap}>
-            <SignUpSelect
-              id="gender"
-              label="성별"
-              options={[
-                { value: '', label: '성별을 선택해 주세요' },
-                { value: 'male', label: '남성' },
-                { value: 'female', label: '여성' },
-              ]}
-              value={gender}
-              onChange={e => setGender(e.target.value)}
-            />
-            {errors.gender && <div className={errorMessage}>{errors.gender}</div>}
-          </div>
+                  <div className={signupFormGap}>
+                    <SignUpSelect
+                      id="gender"
+                      label="성별"
+                      options={[
+                        { value: '', label: '성별을 선택해 주세요' },
+                        { value: 'male', label: '남성' },
+                        { value: 'female', label: '여성' },
+                      ]}
+                      value={gender}
+                      onChange={e => setGender(e.target.value)}
+                    />
+                    {errors.gender && <div className={errorMessage}>{errors.gender}</div>}
+                  </div>
 
-          <div className={signupFormGap}>
-            <SignUpDateSelect
-              label="생년월일"
-              value={{
-                year: birthDate.year,
-                month: birthDate.month,
-                day: birthDate.day,
-              }}
-              onChange={(field, value) => setBirthDate(prev => ({ ...prev, [field]: value }))}
-            />
-            {errors.birthDate && <div className={errorMessage}>{errors.birthDate}</div>}
-          </div>
+                  <div className={signupFormGap}>
+                    <SignUpDateSelect
+                      label="생년월일"
+                      value={{
+                        year: birthDate.year,
+                        month: birthDate.month,
+                        day: birthDate.day,
+                      }}
+                      onChange={(field, value) => setBirthDate(prev => ({ ...prev, [field]: value }))}
+                    />
+                    {errors.birthDate && <div className={errorMessage}>{errors.birthDate}</div>}
+                  </div>
 
-          <div className={submitbuttonContainer}>
-            <Button text="다음" width="100%" onClick={handleNextPage} />
-          </div>
-        </div>
-      </Modal>
+                  <div className={submitbuttonContainer}>
+                    <Button type="button" text="다음" width="100%" onClick={handleNextPage} />
+                  </div>
+                </div>
+              </Modal>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

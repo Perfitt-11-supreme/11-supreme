@@ -1,8 +1,8 @@
-import { doc, getDoc, getFirestore } from 'firebase/firestore';
-import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { google, hamburger_menu } from '../../assets/assets';
+import { useNavigate } from 'react-router-dom';
 import { signInWithGoogle } from '../../firebase/firebase';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
 import useUserStore from '../../stores/useUserStore';
 import { responsiveBox } from '../../styles/responsive.css';
 import { TUser } from '../../types/user';
@@ -19,16 +19,16 @@ import LoginButton from './loginchatbot/loginbox/LoginButton';
 const Login = () => {
   const navigate = useNavigate();
   const db = getFirestore();
-  const { setUser } = useUserStore();
+  const { user, setUser } = useUserStore();
   const [toastMessage, setToastMessage] = useState<{ message: string; duration: number } | null>(null);
 
   const handleGoogleLogin = async () => {
     try {
       //로그인
-      const { user } = await signInWithGoogle();
+      const { user: googleUser } = await signInWithGoogle();
 
       //Firestore에서 사용자 정보 존재 유무를 uid로 조회
-      const userDocRef = doc(db, 'users', user.uid);
+      const userDocRef = doc(db, 'users', googleUser.uid);
       const userDoc = await getDoc(userDocRef);
 
       if (userDoc.exists()) {
@@ -41,10 +41,9 @@ const Login = () => {
         navigate('/hello'); //기존 사용자: 로그인 성공 후 /hello(로그인 후 첫 화면) 페이지로 이동
       } else {
         const newGoogleUser = {
-          uid: user.uid, //구글 회원가입 시 자동 생성된 uid 저장
-          email: user.email || '',
-          userName: user.displayName || '',
-          // isGoogle: true,
+          uid: googleUser.uid, //구글 회원가입 시 자동 생성된 uid 저장
+          email: googleUser.email || '',
+          userName: googleUser.displayName || '',
         };
 
         setUser(newGoogleUser); //신규 사용자 정보를 zustand에 저장
@@ -63,36 +62,28 @@ const Login = () => {
     }
   }, [toastMessage]);
 
-  //모달 외부 클릭 시 모달 닫기
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [isSizeModalOpen, setIsSizeModalOpen] = useState(false);
   const [isGoogleModalOpen, setIsGoogleModalOpen] = useState(false);
-  const infoModalRef = useRef<HTMLDivElement | null>(null);
-  const sizeModalRef = useRef<HTMLDivElement | null>(null);
-  const googleModalRef = useRef<HTMLDivElement | null>(null); //ref 생성
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (isInfoModalOpen && infoModalRef.current && !infoModalRef.current.contains(event.target as Node)) {
-        setIsInfoModalOpen(false);
-      }
-      if (isSizeModalOpen && sizeModalRef.current && !sizeModalRef.current.contains(event.target as Node)) {
-        setIsSizeModalOpen(false);
-      }
-      if (isGoogleModalOpen && googleModalRef.current && !googleModalRef.current.contains(event.target as Node)) {
-        setIsSizeModalOpen(false);
-      }
-    };
+  //로그인 상태 체크 함수
+  //로그인되어 있는 경우라면, 로그인 버튼 클릭 시 더 이상의 작업 차단 및 토스트 메시지 표시
+  const firestore = getFirestore();
 
-    if (isInfoModalOpen || isSizeModalOpen || isGoogleModalOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
+  const checkUserStatus = async (action: () => void) => {
+    if (user && user.uid) {
+      const userDocRef = doc(firestore, 'users', user.uid);
+      const userDocSnap = await getDoc(userDocRef);
+
+      if (userDocSnap.exists()) {
+        setToastMessage({ message: '먼저 로그아웃을 해주세요.', duration: 3000 }); //로그인되어 있는 경우
+      } else {
+        action(); //인증은 되었으나 Firestore에는 사용자 등록이 되어있지 않은 경우
+      }
     } else {
-      document.removeEventListener('mousedown', handleClickOutside);
+      action(); //로그인되어 있지 않은 경우
     }
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isInfoModalOpen, isSizeModalOpen, isGoogleModalOpen]);
+  };
 
   return (
     <>
@@ -105,10 +96,10 @@ const Login = () => {
           </div>
 
           <div className={loginbuttonContainer}>
-            <LoginButton imageSrc={google} text="구글" onClick={handleGoogleLogin} />
-            <LoginButton text="이메일 로그인" onClick={() => navigate('/emaillogin')} />
+            <LoginButton imageSrc={google} text="구글" onClick={() => checkUserStatus(handleGoogleLogin)} />
+            <LoginButton text="이메일 로그인" onClick={() => checkUserStatus(() => navigate('/emaillogin'))} />
             <div className={loginbuttonTextContainer}>또는</div>
-            <LoginButton text="회원가입 하기" onClick={() => setIsInfoModalOpen(true)} />
+            <LoginButton text="회원가입 하기" onClick={() => checkUserStatus(() => setIsInfoModalOpen(true))} />
           </div>
 
           <div style={{ marginTop: 'auto' }}>
@@ -116,32 +107,26 @@ const Login = () => {
           </div>
         </div>
         {isInfoModalOpen && (
-          <div ref={infoModalRef} style={{ zIndex: 1000, position: 'relative' }}>
-            <SignUpInfoModal
-              isOpen={isInfoModalOpen}
-              onNext={() => {
-                setIsInfoModalOpen(false);
-                setIsSizeModalOpen(true);
-              }}
-            />
-          </div>
+          <SignUpInfoModal
+            isOpen={isInfoModalOpen}
+            onNext={() => {
+              setIsInfoModalOpen(false);
+              setIsSizeModalOpen(true);
+            }}
+            onClose={() => setIsInfoModalOpen(false)}
+          />
         )}
         {isGoogleModalOpen && (
-          <div ref={googleModalRef} style={{ zIndex: 1000, position: 'relative' }}>
-            <GoogleSignUpModal
-              isOpen={isGoogleModalOpen}
-              onNext={() => {
-                setIsGoogleModalOpen(false);
-                setIsSizeModalOpen(true);
-              }}
-            />
-          </div>
+          <GoogleSignUpModal
+            isOpen={isGoogleModalOpen}
+            onNext={() => {
+              setIsGoogleModalOpen(false);
+              setIsSizeModalOpen(true);
+            }}
+            onClose={() => setIsGoogleModalOpen(false)}
+          />
         )}
-        {isSizeModalOpen && (
-          <div ref={sizeModalRef} style={{ zIndex: 1000, position: 'relative' }}>
-            <SignUpSizeModal isOpen={isSizeModalOpen} onClose={() => navigate('/hello')} />
-          </div>
-        )}
+        {isSizeModalOpen && <SignUpSizeModal isOpen={isSizeModalOpen} onClose={() => setIsSizeModalOpen(false)} />}
       </div>
     </>
   );

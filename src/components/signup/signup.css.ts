@@ -17,7 +17,7 @@ export const errorMessage = style({
 });
 
 export const signupFormGap = style({
-  width:'100%',
+  width: '100%',
   marginTop: '16px',
 });
 
@@ -27,7 +27,7 @@ export const submitbuttonContainer = style({
   marginTop: '40px',
   marginBottom: '34px',
   justifyContent: 'center',
-  width:'100%'
+  width: '100%',
 });
 
 export const signupComponentContainer = style({
@@ -57,4 +57,24 @@ export const infosubmitContainer = style({
   gap: '40px',
   marginTop: '24px',
   marginBottom: '34px',
+});
+
+export const signupWrap = style({
+  width: '100%',
+  height: '100vh',
+  backgroundColor: 'rgba(0,0,0,0.5)',
+  display: 'flex',
+  position: 'fixed',
+  top: '0',
+  zIndex: 999,
+});
+
+export const signupModalContainer = style({
+  width: '100%',
+  borderRadius: '24px 24px 0px 0px',
+  backgroundColor: theme.color.white,
+  display: 'flex',
+  zIndex: 1000,
+  position: 'absolute',
+  bottom: '0',
 });
