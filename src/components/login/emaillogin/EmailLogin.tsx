@@ -1,21 +1,22 @@
 import { deleteUser, signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { back_arrow } from '../../../assets/assets';
 import { auth, db } from '../../../firebase/firebase';
+import { useChatCompletion } from '../../../hooks/useChatCompletionHook';
+import useUserStore from '../../../stores/useUserStore';
 import { responsiveBox } from '../../../styles/responsive.css';
+import { TUser } from '../../../types/user';
 import Button from '../../common/button/Button';
 import Header from '../../common/header/Header';
+import SignUpInfoModal from '../../signup/infoInput/SignUpInfoModal';
 import SignUpInput from '../../signup/infoInput/signupinput/SignUpInput';
 import { errorMessage, signupFormContainer, signupFormGap, submitbuttonContainer } from '../../signup/signup.css';
+import SignUpSizeModal from '../../signup/sizeinput/SignUpSizeModal';
+import ToastMessage from '../../toastmessage/toastMessage';
 import { fullContainer } from '../login.css';
 import { accountFindBox, accountFindButton } from './emailLogin.css';
-import ToastMessage from '../../toastmessage/toastMessage';
-import useUserStore from '../../../stores/useUserStore';
-import { doc, getDoc } from 'firebase/firestore';
-import { TUser } from '../../../types/user';
-import SignUpSizeModal from '../../signup/sizeinput/SignUpSizeModal';
-import SignUpInfoModal from '../../signup/infoInput/SignUpInfoModal';
 
 const EmailLogin = () => {
   type FormData = {
@@ -31,7 +32,7 @@ const EmailLogin = () => {
   const [formData, setFormData] = useState<FormData>({ email: '', password: '' });
   const [errors, setErrors] = useState<FormErrors>({});
   const [toastMessage, setToastMessage] = useState<{ message: string; duration: number } | null>(null);
-
+  const { handleNewChat } = useChatCompletion();
   const { setUser } = useUserStore();
   const navigate = useNavigate();
 
@@ -80,7 +81,9 @@ const EmailLogin = () => {
           };
           setUser(userData); //userData를 zustand에 저장
           console.log('로그인한 사용자:', userData);
-          navigate('/hello'); //로그인 성공 시 이동
+          const newChatId = await handleNewChat();
+          navigate(`/hello/${newChatId}`);
+          // navigate('/hello'); //로그인 성공 시 이동
         } else {
           //인증은 되었으나 Firestore에는 사용자 등록이 되어있지 않은 경우
           await deleteUser(user); //사용자 인증 데이터 삭제

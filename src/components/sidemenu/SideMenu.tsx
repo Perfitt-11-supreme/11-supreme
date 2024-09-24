@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { prefitt_logo2, sidemenu_list, sidemenu_plus } from '../../assets/assets';
 import SidemenuList from '../../components/sidemenu/SidemenuList';
+import { useChatCompletion } from '../../hooks/useChatCompletionHook';
 import useChatHistoryHook from '../../hooks/useChatHistoryHook';
 import SidemenuMypageLinks from './SidemenuMypageLinks';
 import {
@@ -42,6 +43,7 @@ const SideMenu = ({ onClose }: ChatHistoryListProps) => {
   const [deletedChatIds, setDeletedChatIds] = useState<string[]>([]);
   const navigate = useNavigate();
   const auth = getAuth();
+  const { handleNewChat } = useChatCompletion();
   const { chatHistory, deleteChatHistory } = useChatHistoryHook();
   // 현재 UTC 시간으로 오늘 날짜 계산
   const today = new Date();
@@ -66,11 +68,11 @@ const SideMenu = ({ onClose }: ChatHistoryListProps) => {
     navigate('/login'); // 로그인 페이지로 이동
   };
 
-  const handleNavigateChatbot = () => {
-    navigate('/chatbot');
+  const handleNavigateChatbot = async () => {
+    const newChatId = await handleNewChat();
+    navigate(`/hello/${newChatId}`);
     onClose();
   };
-  console.log('handleNavigateChatbot', handleNavigateChatbot);
 
   // chatHistory.timestamp 오늘날짜 필터링
   const filteredTodayChatHistory = chatHistory

@@ -1,8 +1,15 @@
-import { useNavigate } from 'react-router-dom';
-import useUserStore from '../../../stores/useUserStore';
-import { useEffect, useState } from 'react';
-import { USER_COLLECTION } from '../../../firebase/firebase';
 import { doc, setDoc } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { hamburger_menu } from '../../../assets/assets';
+import { USER_COLLECTION } from '../../../firebase/firebase';
+import { useChatCompletion } from '../../../hooks/useChatCompletionHook';
+import useUserStore from '../../../stores/useUserStore';
+import { responsiveBox } from '../../../styles/responsive.css';
+import Button from '../../common/button/Button';
+import Header from '../../common/header/Header';
+import Modal from '../../common/modal/Modal';
+import { fullContainer } from '../../login/login.css';
 import ToastMessage from '../../toastmessage/toastMessage';
 import {
   errorMessage,
@@ -11,16 +18,10 @@ import {
   signupSizeTypeContainer,
   signupSizeTypeLabel,
 } from '../signup.css';
-import UsualSizeSelect from './usualsizeselect/UsualSizeSelect';
-import { responsiveBox } from '../../../styles/responsive.css';
-import { fullContainer } from '../../login/login.css';
-import { hamburger_menu } from '../../../assets/assets';
-import ButtonFill from './sizetypebutton/buttonfill/ButtonFill';
-import ButtonBlank from './sizetypebutton/buttonblank/ButtonBlank';
 import InfoBox from './infobox/InfoBox';
-import Button from '../../common/button/Button';
-import Modal from '../../common/modal/Modal';
-import Header from '../../common/header/Header';
+import ButtonBlank from './sizetypebutton/buttonblank/ButtonBlank';
+import ButtonFill from './sizetypebutton/buttonfill/ButtonFill';
+import UsualSizeSelect from './usualsizeselect/UsualSizeSelect';
 
 const SignUpSizeInputValid = () => {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ const SignUpSizeInputValid = () => {
   }>({});
   const [toastMessage, setToastMessage] = useState<{ message: string; duration: number } | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-
+  const { handleNewChat } = useChatCompletion();
   const validate = () => {
     const newErrors: { sizeType?: string; shoeSize?: string } = {};
     if (selectedIndex === null) newErrors.sizeType = '사이즈 타입을 선택해 주세요.';
@@ -77,8 +78,9 @@ const SignUpSizeInputValid = () => {
           sizeType: realUser.sizeType,
           uid: realUser.uid,
         });
-
-        navigate('/chatbot');
+        const newChatId = await handleNewChat();
+        navigate(`/hello/${newChatId}`, { replace: true });
+        // navigate('/chatbot');
       } catch (error) {
         console.error('사용자 등록 실패:', error);
         setToastMessage({ message: '다시 시도해 주세요.', duration: 3000 });

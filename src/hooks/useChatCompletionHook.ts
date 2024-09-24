@@ -1,7 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
 import { push, ref, set } from 'firebase/database';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { chatCompletionsAPI } from '../api/chatRequests';
-
 import { database } from '../firebase/firebase';
 import useBrandStore from '../stores/useBrandStore';
 import useChatStore from '../stores/useChatStore';
@@ -9,15 +10,45 @@ import useProductStore from '../stores/useProductsStore';
 import useUserStore from '../stores/useUserStore';
 import { ChatItem } from '../types/chatItem';
 
+const CHAT_ID_KEY = 'currentChatId';
+
 export const useChatCompletion = () => {
   const { user } = useUserStore();
   const { setProducts } = useProductStore();
   const { setBrands } = useBrandStore();
-  const { addChatItem, setCurrentKeywords } = useChatStore();
+  const {chatId} = useParams()
+  const { addChatItem, setCurrentKeywords, setCurrentChatId, currentChatId } = useChatStore();
+
+  useEffect(() => {
+    const storedChatId = localStorage.getItem(CHAT_ID_KEY);
+    if (storedChatId) {
+      setCurrentChatId(storedChatId);
+    }
+  }, [setCurrentChatId]);
+
+  const createNewChat = async () => {
+    if (!user?.uid) return null;
+    const newChatRef = push(ref(database, `users/${user.uid}/chats`));
+    const newChatId = newChatRef.key;
+    await set(newChatRef, { createdAt: new Date().toISOString() });
+    setCurrentChatId(newChatId);
+    if (newChatId) {
+      localStorage.setItem(CHAT_ID_KEY, newChatId);
+    }
+    console.log("새로운 채팅방 아이디", newChatId);
+    return newChatId;
+  };
 
   const chatCompletionsMutation = useMutation({
-    mutationFn: (question: string) => chatCompletionsAPI({ message: { content: question } }),
-    onSuccess: async (response, question) => {
+    mutationFn: async (question: string) => {
+      let chatId = useChatStore.getState().currentChatId;
+      if (!chatId) {
+        chatId = await createNewChat();
+      }
+      const response = await chatCompletionsAPI({ message: { content: question } });
+      return { response, chatId };
+    },
+    onSuccess: async ({ response, chatId }, question) => {
       console.log('채팅 응답 성공:', response);
 
       const chatItemWithoutIds = {
@@ -32,14 +63,15 @@ export const useChatCompletion = () => {
       const shareId = await saveSharedChatHistory(chatItemWithoutIds);
 
       const newChatItem = {
-        id: push(ref(database, 'chatHistory')).key || '',
+        id: push(ref(database, `users/${user?.uid}/chats/${chatId}/messages`)).key || '',
         shareId,
         ...chatItemWithoutIds,
       };
 
-      if (user?.uid) {
-        push(ref(database, `chatHistory/${user.uid}`), newChatItem);
+      if (user?.uid && chatId) {
+        await set(ref(database, `users/${user.uid}/chats/${chatId}/messages/${newChatItem.id}`), newChatItem);
       }
+
       setProducts(response.data.products);
       setBrands(response.data.brands);
       setCurrentKeywords(question);
@@ -47,6 +79,10 @@ export const useChatCompletion = () => {
     },
     onError: error => {
       console.error('채팅 응답 에러:', error);
+      if (error instanceof Error) {
+        console.error('에러 메시지:', error.message);
+        console.error('에러 스택:', error.stack);
+      }
     },
   });
 
@@ -65,5 +101,10 @@ export const useChatCompletion = () => {
     chatCompletionsMutation.mutate(question);
   };
 
-  return { handleQuestionSelect, chatCompletionsMutation };
+  const handleNewChat = async () => {
+    const newChatId = await createNewChat();
+    return newChatId;
+  };
+
+  return { handleQuestionSelect, chatCompletionsMutation, handleNewChat, currentChatId,createNewChat };
 };

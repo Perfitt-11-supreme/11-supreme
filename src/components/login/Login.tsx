@@ -1,20 +1,20 @@
-import ChatBotBox from './loginchatbot/chatbotbox/ChatBotBox';
-import Header from '../common/header/Header';
-import LoginButton from './loginchatbot/loginbox/LoginButton';
-import { google, hamburger_menu } from '../../assets/assets';
-import { loginbuttonContainer, loginbuttonTextContainer, fullContainer } from './login.css';
-import { useNavigate } from 'react-router-dom';
-import { signInWithGoogle } from '../../firebase/firebase';
-import { getFirestore, doc, getDoc } from 'firebase/firestore';
-import { responsiveBox } from '../../styles/responsive.css';
-import ChatbotSearchInput from '../common/chatbot-search-input/ChatbotSearchInput';
+import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import { useEffect, useRef, useState } from 'react';
-import ToastMessage from '../toastmessage/toastMessage';
-import { TUser } from '../../types/user';
+import { useNavigate } from 'react-router-dom';
+import { google, hamburger_menu } from '../../assets/assets';
+import { signInWithGoogle } from '../../firebase/firebase';
 import useUserStore from '../../stores/useUserStore';
+import { responsiveBox } from '../../styles/responsive.css';
+import { TUser } from '../../types/user';
+import ChatbotSearchInput from '../common/chatbot-search-input/ChatbotSearchInput';
+import Header from '../common/header/Header';
+import GoogleSignUpModal from '../signup/infoInput/GoogleSignUpModal';
 import SignUpInfoModal from '../signup/infoInput/SignUpInfoModal';
 import SignUpSizeModal from '../signup/sizeinput/SignUpSizeModal';
-import GoogleSignUpModal from '../signup/infoInput/GoogleSignUpModal';
+import ToastMessage from '../toastmessage/toastMessage';
+import { fullContainer, loginbuttonContainer, loginbuttonTextContainer } from './login.css';
+import ChatBotBox from './loginchatbot/chatbotbox/ChatBotBox';
+import LoginButton from './loginchatbot/loginbox/LoginButton';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -116,7 +116,7 @@ const Login = () => {
           </div>
         </div>
         {isInfoModalOpen && (
-          <div ref={infoModalRef}>
+          <div ref={infoModalRef} style={{ zIndex: 1000, position: 'relative' }}>
             <SignUpInfoModal
               isOpen={isInfoModalOpen}
               onNext={() => {
@@ -127,7 +127,7 @@ const Login = () => {
           </div>
         )}
         {isGoogleModalOpen && (
-          <div ref={googleModalRef}>
+          <div ref={googleModalRef} style={{ zIndex: 1000, position: 'relative' }}>
             <GoogleSignUpModal
               isOpen={isGoogleModalOpen}
               onNext={() => {
@@ -138,7 +138,7 @@ const Login = () => {
           </div>
         )}
         {isSizeModalOpen && (
-          <div ref={sizeModalRef}>
+          <div ref={sizeModalRef} style={{ zIndex: 1000, position: 'relative' }}>
             <SignUpSizeModal isOpen={isSizeModalOpen} onClose={() => navigate('/hello')} />
           </div>
         )}
