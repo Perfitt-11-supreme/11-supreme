@@ -5,11 +5,12 @@ import useTextSearchStore from '../../../../stores/useTextSearchStore';
 import useSelectItemStore from '../../../../stores/useSelectItemStore';
 
 const TextFooter = () => {
-  const { focus, isSubmit } = useTextSearchStore();
+  const { focus, isSubmit, resetState } = useTextSearchStore();
   const { selectProduct, setIsSelected, setSelectComplet } = useSelectItemStore();
   const navigate = useNavigate();
 
   const handleNavigate = () => {
+    resetState();
     setSelectComplet(true);
     setIsSelected(null);
     navigate('/shoes-registry');

@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
 
 type textSearchData = {
   focus: boolean;
@@ -18,50 +17,41 @@ type textRecordData = {
   clearTextRecord: () => void;
 };
 
-const useTextSearchStore = create(
-  persist<textSearchData & textRecordData>(
-    set => ({
+const useTextSearchStore = create<textSearchData & textRecordData>(set => ({
+  focus: true,
+  text: '',
+  postText: '',
+  isLoading: false,
+  isSubmit: false,
+  setState: updateData => set(state => ({ ...state, ...updateData })),
+  resetState: () => {
+    set({
       focus: true,
       text: '',
       postText: '',
-      isLoading: true,
+      isLoading: false,
       isSubmit: false,
-      setState: updateData => set(state => ({ ...state, ...updateData })),
-      resetState: () => {
-        set({
-          focus: true,
-          text: '',
-          postText: '',
-          isLoading: true,
-          isSubmit: false,
-        });
-      },
+    });
+  },
 
-      textRecord: [],
-      downloadTextRecord: textRecord => {
-        console.log('텍스트검색 다운로드 성공');
-        set({ textRecord });
-      },
-      setTextRecord: (text, textArray?) => {
-        set(state => {
-          if (textArray) {
-            return {
-              textRecord: [text, ...textArray],
-            };
-          } else {
-            return {
-              textRecord: [text, ...state.textRecord],
-            };
-          }
-        });
-      },
-      clearTextRecord: () => set({ textRecord: [], postText: '' }),
-    }),
-    {
-      name: 'textSearchStorage',
-      storage: createJSONStorage(() => localStorage),
-    }
-  )
-);
+  textRecord: [],
+  downloadTextRecord: textRecord => {
+    set({ textRecord });
+  },
+  setTextRecord: (text, textArray?) => {
+    set(state => {
+      if (textArray) {
+        return {
+          textRecord: [text, ...textArray],
+        };
+      } else {
+        return {
+          textRecord: [text, ...state.textRecord],
+        };
+      }
+    });
+  },
+  clearTextRecord: () => set({ textRecord: [], postText: '' }),
+}));
 
 export default useTextSearchStore;

@@ -10,7 +10,7 @@ export const useHandleTextSearchPost = () => {
 
   const handleTextSearchPost = useMutation({
     mutationFn: (data: string) => {
-      setState({ isLoading: true, focus: false });
+      setState({ isLoading: true, focus: false, isSubmit: true });
       return textShoseSearchAPI(data);
     },
     onSuccess: response => {
@@ -18,7 +18,7 @@ export const useHandleTextSearchPost = () => {
 
       const products: TProduct[] = response.data.products;
       setProducts(products);
-      setState({ isLoading: false, postText: text, isSubmit: true });
+      setState({ isLoading: false, postText: text });
     },
     onError: error => {
       console.error('이미지 서칭 실패:', error);

@@ -9,15 +9,19 @@ import Header from '../../common/header/Header';
 import useProductStore from '../../../stores/useProductsStore';
 import useTextSearchStore from '../../../stores/useTextSearchStore';
 import useSelectItemStore from '../../../stores/useSelectItemStore';
+import { FetchTextRecord } from '../firebase/textupload/FetchTextRecord';
+// 커스텀훅
 
 const TextSearch = () => {
   const { setProducts } = useProductStore();
   const { resetState } = useTextSearchStore();
   const { resetItem } = useSelectItemStore();
+  const { handleTextDownload } = FetchTextRecord();
   useEffect(() => {
     setProducts([]);
     resetState();
     resetItem();
+    handleTextDownload();
   }, []);
 
   return (
