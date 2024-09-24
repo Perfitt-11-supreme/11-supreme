@@ -9,6 +9,8 @@ export const TextUpload = () => {
 
   const handleTextUpload = async () => {
     const userDoc = doc(USER_COLLECTION, user?.uid);
+    // console.log(user?.uid);
+
     await updateDoc(userDoc, {
       textSearchRecord: textRecord,
     });

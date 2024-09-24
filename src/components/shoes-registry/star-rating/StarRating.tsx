@@ -1,3 +1,4 @@
+import React from 'react';
 import { empty_star, filled_star } from '../../../assets/assets';
 import { useShoesRegistryStore } from '../../../stores/useRegistryStore';
 import { star, starContainer } from './starrating.css';
@@ -28,4 +29,4 @@ const StarRating = () => {
   );
 };
 
-export default StarRating;
+export default React.memo(StarRating);

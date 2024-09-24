@@ -1,4 +1,3 @@
-// import { useShoesRegistryStore } from '../../../stores/useRegistryStore';
 import useSelectItemStore from '../../../stores/useSelectItemStore';
 import { TProduct } from '../../../types/product';
 import {

@@ -22,12 +22,13 @@ import { db } from '../../firebase/firebase';
 import { responsiveBox } from '../../styles/responsive.css';
 import ToastMessage from '../toastmessage/toastMessage';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { ShoesList, UserData } from '../../types/shoesroom';
 
 const EmptyShoesRoom = () => {
   const [isTrue, setIsTrue] = useState(false);
-  const [shoesList, setShoesList] = useState<any[]>([]);
+  const [shoesList, setShoesList] = useState<ShoesList[]>([]);
   const [selected, setSelected] = useState('latest');
-  const [userData, setUserData] = useState<any>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
   const location = useLocation();
   const auth = getAuth();
   const user = auth.currentUser;
@@ -41,6 +42,7 @@ const EmptyShoesRoom = () => {
       } else if (location.state?.editToastMessage) {
         setToastMessage(location.state.editToastMessage);
       }
+      navigate(location.pathname, { replace: true, state: null });
     }
   }, [toastMessage]);
 
@@ -74,7 +76,7 @@ const EmptyShoesRoom = () => {
       const userQuery = query(usersCollection, where('uid', '==', uid));
       const querySnapshot = await getDocs(userQuery);
       querySnapshot.forEach(doc => {
-        const data = doc.data();
+        const data = doc.data() as UserData;
         setUserData(data); // 사용자 데이터 상태에 저장
       });
     } catch (error) {
@@ -83,30 +85,35 @@ const EmptyShoesRoom = () => {
   };
 
   const fetchShoesData = async (order: string) => {
-    try {
-      const shoesCollection = collection(db, 'myshoes');
+    if (user?.uid) {
+      try {
+        const shoesCollection = collection(db, 'myshoes');
 
-      let selectedSort;
-      if (order === 'latest') {
-        selectedSort = query(shoesCollection, orderBy('timestamp', 'desc'));
-      } else if (order === 'registered') {
-        selectedSort = query(shoesCollection, orderBy('timestamp', 'asc'));
-      } else {
-        selectedSort = shoesCollection;
+        const uid = user?.uid; // 현재 사용자의 UID
+        const shoesQuery = query(shoesCollection, where('uid', '==', uid));
+
+        let selectedSort;
+        if (order === 'latest') {
+          selectedSort = query(shoesQuery, orderBy('timestamp', 'desc'));
+        } else if (order === 'registered') {
+          selectedSort = query(shoesQuery, orderBy('timestamp', 'asc'));
+        } else {
+          selectedSort = shoesQuery;
+        }
+
+        const querySnapshot = await getDocs(selectedSort);
+        const shoes = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as ShoesList[];
+
+        if (shoesList.length !== shoes.length || shoesList !== shoes) {
+          setShoesList(shoes); // 상태 업데이트
+          setIsTrue(shoes.length > 0);
+        }
+      } catch (e) {
+        console.error('Error fetching shoes data: ', e);
       }
-
-      const querySnapshot = await getDocs(selectedSort);
-      const shoes = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-
-      if (shoesList.length !== shoes.length || shoesList !== shoes) {
-        setShoesList(shoes); // 상태 업데이트
-        setIsTrue(shoes.length > 0);
-      }
-    } catch (e) {
-      console.error('Error fetching shoes data: ', e);
     }
   };
 
@@ -116,7 +123,7 @@ const EmptyShoesRoom = () => {
 
   useEffect(() => {
     if (user) {
-      const uid = user.uid;
+      const uid = user?.uid;
       fetchUserData(uid);
       fetchShoesData(selected);
     }

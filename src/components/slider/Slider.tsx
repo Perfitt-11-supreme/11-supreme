@@ -1,6 +1,6 @@
 import { sliderContainer, slider, track, dotContainer, dot, labels, label } from './slider.css';
 import { useShoesRegistryStore } from '../../stores/useRegistryStore';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // 슬라이더 값과 라벨 매핑
 const valueToLabel: Record<string, string> = {
@@ -49,4 +49,4 @@ const Slider = () => {
   );
 };
 
-export default Slider;
+export default React.memo(Slider);
