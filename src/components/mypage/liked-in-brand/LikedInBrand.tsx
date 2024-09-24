@@ -9,7 +9,7 @@ import {
   logoUrlNoneText,
   hiddenBrand, // display: none 처리를 위한 클래스 추가
 } from './likedInBrand.css';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 type TBrand = {
   brandNameEn: string;
