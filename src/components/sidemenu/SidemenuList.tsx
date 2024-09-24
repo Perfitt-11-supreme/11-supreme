@@ -1,5 +1,9 @@
 import React, { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { sidemenu_delete, sidemenu_linkshare } from '../../assets/assets';
+import useModalStore from '../../stores/useModalStore';
+import useUserStore from '../../stores/useUserStore';
+import { fetchShareId } from '../../utils/sharedChatHistoryUtils';
 import {
   sidemenuDeleteIconBox,
   sidemenuLinkShareIconBox,
@@ -9,23 +13,22 @@ import {
   sidemenuListText,
   sidemenuSwiperHiddenBox,
 } from './sidemenuList.css';
-import useModalStore from '../../stores/useModalStore';
-import { useNavigate } from 'react-router-dom';
 
 type SidemenuListProps = {
   iconSrc: string;
   keywords: string;
   timestamp: string;
   id: string;
+  shareId: string;
   handleDelete: (id: string) => void;
 };
 
-const SidemenuList = ({ iconSrc, keywords, id, handleDelete }: SidemenuListProps) => {
+const SidemenuList = ({ iconSrc, keywords, id, shareId, handleDelete }: SidemenuListProps) => {
   const [isSwiped, setIsSwiped] = useState(false);
   const startX = useRef<number | null>(null);
   const threshold = 50; // 스와이프 임계값
   const { setIsShareModalOpen, setShareModalId, shareModalId } = useModalStore();
-
+  const { user } = useUserStore()
   const handleTouchStart = (e: React.TouchEvent) => {
     startX.current = e.touches[0].clientX;
   };
@@ -60,16 +63,30 @@ const SidemenuList = ({ iconSrc, keywords, id, handleDelete }: SidemenuListProps
     startX.current = null; // 스와이프 동작 종료
   };
 
-  const handleOpenShareModal = () => {
-    if (id) {
-      setShareModalId(id);
-      setIsShareModalOpen(true);
+  const handleOpenShareModal = async () => {
+    if (shareId) {
+      if (user?.uid) { // user.uid가 null이 아닐 경우만 실행
+        const fetchedShareId = await fetchShareId(user.uid, shareId);
+
+        if (fetchedShareId) {
+          setShareModalId(fetchedShareId);
+          setIsShareModalOpen(true);
+        } else {
+          console.log("공유 ID를 찾을 수 없습니다.");
+        }
+      } else {
+        console.log("사용자 ID가 제공되지 않았습니다."); // 사용자 ID가 없을 때 처리
+      }
+    } else {
+      console.log("공유 ID가 제공되지 않았습니다.");
     }
   };
 
+  console.log('사이드메뉴 리스트 아이디', shareId)
+
   const navigate = useNavigate();
   const handleChatLink = async () => {
-    const shareUrl = `/share/${id}`;
+    const shareUrl = `/share/${shareId}`;
     navigate(shareUrl);
   };
 
