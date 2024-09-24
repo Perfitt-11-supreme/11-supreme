@@ -5,11 +5,12 @@ import useTextSearchStore from '../../../../stores/useTextSearchStore';
 import useSelectItemStore from '../../../../stores/useSelectItemStore';
 
 const TextFooter = () => {
-  const { focus, isSubmit } = useTextSearchStore();
+  const { focus, isSubmit, resetState } = useTextSearchStore();
   const { selectProduct, setIsSelected, setSelectComplet } = useSelectItemStore();
   const navigate = useNavigate();
 
   const handleNavigate = () => {
+    resetState();
     setSelectComplet(true);
     setIsSelected(null);
     navigate('/shoes-registry');
@@ -18,7 +19,7 @@ const TextFooter = () => {
     <>
       {isSubmit && !focus && (
         <div className={TextFooter_Background}>
-          {selectProduct && <Button text="선택 완료" onClick={handleNavigate} />}
+          {selectProduct && <Button text="선택 완료" onClick={handleNavigate} type="button" />}
         </div>
       )}
     </>

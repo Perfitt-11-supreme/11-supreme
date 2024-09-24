@@ -5,12 +5,14 @@ import { TProduct } from '../../../../types/product';
 import useProductStore from '../../../../stores/useProductsStore';
 
 export const useHandleTextSearchPost = () => {
-  const { text, setState } = useTextSearchStore();
+  const { text, setLoading, setFocus, setSubmit, setPostText } = useTextSearchStore();
   const { setProducts } = useProductStore();
 
   const handleTextSearchPost = useMutation({
     mutationFn: (data: string) => {
-      setState({ isLoading: true, focus: false });
+      setLoading(true);
+      setFocus(false);
+      setSubmit(true);
       return textShoseSearchAPI(data);
     },
     onSuccess: response => {
@@ -18,7 +20,8 @@ export const useHandleTextSearchPost = () => {
 
       const products: TProduct[] = response.data.products;
       setProducts(products);
-      setState({ isLoading: false, postText: text, isSubmit: true });
+      setLoading(false);
+      setPostText(text);
     },
     onError: error => {
       console.error('이미지 서칭 실패:', error);

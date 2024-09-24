@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
 
 type textSearchData = {
   focus: boolean;
@@ -7,7 +6,13 @@ type textSearchData = {
   postText: string;
   isLoading: boolean;
   isSubmit: boolean;
-  setState: (updateData: Partial<textSearchData>) => void;
+  isScrolling: boolean;
+  setFocus: (focus: boolean) => void;
+  setText: (text: string) => void;
+  setPostText: (postText: string) => void;
+  setLoading: (isLoading: boolean) => void;
+  setSubmit: (isSubmit: boolean) => void;
+  setIsScrolling: (isScrolling: boolean) => void;
   resetState: () => void;
 };
 
@@ -18,50 +23,53 @@ type textRecordData = {
   clearTextRecord: () => void;
 };
 
-const useTextSearchStore = create(
-  persist<textSearchData & textRecordData>(
-    set => ({
+const useTextSearchStore = create<textSearchData & textRecordData>(set => ({
+  focus: true,
+  text: '',
+  postText: '',
+  isLoading: false,
+  isSubmit: false,
+  isScrolling: false,
+  setFocus: focus => set({ focus }),
+  setText: text => set({ text }),
+  setPostText: postText => set({ postText }),
+  setLoading: isLoading => set({ isLoading }),
+  setSubmit: isSubmit => set({ isSubmit }),
+  setIsScrolling: isScrolling => set({ isScrolling }),
+  resetState: () => {
+    set({
       focus: true,
       text: '',
       postText: '',
-      isLoading: true,
+      isLoading: false,
       isSubmit: false,
-      setState: updateData => set(state => ({ ...state, ...updateData })),
-      resetState: () => {
-        set({
-          focus: true,
-          text: '',
-          postText: '',
-          isLoading: true,
-          isSubmit: false,
-        });
-      },
+    });
+  },
 
-      textRecord: [],
-      downloadTextRecord: textRecord => {
-        console.log('텍스트검색 다운로드 성공');
-        set({ textRecord });
-      },
-      setTextRecord: (text, textArray?) => {
-        set(state => {
-          if (textArray) {
-            return {
-              textRecord: [text, ...textArray],
-            };
-          } else {
-            return {
-              textRecord: [text, ...state.textRecord],
-            };
-          }
-        });
-      },
-      clearTextRecord: () => set({ textRecord: [], postText: '' }),
+  textRecord: [],
+  downloadTextRecord: textRecord => {
+    set({ textRecord });
+  },
+  setTextRecord: (text, textArray?) => {
+    set(state => {
+      if (textArray) {
+        return {
+          textRecord: [text, ...textArray],
+        };
+      } else {
+        return {
+          textRecord: [text, ...state.textRecord],
+        };
+      }
+    });
+  },
+  clearTextRecord: () =>
+    set(state => {
+      if (state.textRecord.length > 0) {
+        return { textRecord: [], postText: '' };
+      }
+      return {};
     }),
-    {
-      name: 'textSearchStorage',
-      storage: createJSONStorage(() => localStorage),
-    }
-  )
-);
+}));
 
 export default useTextSearchStore;

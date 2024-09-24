@@ -9,26 +9,30 @@ import Header from '../../common/header/Header';
 import useProductStore from '../../../stores/useProductsStore';
 import useTextSearchStore from '../../../stores/useTextSearchStore';
 import useSelectItemStore from '../../../stores/useSelectItemStore';
+import { FetchTextRecord } from '../firebase/textupload/FetchTextRecord';
+// 커스텀훅
 
 const TextSearch = () => {
   const { setProducts } = useProductStore();
   const { resetState } = useTextSearchStore();
   const { resetItem } = useSelectItemStore();
+  const { handleTextDownload } = FetchTextRecord();
   useEffect(() => {
     setProducts([]);
     resetState();
     resetItem();
+    handleTextDownload();
   }, []);
+
+  console.log('랜더링됨');
 
   return (
     <>
-      <div>
-        <div className={responsiveBox}>
-          <Header imageSrc={back_arrow} alt="뒤로가기" title="신발검색" nav="/shoes-registry"></Header>
-          <SearchBox />
-          <MainContainer />
-          <TextFooter />
-        </div>
+      <div className={responsiveBox}>
+        <Header imageSrc={back_arrow} alt="뒤로가기" title="신발검색" nav="/shoes-registry"></Header>
+        <SearchBox />
+        <MainContainer />
+        <TextFooter />
       </div>
     </>
   );

@@ -9,8 +9,9 @@ export const responsiveBox = style({
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  overflow: 'auto',
   borderRadius: '20px',
+  display: 'flex',
+  flexDirection: 'column', // 세로로 배치하여 레이아웃이 유지되게 설정
 
   '@media': {
     'screen and (max-width: 480px)': {

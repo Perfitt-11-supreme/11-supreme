@@ -51,7 +51,7 @@ const SuccesProduct = () => {
           <p className={Product_ProductBrand}>{selectProduct!.brand}</p>
           <p className={Product_ProductName}>{selectProduct!.modelName}</p>
         </div>
-        <Button text="선택 완료" onClick={handleImageSearchNavigate} />
+        <Button text="선택 완료" onClick={handleImageSearchNavigate} type="button" />
       </div>
     </>
   );

@@ -11,52 +11,80 @@ import {
 import { useNavigate } from 'react-router-dom';
 import useTextSearchStore from '../../../../stores/useTextSearchStore';
 import { useTextSearchHooks } from '../hooks/useTextSearchHooks';
-import { TextUpload } from '../../firebase/textupload/TextUpload';
+import { useForm } from 'react-hook-form';
 
 const SearchBox = () => {
-  const [isScrollingDown, setIsScrollingDown] = useState(false);
-  const { text, setState } = useTextSearchStore();
-  const { inputRef, handleSubmitForm } = useTextSearchHooks();
-  const { handleTextUpload } = TextUpload();
+  const { text, postText, isScrolling, setText, setFocus } = useTextSearchStore();
+  const { handleSubmitForm, handleClickRecord } = useTextSearchHooks();
   const navigate = useNavigate();
 
-  let lastScrollY = 0;
-  const handleScroll = () => {
-    if (window.scrollY > lastScrollY) {
-      setIsScrollingDown(true);
-    } else {
-      setIsScrollingDown(false);
+  const {
+    register,
+    handleSubmit,
+    setFocus: setFormFocus,
+    setValue,
+  } = useForm({
+    defaultValues: {
+      searchText: '',
+    },
+  });
+
+  const onSubmit = (data: { searchText: string }) => {
+    // 입력된 값이 전에 검색한 값이라면
+    if (text === data.searchText) {
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+        setFocus(false);
+        // 값을 입력후 전체삭제를 눌렀다면 검색 기록에 값만 추가
+        if (text !== postText) {
+          handleClickRecord(text);
+        }
+      }
     }
-    lastScrollY = window.scrollY;
+    // 입력값이 있을때
+    else if (data.searchText) {
+      setText(data.searchText);
+    }
+    // 아무것도 입력하지 않았다면
+    else {
+      setText('');
+    }
   };
 
+  const [pageLoad, setPageLoad] = useState(false);
+
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    inputRef.current?.focus();
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+    if (pageLoad) {
+      handleSubmitForm(text);
+      // 어디서든 검색 기록 클릭시 input태그 안에 값 text로 바꾸기
+      setValue('searchText', text);
+      // 현재 포커스 되있는 요소 블러처리
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+        setFocus(false);
+      }
+    } else {
+      setPageLoad(true);
+      setFormFocus('searchText');
+    }
+  }, [text]);
 
   return (
     <>
-      <div className={`${SearchBox_Background} ${isScrollingDown ? SearchBox_Hide : ''}`}>
-        <form onSubmit={handleSubmitForm} className={SearchBox_Container}>
+      <div className={`${SearchBox_Background} ${isScrolling ? SearchBox_Hide : ''}`}>
+        <form onSubmit={handleSubmit(onSubmit)} className={SearchBox_Container}>
           <img
             className={SearchBox_searchIcon}
             src={search}
             alt="search_icon"
-            onClick={() => inputRef.current?.focus()}
+            onClick={() => setFormFocus('searchText')}
           />
           <input
+            {...register('searchText')}
             className={SearchBox_Box}
             type="text"
             placeholder="신발이름, 모델명 검색"
-            value={text}
-            onChange={e => setState({ text: e.target.value })}
-            onFocus={() => setState({ focus: true })}
-            name="searchText"
-            ref={inputRef}
+            onFocus={() => setFocus(true)}
             autoComplete="off"
           />
           <img
@@ -64,7 +92,6 @@ const SearchBox = () => {
             src={camera}
             alt="camera_icon"
             onClick={() => {
-              handleTextUpload();
               navigate('/image-search');
             }}
           />
@@ -73,4 +100,5 @@ const SearchBox = () => {
     </>
   );
 };
+
 export default SearchBox;
