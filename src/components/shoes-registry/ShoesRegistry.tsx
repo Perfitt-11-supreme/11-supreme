@@ -21,6 +21,7 @@ import {
   questP,
   starP,
   errorText,
+  hookForm,
 } from './shoesregistry.css';
 import ItemCard from '../choose-shose/itemcard/ItemCard';
 import { responsiveBox } from '../../styles/responsive.css';
@@ -28,7 +29,6 @@ import useSelectItemStore from '../../stores/useSelectItemStore';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { Errors, ShoeData, User } from '../../types/registry';
 import { useForm } from 'react-hook-form';
-import { TextUpload } from '../choose-shose/firebase/textupload/TextUpload';
 
 const auth = getAuth();
 const user = auth.currentUser;
@@ -44,8 +44,13 @@ const ShoesRegistry = () => {
   const heightRef = useRef<HTMLDivElement>(null);
   const soleRef = useRef<HTMLDivElement>(null);
   const weightRef = useRef<HTMLDivElement>(null);
-  const reviewRef = useRef<HTMLTextAreaElement>(null);
-  const { register, handleSubmit: formHandleSubmit, getValues } = useForm<ShoeData>();
+  const reviewRef = useRef<HTMLDivElement>(null);
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<ShoeData>();
   const {
     rating,
     length,
@@ -65,25 +70,10 @@ const ShoesRegistry = () => {
     setRecommendation,
   } = useShoesRegistryStore();
 
-  const onSubmit = (data: ShoeData) => {
-    console.log('제출된 데이터:', data);
-  };
-  const [errors, setErrors] = useState<Errors>({
-    rating: '',
-    length: '',
-    width: '',
-    height: '',
-    sole: '',
-    weight: '',
-    review: '',
-  });
   const [editData, setEditData] = useState<ShoeData | null>(null);
   const [user, setUser] = useState<User | null>(null);
 
-  const { handleTextUpload } = TextUpload();
-
   useEffect(() => {
-    handleTextUpload();
     const isUser = onAuthStateChanged(auth, currentUser => {
       if (currentUser) {
         setUser(currentUser);
@@ -163,45 +153,13 @@ const ShoesRegistry = () => {
     [shoesId, user]
   );
 
-  const validate = useCallback(() => {
-    const error: Errors = {};
-    if (!rating) error.rating = '별점을 선택해 주세요';
-    if (!length) error.length = '신발 길이를 선택해 주세요';
-    if (!width) error.width = '발볼 너비를 선택해 주세요';
-    if (!height) error.height = '발등 높이를 선택해 주세요';
-    if (!sole) error.sole = '밑창 상태를 선택해 주세요';
-    if (!weight) error.weight = '신발 무게를 선택해 주세요';
-    if (!review) error.review = '리뷰를 작성해 주세요';
-
-    setErrors(error);
-    return Object.keys(error).length === 0;
-  }, [rating, length, width, height, sole, weight, review]);
-
-  const handleSubmit = async () => {
-    const isValid = validate();
-    console.log('폼 유효성 검사 결과:', isValid);
-    console.log({ rating, length, width, height, sole, weight, review });
-    if (!validate()) {
-      const firstErrorKey = Object.keys(errors)[0];
-      const refMap: any = {
-        rating: ratingRef,
-        length: lengthRef,
-        width: widthRef,
-        height: heightRef,
-        sole: soleRef,
-        weight: weightRef,
-        review: reviewRef,
-      };
-      refMap[firstErrorKey]?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
-    }
-
+  const handleFormSubmit = async (data: ShoeData) => {
     if (!user) {
       console.error('사용자 정보가 없습니다.');
       return;
     }
 
-    const data: ShoeData = {
+    const shoeData: ShoeData = {
       ...selectProduct,
       rating,
       length,
@@ -210,13 +168,12 @@ const ShoesRegistry = () => {
       sole,
       weight,
       recommendation,
-      review: getValues('review'), // reviewRef에서 값을 가져옴
+      review: data.review,
       timestamp: Timestamp.now(),
     };
+    setReview(data.review);
 
-    setReview(data.review); // review 상태 업데이트
-
-    await saveToFirestore(data);
+    await saveToFirestore(shoeData);
 
     // 완료 폼 초기화
     setSelectProduct(null);
@@ -235,6 +192,20 @@ const ShoesRegistry = () => {
       navigate('/empty-shoesroom', { state: { registryToastMessage: '등록 되었습니다' } });
     }
   };
+  const handleError = (errors: any) => {
+    const firstErrorKey = Object.keys(errors)[0];
+    const refMap: any = {
+      rating: ratingRef,
+      length: lengthRef,
+      width: widthRef,
+      height: heightRef,
+      sole: soleRef,
+      weight: weightRef,
+      review: reviewRef,
+    };
+
+    refMap[firstErrorKey]?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
 
   const handleChooseShoes = () => navigate('/text-search');
 
@@ -252,6 +223,10 @@ const ShoesRegistry = () => {
 
     navigate('/empty-shoesroom');
   };
+
+  useEffect(() => {
+    setValue('review', review);
+  }, [review, setValue]);
 
   return (
     <div className={responsiveBox}>
@@ -272,99 +247,106 @@ const ShoesRegistry = () => {
 
         <p className={questionP}>신발은 마음에 드셨나요?</p>
         <p className={starP}>별점을 눌러 만족도를 알려주세요</p>
-        <div ref={ratingRef}>
-          <StarRating />
-        </div>
-        {errors.rating && <p className={errorText}>{errors.rating}</p>}
+        <form className={hookForm} onSubmit={handleSubmit(handleFormSubmit, handleError)}>
+          <div ref={ratingRef}>
+            <StarRating />
+          </div>
+          {errors.rating && <p className={errorText}>{errors.rating.message}</p>}
 
-        <p className={questP}>신발 길이가 잘 맞나요?</p>
-        <div ref={lengthRef}>
-          <Choose
-            groupName="length"
-            options={[
-              { id: 'length1', label: '짧아요' },
-              { id: 'length2', label: '잘 맞아요' },
-              { id: 'length3', label: '길어요' },
-            ]}
-            selectedOption={length}
-            setter={setLength}
-          />
-          {errors.length && <p className={errorText}>{errors.length}</p>}
-        </div>
+          <p className={questP}>신발 길이가 잘 맞나요?</p>
+          <div ref={lengthRef}>
+            <Choose
+              {...register('length', { required: length === '' && '신발 길이를 선택해 주세요' })}
+              groupName="length"
+              options={[
+                { id: 'length1', label: '짧아요' },
+                { id: 'length2', label: '잘 맞아요' },
+                { id: 'length3', label: '길어요' },
+              ]}
+              selectedOption={length}
+              setter={setLength}
+            />
+            {errors.length && <p className={errorText}>{errors.length.message}</p>}
+          </div>
 
-        <p className={questP}>발볼 너비가 잘 맞나요?</p>
-        <div ref={widthRef}>
-          <Choose
-            groupName="width"
-            options={[
-              { id: 'width1', label: '좁아요' },
-              { id: 'width2', label: '잘 맞아요' },
-              { id: 'width3', label: '넓어요' },
-            ]}
-            selectedOption={width}
-            setter={setWidth}
-          />
-          {errors.width && <p className={errorText}>{errors.width}</p>}
-        </div>
+          <p className={questP}>발볼 너비가 잘 맞나요?</p>
+          <div ref={widthRef}>
+            <Choose
+              {...register('width', { required: width === '' && '발볼 너비를 선택해 주세요' })}
+              groupName="width"
+              options={[
+                { id: 'width1', label: '좁아요' },
+                { id: 'width2', label: '잘 맞아요' },
+                { id: 'width3', label: '넓어요' },
+              ]}
+              selectedOption={width}
+              setter={setWidth}
+            />
+            {errors.width && <p className={errorText}>{errors.width.message}</p>}
+          </div>
 
-        <p className={questP}>발등 높이는 어떤가요?</p>
-        <div ref={heightRef}>
-          <Choose
-            groupName="height"
-            options={[
-              { id: 'height1', label: '타이트해요' },
-              { id: 'height2', label: '적당해요' },
-              { id: 'height3', label: '넉넉해요' },
-            ]}
-            selectedOption={height}
-            setter={setHeight}
-          />
-          {errors.height && <p className={errorText}>{errors.height}</p>}
-        </div>
+          <p className={questP}>발등 높이는 어떤가요?</p>
+          <div ref={heightRef}>
+            <Choose
+              {...register('height', { required: height === '' && '발등 높이를 선택해 주세요' })}
+              groupName="height"
+              options={[
+                { id: 'height1', label: '타이트해요' },
+                { id: 'height2', label: '적당해요' },
+                { id: 'height3', label: '넉넉해요' },
+              ]}
+              selectedOption={height}
+              setter={setHeight}
+            />
+            {errors.height && <p className={errorText}>{errors.height.message}</p>}
+          </div>
 
-        <p className={questP}>밑창은 푹신한가요?</p>
-        <div ref={soleRef}>
-          <Choose
-            groupName="sole"
-            options={[
-              { id: 'sole1', label: '딱딱해요' },
-              { id: 'sole2', label: '적당해요' },
-              { id: 'sole3', label: '푹신해요' },
-            ]}
-            selectedOption={sole}
-            setter={setSole}
-          />
-          {errors.sole && <p className={errorText}>{errors.sole}</p>}
-        </div>
+          <p className={questP}>밑창은 푹신한가요?</p>
+          <div ref={soleRef}>
+            <Choose
+              {...register('sole', { required: sole === '' && '밑창 상태를 선택해 주세요' })}
+              groupName="sole"
+              options={[
+                { id: 'sole1', label: '딱딱해요' },
+                { id: 'sole2', label: '적당해요' },
+                { id: 'sole3', label: '푹신해요' },
+              ]}
+              selectedOption={sole}
+              setter={setSole}
+            />
+            {errors.sole && <p className={errorText}>{errors.sole.message}</p>}
+          </div>
 
-        <p className={questP}>신발 무게는 어떤가요?</p>
-        <div ref={weightRef}>
-          <Choose
-            groupName="weight"
-            options={[
-              { id: 'weight1', label: '가벼워요' },
-              { id: 'weight2', label: '적당해요' },
-              { id: 'weight3', label: '무거워요' },
-            ]}
-            selectedOption={weight}
-            setter={setWeight}
-          />
-          {errors.weight && <p className={errorText}>{errors.weight}</p>}
-        </div>
+          <p className={questP}>신발 무게는 어떤가요?</p>
+          <div ref={weightRef}>
+            <Choose
+              {...register('weight', { required: weight === '' && '신발 무게를 선택해 주세요' })}
+              groupName="weight"
+              options={[
+                { id: 'weight1', label: '가벼워요' },
+                { id: 'weight2', label: '적당해요' },
+                { id: 'weight3', label: '무거워요' },
+              ]}
+              selectedOption={weight}
+              setter={setWeight}
+            />
+            {errors.weight && <p className={errorText}>{errors.weight.message}</p>}
+          </div>
 
-        <p className={questP}>이 신발의 추천 사이즈는 무엇인가요?</p>
-        <Slider />
-        <p className={questP}>자세한 사용기를 적어주세요.</p>
-        {errors.review && <p className={errorText}>{errors.review}</p>}
-        <form onSubmit={formHandleSubmit(handleSubmit)}>
+          <p className={questP}>이 신발의 추천 사이즈는 무엇인가요?</p>
+          <Slider />
+          <p className={questP}>자세한 사용기를 적어주세요.</p>
+          {errors.review && <p className={errorText}>{errors.review.message}</p>}
+          {/* <div ref={reviewRef}> */}
           <textarea
-            {...register('review', { required: true })}
+            {...register('review', { required: '리뷰를 작성해 주세요' })}
             className={area}
             placeholder="이 신발을 신으면서 느꼈던 장점 및 단점을 솔직하게 알려주세요."
           />
           <div className={buttonDiv}>
             <Button type="submit" text={shoesId ? '수정 완료' : '입력 완료'} />
           </div>
+          {/* </div> */}
         </form>
       </div>
     </div>

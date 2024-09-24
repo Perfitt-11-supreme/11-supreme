@@ -9,6 +9,12 @@ export const container = style({
   position: 'relative',
 });
 
+export const hookForm = style({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+});
+
 export const descP = style({
   width: '100%',
   padding: '6px 0 0 16px',
@@ -55,7 +61,7 @@ export const starP = style({
 });
 
 export const questP = style({
-  padding: '8px 16px',
+  padding: '8px 8px',
   width: '100%',
   fontSize: '15px',
   fontWeight: 'bold',
