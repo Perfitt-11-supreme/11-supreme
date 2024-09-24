@@ -150,6 +150,7 @@ const SideMenu = ({ onClose }: ChatHistoryListProps) => {
                               <SidemenuList
                                 key={chat.id}
                                 iconSrc={sidemenu_list}
+                                shareId={chat.shareId}
                                 id={chat.id}
                                 keywords={chat.keywords}
                                 timestamp={chat.timestamp}

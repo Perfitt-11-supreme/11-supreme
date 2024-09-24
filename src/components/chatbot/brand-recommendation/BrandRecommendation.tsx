@@ -1,5 +1,6 @@
 import { export_icon, thumbs_down } from "../../../assets/assets";
 import useModalStore from "../../../stores/useModalStore";
+import useUserStore from "../../../stores/useUserStore";
 import { TBrand } from "../../../types/brand";
 import { fetchShareId } from '../../../utils/sharedChatHistoryUtils';
 import BrandRecommendationCard from "../brand-recommendation-card/BrandRecommendationCard";
@@ -16,7 +17,7 @@ const BrandRecommendation = ({ brands, shareId, onBrandClick }: BrandRecommendat
   }
   // const setSelectedBrand = useBrandStore((state) => state.setSelectedBrand);
   const { setIsShareModalOpen, setShareModalId } = useModalStore()
-
+  const { user } = useUserStore()
   const handleBrandClick = (brand: string) => {
     if (onBrandClick) {
       onBrandClick(brand); // onBrandClick이 있을 경우에만 호출
@@ -25,16 +26,20 @@ const BrandRecommendation = ({ brands, shareId, onBrandClick }: BrandRecommendat
 
   const handleOpenShareModal = async () => {
     if (shareId) {
-      const fetchedShareId = await fetchShareId(shareId);
+      if (user?.uid) { // user.uid가 null이 아닐 경우만 실행
+        const fetchedShareId = await fetchShareId(user.uid, shareId);
 
-      if (fetchedShareId) {
-        setShareModalId(fetchedShareId);
-        setIsShareModalOpen(true);
+        if (fetchedShareId) {
+          setShareModalId(fetchedShareId);
+          setIsShareModalOpen(true);
+        } else {
+          console.log("공유 ID를 찾을 수 없습니다.");
+        }
       } else {
-        console.log("공유 ID를 찾을 수 없습니다.");
+        console.log("사용자 ID가 제공되지 않았습니다."); // 사용자 ID가 없을 때 처리
       }
     } else {
-      console.log("shareId가 제공되지 않았습니다.");
+      console.log("공유 ID가 제공되지 않았습니다.");
     }
   };
 

@@ -23,7 +23,6 @@ interface ProductRecommendationPreviewProps {
 const ProductRecommendationPreview = ({ products = [], shareId, onMoreClick }: ProductRecommendationPreviewProps) => {
   const { setIsOpen, setIsShareModalOpen, setShareModalId } = useModalStore();
   const { user } = useUserStore()
-
   const previewProducts = products.slice(0, 2);
 
   const handleOpenModal = () => {
