@@ -1,5 +1,5 @@
 import { deleteUser, signInWithEmailAndPassword } from 'firebase/auth';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { back_arrow } from '../../../assets/assets';
 import { auth, db } from '../../../firebase/firebase';
@@ -14,6 +14,8 @@ import ToastMessage from '../../toastmessage/toastMessage';
 import useUserStore from '../../../stores/useUserStore';
 import { doc, getDoc } from 'firebase/firestore';
 import { TUser } from '../../../types/user';
+import SignUpSizeModal from '../../signup/sizeinput/SignUpSizeModal';
+import SignUpInfoModal from '../../signup/infoInput/SignUpInfoModal';
 
 const EmailLogin = () => {
   type FormData = {
@@ -82,6 +84,7 @@ const EmailLogin = () => {
         } else {
           //인증은 되었으나 Firestore에는 사용자 등록이 되어있지 않은 경우
           await deleteUser(user); //사용자 인증 데이터 삭제
+          console.log('인증은 되었으나 사용자 등록이 완료되지 않은 상태');
           console.log('사용자 인증 데이터 삭제');
           setToastMessage({ message: '입력한 정보를 다시 확인해 주세요.', duration: 3000 });
         }
@@ -92,12 +95,6 @@ const EmailLogin = () => {
     }
   };
 
-  const accountFindButtons = [
-    { text: '이메일 찾기', path: '/findemail' },
-    { text: '비밀번호 찾기', path: '/findpassword' },
-    { text: '회원가입', path: '/signupinfo' },
-  ];
-
   useEffect(() => {
     if (toastMessage) {
       const timer = setTimeout(() => setToastMessage(null), toastMessage.duration);
@@ -105,9 +102,41 @@ const EmailLogin = () => {
     }
   }, [toastMessage]);
 
+  //모달 외부 클릭 시 모달 닫기
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const [isSizeModalOpen, setIsSizeModalOpen] = useState(false);
+  const infoModalRef = useRef<HTMLDivElement | null>(null);
+  const sizeModalRef = useRef<HTMLDivElement | null>(null); //ref 생성
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (isInfoModalOpen && infoModalRef.current && !infoModalRef.current.contains(event.target as Node)) {
+        setIsInfoModalOpen(false);
+      }
+      if (isSizeModalOpen && sizeModalRef.current && !sizeModalRef.current.contains(event.target as Node)) {
+        setIsSizeModalOpen(false);
+      }
+    };
+
+    if (isInfoModalOpen || isSizeModalOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isInfoModalOpen, isSizeModalOpen]);
+
+  const accountFindButtons = [
+    { text: '이메일 찾기', path: () => navigate('/findemail') },
+    { text: '비밀번호 찾기', path: () => navigate('/findpassword') },
+    { text: '회원가입', path: () => setIsInfoModalOpen(true) },
+  ];
+
   return (
     <>
-      <div className={responsiveBox}>
+      <div className={responsiveBox} style={{ overflow: 'hidden' }}>
         <div className={fullContainer}>
           {toastMessage && <ToastMessage message={toastMessage.message} duration={toastMessage.duration} />}
           <div>
@@ -143,7 +172,7 @@ const EmailLogin = () => {
 
               <div className={accountFindBox}>
                 {accountFindButtons.map((button, index) => (
-                  <div key={index} className={accountFindButton} onClick={() => navigate(button.path)}>
+                  <div key={index} className={accountFindButton} onClick={button.path}>
                     {button.text}
                   </div>
                 ))}
@@ -151,6 +180,22 @@ const EmailLogin = () => {
             </div>
           </div>
         </div>
+        {isInfoModalOpen && (
+          <div ref={infoModalRef}>
+            <SignUpInfoModal
+              isOpen={isInfoModalOpen}
+              onNext={() => {
+                setIsInfoModalOpen(false);
+                setIsSizeModalOpen(true);
+              }}
+            />
+          </div>
+        )}
+        {isSizeModalOpen && (
+          <div ref={sizeModalRef}>
+            <SignUpSizeModal isOpen={isSizeModalOpen} onClose={() => navigate('/hello')} />
+          </div>
+        )}
       </div>
     </>
   );

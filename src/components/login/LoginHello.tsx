@@ -1,12 +1,12 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth';
 import { onValue, push, ref, set } from 'firebase/database';
 import { doc, getDoc, getFirestore, updateDoc } from 'firebase/firestore';
 import { motion } from 'framer-motion';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { chatKeywordsAPI, keywordsListAPI, recommendQuestionAPI } from '../../api/chatRequests';
 import { hamburger_menu } from '../../assets/assets';
-import { database, db } from '../../firebase/firebase';
+import { auth, database, db } from '../../firebase/firebase';
 import { useChatCompletion } from '../../hooks/useChatCompletionHook';
 import BridgePage from '../../pages/bridge-page/bridgePage';
 import { keywordWrap } from '../../pages/chatbot-page/chatBotPage.css';
@@ -106,7 +106,6 @@ const LoginHello = () => {
       setMessage(response.data.message);
       setProducts(response.data.products);
 
-
       if (user?.uid) {
         const newChatRef = push(ref(database, `chatHistory/${user.uid}`));
         const newChatItem = {
@@ -160,7 +159,6 @@ const LoginHello = () => {
   //키워드 포맷
   const formattedKeywords = selectedKeywords.join(', ');
 
-
   // 추천 질문 불러오는 함수
   const {
     data: keywordsData,
@@ -182,7 +180,6 @@ const LoginHello = () => {
     gcTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
   });
-
 
   // 채팅 기록 변경 시 스크롤을 맨 아래로 이동
   useEffect(() => {
@@ -234,10 +231,9 @@ const LoginHello = () => {
 
   // 사용자 인증 및 키워드 로드
   useEffect(() => {
-    const auth = getAuth();
     const firestore = getFirestore();
 
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async firebaseUser => {
       if (firebaseUser) {
         let userName = 'User';
 
@@ -259,10 +255,8 @@ const LoginHello = () => {
         setUser({
           uid: firebaseUser.uid,
           userName: userName,
-
         });
         setIsAuthenticated(true);
-
 
         // Firestore에서 selectedKeywords 확인
         const userDoc = await getDoc(doc(firestore, 'users', firebaseUser.uid));
@@ -287,7 +281,6 @@ const LoginHello = () => {
     // 컴포넌트가 언마운트될 때 구독 해제
     return () => unsubscribe();
   }, [setUser]);
-
 
   // Firebase에서 채팅 기록 불러오기
   useEffect(() => {
@@ -316,10 +309,8 @@ const LoginHello = () => {
         }
       });
 
-
       return () => unsubscribe();
     } else {
-
       setChatHistory([]);
       setProducts([]);
       setBrands([]);
@@ -363,20 +354,22 @@ const LoginHello = () => {
               {showWelcomeMessage ? (
                 <div className={userBubbleWrap}>
                   <ChatBotBubble
-                    bubbleContent={`${user?.userName}님, 가입을 환영합니다!\n선택하신 키워드에 따라 OO님께 맞춤형 상품을\n추천해드립니다! 관심 있는 키워드를 골라주세요.`}
+                    bubbleContent={`${user?.userName}님, 가입을 환영합니다!\n선택하신 키워드에 따라 ${user?.userName}님께 맞춤형 상품을\n추천해드립니다! 관심 있는 키워드를 골라주세요.`}
                   />
                 </div>
               ) : (
                 // ChatBotBox는 키워드 선택 후에만 표시
                 <>
                   <ChatBotBox
-                    text={[`반갑습니다 ${user?.userName}님!`, `${user?.userName}님을 위한 맞춤 상품을 추천해 드릴게요.`]}
+                    text={[
+                      `반갑습니다 ${user?.userName}님!`,
+                      `${user?.userName}님을 위한 맞춤 상품을 추천해 드릴게요.`,
+                    ]}
                   />
                   <div style={{ marginLeft: '44px' }}>
                     <RecommendBox />
                   </div>
                 </>
-
               )}
             </div>
             {chatHistory.map((chat, index) => (
@@ -438,7 +431,6 @@ const LoginHello = () => {
           </motion.div>
         )}
 
-
         {chatHistory.length > 0 && hasAskedQuestion && (
           <Modal height="83vh" initialHeight="25px">
             {selectedBrand ? (
@@ -449,7 +441,6 @@ const LoginHello = () => {
           </Modal>
         )}
         {!isKeywordModalOpen && <ChatbotSearchInput />}
-
 
         {isShareModalOpen && <ShareModal />}
 
@@ -467,11 +458,10 @@ const LoginHello = () => {
                 ))}
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', padding: '0 16px' }}>
-              <Button text={`${selectedKeywords.length}개 선택`} onClick={handleSubmit} width='100%' />
+              <Button text={`${selectedKeywords.length}개 선택`} onClick={handleSubmit} width="100%" />
             </div>
           </Modal>
         )}
-
       </div>
     </div>
   );

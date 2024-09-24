@@ -6,7 +6,7 @@ export const toastContainer = style({
   left: '50%',
   transform: 'translateX(-50%)',
   whiteSpace: 'nowrap',
-  zIndex: 9999,
+  zIndex: 10000,
   backgroundColor: 'rgba(0, 0, 0, 0.8)',
   color: 'white',
   padding: '10px 20px',

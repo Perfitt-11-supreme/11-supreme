@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { responsiveBox } from '../../styles/responsive.css';
 import useUserStore from '../../stores/useUserStore';
 import { TUser } from '../../types/user';
-import { browserLocalPersistence, onAuthStateChanged, setPersistence } from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from '../../firebase/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import useTextSearchStore from '../../stores/useTextSearchStore';
@@ -21,40 +21,33 @@ const OnBoarding = () => {
   const downloadTextRecord = useTextSearchStore(state => state.downloadTextRecord);
 
   useEffect(() => {
-    //로그인 상태에 따라 특정 작업을 수행
-    const monitorAuthState = () => {
-      setPersistence(auth, browserLocalPersistence) //사용자가 브라우저를 닫아도 로그인 상태 유지
-        .then(() => {
-          onAuthStateChanged(auth, async user => {
-            if (user) {
-              //Firestore에서 사용자 정보 존재 유무를 uid로 조회
-              const userDocRef = doc(db, 'users', user.uid);
-              const userDoc = await getDoc(userDocRef);
+    const unsubscribe = onAuthStateChanged(auth, async user => {
+      if (user) {
+        //Firestore에서 사용자 정보 존재 유무를 uid로 조회
+        const userDocRef = doc(db, 'users', user.uid);
+        const userDoc = await getDoc(userDocRef);
 
-              if (userDoc.exists()) {
-                const userData: TUser = {
-                  ...userDoc.data(),
-                };
-                setUser(userData); //zustand에 로그인한 사용자 정보를 userData로 저장
-                userData.textSearchRecord && downloadTextRecord(userData.textSearchRecord);
-                console.log('현재 로그인한 사용자:', userData); //로그인되어 있는 경우
-              } else {
-                clearUser(); //상태 초기화
-                console.log('로그인한 사용자 정보가 없는 상태'); //인증은 되었으나 Firestore에는 사용자 등록이 되어있지 않은 경우 (로그인되어 있는 경우로 판단)
-              }
-            } else {
-              clearUser(); //상태 초기화
-              console.log('로그아웃 상태'); //로그인되어 있지 않은 경우
-            }
-          });
-        })
-        .catch(error => {
-          console.error('로그인 지속성 실패:', error);
-        });
-    };
+        if (userDoc.exists()) {
+          const userData: TUser = {
+            ...userDoc.data(),
+          };
+          setUser(userData); //zustand에 로그인한 사용자 정보를 userData로 저장
+          if (userData.textSearchRecord) {
+            downloadTextRecord(userData.textSearchRecord);
+          }
+          console.log('현재 로그인한 사용자:', userData); //로그인되어 있는 경우
+        } else {
+          clearUser(); //상태 초기화
+          console.log('인증은 되었으나 사용자 등록이 완료되지 않은 상태'); //인증은 되었으나 Firestore에는 사용자 등록이 되어있지 않은 경우 (로그인되어 있는 경우로 판단)
+        }
+      } else {
+        clearUser(); //상태 초기화
+        console.log('로그아웃 상태'); //로그인되어 있지 않은 경우
+      }
+    });
 
-    monitorAuthState();
-  }, [navigate, setUser, clearUser]);
+    return () => unsubscribe(); //컴포넌트 언마운트 시 구독 해제
+  }, [setUser, clearUser, downloadTextRecord]);
 
   const handlePageMove = async () => {
     const currentUser = auth.currentUser;
