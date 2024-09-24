@@ -106,5 +106,5 @@ export const useChatCompletion = () => {
     return newChatId;
   };
 
-  return { handleQuestionSelect, chatCompletionsMutation, handleNewChat, currentChatId };
+  return { handleQuestionSelect, chatCompletionsMutation, handleNewChat, currentChatId,createNewChat };
 };

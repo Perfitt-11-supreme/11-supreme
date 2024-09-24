@@ -40,7 +40,7 @@ const ChatbotSearchInput = () => {
   const { setProducts } = useProductStore();
   const { setBrands } = useBrandStore();
   const { addChatItem, setCurrentKeywords } = useChatStore();
-  const { chatCompletionsMutation } = useChatCompletion();
+  const { chatCompletionsMutation, createNewChat } = useChatCompletion();
 
   const imageSearchMutation = useMutation({
     mutationFn: async (file: File) => {
@@ -69,15 +69,19 @@ const ChatbotSearchInput = () => {
       };
 
       const shareId = await saveSharedChatHistory(chatItemWithoutIds);
+      let chatId = useChatStore.getState().currentChatId;
+      if (!chatId) {
+        chatId = await createNewChat();
+      }
 
       const newChatItem: ChatItem = {
-        id: push(ref(database, 'chatHistory')).key || '',
+        id: push(ref(database, `users/${user?.uid}/chats/${chatId}/messages`)).key || '',
         shareId,
         ...chatItemWithoutIds,
       };
 
       if (user?.uid) {
-        push(ref(database, `chatHistory/${user.uid}`), newChatItem);
+        push(ref(database, `users/${user?.uid}/chats/${chatId}/messages`), newChatItem);
       }
       setProducts(response.data.products);
       setBrands(response.data.brands);
