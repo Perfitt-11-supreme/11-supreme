@@ -173,28 +173,23 @@ export const useLikedStore = create<LikedState>(set => ({
   handleDeleteBrand: async (brandId: string) => {
     // 'myLiked' 컬렉션에서 해당 사용자 문서 참조
     try {
-      const docRef = doc(db, 'myproducts', user.uid);
-
-      const docSnap = await getDoc(docRef);
-      if (!docSnap.exists()) {
-        console.log('myproducts 문서가 존재하지 않음');
-        return;
-      }
-
-      const data = docSnap.data();
-      const likedData = data?.liked;
-
-      if (likedData && likedData.brands) {
-        const updatedBrands = { ...likedData.brands };
-        delete updatedBrands[brandId]; // 브랜드 삭제
-
-        await updateDoc(docRef, {
-          'liked.brands': updatedBrands, // 업데이트된 brands 저장
-        });
-
-        // 상태 업데이트하여 화면에 반영
-        setBrandsData(updatedBrands);
-      }
+      // const docRef = doc(db, 'myproducts', user.uid);
+      // const docSnap = await getDoc(docRef);
+      // if (!docSnap.exists()) {
+      //   console.log('myproducts 문서가 존재하지 않음');
+      //   return;
+      // }
+      // const data = docSnap.data();
+      // const likedData = data?.liked;
+      // if (likedData && likedData.brands) {
+      //   const updatedBrands = { ...likedData.brands };
+      //   delete updatedBrands[brandId]; // 브랜드 삭제
+      //   await updateDoc(docRef, {
+      //     'liked.brands': updatedBrands, // 업데이트된 brands 저장
+      //   });
+      //   // 상태 업데이트하여 화면에 반영
+      //   // setBrandsData(updatedBrands)
+      // }
     } catch (error) {
       console.error('Firestore에서 브랜드 삭제 중 오류 발생:', error);
     }
