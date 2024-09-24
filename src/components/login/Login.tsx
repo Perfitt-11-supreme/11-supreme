@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { google, hamburger_menu } from '../../assets/assets';
 import { signInWithGoogle } from '../../firebase/firebase';
+import { useChatCompletion } from '../../hooks/useChatCompletionHook';
 import useUserStore from '../../stores/useUserStore';
 import { responsiveBox } from '../../styles/responsive.css';
 import { TUser } from '../../types/user';
@@ -18,6 +19,7 @@ const Login = () => {
   const db = getFirestore();
   const { setUser } = useUserStore();
   const [toastMessage, setToastMessage] = useState<{ message: string; duration: number } | null>(null);
+  const { handleNewChat } = useChatCompletion();
 
   const handleGoogleLogin = async () => {
     try {
@@ -35,7 +37,10 @@ const Login = () => {
         };
         setUser(userData); //userData를 zustand에 저장
         console.log('로그인한 사용자:', userData);
-        navigate('/hello'); //기존 사용자: 로그인 성공 후 /hello(로그인 후 첫 화면) 페이지로 이동
+
+        const newChatId = await handleNewChat();
+        navigate(`/hello/${newChatId}`);
+        // navigate('/hello'); //기존 사용자: 로그인 성공 후 /hello(로그인 후 첫 화면) 페이지로 이동
       } else {
         const newGoogleUser = {
           uid: user.uid, //구글 회원가입 시 자동 생성된 uid 저장

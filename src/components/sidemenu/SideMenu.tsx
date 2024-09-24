@@ -5,7 +5,6 @@ import { prefitt_logo2, sidemenu_list, sidemenu_plus } from '../../assets/assets
 import SidemenuList from '../../components/sidemenu/SidemenuList';
 import { useChatCompletion } from '../../hooks/useChatCompletionHook';
 import useChatHistoryHook from '../../hooks/useChatHistoryHook';
-import useChatStore from '../../stores/useChatStore';
 import SidemenuMypageLinks from './SidemenuMypageLinks';
 import {
   logoIcon,
@@ -46,7 +45,6 @@ const SideMenu = ({ onClose }: ChatHistoryListProps) => {
   const auth = getAuth();
   const { handleNewChat } = useChatCompletion();
   const { chatHistory, deleteChatHistory } = useChatHistoryHook();
-  const { currentChatId } = useChatStore()
   // 현재 UTC 시간으로 오늘 날짜 계산
   const today = new Date();
   const utcToday = new Date(today.getTime() + today.getTimezoneOffset() * 60 * 1000); // UTC 시간

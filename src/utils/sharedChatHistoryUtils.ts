@@ -1,20 +1,24 @@
 import { get, ref } from 'firebase/database';
 import { database } from '../firebase/firebase';
 
-export const fetchShareId = async (targetId: string): Promise<string | null> => {
-  if (!targetId) return null;
+export const fetchShareId = async (userId:string, targetId: string): Promise<string | null> => {
+  if (!userId || !targetId) return null;
   try {
-    const sharedChatHistoryRef = ref(database, 'sharedChatHistory');
-    const snapshot = await get(sharedChatHistoryRef);
+    const messagesRef = ref(database, `users/${userId}/chats`);
+    const snapshot = await get(messagesRef);
 
     if (snapshot.exists()) {
-      const sharedHistory = snapshot.val();
+      const chats = snapshot.val();
       
-      // 타겟 ID와 일치하는 키 찾기
-      const matchingKey = Object.keys(sharedHistory).find(key => key === targetId);
-
-      if (matchingKey) {
-        return matchingKey;
+      // 모든 채팅과 메시지 검색
+      for (const chatId in chats) {
+        const messages = chats[chatId].messages;
+        for (const messageId in messages) {
+          const message = messages[messageId];
+          if (message.shareId === targetId) {
+            return targetId; // 일치하는 공유 ID 반환
+          }
+        }
       }
 
       console.log("일치하는 공유 채팅 기록을 찾을 수 없습니다.");

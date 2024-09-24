@@ -1,7 +1,9 @@
-import useUserStore from '../../../stores/useUserStore';
+import { doc, setDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { USER_COLLECTION } from '../../../firebase/firebase';
-import { doc, setDoc } from 'firebase/firestore';
+import useUserStore from '../../../stores/useUserStore';
+import Button from '../../common/button/Button';
+import Modal from '../../common/modal/Modal';
 import ToastMessage from '../../toastmessage/toastMessage';
 import {
   errorMessage,
@@ -10,12 +12,10 @@ import {
   signupSizeTypeContainer,
   signupSizeTypeLabel,
 } from '../signup.css';
-import UsualSizeSelect from './usualsizeselect/UsualSizeSelect';
-import ButtonFill from './sizetypebutton/buttonfill/ButtonFill';
-import ButtonBlank from './sizetypebutton/buttonblank/ButtonBlank';
 import InfoBox from './infobox/InfoBox';
-import Button from '../../common/button/Button';
-import Modal from '../../common/modal/Modal';
+import ButtonBlank from './sizetypebutton/buttonblank/ButtonBlank';
+import ButtonFill from './sizetypebutton/buttonfill/ButtonFill';
+import UsualSizeSelect from './usualsizeselect/UsualSizeSelect';
 
 type SignUpSizeModalProps = {
   isOpen: boolean; //부모로부터 전달받은 isModalOpen 상태
