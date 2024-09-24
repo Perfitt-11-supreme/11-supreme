@@ -13,11 +13,8 @@ import { useEffect, useState } from 'react';
 import ProductAndBrandButton from '../../components/mypage/product-and-brand-button/ProductAndBrandButton';
 import LikedInBrand from '../../components/mypage/liked-in-brand/LikedInBrand';
 import { responsiveBox } from '../../styles/responsive.css';
-import { doc, getDoc, getFirestore } from 'firebase/firestore';
+import { doc, getDoc, getFirestore, updateDoc } from 'firebase/firestore';
 import { getDownloadURL, getStorage, listAll, ref } from 'firebase/storage';
-
-// Firebase 초기화
-const db = getFirestore();
 
 type Brand = {
   brandNameEn: string;
@@ -30,6 +27,7 @@ type Product = {
   image: string;
   link: string;
   modelName: string;
+  productId?: string;
   price: number;
   sizeRecommend: string;
   uid: string;
@@ -47,6 +45,7 @@ type LikedData = {
 };
 
 // Firebase 초기화
+const db = getFirestore();
 const storage = getStorage();
 
 const LikedPage = () => {
@@ -125,10 +124,47 @@ const LikedPage = () => {
     fetchLogos();
   }, []);
 
-  // 브랜드 이름과 로고를 매칭하는 함수
-  const getLogoUrl = (brandNameEn: string) => {
-    const logo = logos.find(logo => logo.name.toLowerCase() === brandNameEn.toLowerCase());
-    return logo ? logo.url : ''; // 로고가 없을 경우 빈 문자열 반환
+  // Firestore에서 제품 삭제
+  const handleDeleteProduct = async (id: string) => {
+    try {
+      // Firestore에서 liked 필드가 있는지 먼저 확인
+      const docRef = doc(db, 'myproducts', 'FS7MVRUbVXZ9j6GZnrbF');
+      const docSnap = await getDoc(docRef);
+
+      if (!docSnap.exists()) {
+        console.log('myproducts 문서가 존재하지 않음');
+        return; // 문서가 존재하지 않으면 중단
+      }
+
+      const data = docSnap.data();
+      const likedData = data?.liked; // liked 필드에 접근
+      console.log('Firestore liked data delete:', likedData); // Firestore에서 가져온 liked 필드 확인
+
+      if (!likedData || !likedData.products) {
+        console.log('Firestore liked 필드 또는 products 필드가 존재하지 않음');
+        return; // liked나 products 필드가 없으면 중단
+      }
+
+      const updatedProducts = { ...likedData.products };
+      if (!(id in updatedProducts)) {
+        console.log('해당 ID를 가진 제품이 Firestore liked.products에 존재하지 않음');
+        return; // 삭제할 제품이 존재하지 않으면 중단
+      }
+
+      delete updatedProducts[id]; // 상태에서 해당 제품 삭제
+
+      // Firestore에서 제품 삭제
+      await updateDoc(docRef, {
+        'liked.products': updatedProducts, // 업데이트된 products 저장
+      });
+
+      // 상태 업데이트
+      setProductsData(updatedProducts);
+
+      console.log('Product deleted successfully from Firestore');
+    } catch (error) {
+      console.error('Error deleting product from Firestore:', error);
+    }
   };
 
   return (
@@ -167,9 +203,10 @@ const LikedPage = () => {
                       isHeartFilled
                       product={{
                         ...product,
+                        productId: product.productId || key, // productId가 없으면 key 사용
                         brand: product.brand || 'Unknown Brand', // brand가 없으면 기본 값 할당
                       }}
-                      // onCardClick={() => handleCardClick(key)} // 클릭 시 시간 기록 함수 호출
+                      onDelete={handleDeleteProduct}
                     />
                   );
                 })

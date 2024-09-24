@@ -10,6 +10,7 @@ import {
   logoUrlNoneText,
 } from './likedInBrand.css';
 import { useEffect, useState } from 'react';
+import { doc, getDoc, getFirestore, updateDoc } from 'firebase/firestore';
 
 type Brand = {
   brandNameEn: string;
@@ -23,6 +24,7 @@ type LikedInBrandProps = {
 };
 
 // Firebase 초기화
+const db = getFirestore();
 const storage = getStorage();
 
 const LikedInBrand = ({ brands }: LikedInBrandProps) => {
@@ -64,6 +66,43 @@ const LikedInBrand = ({ brands }: LikedInBrandProps) => {
     });
     setHeartStates(initialHeartStates);
   }, [brands]);
+
+  // Firestore에서 브랜드 삭제
+  const handleDeleteBrand = async (brandKey: string) => {
+    try {
+      const docRef = doc(db, 'myproducts', 'FS7MVRUbVXZ9j6GZnrbF'); // 문서 참조
+      const docSnap = await getDoc(docRef);
+
+      if (!docSnap.exists()) {
+        console.log('myproducts 문서가 존재하지 않음');
+        return;
+      }
+
+      const data = docSnap.data();
+      const likedData = data?.liked;
+
+      if (!likedData || !likedData.brands) {
+        console.log('Firestore liked 필드 또는 brands 필드가 존재하지 않음');
+        return;
+      }
+
+      const updatedBrands = { ...likedData.brands };
+      if (!(brandKey in updatedBrands)) {
+        console.log('해당 브랜드가 Firestore liked.brands에 존재하지 않음');
+        return;
+      }
+
+      delete updatedBrands[brandKey]; // 상태에서 해당 브랜드 삭제
+
+      await updateDoc(docRef, {
+        'liked.brands': updatedBrands, // 업데이트된 brands 저장
+      });
+
+      console.log('Brand deleted successfully from Firestore');
+    } catch (error) {
+      console.error('Error deleting brand from Firestore:', error);
+    }
+  };
 
   // 하트 상태를 토글하는 함수
   const toggleHeart = (brandKey: string) => {

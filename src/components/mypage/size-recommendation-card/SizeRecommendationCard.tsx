@@ -21,27 +21,38 @@ type SizeRecommendationCardProps = {
   product: TProduct | null;
   isHeartFilled?: boolean;
   onCardClick?: () => void; // 클릭 이벤트를 처리하는 함수
+  onDelete?: (id: string) => void; // 삭제 함수
 };
 
-const SizeRecommendationCard = ({ product, isHeartFilled = false, onCardClick }: SizeRecommendationCardProps) => {
+const SizeRecommendationCard = ({
+  product,
+  isHeartFilled = false,
+  onCardClick,
+  onDelete,
+}: SizeRecommendationCardProps) => {
   // product가 null일 경우 아무것도 렌더링하지 않음
   if (!product) {
     return null;
   }
   // console.log('Product in SizeRecommendationCard:', product); // 전달된 product 확인
-  // const [isChecked, setIsChecked] = useState(false);
   const [isChecked, setIsChecked] = useState(isHeartFilled);
   const { handleProductDetailsClick } = useProductDetailStore();
 
-  // const handleHeartChecked = () => {
-  //   setIsChecked(!isChecked);
-  // };
-  const handleHeartChecked = () => {
-    setIsChecked(prev => !prev); // 클릭 시 상태를 반전
+  const handleHeartChecked = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsChecked(prev => !prev);
+
+    if (isChecked) {
+      console.log('Deleting product with productId:', product?.productId); // productId 확인
+      if (product?.productId) {
+        onDelete?.(product.productId); // 삭제 함수 호출
+      } else {
+        console.log('Product ID is undefined');
+      }
+    }
   };
 
   return (
-    // <div className={sizeRecommendationCardBox} onClick={() => (window.location.href = product.link)}>
     <div
       className={sizeRecommendationCardBox}
       onClick={() => {
@@ -61,7 +72,7 @@ const SizeRecommendationCard = ({ product, isHeartFilled = false, onCardClick }:
           className={heartIconBox}
           onClick={e => {
             e.stopPropagation();
-            handleHeartChecked(); // 클릭 시 하트 상태 변경
+            handleHeartChecked(e);
           }}
         >
           {/* <img src={isHeartFilled || isChecked ? heart_filled : heart_empty} alt="heart" /> */}
