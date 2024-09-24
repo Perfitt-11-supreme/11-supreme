@@ -26,9 +26,9 @@ type Product = {
   image: string;
   link: string;
   modelName: string;
+  productId?: string;
   price: number;
   sizeRecommend: string;
-  productId?: string;
   uid: string;
   timestamp?: string;
 };

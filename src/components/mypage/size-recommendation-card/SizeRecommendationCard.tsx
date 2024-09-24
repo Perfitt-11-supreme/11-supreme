@@ -32,7 +32,7 @@ const SizeRecommendationCard = ({
 }: SizeRecommendationCardProps) => {
   // product가 null일 경우 아무것도 렌더링하지 않음
   if (!product) {
-    return null;
+    return <></>;
   }
   // console.log('Product in SizeRecommendationCard:', product); // 전달된 product 확인
   const [isChecked, setIsChecked] = useState(isHeartFilled);
@@ -46,9 +46,16 @@ const SizeRecommendationCard = ({
     if (isChecked && product?.productId) {
       console.log('Deleting product with productId:', product?.productId); // productId 확인
       onDelete?.(product.productId); // 삭제 함수 호출
+      // if (isChecked) {
+      //   console.log('Deleting product with productId:', product?.productId); // productId 확인
+      //   if (product?.productId) {
+      //     onDelete?.(product.productId); // 삭제 함수 호출
+      //   } else {
+      //     console.log('Product ID is undefined');
+      //   }
+      // }
     }
   };
-
   return (
     <div
       className={sizeRecommendationCardBox}
