@@ -36,6 +36,9 @@ export const logoUrlNoneText = style({
   color: theme.color.black500,
 });
 
+export const hiddenBrand = style({
+  display: 'none',
+});
 export const heartFilledIcon = style({
   cursor: 'pointer',
 });

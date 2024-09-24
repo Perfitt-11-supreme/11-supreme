@@ -5,6 +5,7 @@ export const modalContainerWrapper = style({
   position: 'relative',
   width: '100%',
   height: 'auto',
+  zIndex: 102,
 });
 
 export const modalContainer = style({
