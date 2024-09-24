@@ -6,7 +6,7 @@ import { TUser } from '../../../../types/user';
 import { useEffect, useState } from 'react';
 
 export const FetchTextRecord = () => {
-  const { textRecord, setState, downloadTextRecord } = useTextSearchStore();
+  const { textRecord, setLoading, downloadTextRecord } = useTextSearchStore();
   const { user } = useUserStore();
   const [pageLoad, setPageLoad] = useState(false);
 
@@ -29,7 +29,7 @@ export const FetchTextRecord = () => {
     if (user?.uid) {
       if (textRecord.length === 0) {
         try {
-          setState({ isLoading: true });
+          setLoading(true);
           const userDocRef = doc(USER_COLLECTION, user.uid);
           const userDoc = await getDoc(userDocRef);
 
@@ -49,7 +49,7 @@ export const FetchTextRecord = () => {
         } catch (error) {
           console.log('사용자 정보를 가져오는 중 오류 발생');
         } finally {
-          setState({ isLoading: false });
+          setLoading(false);
           setPageLoad(true);
         }
       } else {

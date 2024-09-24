@@ -9,6 +9,14 @@ const rotation = keyframes({
   },
 });
 
+export const IsLoading_Container = style({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '100%',
+  height: '100%',
+});
+
 export const IsLoading_Window = style({
   position: 'absolute',
   width: '124px',

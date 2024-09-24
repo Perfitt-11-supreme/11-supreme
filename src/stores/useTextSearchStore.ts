@@ -6,7 +6,13 @@ type textSearchData = {
   postText: string;
   isLoading: boolean;
   isSubmit: boolean;
-  setState: (updateData: Partial<textSearchData>) => void;
+  isScrolling: boolean;
+  setFocus: (focus: boolean) => void;
+  setText: (text: string) => void;
+  setPostText: (postText: string) => void;
+  setLoading: (isLoading: boolean) => void;
+  setSubmit: (isSubmit: boolean) => void;
+  setIsScrolling: (isScrolling: boolean) => void;
   resetState: () => void;
 };
 
@@ -23,7 +29,13 @@ const useTextSearchStore = create<textSearchData & textRecordData>(set => ({
   postText: '',
   isLoading: false,
   isSubmit: false,
-  setState: updateData => set(state => ({ ...state, ...updateData })),
+  isScrolling: false,
+  setFocus: focus => set({ focus }),
+  setText: text => set({ text }),
+  setPostText: postText => set({ postText }),
+  setLoading: isLoading => set({ isLoading }),
+  setSubmit: isSubmit => set({ isSubmit }),
+  setIsScrolling: isScrolling => set({ isScrolling }),
   resetState: () => {
     set({
       focus: true,
@@ -51,7 +63,13 @@ const useTextSearchStore = create<textSearchData & textRecordData>(set => ({
       }
     });
   },
-  clearTextRecord: () => set({ textRecord: [], postText: '' }),
+  clearTextRecord: () =>
+    set(state => {
+      if (state.textRecord.length > 0) {
+        return { textRecord: [], postText: '' };
+      }
+      return {};
+    }),
 }));
 
 export default useTextSearchStore;

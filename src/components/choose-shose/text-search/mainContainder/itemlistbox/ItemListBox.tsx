@@ -9,9 +9,21 @@ const ItemListBox = () => {
   const { products } = useProductStore();
 
   return isLoading ? (
-    <IsLoading text="검색중" isMargin={true} />
+    <IsLoading text="검색중" />
   ) : (
     <div>
+      {products.map((data, index) => (
+        <ItemCard key={index} index={index} data={data} />
+      ))}
+      {products.map((data, index) => (
+        <ItemCard key={index} index={index} data={data} />
+      ))}
+      {products.map((data, index) => (
+        <ItemCard key={index} index={index} data={data} />
+      ))}
+      {products.map((data, index) => (
+        <ItemCard key={index} index={index} data={data} />
+      ))}
       {products.map((data, index) => (
         <ItemCard key={index} index={index} data={data} />
       ))}

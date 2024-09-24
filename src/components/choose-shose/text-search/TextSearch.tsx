@@ -24,15 +24,15 @@ const TextSearch = () => {
     handleTextDownload();
   }, []);
 
+  console.log('랜더링됨');
+
   return (
     <>
-      <div>
-        <div className={responsiveBox}>
-          <Header imageSrc={back_arrow} alt="뒤로가기" title="신발검색" nav="/shoes-registry"></Header>
-          <SearchBox />
-          <MainContainer />
-          <TextFooter />
-        </div>
+      <div className={responsiveBox}>
+        <Header imageSrc={back_arrow} alt="뒤로가기" title="신발검색" nav="/shoes-registry"></Header>
+        <SearchBox />
+        <MainContainer />
+        <TextFooter />
       </div>
     </>
   );

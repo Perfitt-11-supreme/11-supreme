@@ -27,7 +27,7 @@ const SimilarProduct = () => {
         </div>
       </div>
       <div className={SimilarProduct_Button}>
-        {selectProduct && <Button text="선택 완료" onClick={handleImageSearchNavigate} />}
+        {selectProduct && <Button text="선택 완료" onClick={handleImageSearchNavigate} type="button" />}
       </div>
     </div>
   );
