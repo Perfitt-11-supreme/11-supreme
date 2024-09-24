@@ -75,7 +75,7 @@ const LoginHello = () => {
   const [hasSetInitialKeywords, setHasSetInitialKeywords] = useState(false);
   const [hasAskedQuestion, setHasAskedQuestion] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
+  const { currentChatId } = useChatStore()
   // 키워드 리스트 불러오기
   const {
     data: keywordsListData,
@@ -284,28 +284,39 @@ const LoginHello = () => {
 
   // Firebase에서 채팅 기록 불러오기
   useEffect(() => {
-    if (user?.uid) {
-      const chatRef = ref(database, `chatHistory/${user.uid}`);
-      const unsubscribe = onValue(chatRef, snapshot => {
+    if (user?.uid && currentChatId) {
+      const messagesRef = ref(database, `users/${user.uid}/chats/${currentChatId}/messages`);
+      const unsubscribe = onValue(messagesRef, (snapshot) => {
         const chatItems: ChatItem[] = [];
-        snapshot.forEach(childSnapshot => {
-          const data = childSnapshot.val();
-          const id = childSnapshot.key;
-          if (id) {
-            chatItems.push({ ...data, id });
+
+        snapshot.forEach((messageSnapshot) => {
+          const messageId = messageSnapshot.key;
+          const message = messageSnapshot.val();
+          if (messageId && message) {
+            chatItems.push({
+              ...message,
+              id: messageId,
+            });
           }
         });
+
+        chatItems.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
 
         if (chatItems.length > 0) {
           setChatHistory(chatItems);
           const lastChatItem = chatItems[chatItems.length - 1];
-          if (lastChatItem && lastChatItem.products) {
-            setProducts(lastChatItem.products as ProductStoreState['products']);
+          if (lastChatItem.products) {
+            setProducts(lastChatItem.products);
           }
-          if (lastChatItem && lastChatItem.brands) {
+          if (lastChatItem.brands) {
             setBrands(lastChatItem.brands);
           }
           setCurrentKeywords(lastChatItem.keywords);
+        } else {
+          setChatHistory([]);
+          setProducts([]);
+          setBrands([]);
+          setCurrentKeywords('');
         }
       });
 
@@ -316,7 +327,8 @@ const LoginHello = () => {
       setBrands([]);
       setCurrentKeywords('');
     }
-  }, [user, setProducts, setBrands]);
+  }, [user, currentChatId, setProducts, setBrands, setChatHistory, setCurrentKeywords]);
+
 
   // 브릿지 페이지 타이머 설정
   useEffect(() => {

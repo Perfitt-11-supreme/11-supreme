@@ -1,6 +1,6 @@
 // useChatHistory.ts (데이터 가져오는 로직)
+import { get, ref, remove } from 'firebase/database';
 import { useEffect, useState } from 'react';
-import { ref, get, remove } from 'firebase/database';
 import { database } from '../firebase/firebase';
 
 type ChatHistory = {
