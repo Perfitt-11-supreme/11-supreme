@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { sidemenu_delete, sidemenu_linkshare } from '../../assets/assets';
+import useChatStore from '../../stores/useChatStore';
 import useModalStore from '../../stores/useModalStore';
 import useUserStore from '../../stores/useUserStore';
 import { fetchShareId } from '../../utils/sharedChatHistoryUtils';
@@ -21,14 +22,16 @@ type SidemenuListProps = {
   id: string;
   shareId: string;
   handleDelete: (id: string) => void;
+  onClose: () => void;
 };
 
-const SidemenuList = ({ iconSrc, keywords, id, shareId, handleDelete }: SidemenuListProps) => {
+const SideMenuList = ({ iconSrc, keywords, id, shareId, handleDelete, onClose }: SidemenuListProps) => {
   const [isSwiped, setIsSwiped] = useState(false);
   const startX = useRef<number | null>(null);
   const threshold = 50; // 스와이프 임계값
-  const { setIsShareModalOpen, setShareModalId, shareModalId } = useModalStore();
+  const { setIsShareModalOpen, setShareModalId } = useModalStore();
   const { user } = useUserStore()
+  const { setCurrentChatId } = useChatStore()
   const handleTouchStart = (e: React.TouchEvent) => {
     startX.current = e.touches[0].clientX;
   };
@@ -82,12 +85,13 @@ const SidemenuList = ({ iconSrc, keywords, id, shareId, handleDelete }: Sidemenu
     }
   };
 
-  console.log('사이드메뉴 리스트 아이디', shareId)
+  // console.log('사이드메뉴 리스트 아이디', shareId)
 
   const navigate = useNavigate();
   const handleChatLink = async () => {
-    const shareUrl = `/share/${shareId}`;
-    navigate(shareUrl);
+    setCurrentChatId(id);
+    navigate(`/hello/${id}`);
+    onClose()
   };
 
   return (
@@ -129,4 +133,4 @@ const SidemenuList = ({ iconSrc, keywords, id, shareId, handleDelete }: Sidemenu
   );
 };
 
-export default SidemenuList;
+export default SideMenuList;

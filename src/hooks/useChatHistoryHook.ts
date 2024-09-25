@@ -84,7 +84,8 @@ const useChatHistoryHook = () => {
     }
   };
 
-  return { chatHistory, loading, error, deleteChatHistory };
+
+  return { chatHistory, loading, error, deleteChatHistory};
 };
 
 export default useChatHistoryHook;

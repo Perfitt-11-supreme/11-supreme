@@ -1,4 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
+import App from '../App';
 import ImageSearch from '../components/choose-shose/image-search/ImageSearch';
 import TextSearch from '../components/choose-shose/text-search/TextSearch';
 import EmptyShoesRoom from '../components/empty-shoes-room/EmptyShoesRoom';
@@ -18,7 +19,6 @@ import Mypage from '../pages/mypage/Mypage';
 import NotFound from '../pages/not-found/notFound';
 import SharePage from '../pages/share-page/SharePage';
 import ViewedHistoryPage from '../pages/viewed-history-page/ViewedHistoryPage';
-import App from '../App';
 
 export const router = createBrowserRouter([
   {
@@ -74,7 +74,7 @@ export const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: '/hello/:id?',
+        path: '/hello/:chatId?',
         element: <LoginHello />,
       },
       {

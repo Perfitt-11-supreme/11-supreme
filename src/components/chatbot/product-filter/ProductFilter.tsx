@@ -30,7 +30,7 @@ const ProductFilter = ({ filterProducts }: ProductFilterProps) => {
 
   const displayProducts = filterProducts || products;
 
-  console.log("상태전달", displayProducts)
+  // console.log("상태전달", displayProducts)
 
   return (
     <>

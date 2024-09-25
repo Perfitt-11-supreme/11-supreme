@@ -1,13 +1,14 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { onAuthStateChanged } from 'firebase/auth';
-import { onValue, push, ref, set } from 'firebase/database';
-import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
+import { push, ref, set } from 'firebase/database';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { motion } from 'framer-motion';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { chatKeywordsAPI, keywordsListAPI, recommendQuestionAPI } from '../../api/chatRequests';
 import { hamburger_menu } from '../../assets/assets';
-import { auth, database, db } from '../../firebase/firebase';
+import { database, db } from '../../firebase/firebase';
+import { useAuth } from '../../hooks/useAuthHook';
 import { useChatCompletion } from '../../hooks/useChatCompletionHook';
+import useFetchChatHistoryHook from '../../hooks/useFetchChatHistoryHook';
 import BridgePage from '../../pages/bridge-page/bridgePage';
 import { keywordWrap } from '../../pages/chatbot-page/chatBotPage.css';
 import LoadingPage from '../../pages/loading-page/loadingPage';
@@ -16,9 +17,10 @@ import useChatStore from '../../stores/useChatStore';
 import useModalStore from '../../stores/useModalStore';
 import useProductDetailStore from '../../stores/useProductDetailStore';
 import useProductStore, { ProductStoreState } from '../../stores/useProductsStore';
+import useUIStateStore from '../../stores/useUIStateStore';
 import useUserStore from '../../stores/useUserStore';
-import { ChatItem } from '../../types/chatItem';
 import { TKeyWordsData } from '../../types/keywords';
+import { useBridgePage } from '../../utils/bridgePageUtils';
 import BrandPLP from '../chatbot/brand-plp/BrandPLP';
 import BrandRecommendation from '../chatbot/brand-recommendation/BrandRecommendation';
 import ChatBotBubble from '../chatbot/chatbot-bubble/ChatBotBubble';
@@ -43,39 +45,38 @@ type TQuestions = {
 
 type QuestionList = TQuestions[];
 
-type Brand = {
-  brand: string;
-  description: string;
-  link: string;
-  thumbnail: string;
-};
+// type Brand = {
+//   brand: string;
+//   description: string;
+//   link: string;
+//   thumbnail: string;
+// };
 
 type KeywordsList = string[];
 
 const LoginHello = () => {
+  // 상태 공유
   const { setProducts } = useProductStore.getState();
   const { selectedBrand, setBrands, setSelectedBrand } = useBrandStore();
   const { isShareModalOpen, isKeywordModalOpen, setKeywordModalOpen } = useModalStore();
   const { showBridgePage, selectedProductLink } = useProductDetailStore();
   const { setMessage } = useProductStore();
-  const { chatHistory, setCurrentKeywords, setChatHistory } = useChatStore();
-  const { user, setUser } = useUserStore();
-  const { currentChatId } = useChatStore();
+  const { chatHistory, setCurrentKeywords, setChatHistory, currentChatId } = useChatStore();
+  const { user } = useUserStore();
+  const { setShowChatBotAndRecommend, setHasSetInitialKeywords, setSelectedKeywords, selectedKeywords, showChatBotAndRecommend, hasSetInitialKeywords } = useUIStateStore()
 
+  // 커스텀 훅
+  const { isLoading } = useAuth();
   const { handleQuestionSelect } = useChatCompletion();
 
+  // state
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
 
   const [showProductRecommendation, setShowProductRecommendation] = useState(false);
   const [selectedChatItemId, setSelectedChatItemId] = useState<string | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
   const [hasSelectedKeywords, setHasSelectedKeywords] = useState(false);
-  const [hasSetInitialKeywords, setHasSetInitialKeywords] = useState(false);
   const [hasAskedQuestion, setHasAskedQuestion] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [showWelcomeMessage, setShowWelcomeMessage] = useState(false);
-  const [showChatBotAndRecommend, setShowChatBotAndRecommend] = useState(false);
 
   // 사용자의 최초 로그인 여부를 확인하는 쿼리
   const { data: userLoginStatus, isLoading: isUserStatusLoading } = useQuery({
@@ -105,7 +106,7 @@ const LoginHello = () => {
     queryFn: async () => {
       try {
         const response = await keywordsListAPI();
-        console.log(' 키워드 리스트 데이터 확인용', response);
+        // console.log(' 키워드 리스트 데이터 확인용', response);
         return response.data;
       } catch (error) {
         console.error('키워드 정보 불러오기 에러', error);
@@ -120,7 +121,7 @@ const LoginHello = () => {
   const keywordMutation = useMutation({
     mutationFn: (data: TKeyWordsData) => chatKeywordsAPI(data),
     onSuccess: response => {
-      console.log('키워드 전송 성공:', response);
+      // console.log('키워드 전송 성공:', response);
       setKeywordModalOpen(false);
       setMessage(response.data.message);
       setProducts(response.data.products);
@@ -128,11 +129,11 @@ const LoginHello = () => {
       if (user?.uid) {
         const newChatRef = push(ref(database, `users/${user.uid}/chats/${currentChatId}/messages`));
         const newChatItem = {
-          userQuestion: `${formattedKeywords}`,
+          userQuestion: `${safeSelectedKeywords}`,
           botResponse: response.data.message,
           products: response.data.products,
           brands: [],
-          keywords: formattedKeywords,
+          keywords: safeSelectedKeywords,
           timestamp: new Date().toISOString(),
         };
         set(newChatRef, newChatItem);
@@ -144,15 +145,19 @@ const LoginHello = () => {
     },
   });
 
+
   /**키워드 선택 함수 */
   const handleKeywordSelect = (keyword: string) => {
-    setSelectedKeywords(
-      prevSelected =>
-        prevSelected.includes(keyword)
-          ? prevSelected.filter(item => item !== keyword) // 선택 해제
-          : [...prevSelected, keyword] // 선택 추가
-    );
+    useUIStateStore.setState((state) => {
+      const currentSelected = Array.isArray(state.selectedKeywords) ? state.selectedKeywords : [];
+      const newSelected = currentSelected.includes(keyword)
+        ? currentSelected.filter(item => item !== keyword)
+        : [...currentSelected, keyword];
+      return { selectedKeywords: newSelected };
+    });
   };
+  //키워드 포맷
+  const safeSelectedKeywords = Array.isArray(selectedKeywords) ? selectedKeywords : [];
 
   // 키워드 제출 함수
   const handleSubmit = async () => {
@@ -163,28 +168,19 @@ const LoginHello = () => {
     setHasSetInitialKeywords(true);
     setShowChatBotAndRecommend(true);
 
-    console.log('Submitting keywords:', selectedKeywords);
-
     // Firestore에 selectedKeywords 저장
     if (user?.uid) {
       try {
-        await setDoc(
-          doc(db, 'users', user.uid),
-          {
-            selectedKeywords,
-            hasLoggedInBefore: true,
-          },
-          { merge: true }
-        );
-        console.log('User document updated successfully');
+        await setDoc(doc(db, 'users', user.uid), {
+          selectedKeywords,
+          hasLoggedInBefore: true
+        }, { merge: true });
+        // console.log("User document updated successfully");
       } catch (error) {
         console.error('Error updating user document:', error);
       }
     }
   };
-
-  //키워드 포맷
-  const formattedKeywords = selectedKeywords.join(', ');
 
   // 추천 질문 불러오는 함수
   const {
@@ -196,7 +192,7 @@ const LoginHello = () => {
     queryFn: async () => {
       try {
         const response = await recommendQuestionAPI();
-        console.log('추천 질문 데이터 확인용', response);
+        // console.log('추천 질문 데이터 확인용', response);
         return response.data;
       } catch (error) {
         console.error('추천 질문 불러오기 에러', error);
@@ -207,13 +203,6 @@ const LoginHello = () => {
     gcTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
   });
-
-  // 채팅 기록 변경 시 스크롤을 맨 아래로 이동
-  useEffect(() => {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-    }
-  }, [chatHistory]);
 
   // 브랜드 클릭 핸들러
   const handleBrandClick = (brand: string) => {
@@ -247,133 +236,29 @@ const LoginHello = () => {
     handleQuestionSelect(question);
   };
 
-  // useEffect(() => {
-  //   const storedHasAskedQuestion = localStorage.getItem('hasAskedQuestion');
-  //   if (storedHasAskedQuestion === 'true') {
-  //     setHasAskedQuestion(true);
-  //   }
-  // }, []);
-
-  // 사용자 인증 및 키워드 로드
-  useEffect(() => {
-    const firestore = getFirestore();
-
-    const unsubscribe = onAuthStateChanged(auth, async firebaseUser => {
-      if (firebaseUser) {
-        let userName = 'User';
-
-        if (firebaseUser.displayName) {
-          // 소셜 로그인의 경우
-          userName = firebaseUser.displayName;
-        } else {
-          // 일반 이메일 로그인의 경우 Firestore에서 사용자 이름 가져오기
-          try {
-            const userDoc = await getDoc(doc(firestore, 'users', firebaseUser.uid));
-            if (userDoc.exists()) {
-              userName = userDoc.data().userName || 'User';
-            }
-          } catch (error) {
-            console.error('Firestore에서 사용자 정보를 가져오는 중 오류 발생:', error);
-          }
-        }
-
-        setUser({
-          uid: firebaseUser.uid,
-          userName: userName,
-        });
-        setIsAuthenticated(true);
-
-        // Firestore에서 selectedKeywords 확인
-        const userDoc = await getDoc(doc(firestore, 'users', firebaseUser.uid));
-        if (userDoc.exists() && userDoc.data().selectedKeywords) {
-          setSelectedKeywords(userDoc.data().selectedKeywords);
-          setHasSetInitialKeywords(true);
-          setKeywordModalOpen(false);
-        } else {
-          // 처음 로그인하는 경우
-          setKeywordModalOpen(true);
-        }
-        setIsLoading(false);
-      } else {
-        // 사용자가 로그아웃한 경우
-        setUser(null);
-        setIsAuthenticated(false);
-        setHasSetInitialKeywords(false);
-        setSelectedKeywords([]);
-      }
-    });
-
-    // 컴포넌트가 언마운트될 때 구독 해제
-    return () => unsubscribe();
-  }, [setUser]);
-
-  console.log('currentChatID:', currentChatId);
 
   // Firebase에서 채팅 기록 불러오기
+  useFetchChatHistoryHook(currentChatId)
+
+  // 브릿지 페이지 타이머 설정
+  useBridgePage(showBridgePage, selectedProductLink)
+
+  // 채팅 기록 변경 시 스크롤을 맨 아래로 이동
   useEffect(() => {
-    if (user?.uid && currentChatId) {
-      const messagesRef = ref(database, `users/${user.uid}/chats/${currentChatId}/messages`);
-      const unsubscribe = onValue(messagesRef, snapshot => {
-        const chatItems: ChatItem[] = [];
-
-        snapshot.forEach(messageSnapshot => {
-          const messageId = messageSnapshot.key;
-          const message = messageSnapshot.val();
-          if (messageId && message) {
-            chatItems.push({
-              ...message,
-              id: messageId,
-            });
-          }
-        });
-
-        chatItems.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
-
-        if (chatItems.length > 0) {
-          setChatHistory(chatItems);
-          const lastChatItem = chatItems[chatItems.length - 1];
-          if (lastChatItem.products) {
-            setProducts(lastChatItem.products);
-            setShowChatBotAndRecommend(true); // 제품이 있을 때만 추천 표시
-          } else {
-            setProducts([]);
-            setShowChatBotAndRecommend(false); // 제품이 없으면 추천 숨김
-          }
-          if (lastChatItem.brands) {
-            setBrands(lastChatItem.brands);
-          }
-          setCurrentKeywords(lastChatItem.keywords);
-        } else {
-          setChatHistory([]);
-          setProducts([]);
-          setBrands([]);
-          setCurrentKeywords('');
-          setShowChatBotAndRecommend(false); // 채팅 기록이 없으면 추천 숨김
-        }
-      });
-
-      return () => unsubscribe();
-    } else {
-      setChatHistory([]);
-      setProducts([]);
-      setBrands([]);
-      setCurrentKeywords('');
-      setShowChatBotAndRecommend(false); // 사용자나 채팅 ID가 없으면 추천 숨김
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
-  }, [user, currentChatId, setProducts, setBrands, setChatHistory, setCurrentKeywords]);
+  }, [chatHistory]);
+
 
   useEffect(() => {
     if (!isUserStatusLoading && userLoginStatus) {
-      console.log('User Login Status:', userLoginStatus);
       setShowWelcomeMessage(true);
       if (userLoginStatus.isFirstLogin && !currentChatId) {
-        console.log('Setting welcome message and keyword modal');
         setKeywordModalOpen(true);
       } else if (!userLoginStatus.hasSetKeywords) {
-        console.log('Opening keyword modal');
         setKeywordModalOpen(true);
       } else {
-        console.log('Showing chatbot and recommend');
         setShowWelcomeMessage(false);
         setShowChatBotAndRecommend(false);
       }
@@ -391,7 +276,6 @@ const LoginHello = () => {
     setShowWelcomeMessage(false);
     setHasAskedQuestion(false);
 
-    console.log('Chat ID changed, states reset');
   }, [currentChatId]);
 
   useEffect(() => {
@@ -402,25 +286,11 @@ const LoginHello = () => {
     setCurrentKeywords('');
     setShowWelcomeMessage(false);
     setHasAskedQuestion(false);
-
-    console.log('Component mounted, states initialized');
-
     return () => {
       // 컴포넌트 언마운트 시 정리 작업
-      console.log('Component unmounted');
+      // console.log("Component unmounted");
     };
   }, []);
-
-  // 브릿지 페이지 타이머 설정
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (showBridgePage && selectedProductLink) {
-      timer = setTimeout(() => {
-        window.location.href = selectedProductLink;
-      }, 1000);
-    }
-    return () => clearTimeout(timer);
-  }, [showBridgePage, selectedProductLink]);
 
   if (showBridgePage) {
     return <BridgePage />;
@@ -534,8 +404,9 @@ const LoginHello = () => {
             ) : null}
           </Modal>
         )}
-        {!isKeywordModalOpen && <ChatbotSearchInput />}
 
+        {!isKeywordModalOpen && <ChatbotSearchInput />}
+        {/* 공유 모달  */}
         {isShareModalOpen && <ShareModal />}
 
         {!isLoading && isKeywordModalOpen && !hasSetInitialKeywords && (
@@ -547,7 +418,7 @@ const LoginHello = () => {
                     key={index}
                     text={item}
                     onClick={() => handleKeywordSelect(item)}
-                    isSelected={selectedKeywords.includes(item)}
+                    isSelected={safeSelectedKeywords.includes(item)}
                   />
                 ))}
             </div>
