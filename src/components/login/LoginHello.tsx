@@ -311,7 +311,7 @@ const LoginHello = () => {
       <div className={fullContainer}>
         <Header imageSrc={hamburger_menu} alt="hamburger menu" />
         <div className={loginHelloContainer}>
-          <div ref={chatContainerRef} style={{ overflowY: 'auto', overflowX: 'hidden' }}>
+          <div ref={chatContainerRef}>
             {' '}
             {/* 채팅 기록 컨테이너 */}
             <div style={{ marginTop: '20px' }}>

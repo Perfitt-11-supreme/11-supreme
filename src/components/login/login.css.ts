@@ -44,6 +44,7 @@ export const recommendedquestioncardContainer = style({
 });
 
 export const loginHelloContainer = style({
+  width:'100%',
   height: '100%',
   overflowY: 'scroll',
   marginBottom: '30px',
