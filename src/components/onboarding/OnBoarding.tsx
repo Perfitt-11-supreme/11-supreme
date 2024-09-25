@@ -5,7 +5,6 @@ import { buttonDiv, container, descP, slide, slide0, slide1, slidesWrapper } fro
 import { useEffect, useState } from 'react';
 import { responsiveBox } from '../../styles/responsive.css';
 import useUserStore from '../../stores/useUserStore';
-import { TUser } from '../../types/user';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from '../../firebase/firebase';
 import { doc, getDoc } from 'firebase/firestore';
@@ -52,7 +51,7 @@ const OnBoarding = () => {
     const currentUser = auth.currentUser;
 
     if (!currentUser) {
-      navigate('/login'); // 로그인되어 있지 않은 경우
+      navigate('/login'); //로그인되어 있지 않은 경우
     } else {
       //Firestore에서 사용자 정보 존재 유무를 uid로 조회
       const userDocRef = doc(db, 'users', currentUser.uid);
@@ -67,10 +66,6 @@ const OnBoarding = () => {
       }
     }
   };
-
-  // const handlePageMove = () => {
-  //   navigate('/login');
-  // };
 
   const handleNextSlide = () => {
     if (currentSlide < 1) {

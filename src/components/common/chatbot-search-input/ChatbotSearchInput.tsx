@@ -157,10 +157,6 @@ const ChatbotSearchInput = () => {
     }
   };
 
-  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setInputValue(e.target.value);
-  // };
-
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -183,9 +179,9 @@ const ChatbotSearchInput = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!user) {
-      //로그인 상태가 아닐 때 입력값 초기화 및 토스트 메시지 표시
+      //로그인 상태가 아닐 때 입력 차단 및 토스트 메시지 표시
       setToastMessage({ message: '먼저 로그인을 해주세요.', duration: 3000 });
-      return; //입력 차단
+      return;
     } else {
       //로그인 상태일 때만 입력값 업데이트
       setInputValue(e.target.value);

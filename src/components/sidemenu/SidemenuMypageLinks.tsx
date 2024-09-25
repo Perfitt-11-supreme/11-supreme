@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getDoc, doc } from 'firebase/firestore'; // Firestore 관련 함수 import
 import { USER_COLLECTION } from '../../firebase/firebase'; // USER_COLLECTION 경로 수정
+import useUserStore from '../../stores/useUserStore';
 
 const SidemenuMypageLinks = () => {
   const navigate = useNavigate();
@@ -51,9 +52,13 @@ const SidemenuMypageLinks = () => {
     fetchUserData(); // 컴포넌트 마운트 시 Firestore에서 사용자 정보 가져옴
   }, [auth]);
 
+  const { setUser } = useUserStore();
+
   const handleLogout = () => {
     signOut(auth)
       .then(() => {
+        //사용자 정보 비우기
+        setUser(null);
         navigate('/login'); // 로그아웃 후 로그인 페이지로 이동
       })
       .catch(error => {

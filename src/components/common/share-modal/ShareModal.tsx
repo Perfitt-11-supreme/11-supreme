@@ -1,16 +1,27 @@
 import { onValue, ref } from 'firebase/database';
-import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { chatCircle, close, copy_left, link_angled, loading } from "../../../assets/assets";
+import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { chatCircle, close, copy_left, link_angled, loading } from '../../../assets/assets';
 import { database } from '../../../firebase/firebase';
-import useModalStore from "../../../stores/useModalStore";
-import { copyingButton, shareContainer, shareContentsBox, shareContentsTitle, shareDate, shareDescription, shareModalButton, shareTextWrap, shareTitle, shareWrap } from "./shareModal.css";
+import useModalStore from '../../../stores/useModalStore';
+import {
+  copyingButton,
+  shareContainer,
+  shareContentsBox,
+  shareContentsTitle,
+  shareDate,
+  shareDescription,
+  shareModalButton,
+  shareTextWrap,
+  shareTitle,
+  shareWrap,
+} from './shareModal.css';
 
 type Product = {
   productId: string;
   brand: string;
   modelName: string;
-}
+};
 
 type Brand = {
   brand: string;
@@ -27,8 +38,7 @@ type ChatItem = {
   brands: Brand[] | null;
   imageUrl?: string;
   timestamp: Date;
-}
-
+};
 
 const ShareModal = () => {
   const [copyStatus, setCopyStatus] = useState<'default' | 'copying' | 'copied'>('default');
@@ -42,7 +52,6 @@ const ShareModal = () => {
   const handleCopyClick = async () => {
     setCopyStatus('copying');
     try {
-
       const shareUrl = `${window.location.origin}/share/${shareModalId}`;
       await navigator.clipboard.writeText(shareUrl);
       setTimeout(() => setCopyStatus('copied'), 500);
@@ -51,7 +60,6 @@ const ShareModal = () => {
       setCopyStatus('default');
     }
   };
-
 
   const renderButtonText = () => {
     if (copyStatus === 'copying') return '링크 복사 중';
@@ -65,23 +73,25 @@ const ShareModal = () => {
     return link_angled;
   };
 
-
   useEffect(() => {
     const fetchData = () => {
-
       const productRef = ref(database, `sharedChatHistory/${shareModalId}`);
-      onValue(productRef, (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-          setProductData(data); // 데이터를 상태에 저장
-        } else {
-          console.error('데이터가 없습니다.');
-          setProductData(null); // 데이터가 없을 경우 null로 설정
+      onValue(
+        productRef,
+        snapshot => {
+          const data = snapshot.val();
+          if (data) {
+            setProductData(data); // 데이터를 상태에 저장
+          } else {
+            console.error('데이터가 없습니다.');
+            setProductData(null); // 데이터가 없을 경우 null로 설정
+          }
+          console.log(data);
+        },
+        error => {
+          console.error('데이터 불러오기 에러:', error);
         }
-        console.log(data)
-      }, (error) => {
-        console.error('데이터 불러오기 에러:', error);
-      });
+      );
     };
 
     fetchData();
@@ -102,7 +112,7 @@ const ShareModal = () => {
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
-            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           >
             <div className={shareTextWrap}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -115,7 +125,9 @@ const ShareModal = () => {
                   whileTap={{ scale: 0.9 }}
                 />
               </div>
-              <p className={shareDescription}>채팅의 공개 링크가 생성되었습니다. 공유를 원하는 곳에 어디든지 전달하실 수 있습니다.</p>
+              <p className={shareDescription}>
+                채팅의 공개 링크가 생성되었습니다. 공유를 원하는 곳에 어디든지 전달하실 수 있습니다.
+              </p>
             </div>
             <div className={shareContentsBox}>
               <div>
@@ -131,11 +143,13 @@ const ShareModal = () => {
                 ) : null}
               </p>
               <p className={shareDate}>
-                {productData?.timestamp ? new Date(productData.timestamp).toLocaleDateString('ko-KR', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                }) : null}
+                {productData?.timestamp
+                  ? new Date(productData.timestamp).toLocaleDateString('ko-KR', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })
+                  : null}
               </p>
             </div>
             <motion.button
@@ -152,6 +166,6 @@ const ShareModal = () => {
       )}
     </AnimatePresence>
   );
-}
+};
 
 export default ShareModal;

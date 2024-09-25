@@ -37,6 +37,7 @@ import { db } from '../../firebase/firebase';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import DeleteUserModal from '../../components/deleteuser/DeleteUserModal';
 
 const Mypage = () => {
   const navigate = useNavigate();
@@ -112,9 +113,11 @@ const Mypage = () => {
     }
   };
 
+  const [isDeleteUserModalOpen, setIsDeleteUserModalOpen] = useState(false);
+
   return (
     <>
-      <div className={responsiveBox}>
+      <div className={responsiveBox} style={{ overflow: 'hidden' }}>
         <section className={mypageContainer}>
           <Header imageSrc={back_arrow} alt="back arrow" nav="/hello" />
           <article className={userProfileImageContainer}>
@@ -209,11 +212,16 @@ const Mypage = () => {
               </div>
             </div>
             <div className={myInfoServiceTermBox}>
-              <div className={myInfoServiceTermButton}>회원탈퇴</div>
+              <div className={myInfoServiceTermButton} onClick={() => setIsDeleteUserModalOpen(true)}>
+                회원탈퇴
+              </div>
               <div className={myInfoServiceTermButton}>고객약관</div>
             </div>
           </article>
         </section>
+        {isDeleteUserModalOpen && (
+          <DeleteUserModal isOpen={isDeleteUserModalOpen} onClose={() => setIsDeleteUserModalOpen(false)} />
+        )}
       </div>
     </>
   );

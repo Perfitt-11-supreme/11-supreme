@@ -11,9 +11,6 @@ import FindPassword from '../components/login/find/FindPassword';
 import OnBoarding from '../components/onboarding/OnBoarding';
 import ShoesInfo from '../components/shoes-info/ShoesInfo';
 import ShoesRegistry from '../components/shoes-registry/ShoesRegistry';
-import GoogleSignUpPlus from '../components/signup/infoInput/GoogleSignUpPlus';
-import SignUpInfoInputValid from '../components/signup/infoInput/SignUpInfoInputValid';
-import SignUpSizeInputValid from '../components/signup/sizeinput/SignUpSizeInputValid';
 import BridgePage from '../pages/bridge-page/bridgePage';
 import ChatBotPage from '../pages/chatbot-page/chatBotPage';
 import LikedPage from '../pages/liked-page/LikedPage';
@@ -64,14 +61,6 @@ export const router = createBrowserRouter([
     element: <ViewedHistoryPage />,
   },
   {
-    path: '/signupinfo',
-    element: <SignUpInfoInputValid />,
-  },
-  {
-    path: '/signupsize',
-    element: <SignUpSizeInputValid />,
-  },
-  {
     path: '/login',
     element: <Login />,
   },
@@ -95,10 +84,10 @@ export const router = createBrowserRouter([
     path: '/footinfo',
     element: <FootInfo />,
   },
-  {
-    path: '/googlesignup',
-    element: <GoogleSignUpPlus />,
-  },
+  // {
+  //   path: '/googlesignup',
+  //   element: <GoogleSignUpPlus />,
+  // },
   {
     path: '/findemail',
     element: <FindEmail />,
@@ -109,6 +98,6 @@ export const router = createBrowserRouter([
   },
   {
     path: '*',
-    element: <NotFound />
-  }
+    element: <NotFound />,
+  },
 ]);

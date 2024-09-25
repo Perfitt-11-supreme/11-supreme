@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toastContainer, toastMessage, showToast } from './toast-message.css'; // 스타일 정의
 
 const ToastMessage = ({ message, duration }: { message: string; duration: number }) => {
