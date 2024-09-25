@@ -17,12 +17,12 @@ export const useChatCompletion = () => {
   const { setProducts } = useProductStore();
   const { setBrands } = useBrandStore();
   const {chatId} = useParams()
-  const { addChatItem, setCurrentKeywords, setCurrentChatId, currentChatId } = useChatStore();
+  const { setCurrentKeywords, setCurrentChatId, currentChatId } = useChatStore();
 
   useEffect(() => {
     const storedChatId = localStorage.getItem(CHAT_ID_KEY);
-    if (storedChatId) {
-      setCurrentChatId(storedChatId);
+    if (chatId) {
+      setCurrentChatId(chatId);
     }
   }, [setCurrentChatId]);
 
@@ -75,7 +75,7 @@ export const useChatCompletion = () => {
       setProducts(response.data.products);
       setBrands(response.data.brands);
       setCurrentKeywords(question);
-      addChatItem(newChatItem);
+      // addChatItem(newChatItem);
     },
     onError: error => {
       console.error('채팅 응답 에러:', error);

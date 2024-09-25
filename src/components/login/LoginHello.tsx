@@ -61,9 +61,8 @@ const LoginHello = () => {
   const { isShareModalOpen, isKeywordModalOpen, setKeywordModalOpen } = useModalStore();
   const { showBridgePage, selectedProductLink } = useProductDetailStore();
   const { setMessage } = useProductStore();
-  const { chatHistory, setCurrentKeywords, setChatHistory } = useChatStore();
+  const { chatHistory, setCurrentKeywords, setChatHistory, currentChatId } = useChatStore();
   const { user } = useUserStore();
-  const { currentChatId } = useChatStore()
   const { setShowChatBotAndRecommend, setHasSetInitialKeywords, setSelectedKeywords, selectedKeywords, showChatBotAndRecommend, hasSetInitialKeywords } = useUIStateStore()
 
   // 커스텀 훅
@@ -193,7 +192,7 @@ const LoginHello = () => {
     queryFn: async () => {
       try {
         const response = await recommendQuestionAPI();
-        console.log('추천 질문 데이터 확인용', response);
+        // console.log('추천 질문 데이터 확인용', response);
         return response.data;
       } catch (error) {
         console.error('추천 질문 불러오기 에러', error);
@@ -292,8 +291,6 @@ const LoginHello = () => {
       // console.log("Component unmounted");
     };
   }, []);
-
-
 
   if (showBridgePage) {
     return <BridgePage />;
