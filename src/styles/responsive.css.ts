@@ -19,6 +19,8 @@ export const responsiveBox = style({
     'screen and (max-width: 480px)': {
       width: '100%',
       height: '100vh',
+      maxWidth: '480px',
+      maxHeight:'100vh',
       borderRadius: '0',
     },
   },
