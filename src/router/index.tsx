@@ -74,7 +74,7 @@ export const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: '/hello/:id?',
+        path: '/hello/:chatId?',
         element: <LoginHello />,
       },
       {
