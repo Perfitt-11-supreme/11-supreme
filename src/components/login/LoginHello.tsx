@@ -61,9 +61,9 @@ const LoginHello = () => {
   const { isShareModalOpen, isKeywordModalOpen, setKeywordModalOpen } = useModalStore();
   const { showBridgePage, selectedProductLink } = useProductDetailStore();
   const { setMessage } = useProductStore();
-  const { chatHistory, setCurrentKeywords, setChatHistory, currentChatId } = useChatStore();
+  const { chatHistory, setCurrentKeywords, currentChatId } = useChatStore();
   const { user } = useUserStore();
-  const { setShowChatBotAndRecommend, setHasSetInitialKeywords, setSelectedKeywords, selectedKeywords, showChatBotAndRecommend, hasSetInitialKeywords } = useUIStateStore()
+  const { setShowChatBotAndRecommend, setHasSetInitialKeywords, selectedKeywords, showChatBotAndRecommend, hasSetInitialKeywords } = useUIStateStore()
 
   // 커스텀 훅
   const { isLoading } = useAuth();
@@ -74,7 +74,7 @@ const LoginHello = () => {
 
   const [showProductRecommendation, setShowProductRecommendation] = useState(false);
   const [selectedChatItemId, setSelectedChatItemId] = useState<string | null>(null);
-  const [hasSelectedKeywords, setHasSelectedKeywords] = useState(false);
+  // const [hasSelectedKeywords, setHasSelectedKeywords] = useState(false);
   const [hasAskedQuestion, setHasAskedQuestion] = useState(false);
   const [showWelcomeMessage, setShowWelcomeMessage] = useState(false);
 
@@ -138,7 +138,7 @@ const LoginHello = () => {
         };
         set(newChatRef, newChatItem);
       }
-      setHasSelectedKeywords(true);
+      // setHasSelectedKeywords(true);
     },
     onError: error => {
       console.error('키워드 전송 실패:', error);

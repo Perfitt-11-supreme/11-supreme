@@ -1,36 +1,36 @@
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { Timestamp, addDoc, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useShoesRegistryStore } from '../../stores/useRegistryStore';
-import { plus } from '../../assets/assets';
-import Choose from '../empty-shoes-room/choose/Choose';
-import StarRating from './star-rating/StarRating';
-import Header from '../empty-shoes-room/header/Header';
-import Button from '../common/button/Button';
-import Slider from '../slider/Slider';
+import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import { addDoc, collection, doc, getDoc, Timestamp, updateDoc } from 'firebase/firestore';
+import { plus } from '../../assets/assets';
 import { db } from '../../firebase/firebase';
+import { useShoesRegistryStore } from '../../stores/useRegistryStore';
+import useSelectItemStore from '../../stores/useSelectItemStore';
+import { ShoeData, User } from '../../types/registry';
+import ItemCard from '../choose-shose/itemcard/ItemCard';
+import Button from '../common/button/Button';
+import Choose from '../empty-shoes-room/choose/Choose';
+import Header from '../empty-shoes-room/header/Header';
+import Slider from '../slider/Slider';
 import {
   area,
   buttonDiv,
   container,
   descP,
+  errorText,
+  hookForm,
   imagePlusButton,
   imagePlusButtonSelected,
   itemCardDiv,
-  questionP,
   questP,
+  questionP,
   starP,
-  errorText,
-  hookForm,
 } from './shoesregistry.css';
-import ItemCard from '../choose-shose/itemcard/ItemCard';
-import useSelectItemStore from '../../stores/useSelectItemStore';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { Errors, ShoeData, User } from '../../types/registry';
-import { useForm } from 'react-hook-form';
+import StarRating from './star-rating/StarRating';
 
 const auth = getAuth();
-const user = auth.currentUser;
+// const user = auth.currentUser;
 
 const ShoesRegistry = () => {
   console.log('렌더링됨');
@@ -69,7 +69,7 @@ const ShoesRegistry = () => {
     setRecommendation,
   } = useShoesRegistryStore();
 
-  const [editData, setEditData] = useState<ShoeData | null>(null);
+  // const [editData, setEditData] = useState<ShoeData | null>(null);
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
@@ -90,7 +90,7 @@ const ShoesRegistry = () => {
         if (docSnap.exists()) {
           const data = docSnap.data() as ShoeData;
           console.log('Fetched data:', data);
-          setEditData(data);
+          // setEditData(data);
 
           // 폼에 데이터 채우기
           setSelectProduct({

@@ -1,4 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { doc, getDoc } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { filled_star } from '../../assets/assets';
+import { db } from '../../firebase/firebase';
+import Header from '../empty-shoes-room/header/Header';
 import {
   brandP,
   container,
@@ -12,11 +17,6 @@ import {
   shoesP,
   starDiv,
 } from './shoes-info.css';
-import Header from '../empty-shoes-room/header/Header';
-import { filled_star } from '../../assets/assets';
-import { useParams } from 'react-router-dom';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../../firebase/firebase';
 
 const ShoesInfo = () => {
   const [shoeData, setShoeData] = useState<any>(null);

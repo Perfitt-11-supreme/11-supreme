@@ -37,9 +37,20 @@ const RecommendBox = () => {
   return (
     <div className={fullContainer}>
       <div className={textTop}>맞춤 상품 추천</div>
-      {shoesRecommendData.map((shoesData: TProduct) => (
-        <ItemBox key={shoesData.productId} image={shoesData.image} brand={shoesData.brand} modelName={shoesData.modelName} />
-      ))}
+      {shoesRecommendData && shoesRecommendData.length > 0 ? (
+        shoesRecommendData.map((shoesData: TProduct | null) => (
+          shoesData && (
+            <ItemBox
+              key={shoesData.productId}
+              image={shoesData.image}
+              brand={shoesData.brand}
+              modelName={shoesData.modelName}
+            />
+          )
+        ))
+      ) : (
+        <div>추천 상품이 없습니다.</div>
+      )}
       <RecommendBottom text="더보기" imageSrc={more_arrow} />
     </div>
   );

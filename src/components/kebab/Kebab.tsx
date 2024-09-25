@@ -1,23 +1,22 @@
-import React, { useState } from 'react';
+import { deleteDoc, doc } from 'firebase/firestore';
+import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { deleted, kebab, modify } from '../../assets/assets';
+import { db } from '../../firebase/firebase';
 import {
-  menuContainer,
-  kebabButton,
+  deleteItem,
   dropdownMenu,
   dropdownMenuVisible,
+  kebabButton,
+  menuContainer,
   menuItem,
   menuItemText,
-  deleteItem,
 } from './kebab.css';
-import { deleted, kebab, modify, share } from '../../assets/assets';
-import { deleteDoc, doc } from 'firebase/firestore';
-import { db } from '../../firebase/firebase';
-import { useNavigate, useParams } from 'react-router-dom';
 // import ToastMessage from '../toastmessage/toastMessage';
 
 const KebabMenu = () => {
   const { shoesId } = useParams();
   const [isOpen, setIsOpen] = useState(false);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const toggleMenu = () => {
