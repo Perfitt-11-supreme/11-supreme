@@ -47,7 +47,7 @@ const SideMenu = ({ onClose }: ChatHistoryListProps) => {
   const { chatHistory, deleteChatHistory } = useChatHistoryHook();
   // 현재 UTC 시간으로 오늘 날짜 계산
   const today = new Date();
-  const utcToday = new Date(today.getTime() + today.getTimezoneOffset() * 60 * 1000); // UTC 시간
+  const utcToday = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate())); // UTC 시간
   const sevenDaysAgo = new Date(utcToday.getTime() - 7 * 24 * 60 * 60 * 1000); // UTC 기준 7일 전 시간
   console.log('chatHistoryData', chatHistory);
 
@@ -94,6 +94,7 @@ const SideMenu = ({ onClose }: ChatHistoryListProps) => {
       // 7일 이내이고 오늘은 제외 (UTC 기준으로 비교)
       return (
         chatDate > sevenDaysAgo &&
+        chatDate < utcToday && // 오늘 날짜를 제외
         (chatDate.getUTCFullYear() !== utcToday.getUTCFullYear() ||
           chatDate.getUTCMonth() !== utcToday.getUTCMonth() ||
           chatDate.getUTCDate() !== utcToday.getUTCDate())
@@ -101,6 +102,8 @@ const SideMenu = ({ onClose }: ChatHistoryListProps) => {
     })
     .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()); // timestamp로 내림차순 정렬
 
+  console.log(filteredTodayChatHistory, "오늘채팅확인용")
+  console.log(filtered7DaysChatHistory, "7일채팅확인용")
   const handleDeleteChat = (chatId: string) => {
     setDeletedChatIds(prev => [...prev, chatId]); // 삭제된 ID 추가
   };
