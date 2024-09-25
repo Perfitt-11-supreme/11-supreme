@@ -7,14 +7,14 @@ import useSelectItemStore from '../../../../stores/useSelectItemStore';
 import useImageSearchStore from '../../../../stores/useImageSearchStore';
 
 // 매개변수 true : 비슷한 상품 보기  false : 촬영한 이미지 포스트
-const useHandleImageSearchPost = (bol: boolean) => {
+const useImageSearchPost = () => {
   const { setProducts } = useProductStore();
   const { setSelectProduct } = useSelectItemStore();
-  const { setIsState } = useImageSearchStore();
+  const { isSuccess, setAnalyze, setSimilar, setSuccess } = useImageSearchStore();
 
   const handleImageSearchPost = useMutation({
     mutationFn: (data: string) => {
-      setIsState({ isAnalyze: true });
+      setAnalyze(true);
       return ImageShoseSearchAPI(data);
     },
     onSuccess: response => {
@@ -22,12 +22,13 @@ const useHandleImageSearchPost = (bol: boolean) => {
 
       const products: TProduct[] = response.data.products;
       setProducts(products);
-      if (bol) {
+      setAnalyze(false);
+      if (isSuccess) {
         setSelectProduct(null);
-        setIsState({ isAnalyze: false, isSimilar: true });
+        setSimilar(true);
       } else {
         setSelectProduct(products[0]);
-        setIsState({ isAnalyze: false, isSuccess: true });
+        setSuccess(true);
       }
     },
     onError: error => {
@@ -41,4 +42,4 @@ const useHandleImageSearchPost = (bol: boolean) => {
   return handleImageSearchPost;
 };
 
-export default useHandleImageSearchPost;
+export default useImageSearchPost;
