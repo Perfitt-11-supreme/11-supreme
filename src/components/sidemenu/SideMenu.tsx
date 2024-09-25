@@ -102,8 +102,7 @@ const SideMenu = ({ onClose }: ChatHistoryListProps) => {
     })
     .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()); // timestamp로 내림차순 정렬
 
-  console.log(filteredTodayChatHistory, "오늘채팅확인용")
-  console.log(filtered7DaysChatHistory, "7일채팅확인용")
+
   const handleDeleteChat = (chatId: string) => {
     setDeletedChatIds(prev => [...prev, chatId]); // 삭제된 ID 추가
   };
@@ -187,6 +186,7 @@ const SideMenu = ({ onClose }: ChatHistoryListProps) => {
                               key={chat.id}
                               iconSrc={sidemenu_list}
                               id={chat.id}
+                              shareId={chat.shareId}
                               keywords={chat.keywords}
                               timestamp={chat.timestamp}
                               handleDelete={deleteChatHistory} // 삭제 함수 전달
