@@ -17,7 +17,6 @@ import Modal from '../../components/common/modal/Modal';
 import useBrandStore from '../../stores/useBrandStore';
 import useModalStore from '../../stores/useModalStore';
 import useProductStore from '../../stores/useProductsStore';
-import { responsiveBox } from '../../styles/responsive.css';
 import { TKeyWordsData } from '../../types/keywords';
 import LoadingPage from '../loading-page/loadingPage';
 import { chatBotCardWrap, chatBotContainer, chatBotModalWrap, chatBubbleWrap, keywordWrap } from './chatBotPage.css';
@@ -126,50 +125,48 @@ const ChatBotPage = () => {
 
   return (
     <>
-      <div className={responsiveBox}>
-        <div className={chatBotContainer}>
-          <Header imageSrc={hamburger_menu} alt="" />
-          <div className={chatBubbleWrap}>
-            {/* {products.length > 0 && <ProductRecommendationPreview />} */}
-            <ChatBotBubble bubbleContent={message} />
-            <div className={chatBotCardWrap}>
-              {/* <FootSizeCard /> */}
-              {/* <BrandRecommendation /> */}
-              {products.length > 0 && <ProductRecommendationPreview products={products} />}
-            </div>
-            {selectedKeywords.length > 0 && <UserBubble bubbleContent={formattedKeywords} />}
+      <div className={chatBotContainer}>
+        <Header imageSrc={hamburger_menu} alt="" />
+        <div className={chatBubbleWrap}>
+          {/* {products.length > 0 && <ProductRecommendationPreview />} */}
+          <ChatBotBubble bubbleContent={message} />
+          <div className={chatBotCardWrap}>
+            {/* <FootSizeCard /> */}
+            {/* <BrandRecommendation /> */}
+            {products.length > 0 && <ProductRecommendationPreview products={products} />}
           </div>
-          <div className={chatBotModalWrap}>
-            {!isOpen && !isKeywordModalOpen && <ChatbotSearchInput />}{' '}
-            {/* 모달이 열렸을 때는 ChatbotSearchInput을 숨김 */}
-            <Modal height="753px" initialHeight="120px">
-              {selectedBrand ? <BrandPLP /> : <ProductRecommendation keywords={formattedKeywords} />}
+          {selectedKeywords.length > 0 && <UserBubble bubbleContent={formattedKeywords} />}
+        </div>
+        <div className={chatBotModalWrap}>
+          {!isOpen && !isKeywordModalOpen && <ChatbotSearchInput />}{' '}
+          {/* 모달이 열렸을 때는 ChatbotSearchInput을 숨김 */}
+          <Modal height="753px" initialHeight="120px">
+            {selectedBrand ? <BrandPLP /> : <ProductRecommendation keywords={formattedKeywords} />}
+          </Modal>
+          {fitOpen && (
+            <Modal height="758px">
+              <ProductFitComment />
             </Modal>
-            {fitOpen && (
-              <Modal height="758px">
-                <ProductFitComment />
-              </Modal>
-            )}
-            {/* 관심키워드 */}
-            {isKeywordModalOpen && (
-              <Modal height="360px" title="관심 키워드">
-                <div className={keywordWrap}>
-                  {Array.isArray(keywordsData) &&
-                    keywordsData.map((item, index) => (
-                      <KeywordCard
-                        key={index}
-                        text={item}
-                        onClick={() => handleKeywordSelect(item)} // 키워드 클릭 시 선택 처리
-                        isSelected={selectedKeywords.includes(item)}
-                      />
-                    ))}
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'center', padding: '0 16px' }}>
-                  <Button text={`${selectedKeywords.length}개 선택`} onClick={handleSubmit} width="100%" />
-                </div>
-              </Modal>
-            )}
-          </div>
+          )}
+          {/* 관심키워드 */}
+          {isKeywordModalOpen && (
+            <Modal height="360px" title="관심 키워드">
+              <div className={keywordWrap}>
+                {Array.isArray(keywordsData) &&
+                  keywordsData.map((item, index) => (
+                    <KeywordCard
+                      key={index}
+                      text={item}
+                      onClick={() => handleKeywordSelect(item)} // 키워드 클릭 시 선택 처리
+                      isSelected={selectedKeywords.includes(item)}
+                    />
+                  ))}
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'center', padding: '0 16px' }}>
+                <Button text={`${selectedKeywords.length}개 선택`} onClick={handleSubmit} width="100%" />
+              </div>
+            </Modal>
+          )}
         </div>
       </div>
     </>

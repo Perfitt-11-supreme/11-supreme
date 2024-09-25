@@ -17,7 +17,6 @@ import { filled_star } from '../../assets/assets';
 import { useParams } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase/firebase';
-import { responsiveBox } from '../../styles/responsive.css';
 
 const ShoesInfo = () => {
   const [shoeData, setShoeData] = useState<any>(null);
@@ -43,7 +42,7 @@ const ShoesInfo = () => {
   }, [shoesId]);
 
   return (
-    <div className={responsiveBox}>
+    <>
       <div className={container}>
         <Header title="신발 정보" />
         <div className={imgDiv}>{shoeData && <img src={shoeData.image} alt="신발 이미지" />}</div>
@@ -86,7 +85,7 @@ const ShoesInfo = () => {
           <p className={reviewP}>{shoeData?.review}</p>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -37,13 +37,7 @@ const MainContainer = () => {
   return (
     <>
       <div className={MainContainter_Background} ref={mainContainerRef}>
-        {focus ? (
-          <TextRecordBox />
-        ) : (
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <ItemListBox />
-          </div>
-        )}
+        {focus ? <TextRecordBox /> : <ItemListBox />}
       </div>
     </>
   );

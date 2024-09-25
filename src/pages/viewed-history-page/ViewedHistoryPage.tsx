@@ -9,7 +9,6 @@ import {
 } from './viewedHistoryPage.css';
 import LikedAndViewedHistoryButton from '../../components/mypage/liked-and-viewed-history-button/LikedAndViewedHistoryButton';
 import { useState } from 'react';
-import { responsiveBox } from '../../styles/responsive.css';
 
 const ViewedHistoryPage = () => {
   const [likedOrViewed, setLikedOrViewed] = useState('최근 본');
@@ -20,25 +19,23 @@ const ViewedHistoryPage = () => {
 
   return (
     <>
-      <div className={responsiveBox}>
-        <section className={likedAndViewedHistoryCointainer}>
-          <Header imageSrc={back_arrow} alt="back arrow" />
+      <section className={likedAndViewedHistoryCointainer}>
+        <Header imageSrc={back_arrow} alt="back arrow" />
 
-          <LikedAndViewedHistoryButton handleClick={handleLikedOrViewedChange} activeTab={likedOrViewed} />
+        <LikedAndViewedHistoryButton handleClick={handleLikedOrViewedChange} activeTab={likedOrViewed} />
 
-          <article className={filterProductsQuantityBox}>
-            <div className={filterProductsQuantity}>5개</div>
-          </article>
+        <article className={filterProductsQuantityBox}>
+          <div className={filterProductsQuantity}>5개</div>
+        </article>
 
-          <article className={viewedHistoryItemBox}>
-            <SizeRecommendationCard />
-            <SizeRecommendationCard />
-            <SizeRecommendationCard />
-            <SizeRecommendationCard />
-            <SizeRecommendationCard />
-          </article>
-        </section>
-      </div>
+        <article className={viewedHistoryItemBox}>
+          <SizeRecommendationCard />
+          <SizeRecommendationCard />
+          <SizeRecommendationCard />
+          <SizeRecommendationCard />
+          <SizeRecommendationCard />
+        </article>
+      </section>
     </>
   );
 };

@@ -24,7 +24,6 @@ import {
   hookForm,
 } from './shoesregistry.css';
 import ItemCard from '../choose-shose/itemcard/ItemCard';
-import { responsiveBox } from '../../styles/responsive.css';
 import useSelectItemStore from '../../stores/useSelectItemStore';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { Errors, ShoeData, User } from '../../types/registry';
@@ -229,7 +228,7 @@ const ShoesRegistry = () => {
   }, [review, setValue]);
 
   return (
-    <div className={responsiveBox}>
+    <>
       <div className={container}>
         <Header title="신발 등록" customNavigate={handleBack} />
         <p className={descP}>신발을 선택해 주세요</p>
@@ -349,7 +348,7 @@ const ShoesRegistry = () => {
           {/* </div> */}
         </form>
       </div>
-    </div>
+    </>
   );
 };
 
