@@ -1,10 +1,11 @@
-import FootInfo from './components/foot-info/FootInfo';
+import { Outlet } from 'react-router-dom';
+import { responsiveBox } from './styles/responsive.css';
 
 const App = () => {
   return (
-    <>
-      <FootInfo />
-    </>
+    <div className={responsiveBox}>
+      <Outlet />
+    </div>
   );
 };
 export default App;

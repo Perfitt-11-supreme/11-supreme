@@ -16,7 +16,6 @@ import { userBubble, userBubbleWrap } from '../../components/chatbot/user-bubble
 import Button from '../../components/common/button/Button';
 import ProductRecommendationCard from '../../components/common/product-recommendation-card/ProductRecommendationCard';
 import { database } from '../../firebase/firebase'; // Firebase 초기화 파일
-import { responsiveBox } from '../../styles/responsive.css';
 import { chatBotCardWrap } from '../chatbot-page/chatBotPage.css';
 import LoadingPage from '../loading-page/loadingPage';
 import {
@@ -60,11 +59,10 @@ const SharePage = () => {
   const handleStartFitTalk = () => {
     navigate('/', { replace: true });
   };
-  const isSharePage = location.pathname.startsWith("/share/");
+  const isSharePage = location.pathname.startsWith('/share/');
 
   useEffect(() => {
     const fetchData = () => {
-
       const productRef = ref(database, `sharedChatHistory/${id}`); // 해당 아이디에 맞는 경로 설정
       onValue(
         productRef,
@@ -87,18 +85,23 @@ const SharePage = () => {
   }, [id]);
 
   return (
-    <div className={responsiveBox}>
+    <>
       <div className={sharePageContainer}>
         <div className={sharePageTextContainer}>
           <div>
             <img src={chatCircle} alt="chat icon" />
           </div>
           <p className={sharePageTitle}>{productData ? productData.keywords : <LoadingPage />}</p>
-          <p className={sharePageDate}> {productData?.timestamp ? new Date(productData.timestamp).toLocaleDateString('ko-KR', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          }) : null}</p>
+          <p className={sharePageDate}>
+            {' '}
+            {productData?.timestamp
+              ? new Date(productData.timestamp).toLocaleDateString('ko-KR', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })
+              : null}
+          </p>
         </div>
         <div className={sharePageBubbleContainer}>
           {productData ? (
@@ -109,7 +112,6 @@ const SharePage = () => {
                 <div className={userBubbleWrap}>
                   <div className={userBubble}>
                     <img src={productData.imageUrl} alt="User Question Image" />
-
                   </div>
                 </div>
               )}
@@ -135,14 +137,14 @@ const SharePage = () => {
                         <BrandRecommendation brands={productData.brands} shareId={id} />
                       </div>
                     )}
-                    {!isSharePage &&
+                    {!isSharePage && (
                       <div>
                         <div className={productRecommendPreviewMore}>
                           <img src={arrow_right} className={productRecommendPreviewMoreIcon} alt="more" />
                           <p style={{ fontSize: '9px', marginTop: '6px' }}>더보기</p>
                         </div>
                       </div>
-                    }
+                    )}
                   </motion.ul>
                 </div>
               </div>
@@ -152,10 +154,10 @@ const SharePage = () => {
           )}
         </div>
         <div className={sharePageButtonContainer}>
-          <Button text="핏톡 시작하기" onClick={handleStartFitTalk} width='100%' />
+          <Button text="핏톡 시작하기" onClick={handleStartFitTalk} width="100%" />
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

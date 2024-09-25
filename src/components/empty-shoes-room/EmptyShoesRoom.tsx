@@ -19,7 +19,6 @@ import {
   shoesdiv,
 } from './emptyshoesroom.css';
 import { db } from '../../firebase/firebase';
-import { responsiveBox } from '../../styles/responsive.css';
 import ToastMessage from '../toastmessage/toastMessage';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { ShoesList, UserData } from '../../types/shoesroom';
@@ -129,7 +128,7 @@ const EmptyShoesRoom = () => {
     }
   }, [user, selected]);
   return (
-    <div className={responsiveBox}>
+    <>
       <div className={container}>
         {toastMessage && <ToastMessage message={toastMessage} duration={3000} />}
         <Header title="신발장" customNavigate={() => navigate('/hello')} />
@@ -167,7 +166,7 @@ const EmptyShoesRoom = () => {
           </>
         )}
       </div>
-    </div>
+    </>
   );
 };
 

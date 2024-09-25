@@ -3,7 +3,6 @@ import { onboarding1, onboarding2 } from '../../assets/assets';
 import Button from '../common/button/Button';
 import { buttonDiv, container, descP, slide, slide0, slide1, slidesWrapper } from './onboarding.css';
 import { useEffect, useState } from 'react';
-import { responsiveBox } from '../../styles/responsive.css';
 import useUserStore from '../../stores/useUserStore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from '../../firebase/firebase';
@@ -74,7 +73,7 @@ const OnBoarding = () => {
   };
 
   return (
-    <div className={responsiveBox}>
+    <>
       <div className={container}>
         <div className={`${slidesWrapper} ${currentSlide === 0 ? slide0 : slide1}`}>
           <div className={slide}>
@@ -104,7 +103,7 @@ const OnBoarding = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 export default OnBoarding;

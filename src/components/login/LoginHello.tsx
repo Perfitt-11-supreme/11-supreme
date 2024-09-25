@@ -17,7 +17,6 @@ import useModalStore from '../../stores/useModalStore';
 import useProductDetailStore from '../../stores/useProductDetailStore';
 import useProductStore, { ProductStoreState } from '../../stores/useProductsStore';
 import useUserStore from '../../stores/useUserStore';
-import { responsiveBox } from '../../styles/responsive.css';
 import { ChatItem } from '../../types/chatItem';
 import { TKeyWordsData } from '../../types/keywords';
 import BrandPLP from '../chatbot/brand-plp/BrandPLP';
@@ -61,7 +60,7 @@ const LoginHello = () => {
   const { setMessage } = useProductStore();
   const { chatHistory, setCurrentKeywords, setChatHistory } = useChatStore();
   const { user, setUser } = useUserStore();
-  const { currentChatId } = useChatStore()
+  const { currentChatId } = useChatStore();
 
   const { handleQuestionSelect } = useChatCompletion();
 
@@ -78,7 +77,6 @@ const LoginHello = () => {
   const [showWelcomeMessage, setShowWelcomeMessage] = useState(false);
   const [showChatBotAndRecommend, setShowChatBotAndRecommend] = useState(false);
 
-
   // 사용자의 최초 로그인 여부를 확인하는 쿼리
   const { data: userLoginStatus, isLoading: isUserStatusLoading } = useQuery({
     queryKey: ['userLoginStatus', user?.uid],
@@ -91,12 +89,11 @@ const LoginHello = () => {
       const userData = userDoc.data();
       return {
         isFirstLogin: !userData.hasLoggedInBefore,
-        hasSetKeywords: !!userData.selectedKeywords
+        hasSetKeywords: !!userData.selectedKeywords,
       };
     },
     enabled: !!user?.uid,
   });
-
 
   // 키워드 리스트 불러오기
   const {
@@ -166,22 +163,25 @@ const LoginHello = () => {
     setHasSetInitialKeywords(true);
     setShowChatBotAndRecommend(true);
 
-    console.log("Submitting keywords:", selectedKeywords);
+    console.log('Submitting keywords:', selectedKeywords);
 
     // Firestore에 selectedKeywords 저장
     if (user?.uid) {
       try {
-        await setDoc(doc(db, 'users', user.uid), {
-          selectedKeywords,
-          hasLoggedInBefore: true
-        }, { merge: true });
-        console.log("User document updated successfully");
+        await setDoc(
+          doc(db, 'users', user.uid),
+          {
+            selectedKeywords,
+            hasLoggedInBefore: true,
+          },
+          { merge: true }
+        );
+        console.log('User document updated successfully');
       } catch (error) {
-        console.error("Error updating user document:", error);
+        console.error('Error updating user document:', error);
       }
     }
   };
-
 
   //키워드 포맷
   const formattedKeywords = selectedKeywords.join(', ');
@@ -307,16 +307,16 @@ const LoginHello = () => {
     return () => unsubscribe();
   }, [setUser]);
 
-  console.log("currentChatID:", currentChatId)
+  console.log('currentChatID:', currentChatId);
 
   // Firebase에서 채팅 기록 불러오기
   useEffect(() => {
     if (user?.uid && currentChatId) {
       const messagesRef = ref(database, `users/${user.uid}/chats/${currentChatId}/messages`);
-      const unsubscribe = onValue(messagesRef, (snapshot) => {
+      const unsubscribe = onValue(messagesRef, snapshot => {
         const chatItems: ChatItem[] = [];
 
-        snapshot.forEach((messageSnapshot) => {
+        snapshot.forEach(messageSnapshot => {
           const messageId = messageSnapshot.key;
           const message = messageSnapshot.val();
           if (messageId && message) {
@@ -334,10 +334,10 @@ const LoginHello = () => {
           const lastChatItem = chatItems[chatItems.length - 1];
           if (lastChatItem.products) {
             setProducts(lastChatItem.products);
-            setShowChatBotAndRecommend(true);  // 제품이 있을 때만 추천 표시
+            setShowChatBotAndRecommend(true); // 제품이 있을 때만 추천 표시
           } else {
             setProducts([]);
-            setShowChatBotAndRecommend(false);  // 제품이 없으면 추천 숨김
+            setShowChatBotAndRecommend(false); // 제품이 없으면 추천 숨김
           }
           if (lastChatItem.brands) {
             setBrands(lastChatItem.brands);
@@ -348,7 +348,7 @@ const LoginHello = () => {
           setProducts([]);
           setBrands([]);
           setCurrentKeywords('');
-          setShowChatBotAndRecommend(false);// 채팅 기록이 없으면 추천 숨김
+          setShowChatBotAndRecommend(false); // 채팅 기록이 없으면 추천 숨김
         }
       });
 
@@ -358,22 +358,22 @@ const LoginHello = () => {
       setProducts([]);
       setBrands([]);
       setCurrentKeywords('');
-      setShowChatBotAndRecommend(false);// 사용자나 채팅 ID가 없으면 추천 숨김
+      setShowChatBotAndRecommend(false); // 사용자나 채팅 ID가 없으면 추천 숨김
     }
   }, [user, currentChatId, setProducts, setBrands, setChatHistory, setCurrentKeywords]);
 
   useEffect(() => {
     if (!isUserStatusLoading && userLoginStatus) {
-      console.log("User Login Status:", userLoginStatus);
+      console.log('User Login Status:', userLoginStatus);
       setShowWelcomeMessage(true);
       if (userLoginStatus.isFirstLogin && !currentChatId) {
-        console.log("Setting welcome message and keyword modal");
+        console.log('Setting welcome message and keyword modal');
         setKeywordModalOpen(true);
       } else if (!userLoginStatus.hasSetKeywords) {
-        console.log("Opening keyword modal");
+        console.log('Opening keyword modal');
         setKeywordModalOpen(true);
       } else {
-        console.log("Showing chatbot and recommend");
+        console.log('Showing chatbot and recommend');
         setShowWelcomeMessage(false);
         setShowChatBotAndRecommend(false);
       }
@@ -391,7 +391,7 @@ const LoginHello = () => {
     setShowWelcomeMessage(false);
     setHasAskedQuestion(false);
 
-    console.log("Chat ID changed, states reset");
+    console.log('Chat ID changed, states reset');
   }, [currentChatId]);
 
   useEffect(() => {
@@ -403,11 +403,11 @@ const LoginHello = () => {
     setShowWelcomeMessage(false);
     setHasAskedQuestion(false);
 
-    console.log("Component mounted, states initialized");
+    console.log('Component mounted, states initialized');
 
     return () => {
       // 컴포넌트 언마운트 시 정리 작업
-      console.log("Component unmounted");
+      console.log('Component unmounted');
     };
   }, []);
 
@@ -437,7 +437,7 @@ const LoginHello = () => {
   if (keywordsListError) return <div>error:{keywordsListError?.message}</div>;
 
   return (
-    <div className={responsiveBox}>
+    <>
       <div className={fullContainer}>
         <Header imageSrc={hamburger_menu} alt="hamburger menu" />
         <div className={loginHelloContainer}>
@@ -557,7 +557,7 @@ const LoginHello = () => {
           </Modal>
         )}
       </div>
-    </div>
+    </>
   );
 };
 
