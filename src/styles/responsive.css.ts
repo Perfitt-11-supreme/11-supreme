@@ -16,11 +16,11 @@ export const responsiveBox = style({
   flexDirection: 'column', // 세로로 배치하여 레이아웃이 유지되게 설정
 
   '@media': {
-    'screen and (max-width: 480px)': {
+    'screen and (max-width: 768px) ': {
       width: '100%',
-      height: '100vh',
-      maxWidth: '480px',
-      maxHeight:'100vh',
+      height: '100%',
+      maxWidth: '768px',
+      maxHeight:'100%',
       borderRadius: '0',
     },
   },
