@@ -4,7 +4,7 @@ import { theme } from '../../styles/theme';
 export const loadingWrap = style({
   display: 'flex',
   justifyContent: 'center',
-  height: '100vh' /* 전체 화면 중앙 정렬 */,
+  height: '100%' /* 전체 화면 중앙 정렬 */,
   backgroundColor: theme.color.black,
 });
 

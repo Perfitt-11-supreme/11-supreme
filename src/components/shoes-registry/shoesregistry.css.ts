@@ -7,7 +7,7 @@ export const container = style({
   flexDirection: 'column',
   justifyContent: 'flex-start',
   alignItems: 'center',
-  minHeight: '100vh',
+  minHeight: '100%',
   position: 'relative',
 });
 

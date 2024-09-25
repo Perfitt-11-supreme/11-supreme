@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
-import ToastMessage from '../toastmessage/toastMessage';
 import { deleteUser } from 'firebase/auth';
 import { collection, deleteDoc, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
-import { auth, db } from '../../firebase/firebase';
-import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { close } from '../../assets/assets';
+import { auth, db } from '../../firebase/firebase';
+import useUserStore from '../../stores/useUserStore';
+import { TUser } from '../../types/user';
 import {
   shareContainer,
   shareDescription,
@@ -12,10 +14,8 @@ import {
   shareTitle,
   shareWrap,
 } from '../common/share-modal/shareModal.css';
-import { close } from '../../assets/assets';
+import ToastMessage from '../toastmessage/toastMessage';
 import { deleteButton, redoButton } from './deleteUserModal.css';
-import { TUser } from '../../types/user';
-import useUserStore from '../../stores/useUserStore';
 
 type DeleteUserModalProps = {
   isOpen: boolean; //부모로부터 전달받은 isModalOpen 상태
@@ -95,7 +95,7 @@ const DeleteUserModal: React.FC<DeleteUserModalProps> = ({ isOpen, onClose }) =>
           {isOpen && (
             <motion.div
               className={shareWrap}
-              style={{ height: '100vh', position: 'fixed', zIndex: 999 }}
+              style={{ height: '100%', position: 'fixed', zIndex: 999 }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}

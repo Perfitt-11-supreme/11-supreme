@@ -61,7 +61,7 @@ export const infosubmitContainer = style({
 
 export const signupWrap = style({
   width: '100%',
-  height: '100vh',
+  height: '100%',
   backgroundColor: 'rgba(0,0,0,0.5)',
   display: 'flex',
   position: 'fixed',
