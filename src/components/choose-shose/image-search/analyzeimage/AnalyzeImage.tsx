@@ -7,15 +7,15 @@ import SimilarProduct from './similarproduct/SimilarProduct.tsx';
 
 const AnalyzeImage = () => {
   const divRef = useRef<HTMLDivElement>(null);
-  const { isAnalyze, isSuccess, isSimilar, setIsState } = useImageSearchStore();
+  const { isAnalyze, isSuccess, isSimilar, resetState } = useImageSearchStore();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (isSimilar && divRef.current && !divRef.current.contains(event.target as Node)) {
-        setIsState({ isAnalyze: false, isSuccess: false, isSimilar: false });
+        resetState();
       }
     };
-
+    // 해당컴포넌트 외의 위치를 마우스로 누르면 handleClickOutside 실행
     document.addEventListener('mousedown', handleClickOutside);
 
     return () => {

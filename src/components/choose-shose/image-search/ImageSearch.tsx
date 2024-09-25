@@ -11,6 +11,8 @@ const ImageSearch = () => {
     setProducts([]);
   }, []);
 
+  console.log('랜더링됨');
+
   return (
     <>
       <Header imageSrc={close} alt="close" nav="/text-search" />

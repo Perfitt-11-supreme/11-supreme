@@ -18,18 +18,6 @@ const ItemListBox = () => {
           {products.map((data, index) => (
             <ItemCard key={index} index={index} data={data} />
           ))}
-          {products.map((data, index) => (
-            <ItemCard key={index} index={index} data={data} />
-          ))}
-          {products.map((data, index) => (
-            <ItemCard key={index} index={index} data={data} />
-          ))}
-          {products.map((data, index) => (
-            <ItemCard key={index} index={index} data={data} />
-          ))}
-          {products.map((data, index) => (
-            <ItemCard key={index} index={index} data={data} />
-          ))}
         </>
       )}
     </div>

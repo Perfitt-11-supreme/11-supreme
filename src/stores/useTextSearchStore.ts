@@ -30,12 +30,48 @@ const useTextSearchStore = create<textSearchData & textRecordData>(set => ({
   isLoading: false,
   isSubmit: false,
   isScrolling: false,
-  setFocus: focus => set({ focus }),
-  setText: text => set({ text }),
-  setPostText: postText => set({ postText }),
-  setLoading: isLoading => set({ isLoading }),
-  setSubmit: isSubmit => set({ isSubmit }),
-  setIsScrolling: isScrolling => set({ isScrolling }),
+  setFocus: focus =>
+    set(state => {
+      if (focus !== state.focus) {
+        return { focus };
+      }
+      return state;
+    }),
+  setText: text =>
+    set(state => {
+      if (text !== state.text) {
+        return { text };
+      }
+      return state;
+    }),
+  setPostText: postText =>
+    set(state => {
+      if (postText !== state.postText) {
+        return { postText };
+      }
+      return state;
+    }),
+  setLoading: isLoading =>
+    set(state => {
+      if (isLoading !== state.isLoading) {
+        return { isLoading };
+      }
+      return state;
+    }),
+  setSubmit: isSubmit =>
+    set(state => {
+      if (isSubmit !== state.isSubmit) {
+        return { isSubmit };
+      }
+      return state;
+    }),
+  setIsScrolling: isScrolling =>
+    set(state => {
+      if (isScrolling !== state.isScrolling) {
+        return { isScrolling };
+      }
+      return state;
+    }),
   resetState: () => {
     set({
       focus: true,

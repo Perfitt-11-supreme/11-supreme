@@ -4,15 +4,40 @@ type ImageSearchStateStore = {
   isAnalyze: boolean;
   isSuccess: boolean;
   isSimilar: boolean;
-  setIsState: (changedState: Partial<ImageSearchStateStore>) => void;
+  setAnalyze: (isAnalyze: boolean) => void;
+  setSuccess: (isSuccess: boolean) => void;
+  setSimilar: (isSimilare: boolean) => void;
+  resetState: () => void;
 };
 
 const useImageSearchStore = create<ImageSearchStateStore>(set => ({
   isAnalyze: false,
   isSuccess: false,
   isSimilar: false,
-  isGallery: false,
-  setIsState: changedState => set(state => ({ ...state, ...changedState })),
+  setAnalyze: isAnalyze =>
+    set(state => {
+      if (isAnalyze !== state.isAnalyze) {
+        return { isAnalyze };
+      }
+      return state;
+    }),
+  setSuccess: isSuccess =>
+    set(state => {
+      if (isSuccess !== state.isSuccess) {
+        return { isSuccess };
+      }
+      return state;
+    }),
+  setSimilar: isSimilar =>
+    set(state => {
+      if (isSimilar !== state.isSimilar) {
+        return { isSimilar };
+      }
+      return state;
+    }),
+  resetState: () => {
+    set({ isAnalyze: false, isSuccess: false, isSimilar: false });
+  },
 }));
 
 export default useImageSearchStore;

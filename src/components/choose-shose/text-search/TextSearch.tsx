@@ -23,8 +23,6 @@ const TextSearch = () => {
     handleTextDownload();
   }, []);
 
-  console.log('랜더링됨');
-
   return (
     <>
       <Header imageSrc={back_arrow} alt="뒤로가기" title="신발검색" nav="/shoes-registry"></Header>

@@ -3,7 +3,7 @@ import useProductStore from '../../../../../stores/useProductsStore';
 import useSelectItemStore from '../../../../../stores/useSelectItemStore';
 import Button from '../../../../common/button/Button';
 import ItemCard from '../../../itemcard/ItemCard';
-import useHandleImageSearchNavigate from '../../hooks/useHandleImageSearchNavigate';
+import { useImageSearchHooks } from '../../hooks/useImageSearchHooks';
 import {
   SimilarProduct_Button,
   SimilarProduct_Container,
@@ -15,7 +15,7 @@ const SimilarProduct = () => {
   const { products } = useProductStore();
   const { selectProduct } = useSelectItemStore();
   const { isSimilar } = useImageSearchStore();
-  const handleImageSearchNavigate = useHandleImageSearchNavigate(isSimilar);
+  const { handleImageSearchNavigate } = useImageSearchHooks();
 
   return (
     <div className={SimilarProduct_Container}>
@@ -27,7 +27,9 @@ const SimilarProduct = () => {
         </div>
       </div>
       <div className={SimilarProduct_Button}>
-        {selectProduct && <Button text="선택 완료" onClick={handleImageSearchNavigate} type="button" />}
+        {selectProduct && (
+          <Button text="선택 완료" onClick={() => handleImageSearchNavigate(isSimilar)} type="button" />
+        )}
       </div>
     </div>
   );
