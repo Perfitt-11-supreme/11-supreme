@@ -27,9 +27,7 @@ const ProductRecommendationCard = ({ product }: ProductRecommendationCardProps) 
     setIsChecked(!isChecked);
   };
 
-  const handleClickProductBrandLink = () => {
-    window.open(product?.link, '_blank', 'noopener,noreferrer');
-  }
+
 
 
   return (

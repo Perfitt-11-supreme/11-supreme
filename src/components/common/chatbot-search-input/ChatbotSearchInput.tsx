@@ -56,7 +56,7 @@ const ChatbotSearchInput = () => {
       return { response, imageUrl };
     },
     onSuccess: async ({ response, imageUrl }) => {
-      console.log('이미지 검색 성공:', response);
+      // console.log('이미지 검색 성공:', response);
 
       const chatItemWithoutIds = {
         userQuestion: '',
@@ -98,7 +98,7 @@ const ChatbotSearchInput = () => {
     const shareId = push(ref(database, 'sharedChatHistory')).key;
     if (shareId) {
       await set(ref(database, `sharedChatHistory/${shareId}`), chatItem);
-      console.log('공유용 채팅 히스토리 저장 성공:', shareId);
+      // console.log('공유용 채팅 히스토리 저장 성공:', shareId);
       return shareId;
     }
     throw new Error('Failed to generate shareId');
@@ -118,7 +118,7 @@ const ChatbotSearchInput = () => {
 
   const debouncedSubmit = useCallback(
     debounce((value: string) => {
-      console.log('Submitting:', value);
+      // console.log('Submitting:', value);
       if (value.trim() !== '') {
         chatCompletionsMutation.mutate(value.trim());
       }

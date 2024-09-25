@@ -3,7 +3,11 @@ import useModalStore from "../../../stores/useModalStore";
 import ProductFilter from "../product-filter/ProductFilter";
 import { chatBotRecommendText, productRecommendTextContainer, productRecommendTextWrap, productRecommendWrap } from "./ProductRecommendation.css";
 
-const ProductRecommendation = ({ keywords }) => {
+type ProductRecommendationProps = {
+  keywords: string; // keywords는 문자열 타입
+};
+
+const ProductRecommendation = ({ keywords }: ProductRecommendationProps) => {
   const { setIsOpen } = useModalStore();
   const handleCloseClick = () => {
     setIsOpen(false);

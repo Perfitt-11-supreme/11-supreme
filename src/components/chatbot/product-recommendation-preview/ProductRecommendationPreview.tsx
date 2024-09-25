@@ -52,10 +52,6 @@ const ProductRecommendationPreview = ({ products = [], shareId, onMoreClick }: P
     }
   };
 
-
-
-
-
   return (
     <>
       <div className={productRecommendPreviewWrap}>

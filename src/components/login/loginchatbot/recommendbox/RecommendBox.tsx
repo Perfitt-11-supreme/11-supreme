@@ -16,7 +16,7 @@ const RecommendBox = () => {
     queryFn: async () => {
       try {
         const response = await shoesRecommendAPI()
-        console.log('맞춤 상품 추천 데이터 확인', response.data)
+        // console.log('맞춤 상품 추천 데이터 확인', response.data)
         return response.data
       } catch (error) {
         console.error('맞춤 상품 불러오기 에러', error)

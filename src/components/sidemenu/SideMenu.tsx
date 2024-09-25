@@ -2,7 +2,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { prefitt_logo2, sidemenu_list, sidemenu_plus } from '../../assets/assets';
-import SidemenuList from '../../components/sidemenu/SidemenuList';
+import { default as SideMenuList, default as SidemenuList } from '../../components/sidemenu/SidemenuList';
 import { useChatCompletion } from '../../hooks/useChatCompletionHook';
 import useChatHistoryHook from '../../hooks/useChatHistoryHook';
 import SidemenuMypageLinks from './SidemenuMypageLinks';
@@ -28,17 +28,14 @@ type SideMenuProps = {
   onClose: () => void;
 };
 
-type ChatHistoryProps = {
-  id: string;
-  keywords: string;
-  timestamp: string;
-};
+// type ChatHistoryProps = {
+//   id: string;
+//   keywords: string;
+//   timestamp: string;
+// };
 
-type ChatHistoryListProps = SideMenuProps & {
-  ChatHistory: ChatHistoryProps[];
-};
 
-const SideMenu = ({ onClose }: ChatHistoryListProps) => {
+const SideMenu = ({ onClose }: SideMenuProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [deletedChatIds, setDeletedChatIds] = useState<string[]>([]);
   const navigate = useNavigate();
@@ -156,6 +153,7 @@ const SideMenu = ({ onClose }: ChatHistoryListProps) => {
                                 id={chat.id}
                                 keywords={chat.keywords}
                                 timestamp={chat.timestamp}
+                                onClose={onClose}
                                 handleDelete={deleteChatHistory} // 삭제 함수 전달
                               />
                             )
@@ -182,7 +180,7 @@ const SideMenu = ({ onClose }: ChatHistoryListProps) => {
                       {filtered7DaysChatHistory.map(
                         chat =>
                           !deletedChatIds.includes(chat.id) && ( // 삭제된 ID가 아닐 경우에만 렌더링
-                            <SidemenuList
+                            <SideMenuList
                               key={chat.id}
                               iconSrc={sidemenu_list}
                               id={chat.id}
@@ -190,6 +188,7 @@ const SideMenu = ({ onClose }: ChatHistoryListProps) => {
                               keywords={chat.keywords}
                               timestamp={chat.timestamp}
                               handleDelete={deleteChatHistory} // 삭제 함수 전달
+                              onClose={onClose}
                             />
                           )
                       )}
