@@ -2,7 +2,7 @@ import { style, styleVariants } from '@vanilla-extract/css';
 import { theme } from '../../../styles/theme';
 
 export const button = style({
-  width: '343px',
+  width: '100%',
   height: '56px',
   display: 'flex',
   justifyContent: 'center',

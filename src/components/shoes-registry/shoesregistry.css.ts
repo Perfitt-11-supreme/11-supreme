@@ -86,7 +86,7 @@ export const area = style({
 });
 
 export const buttonDiv = style({
-  marginBottom: '34px',
+  marginBottom: '108px',
 });
 
 export const errorText = style({

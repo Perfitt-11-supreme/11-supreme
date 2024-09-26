@@ -252,8 +252,8 @@ const ShoesRegistry = () => {
 
   return (
     <>
+      <HeaderMemo title="신발 등록" customNavigate={handleBack} />
       <div className={container}>
-        <HeaderMemo title="신발 등록" customNavigate={handleBack} />
         <p className={descP}>신발을 선택해 주세요</p>
         {selectComplet && selectProduct !== null ? (
           <button className={imagePlusButtonSelected} onClick={handleChooseShoes} disabled={!!shoesId}>

@@ -4,6 +4,7 @@ import {
   CameraWindow_CameraIconBackground,
   CameraWindow_Canvas,
   CameraWindow_GalleryIcon,
+  CameraWindow_Icons,
   CameraWindow_Rectangle,
   CameraWindow_View,
   CameraWindow_ViewContainer,
@@ -78,15 +79,17 @@ const CameraWindow = () => {
   return (
     <>
       {!isAnalyze && !isSuccess && !isSimilar && (
-        <>
+        <div>
           <img className={CameraWindow_Rectangle} src={rectangle} alt="rectangle" />
-          <div className={CameraWindow_CameraIconBackground} onClick={handleClickCamera}>
-            <img className={CameraWindow_CameraIcon} src={camera} alt="camera" />
+          <div className={CameraWindow_Icons}>
+            <div className={CameraWindow_CameraIconBackground} onClick={handleClickCamera}>
+              <img className={CameraWindow_CameraIcon} src={camera} alt="camera" />
+            </div>
+            <div className={CameraWindow_GalleryIcon}>
+              <Gallery />
+            </div>
           </div>
-          <div className={CameraWindow_GalleryIcon}>
-            <Gallery />
-          </div>
-        </>
+        </div>
       )}
       <div className={CameraWindow_ViewContainer}>
         <video className={CameraWindow_View} ref={videoRef} autoPlay></video>

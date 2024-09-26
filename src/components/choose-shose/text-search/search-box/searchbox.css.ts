@@ -1,18 +1,21 @@
 import { style } from '@vanilla-extract/css';
 import { theme } from '../../../../styles/theme';
+import { media } from '../../../../styles/media.css';
 
-export const SearchBox_Background = style({
-  position: 'fixed',
-  display: 'flex',
-  justifyContent: 'center',
-  width: '100%',
-  padding: '0 5%',
-  height: '65px',
-  top: '56px',
-  background: theme.color.white,
-  transition: 'transform 0.3s ease-in-out',
-  zIndex: '10',
-});
+export const SearchBox_Background = style([
+  {
+    position: 'fixed',
+    display: 'flex',
+    justifyContent: 'center',
+    padding: '0 5%',
+    height: '65px',
+    top: '56px',
+    background: theme.color.white,
+    transition: 'transform 0.3s ease-in-out',
+    zIndex: '10',
+  },
+  media,
+]);
 
 export const SearchBox_Container = style({
   display: 'flex',
