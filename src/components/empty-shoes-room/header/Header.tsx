@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { back_arrow } from '../../../assets/assets';
 import { backButton, frame, headerDiv, headerTitle } from './header.css';
 import Kebab from '../../kebab/Kebab';
+import React from 'react';
 
 const Header = ({ title, customNavigate }: { title?: string; customNavigate?: () => void }) => {
   const navigate = useNavigate();
@@ -24,4 +25,4 @@ const Header = ({ title, customNavigate }: { title?: string; customNavigate?: ()
     </>
   );
 };
-export default Header;
+export default React.memo(Header);

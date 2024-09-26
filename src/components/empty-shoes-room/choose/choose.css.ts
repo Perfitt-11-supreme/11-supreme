@@ -5,7 +5,6 @@ export const radioform = style({
   gap: '4px',
   width: '343px',
   textAlign: 'center',
-  paddingBottom: '12px',
 });
 
 export const radio = style({

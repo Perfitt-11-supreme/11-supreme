@@ -22,9 +22,10 @@ import { db } from '../../firebase/firebase';
 import ToastMessage from '../toastmessage/toastMessage';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { ShoesList, UserData } from '../../types/shoesroom';
+import LoadingPage from '../../pages/loading-page/loadingPage';
 
 const EmptyShoesRoom = () => {
-  const [isTrue, setIsTrue] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [shoesList, setShoesList] = useState<ShoesList[]>([]);
   const [selected, setSelected] = useState('latest');
   const [userData, setUserData] = useState<UserData | null>(null);
@@ -46,18 +47,18 @@ const EmptyShoesRoom = () => {
   }, [toastMessage]);
 
   useEffect(() => {
-    const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, user => {
       if (user) {
         fetchUserData(user.uid);
         fetchShoesData(selected);
       } else {
         console.log('No user is signed in');
+        setIsLoading(false);
       }
     });
 
     return () => unsubscribe(); // 컴포넌트 언마운트 시 정리
-  }, [selected]);
+  }, [selected, auth]);
 
   const navigate = useNavigate();
 
@@ -77,6 +78,7 @@ const EmptyShoesRoom = () => {
       querySnapshot.forEach(doc => {
         const data = doc.data() as UserData;
         setUserData(data); // 사용자 데이터 상태에 저장
+        // setIsLoading(false);
       });
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -84,10 +86,10 @@ const EmptyShoesRoom = () => {
   };
 
   const fetchShoesData = async (order: string) => {
+    setIsLoading(true);
     if (user?.uid) {
       try {
         const shoesCollection = collection(db, 'myshoes');
-
         const uid = user?.uid; // 현재 사용자의 UID
         const shoesQuery = query(shoesCollection, where('uid', '==', uid));
 
@@ -108,10 +110,11 @@ const EmptyShoesRoom = () => {
 
         if (shoesList.length !== shoes.length || shoesList !== shoes) {
           setShoesList(shoes); // 상태 업데이트
-          setIsTrue(shoes.length > 0);
+          setIsLoading(false);
         }
       } catch (e) {
         console.error('Error fetching shoes data: ', e);
+        setIsLoading(false);
       }
     }
   };
@@ -127,13 +130,18 @@ const EmptyShoesRoom = () => {
       fetchShoesData(selected);
     }
   }, [user, selected]);
+
+  if (isLoading) {
+    return <LoadingPage />;
+  }
+
   return (
     <>
       <div className={container}>
         {toastMessage && <ToastMessage message={toastMessage} duration={3000} />}
         <Header title="신발장" customNavigate={() => navigate('/hello')} />
         <UserProfile userData={userData} />
-        {isTrue ? (
+        {shoesList.length > 0 ? (
           <>
             <div className={optiondiv}>
               <p className={countp}>

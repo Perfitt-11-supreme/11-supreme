@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { radio, radioButton, radioChecked, radioform } from './choose.css';
 
 type Option = {
@@ -14,14 +14,11 @@ type ChooseProps = {
 };
 
 const Choose = ({ groupName, options, selectedOption, setter }: ChooseProps) => {
-  const handleChangeValue = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setter(e.target.value);
-    },
-    [setter]
-  );
+  const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setter(e.target.value);
+  };
   return (
-    <form className={radioform}>
+    <div className={radioform}>
       {options.map(option => (
         <div key={option.id}>
           <input
@@ -41,7 +38,7 @@ const Choose = ({ groupName, options, selectedOption, setter }: ChooseProps) => 
           </label>
         </div>
       ))}
-    </form>
+    </div>
   );
 };
 

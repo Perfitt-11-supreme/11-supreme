@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { ShoeData } from '../types/registry';
 
 type ShoesRegistryStore = {
   rating: number;
@@ -14,6 +15,7 @@ type ShoesRegistryStore = {
     brand: string;
     shoesName: string;
   } | null;
+  editData: ShoeData | null;
   setRating: (value: number) => void;
   setLength: (value: string) => void;
   setWidth: (value: string) => void;
@@ -23,6 +25,7 @@ type ShoesRegistryStore = {
   setRecommendation: (value: string) => void;
   setReview: (value: string) => void;
   setSelectedItem: (item: { image: string; brand: string; shoesName: string } | null) => void;
+  setEditData: (data: ShoeData | null) => void;
 };
 
 export const useShoesRegistryStore = create<ShoesRegistryStore>(set => ({
@@ -35,6 +38,7 @@ export const useShoesRegistryStore = create<ShoesRegistryStore>(set => ({
   recommendation: '',
   review: '',
   selectedItem: null,
+  editData: null,
   setRating: (value: number) => set({ rating: value }),
   setLength: (value: string) => set({ length: value }),
   setWidth: (value: string) => set({ width: value }),
@@ -44,4 +48,5 @@ export const useShoesRegistryStore = create<ShoesRegistryStore>(set => ({
   setRecommendation: (value: string) => set({ recommendation: value }),
   setReview: (value: string) => set({ review: value }),
   setSelectedItem: item => set({ selectedItem: item }),
+  setEditData: data => set({ editData: data }),
 }));
