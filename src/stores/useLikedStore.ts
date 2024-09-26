@@ -21,6 +21,7 @@ type Brand = {
   logoImage?: string;
   brandId?: string;
   timestamp?: string; // 클릭한 시간을 기록하는 필드
+  logos?: string;
 };
 
 type LikedState = {
@@ -132,7 +133,7 @@ export const useLikedStore = create<LikedState>(set => ({
     }
   },
 
-  // Firestore에서 상품 삭제
+  // Firestore에서 상품 삭제 옮김.
   handleDeleteProduct: async (productUid: string) => {
     const { user } = useUserStore.getState(); // Zustand에서 user 정보 가져오기
 
@@ -168,19 +169,13 @@ export const useLikedStore = create<LikedState>(set => ({
     }
   },
 
-  // Firestore에서 브랜드 삭제
+  // Firestore에서 브랜드 삭제 옮김.
   handleDeleteBrand: async (brandId: string) => {
-    const { user } = useUserStore.getState(); // Zustand에서 user 정보 가져오기
-
-    if (!user?.uid) {
-      console.log('User가 없습니다.');
-      return;
-    }
-
+    // 'myLiked' 컬렉션에서 해당 사용자 문서 참조
     try {
-      const docRef = doc(db, 'myproducts', 'FS7MVRUbVXZ9j6GZnrbF');
-      const docSnap = await getDoc(docRef);
+      const docRef = doc(db, 'myproducts', user.uid);
 
+      const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) {
         console.log('myproducts 문서가 존재하지 않음');
         return;
@@ -197,10 +192,11 @@ export const useLikedStore = create<LikedState>(set => ({
           'liked.brands': updatedBrands, // 업데이트된 brands 저장
         });
 
-        set({ brandsData: updatedBrands });
+        // 상태 업데이트하여 화면에 반영
+        setBrandsData(updatedBrands);
       }
     } catch (error) {
-      console.error('Error deleting brand from Firestore:', error);
+      console.error('Firestore에서 브랜드 삭제 중 오류 발생:', error);
     }
   },
 }));

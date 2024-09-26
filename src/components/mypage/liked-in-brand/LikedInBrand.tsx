@@ -23,7 +23,7 @@ type LikedInBrandCardProps = {
   isHeartFilled?: boolean;
   onCardClick?: () => void; // 클릭 이벤트를 처리하는 함수
   onDelete?: (id: string) => void; // 삭제 함수
-  logos: { name: string; url: string }[];
+  logos?: any;
 };
 
 const LikedInBrand = ({ brand, isHeartFilled = false, logos, onDelete }: LikedInBrandCardProps) => {
@@ -32,12 +32,6 @@ const LikedInBrand = ({ brand, isHeartFilled = false, logos, onDelete }: LikedIn
   }
   const [isChecked, setIsChecked] = useState(isHeartFilled);
   console.log('heart :', isChecked);
-
-  // 브랜드 이름과 로고를 매칭하는 함수
-  const getLogoUrl = (brandNameEn: string) => {
-    const logo = logos.find(logo => logo.name.toLowerCase() === brandNameEn.toLowerCase());
-    return logo ? logo.url : ''; // 로고가 없을 경우 빈 문자열 반환
-  };
 
   const handleHeartChecked = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -50,7 +44,6 @@ const LikedInBrand = ({ brand, isHeartFilled = false, logos, onDelete }: LikedIn
       }
     }
   };
-  const logoUrl = getLogoUrl(brand.brandNameEn);
 
   return (
     <>
@@ -59,8 +52,8 @@ const LikedInBrand = ({ brand, isHeartFilled = false, logos, onDelete }: LikedIn
           className={`${brandLists} ${heart_filled ? '' : hiddenBrand}`} // 하트 상태에 따라 display 처리
         >
           <div className={brandListBox}>
-            {logoUrl ? (
-              <img src={logoUrl} alt={`${brand.brandNameEn} logo`} width="75" height="75" />
+            {logos ? (
+              <img src={logos} alt={`${brand.brandNameEn} logo`} width="75" height="75" />
             ) : (
               <div className={logoUrlNone}>
                 <span className={logoUrlNoneText}>No Image</span>
@@ -77,7 +70,8 @@ const LikedInBrand = ({ brand, isHeartFilled = false, logos, onDelete }: LikedIn
               handleHeartChecked(e);
             }}
           >
-            <img className={heartFilledIcon} src={isChecked ? heart_filled : heart_empty} alt="heart" />
+            {/* 브랜드 페이지 시안 x */}
+            <img className={heartFilledIcon} src={isChecked ? heart_filled : heart_filled} alt="heart" />
           </div>
         </article>
       </section>

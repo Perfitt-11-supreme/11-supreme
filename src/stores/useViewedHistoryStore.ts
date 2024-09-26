@@ -1,6 +1,6 @@
 // useViewedHistoryStore.ts
 import create from 'zustand';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
 import useUserStore from './useUserStore';
 
@@ -34,8 +34,11 @@ export const useViewedHistoryStore = create<ViewedHistoryState>(set => ({
     }
 
     try {
-      const docRef = doc(db, 'myproducts', 'FS7MVRUbVXZ9j6GZnrbF'); // Firestore 문서 참조
-      //   const docRef = doc(db, 'myproducts', user.uid); // Firestore 문서 참조 (user별로 데이터 관리) - 채팅에 추천상품들 뜨면 주석해제 및
+      // const docRef = doc(db, 'myproducts', 'FS7MVRUbVXZ9j6GZnrbF'); // Firestore 문서 참조
+      // const docRef = doc(db, 'myproducts', user.uid); // Firestore 문서 참조 (user별로 데이터 관리) - 채팅에 추천상품들 뜨면 주석해제 및
+      const viewedUid = { ...db, uid: user?.uid };
+      const docRef = await addDoc(collection(db, 'myproducts'), viewedUid);
+      console.log('db 저장 성공 ID: ', docRef.id);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
