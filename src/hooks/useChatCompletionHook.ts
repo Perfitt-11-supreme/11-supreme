@@ -20,7 +20,7 @@ export const useChatCompletion = () => {
   const { setCurrentKeywords, setCurrentChatId, currentChatId } = useChatStore();
 
   useEffect(() => {
-    const storedChatId = localStorage.getItem(CHAT_ID_KEY);
+    // const storedChatId = localStorage.getItem(CHAT_ID_KEY);
     if (chatId) {
       setCurrentChatId(chatId);
     }

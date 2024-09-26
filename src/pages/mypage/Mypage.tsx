@@ -1,3 +1,7 @@
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { collection, getDocs, query, where } from 'firebase/firestore'; // Firestore 관련 함수 import
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   back_arrow,
   mypage_arrow,
@@ -7,37 +11,33 @@ import {
   user_profile_upload,
 } from '../../assets/assets';
 import Header from '../../components/common/header/Header';
+import DeleteUserModal from '../../components/deleteuser/DeleteUserModal';
+import { db } from '../../firebase/firebase';
 import { responsiveBox } from '../../styles/responsive.css';
 import {
-  mypageContainer,
-  userProfileGreetingContainer,
-  userProfileGreeting,
-  userProfileIconBox,
-  userProfileImageContainer,
-  userProfileName,
-  userProfileUploadIconBox,
-  userProfileNameTextBold,
   borderLine,
+  myInfoBox,
+  myInfoContainer,
+  myInfoKey,
+  myInfoServiceBox,
+  myInfoServiceButton,
+  myInfoServiceTermBox,
+  myInfoServiceTermButton,
+  myInfoTitle,
+  myInfoValue,
   mypageButton,
   mypageButtonBox,
   mypageButtonIcon,
-  myInfoContainer,
-  myInfoTitle,
-  myInfoBox,
-  myInfoKey,
-  myInfoValue,
-  myInfoServiceButton,
-  myInfoServiceBox,
-  myInfoServiceTermBox,
-  myInfoServiceTermButton,
+  mypageContainer,
   profileImageBox,
+  userProfileGreeting,
+  userProfileGreetingContainer,
+  userProfileIconBox,
+  userProfileImageContainer,
+  userProfileName,
+  userProfileNameTextBold,
+  userProfileUploadIconBox,
 } from './mypage.css';
-import { collection, getDocs, query, where } from 'firebase/firestore'; // Firestore 관련 함수 import
-import { db } from '../../firebase/firebase';
-import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import DeleteUserModal from '../../components/deleteuser/DeleteUserModal';
 
 const Mypage = () => {
   const navigate = useNavigate();
@@ -52,7 +52,7 @@ const Mypage = () => {
     navigate('/likedpage');
   };
   console.log('userData in Mypage', userData);
-  const fetchUserDatas = async (uid: string) => {
+  const fetchUserDatas = async () => {
     try {
       const auth = getAuth();
       const user = auth.currentUser;
@@ -87,7 +87,7 @@ const Mypage = () => {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, user => {
       if (user) {
-        fetchUserDatas(user.uid);
+        fetchUserDatas();
       } else {
         console.log('No user is signed in');
       }
@@ -149,9 +149,9 @@ const Mypage = () => {
               <span className={userProfileNameTextBold}>
                 {userData
                   ? userData?.userName ||
-                    userData?.username
-                      .split('')
-                      .map((char: string, index: number) => <span key={index}>{char}&nbsp;</span>)
+                  userData?.username
+                    .split('')
+                    .map((char: string, index: number) => <span key={index}>{char}&nbsp;</span>)
                   : '-'}
               </span>
               님

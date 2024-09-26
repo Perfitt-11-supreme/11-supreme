@@ -1,8 +1,8 @@
-import { google, hamburger_menu } from '../../assets/assets';
-import { useNavigate } from 'react-router-dom';
-import { signInWithGoogle } from '../../firebase/firebase';
-import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { google, hamburger_menu } from '../../assets/assets';
+import { signInWithGoogle } from '../../firebase/firebase';
 import useUserStore from '../../stores/useUserStore';
 import { responsiveBox } from '../../styles/responsive.css';
 import { TUser } from '../../types/user';
@@ -90,7 +90,7 @@ const Login = () => {
       <div className={responsiveBox} style={{ overflow: 'hidden' }}>
         <div className={fullContainer}>
           {toastMessage && <ToastMessage message={toastMessage.message} duration={toastMessage.duration} />}
-          <Header imageSrc={hamburger_menu} alt="hamburger menu" />
+          <Header imageSrc={hamburger_menu} alt="hamburger_menu" />
           <div style={{ marginTop: '20px', marginLeft: '16px' }}>
             <ChatBotBox text={['안녕하세요 펄핏AI 입니다!', '맞춤 추천을 위해 먼저 로그인을 해주세요.']} />
           </div>

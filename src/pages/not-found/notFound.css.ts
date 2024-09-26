@@ -3,7 +3,7 @@ import { theme } from '../../styles/theme';
 
 export const notFoundWrap = style({
   width: '100%',
-  height: '100vh',
+  height: '100%',
   backgroundColor: theme.color.black900,
   display: 'flex',
   justifyContent: 'center',

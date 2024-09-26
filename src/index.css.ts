@@ -42,11 +42,7 @@ globalStyle('body', {
   lineHeight: '1',
   backgroundColor: theme.color.slate200,
   overflow: 'hidden',
-  '@media': {
-    'screen and (max-width: 480px)': {
-      overflow: 'auto',
-    },
-  },
+
 });
 
 globalStyle('h1,h2,h3,h4,button,input,label', {
