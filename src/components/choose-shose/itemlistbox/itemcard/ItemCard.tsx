@@ -1,5 +1,5 @@
-import useSelectItemStore from '../../../stores/useSelectItemStore';
-import { TProduct } from '../../../types/product';
+import useSelectItemStore from '../../../../stores/useSelectItemStore';
+import { TProduct } from '../../../../types/product';
 import {
   ItemCard_Container,
   ItemCard_Frame,
@@ -11,7 +11,7 @@ import {
 } from './itemcard.css';
 
 const ItemCard = ({ index, data }: { index: number; data: TProduct }) => {
-  const { isSelected, setIsSelected, setSelectProduct, resetItem } = useSelectItemStore();
+  const { isSelected, setIsSelected, setSelectProduct } = useSelectItemStore();
 
   const handleClick = () => {
     setIsSelected(index);

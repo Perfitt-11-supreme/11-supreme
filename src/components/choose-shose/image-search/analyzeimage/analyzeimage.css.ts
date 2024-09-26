@@ -14,7 +14,7 @@ export const AnalyzeImage_Container = style({
   background: theme.color.white,
   transition: 'all 0.3s ease',
   zIndex: '100',
-  boxShadow: '0 -2px 0 0 black',
+  boxShadow: '0px -1px 4px 0px #00000026',
 });
 
 export const AnalyzeImage_AnalyzerContainerMove = styleVariants({
