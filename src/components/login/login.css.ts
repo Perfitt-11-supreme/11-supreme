@@ -5,11 +5,10 @@ export const fullContainer = style({
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
-  height: '100%',
+  height: '100vh',
   boxSizing: 'border-box',
   justifyContent: 'space-between',
   overflow: 'hidden',
-  position: 'relative',
 });
 
 export const loginbuttonContainer = style({
@@ -35,21 +34,19 @@ export const loginbuttonTextContainer = style({
   textAlign: 'center',
 });
 
-export const recommendedquestioncardContainer = style({
+export const loginContainer = style({
   display: 'flex',
-  gap: '8px',
-  marginLeft: '16px',
-  cursor: 'grab',
-  marginBottom: '8px',
-});
+  flexDirection: 'column',
+  flex: 1,
+  overflowY: 'auto', // 스크롤이 필요할 때 나타나도록 설정
+  backgroundColor: 'white'
+})
+export const loginBubble = style({
+  display: 'flex',
+  flexDirection: 'column',
+  flex:1,
+})
 
-export const loginHelloContainer = style({
-  width:'100%',
-  height: '100%',
-  overflowY: 'scroll',
-  marginBottom: '30px',
-  padding: '0 16px',
-});
 
 export const foundResultStyle = style({
   color: theme.color.black,
@@ -60,3 +57,18 @@ export const foundResultStyle = style({
   marginBottom: '34px',
   textAlign: 'center',
 });
+
+export const inputContainer = style({
+  position: 'fixed',
+  bottom: 0,
+  left: 0,
+  right: 0,
+  zIndex:999,
+  '@media': {
+    'screen and (min-width: 768px)': {
+      position: 'static',
+      boxShadow: 'none',
+    },
+  },
+});
+

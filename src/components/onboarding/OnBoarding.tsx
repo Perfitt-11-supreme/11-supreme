@@ -1,12 +1,12 @@
+import { onAuthStateChanged } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { onboarding1, onboarding2 } from '../../assets/assets';
+import { auth, db } from '../../firebase/firebase';
+import useUserStore from '../../stores/useUserStore';
 import Button from '../common/button/Button';
 import { buttonDiv, container, descP, slide, slide0, slide1, slidesWrapper } from './onboarding.css';
-import { useEffect, useState } from 'react';
-import useUserStore from '../../stores/useUserStore';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth, db } from '../../firebase/firebase';
-import { doc, getDoc } from 'firebase/firestore';
 
 const OnBoarding = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -73,37 +73,37 @@ const OnBoarding = () => {
   };
 
   return (
-    <>
-      <div className={container}>
-        <div className={`${slidesWrapper} ${currentSlide === 0 ? slide0 : slide1}`}>
-          <div className={slide}>
-            <p className={descP}>
-              AI에게 질문만으로
-              <br />
-              원하는 신발을 찾아보세요!
-            </p>
-            <div>
-              <img src={onboarding1} alt="onboarding1" />
-            </div>
-            <div className={buttonDiv}>
-              <Button text="다음" onClick={handleNextSlide} />
-            </div>
+
+    <div className={container}>
+      <div className={`${slidesWrapper} ${currentSlide === 0 ? slide0 : slide1}`}>
+        <div className={slide}>
+          <p className={descP}>
+            AI에게 질문만으로
+            <br />
+            원하는 신발을 찾아보세요!
+          </p>
+          <div>
+            <img src={onboarding1} alt="onboarding1" />
           </div>
-          <div className={slide}>
-            <p className={descP}>
-              발 촬영하면 원하는 신발의
-              <br />딱 맞는 사이즈를 추천해드려요.
-            </p>
-            <div>
-              <img src={onboarding2} alt="" />
-            </div>
-            <div className={buttonDiv}>
-              <Button text="시작하기" onClick={handlePageMove} />
-            </div>
+          <div className={buttonDiv}>
+            <Button text="다음" onClick={handleNextSlide} />
+          </div>
+        </div>
+        <div className={slide}>
+          <p className={descP}>
+            발 촬영하면 원하는 신발의
+            <br />딱 맞는 사이즈를 추천해드려요.
+          </p>
+          <div>
+            <img src={onboarding2} alt="" />
+          </div>
+          <div className={buttonDiv}>
+            <Button text="시작하기" onClick={handlePageMove} />
           </div>
         </div>
       </div>
-    </>
+    </div>
+
   );
 };
 export default OnBoarding;

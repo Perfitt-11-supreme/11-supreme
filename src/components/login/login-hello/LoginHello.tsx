@@ -3,41 +3,41 @@ import { push, ref, set } from 'firebase/database';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { motion } from 'framer-motion';
 import { Fragment, useEffect, useRef, useState } from 'react';
-import { chatKeywordsAPI, keywordsListAPI, recommendQuestionAPI } from '../../api/chatRequests';
-import { hamburger_menu } from '../../assets/assets';
-import { database, db } from '../../firebase/firebase';
-import { useAuth } from '../../hooks/useAuthHook';
-import { useChatCompletion } from '../../hooks/useChatCompletionHook';
-import useFetchChatHistoryHook from '../../hooks/useFetchChatHistoryHook';
-import BridgePage from '../../pages/bridge-page/bridgePage';
-import { keywordWrap } from '../../pages/chatbot-page/chatBotPage.css';
-import LoadingPage from '../../pages/loading-page/loadingPage';
-import useBrandStore from '../../stores/useBrandStore';
-import useChatStore from '../../stores/useChatStore';
-import useModalStore from '../../stores/useModalStore';
-import useProductDetailStore from '../../stores/useProductDetailStore';
-import useProductStore, { ProductStoreState } from '../../stores/useProductsStore';
-import useUIStateStore from '../../stores/useUIStateStore';
-import useUserStore from '../../stores/useUserStore';
-import { TKeyWordsData } from '../../types/keywords';
-import { useBridgePage } from '../../utils/bridgePageUtils';
-import BrandPLP from '../chatbot/brand-plp/BrandPLP';
-import BrandRecommendation from '../chatbot/brand-recommendation/BrandRecommendation';
-import ChatBotBubble from '../chatbot/chatbot-bubble/ChatBotBubble';
-import ProductRecommendationPreview from '../chatbot/product-recommendation-preview/ProductRecommendationPreview';
-import ProductRecommendation from '../chatbot/product-recommendation/ProductRecommendation';
-import UserBubble from '../chatbot/user-bubble/UserBubble';
-import { userBubble, userBubbleText, userBubbleWrap } from '../chatbot/user-bubble/userBubble.css';
-import Button from '../common/button/Button';
-import ChatbotSearchInput from '../common/chatbot-search-input/ChatbotSearchInput';
-import Header from '../common/header/Header';
-import KeywordCard from '../common/keyword-card/KeywordCard';
-import Modal from '../common/modal/Modal';
-import RecommendedQuestionCard from '../common/recommended-question-card/RecommendedQuestionCard';
-import ShareModal from '../common/share-modal/ShareModal';
-import { fullContainer, loginHelloContainer, recommendedquestioncardContainer } from './login.css';
-import ChatBotBox from './loginchatbot/chatbotbox/ChatBotBox';
-import RecommendBox from './loginchatbot/recommendbox/RecommendBox';
+import { chatKeywordsAPI, keywordsListAPI, recommendQuestionAPI } from '../../../api/chatRequests';
+import { hamburger_menu } from '../../../assets/assets';
+import { database, db } from '../../../firebase/firebase';
+import { useAuth } from '../../../hooks/useAuthHook';
+import { useChatCompletion } from '../../../hooks/useChatCompletionHook';
+import useFetchChatHistoryHook from '../../../hooks/useFetchChatHistoryHook';
+import BridgePage from '../../../pages/bridge-page/bridgePage';
+import { keywordWrap } from '../../../pages/chatbot-page/chatBotPage.css';
+import LoadingPage from '../../../pages/loading-page/loadingPage';
+import useBrandStore from '../../../stores/useBrandStore';
+import useChatStore from '../../../stores/useChatStore';
+import useModalStore from '../../../stores/useModalStore';
+import useProductDetailStore from '../../../stores/useProductDetailStore';
+import useProductStore, { ProductStoreState } from '../../../stores/useProductsStore';
+import useUIStateStore from '../../../stores/useUIStateStore';
+import useUserStore from '../../../stores/useUserStore';
+import { TKeyWordsData } from '../../../types/keywords';
+import { useBridgePage } from '../../../utils/bridgePageUtils';
+import BrandPLP from '../../chatbot/brand-plp/BrandPLP';
+import BrandRecommendation from '../../chatbot/brand-recommendation/BrandRecommendation';
+import ChatBotBubble from '../../chatbot/chatbot-bubble/ChatBotBubble';
+import ProductRecommendationPreview from '../../chatbot/product-recommendation-preview/ProductRecommendationPreview';
+import ProductRecommendation from '../../chatbot/product-recommendation/ProductRecommendation';
+import UserBubble from '../../chatbot/user-bubble/UserBubble';
+import { userBubble, userBubbleText, userBubbleWrap } from '../../chatbot/user-bubble/userBubble.css';
+import Button from '../../common/button/Button';
+import ChatbotSearchInput from '../../common/chatbot-search-input/ChatbotSearchInput';
+import Header from '../../common/header/Header';
+import KeywordCard from '../../common/keyword-card/KeywordCard';
+import Modal from '../../common/modal/Modal';
+import RecommendedQuestionCard from '../../common/recommended-question-card/RecommendedQuestionCard';
+import ShareModal from '../../common/share-modal/ShareModal';
+import ChatBotBox from '../loginchatbot/chatbotbox/ChatBotBox';
+import RecommendBox from '../loginchatbot/recommendbox/RecommendBox';
+import { loginHelloContainer, loginHelloFullContainer, loginHelloInputContainer, recommendedquestioncardContainer } from './loginHello.css';
 
 type TQuestions = {
   question: string;
@@ -314,11 +314,10 @@ const LoginHello = () => {
 
   return (
     <>
-      <div className={fullContainer}>
+      <div className={loginHelloFullContainer}>
         <Header imageSrc={hamburger_menu} alt="hamburger menu" />
         <div className={loginHelloContainer}>
           <div ref={chatContainerRef}>
-            {' '}
             {/* 채팅 기록 컨테이너 */}
             <div style={{ marginTop: '20px' }}>
               {showWelcomeMessage && (
@@ -383,6 +382,7 @@ const LoginHello = () => {
             ))}
           </div>
         </div>
+
         {!hasAskedQuestion && chatHistory.length === 0 && (
           <motion.div
             drag="x"
@@ -401,8 +401,14 @@ const LoginHello = () => {
           </motion.div>
         )}
 
+        {!isKeywordModalOpen &&
+          <div className={loginHelloInputContainer}>
+            <ChatbotSearchInput />
+          </div>
+        }
+
         {chatHistory.length > 0 && (
-          <Modal height="83vh" initialHeight="25px">
+          <Modal height="70vh" initialHeight="125px" >
             {selectedBrand ? (
               <BrandPLP />
             ) : showProductRecommendation ? (
@@ -411,7 +417,8 @@ const LoginHello = () => {
           </Modal>
         )}
 
-        {!isKeywordModalOpen && <ChatbotSearchInput />}
+
+
         {/* 공유 모달  */}
         {isShareModalOpen && <ShareModal />}
 

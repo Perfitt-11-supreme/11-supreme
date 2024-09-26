@@ -5,14 +5,15 @@ export const container = style({
   flexDirection: 'column',
   overflow: 'hidden',
   width: '100%',
-  height: '100%',
-  position: 'relative',
+  height: '120vh',
+  justifyContent: 'center',
 });
 
 export const slidesWrapper = style({
   display: 'flex',
   transition: 'transform 0.3s ease-in-out',
   width: '200%', // 슬라이드 개수에 따라 200% 설정
+
 });
 
 export const slide = style({

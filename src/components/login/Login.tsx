@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { google, hamburger_menu } from '../../assets/assets';
 import { signInWithGoogle } from '../../firebase/firebase';
 import useUserStore from '../../stores/useUserStore';
-import { responsiveBox } from '../../styles/responsive.css';
 import { TUser } from '../../types/user';
 import ChatbotSearchInput from '../common/chatbot-search-input/ChatbotSearchInput';
 import Header from '../common/header/Header';
@@ -12,7 +11,7 @@ import GoogleSignUpModal from '../signup/infoInput/GoogleSignUpModal';
 import SignUpInfoModal from '../signup/infoInput/SignUpInfoModal';
 import SignUpSizeModal from '../signup/sizeinput/SignUpSizeModal';
 import ToastMessage from '../toastmessage/toastMessage';
-import { fullContainer, loginbuttonContainer, loginbuttonTextContainer } from './login.css';
+import { fullContainer, inputContainer, loginBubble, loginContainer, loginbuttonContainer, loginbuttonTextContainer } from './login.css';
 import ChatBotBox from './loginchatbot/chatbotbox/ChatBotBox';
 import LoginButton from './loginchatbot/loginbox/LoginButton';
 
@@ -87,47 +86,53 @@ const Login = () => {
 
   return (
     <>
-      <div className={responsiveBox} style={{ overflow: 'hidden' }}>
-        <div className={fullContainer}>
-          {toastMessage && <ToastMessage message={toastMessage.message} duration={toastMessage.duration} />}
-          <Header imageSrc={hamburger_menu} alt="hamburger_menu" />
-          <div style={{ marginTop: '20px', marginLeft: '16px' }}>
-            <ChatBotBox text={['안녕하세요 펄핏AI 입니다!', '맞춤 추천을 위해 먼저 로그인을 해주세요.']} />
-          </div>
 
-          <div className={loginbuttonContainer}>
-            <LoginButton imageSrc={google} text="구글" onClick={() => checkUserStatus(handleGoogleLogin)} />
-            <LoginButton text="이메일 로그인" onClick={() => checkUserStatus(() => navigate('/emaillogin'))} />
-            <div className={loginbuttonTextContainer}>또는</div>
-            <LoginButton text="회원가입 하기" onClick={() => checkUserStatus(() => setIsInfoModalOpen(true))} />
-          </div>
+      <div className={fullContainer}>
+        {toastMessage && <ToastMessage message={toastMessage.message} duration={toastMessage.duration} />}
+        <Header imageSrc={hamburger_menu} alt="hamburger_menu" />
+        <div className={loginContainer}>
+          <div className={loginBubble}>
+            <div style={{ marginTop: '20px', marginLeft: '16px' }}>
+              <ChatBotBox text={['안녕하세요 펄핏AI 입니다!', '맞춤 추천을 위해 먼저 로그인을 해주세요.']} />
+            </div>
 
-          <div style={{ marginTop: 'auto' }}>
+            <div className={loginbuttonContainer}>
+              <LoginButton imageSrc={google} text="구글" onClick={() => checkUserStatus(handleGoogleLogin)} />
+              <LoginButton text="이메일 로그인" onClick={() => checkUserStatus(() => navigate('/emaillogin'))} />
+              <div className={loginbuttonTextContainer}>또는</div>
+              <LoginButton text="회원가입 하기" onClick={() => checkUserStatus(() => setIsInfoModalOpen(true))} />
+            </div>
+
+          </div>
+          <div className={inputContainer}>
             <ChatbotSearchInput />
           </div>
         </div>
-        {isInfoModalOpen && (
-          <SignUpInfoModal
-            isOpen={isInfoModalOpen}
-            onNext={() => {
-              setIsInfoModalOpen(false);
-              setIsSizeModalOpen(true);
-            }}
-            onClose={() => setIsInfoModalOpen(false)}
-          />
-        )}
-        {isGoogleModalOpen && (
-          <GoogleSignUpModal
-            isOpen={isGoogleModalOpen}
-            onNext={() => {
-              setIsGoogleModalOpen(false);
-              setIsSizeModalOpen(true);
-            }}
-            onClose={() => setIsGoogleModalOpen(false)}
-          />
-        )}
-        {isSizeModalOpen && <SignUpSizeModal isOpen={isSizeModalOpen} onClose={() => setIsSizeModalOpen(false)} />}
+
+
+
       </div>
+      {isInfoModalOpen && (
+        <SignUpInfoModal
+          isOpen={isInfoModalOpen}
+          onNext={() => {
+            setIsInfoModalOpen(false);
+            setIsSizeModalOpen(true);
+          }}
+          onClose={() => setIsInfoModalOpen(false)}
+        />
+      )}
+      {isGoogleModalOpen && (
+        <GoogleSignUpModal
+          isOpen={isGoogleModalOpen}
+          onNext={() => {
+            setIsGoogleModalOpen(false);
+            setIsSizeModalOpen(true);
+          }}
+          onClose={() => setIsGoogleModalOpen(false)}
+        />
+      )}
+      {isSizeModalOpen && <SignUpSizeModal isOpen={isSizeModalOpen} onClose={() => setIsSizeModalOpen(false)} />}
     </>
   );
 };

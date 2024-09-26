@@ -5,10 +5,11 @@ import TextSearch from '../components/choose-shose/text-search/TextSearch';
 import EmptyShoesRoom from '../components/empty-shoes-room/EmptyShoesRoom';
 import FootInfo from '../components/foot-info/FootInfo';
 import Login from '../components/login/Login';
-import LoginHello from '../components/login/LoginHello';
 import EmailLogin from '../components/login/emaillogin/EmailLogin';
 import FindEmail from '../components/login/find/FindEmail';
 import FindPassword from '../components/login/find/FindPassword';
+
+import LoginHello from '../components/login/login-hello/LoginHello';
 import OnBoarding from '../components/onboarding/OnBoarding';
 import ShoesInfo from '../components/shoes-info/ShoesInfo';
 import ShoesRegistry from '../components/shoes-registry/ShoesRegistry';

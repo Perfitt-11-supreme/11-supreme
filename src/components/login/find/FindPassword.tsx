@@ -1,16 +1,16 @@
+import { sendPasswordResetEmail } from 'firebase/auth';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { back_arrow } from '../../../assets/assets';
+import { auth, db } from '../../../firebase/firebase';
+import { responsiveBox } from '../../../styles/responsive.css';
 import Button from '../../common/button/Button';
 import Header from '../../common/header/Header';
+import SignUpInput from '../../signup/infoInput/signupinput/SignUpInput';
 import { errorMessage, signupFormContainer, signupFormGap, submitbuttonContainer } from '../../signup/signup.css';
 import { accountFindBox, accountFindButton } from '../emaillogin/emailLogin.css';
-import { useState } from 'react';
-import SignUpInput from '../../signup/infoInput/signupinput/SignUpInput';
 import { foundResultStyle, fullContainer } from '../login.css';
-import { sendPasswordResetEmail } from 'firebase/auth';
-import { db, auth } from '../../../firebase/firebase';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { back_arrow } from '../../../assets/assets';
-import { responsiveBox } from '../../../styles/responsive.css';
 
 const FindPassword = () => {
   type FormErrors = {
@@ -129,7 +129,7 @@ const FindPassword = () => {
               </div>
 
               <div className={submitbuttonContainer}>
-                <Button type="button" text="비밀번호 찾기" onClick={handleFindPassword} />
+                <Button type="button" text="비밀번호 찾기" width='100%' onClick={handleFindPassword} />
               </div>
 
               {successMessage && <div className={foundResultStyle}>{successMessage}</div>}
