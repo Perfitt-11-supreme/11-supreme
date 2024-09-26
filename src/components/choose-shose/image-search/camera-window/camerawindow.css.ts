@@ -1,5 +1,6 @@
 import { style } from '@vanilla-extract/css';
 import { theme } from '../../../../styles/theme';
+import { media } from '../../../../styles/media.css';
 
 export const CameraWindow_Rectangle = style({
   position: 'fixed',
@@ -10,9 +11,19 @@ export const CameraWindow_Rectangle = style({
   transform: 'translateX(-50%) translateY(-50%)',
 });
 
+export const CameraWindow_Icons = style([
+  {
+    position: 'fixed',
+    bottom: '20px',
+    zIndex: '11',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  media,
+]);
+
 export const CameraWindow_CameraIconBackground = style({
-  position: 'fixed',
-  bottom: '20px',
+  position: 'relative',
   left: '50%',
   transform: 'translateX(-50%)',
   display: 'flex',
@@ -33,24 +44,23 @@ export const CameraWindow_CameraIcon = style({
 });
 
 export const CameraWindow_GalleryIcon = style({
-  position: 'fixed',
-  left: '10.5%',
-  bottom: '30px',
-  zIndex: '11',
+  position: 'relative',
   cursor: 'pointer',
 });
 
-export const CameraWindow_ViewContainer = style({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  width: '100%',
-  height: '100%',
-  background: theme.color.white,
-  position: 'absolute',
-  top: '0',
-  zIndex: '0',
-});
+export const CameraWindow_ViewContainer = style([
+  {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+    background: theme.color.white,
+    position: 'absolute',
+    top: '0',
+    zIndex: '0',
+  },
+  media,
+]);
 
 export const CameraWindow_View = style({
   width: '100%',
