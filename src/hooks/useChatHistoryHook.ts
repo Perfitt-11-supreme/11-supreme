@@ -11,10 +11,10 @@ type ChatHistory = {
 };
 
 const useChatHistoryHook = () => {
+  const { user } = useUserStore(); // user 정보 가져오기
   const [chatHistory, setChatHistory] = useState<ChatHistory[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null | string>(null);
-  const { user } = useUserStore();
 
   useEffect(() => {
     const fetchChatHistory = async () => {
@@ -25,7 +25,6 @@ const useChatHistoryHook = () => {
       }
 
       try {
-        setLoading(true);
         // 모든 채팅방의 마지막 메시지를 가져오기
         const userChatsRef = ref(database, `users/${user.uid}/chats`);
         const snapshot = await get(userChatsRef);
@@ -41,7 +40,7 @@ const useChatHistoryHook = () => {
               limitToLast(1)
             );
             const messageSnapshot = await get(messagesRef);
-            
+
             if (messageSnapshot.exists()) {
               const messageData = messageSnapshot.val();
               const messageId = Object.keys(messageData)[0];
@@ -51,7 +50,7 @@ const useChatHistoryHook = () => {
                 id: chatId,
                 keywords: message.keywords || '',
                 timestamp: message.timestamp || '',
-                shareId: message.shareId || ''
+                shareId: message.shareId || '',
               });
             }
           }
@@ -68,11 +67,11 @@ const useChatHistoryHook = () => {
     };
 
     fetchChatHistory();
-  }, [user?.uid]); // user?.uid가 변경될 때마다 실행
+  }, [user?.uid]); // user가 변경될 때마다 데이터를 다시 가져옴
 
-  // 데이터 삭제 함수 수정
+  // 데이터 삭제 함수 추가
   const deleteChatHistory = async (chatId: string) => {
-    if (!user?.uid) return;
+    if (!user?.uid) return; // user가 없으면 중단
 
     try {
       const chatRef = ref(database, `users/${user.uid}/chats/${chatId}`);
@@ -84,8 +83,7 @@ const useChatHistoryHook = () => {
     }
   };
 
-
-  return { chatHistory, loading, error, deleteChatHistory};
+  return { chatHistory, loading, error, deleteChatHistory };
 };
 
 export default useChatHistoryHook;

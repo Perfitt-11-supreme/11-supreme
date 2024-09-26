@@ -4,6 +4,7 @@ export const likedAndViewedHistoryCointainer = style({
   width: '100%',
   height: '100%',
   position: 'relative',
+  overflowY: 'hidden',
 });
 
 export const filterProductsAndBrandsQuantityBox = style({ padding: '0 21px' });
@@ -19,4 +20,12 @@ export const likedAndViewedHistoryItemBox = style({
   display: 'grid',
   gridTemplateColumns: '1fr 1fr',
   gap: '16px',
+  paddingBottom: '64px',
+});
+export const likedInBrandsItemBox = style({
+  padding: '0 16px',
+  display: 'grid',
+  gridTemplateColumns: '1fr',
+  gap: '16px',
+  paddingBottom: '64px',
 });

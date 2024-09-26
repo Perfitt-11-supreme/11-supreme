@@ -1,44 +1,77 @@
-import { brand_adidas, brand_crocs, brand_nike, heart_filled } from '../../../assets/assets';
-import { heartFilledIcon } from './likedInBrand.css';
+import { heart_filled } from '../../../assets/assets';
+import {
+  brandListBox,
+  brandLists,
+  brandNameBox,
+  brandsContainer,
+  heartFilledIcon,
+  logoUrlNone,
+  logoUrlNoneText,
+  hiddenBrand, // display: none 처리를 위한 클래스 추가
+} from './likedInBrand.css';
+import { useState } from 'react';
 
-const LikedInBrand = () => {
+type TBrand = {
+  brandNameEn: string;
+  brandNameKo: string;
+  logoImage?: string;
+  brandId?: string;
+};
+
+type LikedInBrandCardProps = {
+  brand: TBrand | null;
+  isHeartFilled?: boolean;
+  onCardClick?: () => void; // 클릭 이벤트를 처리하는 함수
+  onDelete?: (id: string) => void; // 삭제 함수
+  logos?: any;
+};
+
+const LikedInBrand = ({ brand, isHeartFilled = false, logos, onDelete }: LikedInBrandCardProps) => {
+  if (!brand) {
+    return null;
+  }
+  const [isChecked, setIsChecked] = useState(isHeartFilled);
+  console.log('heart :', isChecked);
+
+  const handleHeartChecked = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsChecked(prev => !prev);
+
+    if (isChecked) {
+      if (brand?.brandId) {
+        onDelete?.(brand.brandId); // 삭제 함수 호출
+      } else {
+      }
+    }
+  };
+
   return (
     <>
-      <section style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <article style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-            <img src={brand_nike} alt="brand_nike" />
-            <div>
-              <strong>NIKE</strong>
-              <p>나이키</p>
+      <section className={brandsContainer}>
+        <article
+          className={`${brandLists} ${heart_filled ? '' : hiddenBrand}`} // 하트 상태에 따라 display 처리
+        >
+          <div className={brandListBox}>
+            {logos ? (
+              <img src={logos} alt={`${brand.brandNameEn} logo`} width="75" height="75" />
+            ) : (
+              <div className={logoUrlNone}>
+                <span className={logoUrlNoneText}>No Image</span>
+              </div>
+            )}
+            <div className={brandNameBox}>
+              <strong>{brand.brandNameEn}</strong>
+              <p>{brand.brandNameKo}</p>
             </div>
           </div>
-          <div>
-            <img className={heartFilledIcon} src={heart_filled} alt="heart_filled" />
-          </div>
-        </article>
-        <article style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-            <img src={brand_adidas} alt="brand_adidas" />
-            <div>
-              <strong>ADIDAS</strong>
-              <p>아디다스</p>
-            </div>
-          </div>
-          <div>
-            <img className={heartFilledIcon} src={heart_filled} alt="heart_filled" />
-          </div>
-        </article>
-        <article style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-            <img src={brand_crocs} alt="brand_crocs" />
-            <div>
-              <strong>CROCS</strong>
-              <p>크록스</p>
-            </div>
-          </div>
-          <div>
-            <img className={heartFilledIcon} src={heart_filled} alt="heart_filled" />
+          <div
+            onClick={e => {
+              e.stopPropagation();
+              handleHeartChecked(e);
+            }}
+          >
+            {/* 브랜드 페이지 시안 x */}
+            <img className={heartFilledIcon} src={isChecked ? heart_filled : heart_filled} alt="heart" />
           </div>
         </article>
       </section>
