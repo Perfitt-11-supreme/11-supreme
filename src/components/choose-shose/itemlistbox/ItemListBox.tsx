@@ -1,9 +1,8 @@
 import IsLoading from '../isLoading/IsLoading';
-import ItemCard from '../itemcard/ItemCard';
-// 상태 관리
 import useTextSearchStore from '../../../stores/useTextSearchStore';
 import useProductStore from '../../../stores/useProductsStore';
 import { ItemListBox_Container, ItemListBox_PaddingTop } from './itemlistbox.css';
+import ItemCard from './itemcard/ItemCard';
 
 const ItemListBox = ({ paddingTop = true }: { paddingTop?: boolean }) => {
   const { isLoading } = useTextSearchStore();
