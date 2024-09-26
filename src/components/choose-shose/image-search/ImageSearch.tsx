@@ -4,11 +4,14 @@ import { useEffect } from 'react';
 import { close } from '../../../assets/assets';
 import Header from '../../common/header/Header';
 import AnalyzeImage from './analyzeimage/AnalyzeImage';
+import useSelectItemStore from '../../../stores/useSelectItemStore';
 
 const ImageSearch = () => {
   const { setProducts } = useProductStore();
+  const { resetItem } = useSelectItemStore();
   useEffect(() => {
     setProducts([]);
+    resetItem();
   }, []);
 
   console.log('랜더링됨');

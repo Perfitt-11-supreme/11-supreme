@@ -29,7 +29,7 @@ export const imagePlusButton = style({
   borderRadius: '6px',
   border: 'none',
   backgroundColor: '#f5f5f5',
-  width: '343px',
+  width: '90%',
   height: '48px',
   cursor: 'pointer',
   display: 'ruby',
@@ -37,6 +37,7 @@ export const imagePlusButton = style({
 });
 
 export const imagePlusButtonSelected = style({
+  width: '100%',
   border: 'none',
   backgroundColor: 'white',
   height: '77px',
@@ -45,7 +46,6 @@ export const imagePlusButtonSelected = style({
 export const itemCardDiv = style({
   display: 'flex',
   textAlign: 'start',
-  width: '343px',
 });
 
 export const questionP = style({

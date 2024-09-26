@@ -8,7 +8,6 @@ import { db } from '../../firebase/firebase';
 import { useShoesRegistryStore } from '../../stores/useRegistryStore';
 import useSelectItemStore from '../../stores/useSelectItemStore';
 import { ShoeData, User } from '../../types/registry';
-import ItemCard from '../choose-shose/itemcard/ItemCard';
 import Button from '../common/button/Button';
 import Choose from '../empty-shoes-room/choose/Choose';
 import Header from '../empty-shoes-room/header/Header';
@@ -28,6 +27,7 @@ import {
   starP,
 } from './shoesregistry.css';
 import StarRating from './star-rating/StarRating';
+import ItemCard from '../choose-shose/itemlistbox/itemcard/ItemCard';
 
 const auth = getAuth();
 // const user = auth.currentUser;
@@ -234,9 +234,7 @@ const ShoesRegistry = () => {
         <p className={descP}>신발을 선택해 주세요</p>
         {selectComplet && selectProduct !== null ? (
           <button className={imagePlusButtonSelected} onClick={handleChooseShoes} disabled={!!shoesId}>
-            <div className={itemCardDiv}>
-              <ItemCard index={0} data={selectProduct} />
-            </div>
+            <ItemCard index={0} data={selectProduct} />
           </button>
         ) : (
           <button className={imagePlusButton} onClick={handleChooseShoes}>

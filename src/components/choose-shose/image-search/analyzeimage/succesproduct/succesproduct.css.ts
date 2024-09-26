@@ -7,43 +7,21 @@ export const Product_SuccesContainer = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-});
-
-export const Product_AgainContainder = style({
-  width: '100%',
-  marginTop: '7%',
-  marginLeft: '9%',
-});
-
-export const Product_AgainBox = style({
-  width: '72px',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '10px',
-  cursor: 'pointer',
-});
-
-export const Product_AgainIcon = style({
-  width: '17px',
-  height: '16px',
-});
-
-export const Product_AgainText = style({
-  fontWeight: '400',
-  fontSize: '13px',
-  lineHeight: '24px',
-  letterSpacing: '-0.003em',
+  overflowY: 'auto',
+  paddingBottom: '108px',
 });
 
 export const Product_Similar = style({
   display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
   gap: '10px',
   background: theme.color.cool_gray600,
   width: '37%',
   height: '32px',
   borderRadius: '4px',
   padding: '4px 10px',
-  marginTop: '28px',
+  margin: '28px 0',
 });
 
 export const Product_SimilarText = style({

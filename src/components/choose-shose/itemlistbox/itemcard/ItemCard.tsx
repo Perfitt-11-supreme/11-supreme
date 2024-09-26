@@ -1,5 +1,5 @@
-import useSelectItemStore from '../../../stores/useSelectItemStore';
-import { TProduct } from '../../../types/product';
+import useSelectItemStore from '../../../../stores/useSelectItemStore';
+import { TProduct } from '../../../../types/product';
 import {
   ItemCard_Container,
   ItemCard_Frame,

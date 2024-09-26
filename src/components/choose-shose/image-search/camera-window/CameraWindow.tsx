@@ -17,7 +17,7 @@ import { ImageUpload } from '../../firebase/imageupload/ImageUpload';
 
 const CameraWindow = () => {
   //분석중인지 / 포스트 성공 여부 / 캔버스에 그려진 이미지 / 상태 설정 함수 / 포스트 받은 데이터 저장 함수 /
-  const { isAnalyze, setAnalyze, resetState } = useImageSearchStore();
+  const { isAnalyze, isSuccess, isSimilar, setAnalyze, resetState } = useImageSearchStore();
   const { galleryImage } = useGalleryStore();
   const { handleCaptureImage } = useImageSearchHooks();
   const { handleImageToBase64 } = ImageUpload();
@@ -77,7 +77,7 @@ const CameraWindow = () => {
 
   return (
     <>
-      {!isAnalyze && (
+      {!isAnalyze && !isSuccess && !isSimilar && (
         <>
           <img className={CameraWindow_Rectangle} src={rectangle} alt="rectangle" />
           <div className={CameraWindow_CameraIconBackground} onClick={handleClickCamera}>

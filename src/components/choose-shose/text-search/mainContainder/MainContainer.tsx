@@ -1,7 +1,7 @@
 import { MainContainter_Background } from './maincontainer.css';
 import useTextSearchStore from '../../../../stores/useTextSearchStore';
 import TextRecordBox from './textrecordbox/TextRecordBox';
-import ItemListBox from './itemlistbox/ItemListBox';
+import ItemListBox from '../../itemlistbox/ItemListBox';
 import { useEffect, useRef } from 'react';
 
 const MainContainer = () => {

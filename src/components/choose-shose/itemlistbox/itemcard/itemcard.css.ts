@@ -1,22 +1,21 @@
 import { style } from '@vanilla-extract/css';
-import { theme } from '../../../styles/theme';
+import { theme } from '../../../../styles/theme';
 
 export const ItemCard_Container = style({
   display: 'flex',
-  width: '100%',
+  margin: '10px 4% 0 4%',
+  width: '90%',
   height: '78px',
   gap: '10px',
   alignItems: 'center',
   boxSizing: 'content-box',
-  marginTop: '10px',
-  padding: '4px',
+  border: `2px solid ${theme.color.white}`,
   cursor: 'pointer',
 });
 
 export const ItemCard_Select = style({
   border: `2px solid ${theme.color.black}`,
   borderRadius: '8px',
-  padding: '2px',
 });
 
 export const ItemCard_Rectangle = style({

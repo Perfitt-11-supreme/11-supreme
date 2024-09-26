@@ -19,7 +19,11 @@ const TextFooter = () => {
     <>
       {isSubmit && !focus && (
         <div className={TextFooter_Background}>
-          {selectProduct && <Button text="선택 완료" onClick={handleNavigate} type="button" />}
+          {selectProduct ? (
+            <Button text="선택 완료" onClick={handleNavigate} type="button" />
+          ) : (
+            <Button text="선택해주세요" type="button" opacity={true} />
+          )}
         </div>
       )}
     </>
