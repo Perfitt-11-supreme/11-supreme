@@ -1,5 +1,5 @@
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { collection, getDocs, query, where } from 'firebase/firestore'; // Firestore 관련 함수 import
+import { collection, doc, getDoc, getDocs, query, setDoc, where } from 'firebase/firestore'; // Firestore 관련 함수 import
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -38,11 +38,13 @@ import {
   userProfileNameTextBold,
   userProfileUploadIconBox,
 } from './mypage.css';
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 
 const Mypage = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState<any>(null);
   const [profileImage, setProfileImage] = useState<string>(user_profile); // 기본 이미지로 설정
+  const [isDeleteUserModalOpen, setIsDeleteUserModalOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleNavigateShoesroom = () => {
@@ -96,24 +98,52 @@ const Mypage = () => {
     return () => unsubscribe(); // 컴포넌트 언마운트 시 정리
   }, []);
 
-  // 파일 선택 창을 여는 함수
+  // Firestore에서 프로필 이미지 가져오기
+  useEffect(() => {
+    const fetchUserProfileImage = async () => {
+      if (userData?.uid) {
+        const userDocRef = doc(db, 'users', userData.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+          const data = userDoc.data();
+          setProfileImage(data.profileImage || user_profile); // 기본 이미지로 대체
+        }
+      }
+    };
+
+    fetchUserProfileImage();
+  }, [userData]);
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && userData?.uid) {
+      try {
+        const storage = getStorage();
+        const storageRef = ref(storage, `profileImages/${userData.uid}`);
+
+        // 파일 업로드
+        await uploadBytes(storageRef, file);
+
+        // 업로드 후 이미지 URL 가져오기
+        const imageUrl = await getDownloadURL(storageRef);
+        setProfileImage(imageUrl); // 상태에 URL 저장
+
+        // Firestore에 프로필 이미지 URL 저장
+        const userDocRef = doc(db, 'users', userData.uid);
+        await setDoc(userDocRef, { profileImage: imageUrl }, { merge: true });
+
+        console.log('Firestore에 이미지 URL 저장 완료:', imageUrl);
+      } catch (error) {
+        console.error('Firestore에 이미지 저장 중 오류 발생:', error);
+      }
+    }
+  };
+
   const handlePictureClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click(); // 숨겨진 파일 입력창을 열기
     }
   };
-
-  // 파일 선택 후 파일을 처리하는 함수
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file); // 선택한 파일의 URL 생성
-      setProfileImage(imageUrl); // 이미지 URL을 상태에 저장
-      console.log('선택한 파일:', file);
-    }
-  };
-
-  const [isDeleteUserModalOpen, setIsDeleteUserModalOpen] = useState(false);
 
   return (
     <>
@@ -122,13 +152,12 @@ const Mypage = () => {
           <Header imageSrc={back_arrow} alt="back arrow" nav="/hello" />
           <article className={userProfileImageContainer}>
             <div className={userProfileIconBox}>
-              <div className={profileImageBox}>
-                {/* 조건부 렌더링 */}
-                {profileImage ? (
-                  <img src={profileImage} alt="user_profile" /> // 업로드된 이미지가 있으면 보여줌
-                ) : (
-                  <img src={user_profile} alt="user_profile" /> // 업로드된 이미지가 없으면 기본 이미지
-                )}
+              <div className={profileImageBox} onClick={handlePictureClick}>
+                <img
+                  src={profileImage}
+                  alt="user_profile"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
               </div>
               <div className={userProfileUploadIconBox} onClick={handlePictureClick}>
                 <img src={user_profile_upload} alt="user_profile_upload" />
@@ -149,9 +178,9 @@ const Mypage = () => {
               <span className={userProfileNameTextBold}>
                 {userData
                   ? userData?.userName ||
-                  userData?.username
-                    .split('')
-                    .map((char: string, index: number) => <span key={index}>{char}&nbsp;</span>)
+                    userData?.username
+                      .split('')
+                      .map((char: string, index: number) => <span key={index}>{char}&nbsp;</span>)
                   : '-'}
               </span>
               님

@@ -12,14 +12,27 @@ import { getAuth, signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getDoc, doc } from 'firebase/firestore'; // Firestore 관련 함수 import
-import { USER_COLLECTION } from '../../firebase/firebase'; // USER_COLLECTION 경로 수정
+import { db, USER_COLLECTION } from '../../firebase/firebase'; // USER_COLLECTION 경로 수정
 import useUserStore from '../../stores/useUserStore';
 
-const SidemenuMypageLinks = () => {
+type UserData = {
+  userName?: string;
+  username?: string;
+  shoeSize?: number;
+  sizeType?: string;
+  uid: string;
+};
+
+type UserProfileProps = {
+  userData?: UserData | null; // userData는 UserData 타입이거나 null일 수 있음
+};
+
+const SidemenuMypageLinks = ({ userData }: UserProfileProps) => {
   const navigate = useNavigate();
   const auth = getAuth();
   const [userName, setUserName] = useState<string>(''); // 사용자 이름 상태
   const [error, setError] = useState<string | null>(null); // 에러 상태 추가
+  const [profileImage, setProfileImage] = useState<string>(user_profile); // 기본 이미지로 설정
 
   // Firestore에서 사용자 정보를 가져오는 함수
   const fetchUserData = async () => {
@@ -34,6 +47,7 @@ const SidemenuMypageLinks = () => {
 
           // Firestore에서 userName 필드를 상태에 저장
           setUserName(userData.userName || userData.username);
+          setProfileImage(userData.profileImage || user_profile);
         } else {
           console.log('No such user document!');
           setError('No user document found.');
@@ -108,7 +122,7 @@ const SidemenuMypageLinks = () => {
 
       <div className={sidemenuUserProfileBox}>
         <button className={sidemenuUserProfileButton} onClick={handleNavigateMypage}>
-          <img className={sidemenuUserProfileIcon} src={user_profile} alt="user_profile" />
+          <img className={sidemenuUserProfileIcon} src={profileImage} alt="user_profile" />
           {/* Firestore에서 받아온 사용자 이름을 표시 */}
           <span className={sidemenuUserProfileText}>{userName}</span>
         </button>

@@ -38,11 +38,10 @@ globalStyle('ul,li,ol', {
 });
 
 globalStyle('body', {
-  minHeight: '100vh',
+  minHeight: '100dvh',
   lineHeight: '1',
   backgroundColor: theme.color.slate200,
   overflow: 'hidden',
-
 });
 
 globalStyle('h1,h2,h3,h4,button,input,label', {

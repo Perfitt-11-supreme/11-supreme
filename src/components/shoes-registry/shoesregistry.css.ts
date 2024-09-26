@@ -18,7 +18,7 @@ export const hookForm = style({
 });
 
 export const descP = style({
-  width: '100%',
+  width: '343px',
   padding: '6px 0 0 16px',
   fontWeight: 'bold',
   fontSize: '15px',
@@ -29,10 +29,11 @@ export const imagePlusButton = style({
   borderRadius: '6px',
   border: 'none',
   backgroundColor: '#f5f5f5',
-  width: '90%',
+  width: '343px',
   height: '48px',
   cursor: 'pointer',
-  display: 'ruby',
+  display: 'flex',
+  justifyContent: 'center',
   marginTop: '11px',
 });
 
@@ -81,6 +82,7 @@ export const area = style({
   margin: '6px 0 20px 0',
   lineHeight: '24px',
   letterSpacing: '-0.003em',
+  resize: 'none',
 });
 
 export const buttonDiv = style({
