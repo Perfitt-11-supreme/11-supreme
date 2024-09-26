@@ -1,18 +1,18 @@
 import { style } from '@vanilla-extract/css';
 import { theme } from '../../../styles/theme';
-
+import { media } from '../../../styles/media.css';
 
 export const loginHelloFullContainer = style({
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
-  height:'120vh',
+  height: '120vh',
   maxHeight: '100vh',
   boxSizing: 'border-box',
   justifyContent: 'space-between',
   overflow: 'hidden',
   backgroundColor: theme.color.white,
-  position:'relative'
+  position: 'relative',
 });
 
 export const recommendedquestioncardContainer = style({
@@ -41,13 +41,11 @@ export const loginHelloContainer = style({
   // },
 });
 
-
-
-export const loginHelloInputContainer = style({
-  width: '100%',
-  position: 'fixed', // sticky에서 fixed로 변경
-  bottom: 0,
-  zIndex: 105,
-  maxWidth:'428px'
-});
-
+export const loginHelloInputContainer = style([
+  {
+    position: 'fixed', // sticky에서 fixed로 변경
+    bottom: 0,
+    zIndex: 105,
+  },
+  media,
+]);

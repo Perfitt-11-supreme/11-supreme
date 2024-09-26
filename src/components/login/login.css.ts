@@ -1,5 +1,6 @@
 import { style } from '@vanilla-extract/css';
 import { theme } from '../../styles/theme';
+import { media } from '../../styles/media.css';
 
 export const fullContainer = style({
   display: 'flex',
@@ -39,14 +40,13 @@ export const loginContainer = style({
   flexDirection: 'column',
   flex: 1,
   overflowY: 'auto', // 스크롤이 필요할 때 나타나도록 설정
-  backgroundColor: 'white'
-})
+  backgroundColor: 'white',
+});
 export const loginBubble = style({
   display: 'flex',
   flexDirection: 'column',
-  flex:1,
-})
-
+  flex: 1,
+});
 
 export const foundResultStyle = style({
   color: theme.color.black,
@@ -58,17 +58,19 @@ export const foundResultStyle = style({
   textAlign: 'center',
 });
 
-export const inputContainer = style({
-  position: 'fixed',
-  bottom: 0,
-  left: 0,
-  right: 0,
-  zIndex:999,
-  '@media': {
-    'screen and (min-width: 768px)': {
-      position: 'static',
-      boxShadow: 'none',
+export const inputContainer = style([
+  {
+    position: 'fixed',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: 999,
+    '@media': {
+      'screen and (min-width: 768px)': {
+        position: 'static',
+        boxShadow: 'none',
+      },
     },
   },
-});
-
+  media,
+]);

@@ -16,6 +16,7 @@ import {
 } from '../common/share-modal/shareModal.css';
 import ToastMessage from '../toastmessage/toastMessage';
 import { deleteButton, redoButton } from './deleteUserModal.css';
+import { media } from '../../styles/media.css';
 
 type DeleteUserModalProps = {
   isOpen: boolean; //부모로부터 전달받은 isModalOpen 상태
@@ -94,7 +95,7 @@ const DeleteUserModal: React.FC<DeleteUserModalProps> = ({ isOpen, onClose }) =>
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              className={shareWrap}
+              className={`${shareWrap} ${media}`}
               style={{ height: '100%', position: 'fixed', zIndex: 999 }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
