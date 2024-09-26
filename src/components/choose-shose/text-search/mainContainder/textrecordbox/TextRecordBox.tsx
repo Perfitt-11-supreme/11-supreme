@@ -6,6 +6,7 @@ import {
   TextRecordBox_RecentRecord,
   TextRecordBox_RecentSearches,
   TextRecordBox_Remove,
+  TextRecordBox_TextList,
 } from './textrecordbox.css';
 import useTextSearchStore from '../../../../../stores/useTextSearchStore';
 import { useTextSearchHooks } from '../../hooks/useTextSearchHooks';
@@ -44,10 +45,10 @@ const TextRecordBox = () => {
       );
 
     return (
-      <>
+      <div className={TextRecordBox_TextList}>
         {render}
         <div className={TextRecordBox_Line} />
-      </>
+      </div>
     );
   };
 

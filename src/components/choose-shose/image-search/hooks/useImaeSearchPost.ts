@@ -25,6 +25,7 @@ const useImageSearchPost = () => {
       setAnalyze(false);
       if (isSuccess) {
         setSelectProduct(null);
+        setSuccess(false);
         setSimilar(true);
       } else {
         setSelectProduct(products[0]);

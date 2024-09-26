@@ -8,7 +8,6 @@ export const TextFooter_Background = style({
   alignItems: 'center',
   background: theme.color.white,
   bottom: '0',
-  borderTop: `1px solid ${theme.color.black}`,
   height: '108px',
   width: '100%',
 });

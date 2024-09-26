@@ -1,10 +1,15 @@
 import { TButton } from '../../../types/button';
-import { button } from './button.css';
+import { button, ButtonOpacity } from './button.css';
 
-const Button = ({ text, onClick, width = '343px', id, type = 'submit' }: TButton) => {
+const Button = ({ text, onClick, id, type = 'submit', opacity = false }: TButton) => {
   return (
     <>
-      <button className={button} onClick={onClick} style={{ width }} id={id} type={type}>
+      <button
+        className={`${button} ${opacity ? ButtonOpacity.opacity : ButtonOpacity.nonOpacity}`}
+        onClick={onClick}
+        id={id}
+        type={type}
+      >
         {text}
       </button>
     </>

@@ -3,16 +3,19 @@ import useTextSearchStore from '../../../../stores/useTextSearchStore';
 import { textShoseSearchAPI } from '../../../../api/searchRequests';
 import { TProduct } from '../../../../types/product';
 import useProductStore from '../../../../stores/useProductsStore';
+import useSelectItemStore from '../../../../stores/useSelectItemStore';
 
 export const useHandleTextSearchPost = () => {
   const { text, setLoading, setFocus, setSubmit, setPostText } = useTextSearchStore();
   const { setProducts } = useProductStore();
+  const { resetItem } = useSelectItemStore();
 
   const handleTextSearchPost = useMutation({
     mutationFn: (data: string) => {
       setLoading(true);
       setFocus(false);
       setSubmit(true);
+      resetItem();
       return textShoseSearchAPI(data);
     },
     onSuccess: response => {

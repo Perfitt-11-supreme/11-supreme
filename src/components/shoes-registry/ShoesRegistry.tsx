@@ -234,9 +234,7 @@ const ShoesRegistry = () => {
         <p className={descP}>신발을 선택해 주세요</p>
         {selectComplet && selectProduct !== null ? (
           <button className={imagePlusButtonSelected} onClick={handleChooseShoes} disabled={!!shoesId}>
-            <div className={itemCardDiv}>
-              <ItemCard index={0} data={selectProduct} />
-            </div>
+            <ItemCard index={0} data={selectProduct} />
           </button>
         ) : (
           <button className={imagePlusButton} onClick={handleChooseShoes}>

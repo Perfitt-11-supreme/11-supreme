@@ -1,8 +1,8 @@
-import { style } from '@vanilla-extract/css';
+import { style, styleVariants } from '@vanilla-extract/css';
 import { theme } from '../../../styles/theme';
 
 export const button = style({
-  width: '343px',
+  width: '90%',
   height: '56px',
   display: 'flex',
   justifyContent: 'center',
@@ -18,4 +18,13 @@ export const button = style({
   borderRadius: '4px',
   border: 'none',
   cursor: 'pointer',
+});
+
+export const ButtonOpacity = styleVariants({
+  opacity: {
+    backgroundColor: theme.color.black300,
+  },
+  nonOpacity: {
+    backgroundColor: theme.color.black,
+  },
 });

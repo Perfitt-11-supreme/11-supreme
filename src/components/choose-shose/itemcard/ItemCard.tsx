@@ -11,7 +11,7 @@ import {
 } from './itemcard.css';
 
 const ItemCard = ({ index, data }: { index: number; data: TProduct }) => {
-  const { isSelected, setIsSelected, setSelectProduct } = useSelectItemStore();
+  const { isSelected, setIsSelected, setSelectProduct, resetItem } = useSelectItemStore();
 
   const handleClick = () => {
     setIsSelected(index);

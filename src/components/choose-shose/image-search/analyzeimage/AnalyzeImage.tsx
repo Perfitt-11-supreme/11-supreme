@@ -1,31 +1,23 @@
-import { AnalyzeImage_AnalyzerContainerMove, AnalyzeImage_Container } from './analyzeimage.css.ts';
-import { useEffect, useRef } from 'react';
+import { AnalyzeImage_AnalyzerContainerMove, AnalyzeImage_Button, AnalyzeImage_Container } from './analyzeimage.css.ts';
 import SuccesProduct from './succesproduct/SuccesProduct.tsx';
 import useImageSearchStore from '../../../../stores/useImageSearchStore.ts';
 import IsLoading from '../../isLoading/IsLoading.tsx';
 import SimilarProduct from './similarproduct/SimilarProduct.tsx';
+import Button from '../../../common/button/Button.tsx';
+import { useImageSearchHooks } from '../hooks/useImageSearchHooks.ts';
+import AgainBox from '../againbox/AgainBox.tsx';
+import { useRef } from 'react';
+import useSelectItemStore from '../../../../stores/useSelectItemStore.ts';
 
 const AnalyzeImage = () => {
+  const { isAnalyze, isSuccess, isSimilar } = useImageSearchStore();
+  const { handleImageSearchNavigate } = useImageSearchHooks();
   const divRef = useRef<HTMLDivElement>(null);
-  const { isAnalyze, isSuccess, isSimilar, resetState } = useImageSearchStore();
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (isSimilar && divRef.current && !divRef.current.contains(event.target as Node)) {
-        resetState();
-      }
-    };
-    // 해당컴포넌트 외의 위치를 마우스로 누르면 handleClickOutside 실행
-    document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isSimilar]);
+  const { selectProduct } = useSelectItemStore();
 
   const getClassNames = () => {
     let classNames = `${AnalyzeImage_Container}`;
-    if (isSuccess) {
+    if (isSuccess || isSimilar) {
       classNames += ` ${AnalyzeImage_AnalyzerContainerMove.success}`;
     } else if (isAnalyze) {
       classNames += ` ${AnalyzeImage_AnalyzerContainerMove.analyze}`;
@@ -37,17 +29,34 @@ const AnalyzeImage = () => {
     if (isAnalyze) {
       return <IsLoading text="분석중" />;
     }
-    if (isSuccess) {
-      return isSimilar ? <SimilarProduct /> : <SuccesProduct />;
+    if (isSuccess || isSimilar) {
+      return (
+        <>
+          <AgainBox />
+          {isSimilar ? <SimilarProduct /> : <SuccesProduct />}
+          <div className={AnalyzeImage_Button} ref={divRef}>
+            <Button
+              text={`${isSuccess ? '선택완료' : selectProduct ? '선택완료' : '선택해주세요'}`}
+              onClick={() => {
+                if (isSuccess) {
+                  handleImageSearchNavigate(isSimilar);
+                } else if (isSimilar) {
+                  handleImageSearchNavigate(isSimilar);
+                }
+              }}
+              type="button"
+              opacity={isSuccess ? false : selectProduct ? false : true}
+            />
+          </div>
+        </>
+      );
     }
     return null;
   };
 
   return (
     <>
-      <div ref={divRef} className={getClassNames()}>
-        {renderContent()}
-      </div>
+      <div className={getClassNames()}>{renderContent()}</div>
     </>
   );
 };

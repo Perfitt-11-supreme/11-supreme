@@ -4,6 +4,8 @@ import { theme } from '../../../../../styles/theme';
 export const TextRecordBox_Container = style({
   paddingTop: '65px',
   width: '100%',
+  display: 'flex',
+  flexDirection: 'column',
 });
 
 export const TextRecordBox_Header = style({
@@ -48,12 +50,19 @@ export const TextRecordBox_NoRecord = style({
 
 export const TextRecordBox_RecentRecord = style({
   height: '24px',
-  margin: '0 7%',
   marginTop: '10px',
   fontWeight: '400',
   fontSize: '15px',
   color: theme.color.gray300,
   cursor: 'pointer',
+});
+
+export const TextRecordBox_TextList = style({
+  display: 'flex',
+  flexGrow: 1, // 메인 컨테이너가 남은 공간을 채우도록 설정
+  overflowY: 'auto', // 스크롤 가능하게 설정
+  flexDirection: 'column',
+  margin: '0 7%',
 });
 
 export const TextRecordBox_Line = style({
