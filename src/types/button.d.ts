@@ -4,4 +4,5 @@ export type TButton = {
   id?: string;
   type?: 'button' | 'submit';
   opacity?: boolean;
+  width?: string;
 };

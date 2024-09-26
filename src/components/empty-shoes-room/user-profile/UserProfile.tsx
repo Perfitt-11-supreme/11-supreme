@@ -1,11 +1,15 @@
-import { user } from '../../../assets/assets';
-import { descP, nameP, userButton, userDiv } from './userprofile.css';
+import { useEffect, useState } from 'react';
+import { user_profile } from '../../../assets/assets';
+import { descP, nameP, userDiv, userImage } from './userprofile.css';
+import { db } from '../../../firebase/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 type UserData = {
   userName?: string;
   username?: string;
   shoeSize?: number;
   sizeType?: string;
+  uid: string;
 };
 
 type UserProfileProps = {
@@ -13,11 +17,29 @@ type UserProfileProps = {
 };
 
 const UserProfile = ({ userData }: UserProfileProps) => {
+  const [profileImage, setProfileImage] = useState<string>(user_profile); // 기본 이미지로 설정
+
+  // Firestore에서 프로필 이미지 가져오기
+  useEffect(() => {
+    const fetchUserProfileImage = async () => {
+      if (userData?.uid) {
+        const userDocRef = doc(db, 'users', userData.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+          const data = userDoc.data();
+          setProfileImage(data.profileImage || user_profile); // 기본 이미지로 대체
+        }
+      }
+    };
+
+    fetchUserProfileImage();
+  }, [userData]);
+
   return (
     <div className={userDiv}>
-      <button className={userButton}>
-        <img src={user} alt="User Profile" />
-      </button>
+      <div className={userImage}>
+        <img src={profileImage} alt="user_profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+      </div>
       <div>
         <p className={nameP}>{userData?.userName || userData?.username}</p>
         <p className={descP}>

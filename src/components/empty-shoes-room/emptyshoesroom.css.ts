@@ -4,6 +4,7 @@ export const container = style({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'flex-start',
+  minHeight: '812px',
   height: '100%',
   position: 'relative',
 });
@@ -32,7 +33,7 @@ export const countp = style({
 export const optiondiv = style({
   display: 'flex',
   justifyContent: 'space-between',
-  width: '335px',
+  width: '90%',
   alignItems: 'center',
   margin: '29px 0 5px 20px',
 });
@@ -44,6 +45,7 @@ export const select = style({
   backgroundImage: 'url(../../assets/empty-shoes-room/select.svg)',
   backgroundRepeat: 'no-repeat',
   backgroundPosition: 'right center',
+  backgroundColor: 'transparent',
   width: '51px',
   height: '17px',
   fontWeight: '500',
@@ -64,7 +66,9 @@ export const imageplusbutton = style({
   width: '100%',
   height: '110px',
   cursor: 'pointer',
-  display: 'ruby',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
 });
 
 export const imagebutton = style({

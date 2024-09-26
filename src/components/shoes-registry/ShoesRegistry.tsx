@@ -21,6 +21,7 @@ import {
   hookForm,
   imagePlusButton,
   imagePlusButtonSelected,
+  itemCardDiv,
   questP,
   questionP,
   starP,
@@ -236,10 +237,10 @@ const ShoesRegistry = () => {
         handleError(errors);
 
         // 다음 에러 필드로 스크롤
-        const NextErrorField = Object.keys(errors)[0];
-        if (NextErrorField && refMap[NextErrorField]) {
-          refMap[NextErrorField].current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
+        // const NextErrorField = Object.keys(errors)[0];
+        // if (NextErrorField && refMap[NextErrorField]) {
+        //   refMap[NextErrorField].current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // }
       }
     };
 
@@ -256,7 +257,9 @@ const ShoesRegistry = () => {
         <p className={descP}>신발을 선택해 주세요</p>
         {selectComplet && selectProduct !== null ? (
           <button className={imagePlusButtonSelected} onClick={handleChooseShoes} disabled={!!shoesId}>
-            <ItemCard index={0} data={selectProduct} />
+            <div className={itemCardDiv}>
+              <ItemCard index={0} data={selectProduct} />
+            </div>
           </button>
         ) : (
           <button className={imagePlusButton} onClick={handleChooseShoes}>

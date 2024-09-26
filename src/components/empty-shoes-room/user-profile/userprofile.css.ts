@@ -9,13 +9,16 @@ export const userDiv = style({
   marginTop: '5px',
 });
 
-export const userButton = style({
+export const userImage = style({
   width: '50px',
   height: '50px',
   backgroundColor: 'transparent',
   border: 'none',
   cursor: 'pointer',
   marginRight: '14px',
+  overflow: 'hidden',
+  objectFit: 'cover',
+  borderRadius: '50%',
 });
 
 export const nameP = style({
