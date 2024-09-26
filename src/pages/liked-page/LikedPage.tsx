@@ -310,9 +310,9 @@ const LikedPage = () => {
           )}
         </article>
         {/* 테스트용 버튼 */}
-        <div>
+        {/* <div>
           <button onClick={handleAddToMyProducts}>Add Product</button>
-        </div>
+        </div> */}
         {productOrBrand === '상품' && (
           <article className={likedAndViewedHistoryItemBox}>
             {productsData && Object.keys(productsData).length > 0 ? (
