@@ -23,7 +23,7 @@ const Slider = () => {
 
   useEffect(() => {
     setRecommendation(valueToLabel[value]);
-  }, []);
+  }, [value]);
 
   const labelPositions = Object.keys(valueToLabel)
     .sort((a, b) => parseInt(a) - parseInt(b))

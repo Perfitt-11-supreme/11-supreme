@@ -1,7 +1,7 @@
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { Timestamp, addDoc, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { FieldErrors, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { plus } from '../../assets/assets';
 import { db } from '../../firebase/firebase';
@@ -21,7 +21,6 @@ import {
   hookForm,
   imagePlusButton,
   imagePlusButtonSelected,
-  itemCardDiv,
   questP,
   questionP,
   starP,
@@ -30,10 +29,7 @@ import StarRating from './star-rating/StarRating';
 import ItemCard from '../choose-shose/itemlistbox/itemcard/ItemCard';
 
 const auth = getAuth();
-// const user = auth.currentUser;
-
 const ShoesRegistry = () => {
-  console.log('렌더링됨');
   const { shoesId } = useParams<{ shoesId: string }>();
   const { selectProduct, selectComplet, setSelectProduct } = useSelectItemStore();
   const navigate = useNavigate();
@@ -44,11 +40,16 @@ const ShoesRegistry = () => {
   const soleRef = useRef<HTMLDivElement>(null);
   const weightRef = useRef<HTMLDivElement>(null);
   const reviewRef = useRef<HTMLDivElement>(null);
+  const HeaderMemo = React.memo(Header);
+  const ChooseMemo = React.memo(Choose);
+  const StarRatingMemo = React.memo(StarRating);
+  // const SliderMemo = React.memo(Slider);
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors },
+    trigger,
   } = useForm<ShoeData>();
   const {
     rating,
@@ -67,10 +68,11 @@ const ShoesRegistry = () => {
     setWeight,
     setReview,
     setRecommendation,
+    setEditData,
   } = useShoesRegistryStore();
 
-  // const [editData, setEditData] = useState<ShoeData | null>(null);
   const [user, setUser] = useState<User | null>(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
     const isUser = onAuthStateChanged(auth, currentUser => {
@@ -124,12 +126,12 @@ const ShoesRegistry = () => {
     setWeight,
     setReview,
     setRecommendation,
+    setEditData,
   ]);
 
   useEffect(() => {
     fetchShoeInfo();
   }, [shoesId]);
-
   const saveToFirestore = useCallback(
     async (data: ShoeData) => {
       try {
@@ -151,6 +153,16 @@ const ShoesRegistry = () => {
     },
     [shoesId, user]
   );
+
+  const refMap: Record<string, React.RefObject<HTMLDivElement | HTMLTextAreaElement>> = {
+    rating: ratingRef,
+    length: lengthRef,
+    width: widthRef,
+    height: heightRef,
+    sole: soleRef,
+    weight: weightRef,
+    review: reviewRef,
+  };
 
   const handleFormSubmit = async (data: ShoeData) => {
     if (!user) {
@@ -191,18 +203,8 @@ const ShoesRegistry = () => {
       navigate('/empty-shoesroom', { state: { registryToastMessage: '등록 되었습니다' } });
     }
   };
-  const handleError = (errors: any) => {
+  const handleError = (errors: FieldErrors<ShoeData>) => {
     const firstErrorKey = Object.keys(errors)[0];
-    const refMap: any = {
-      rating: ratingRef,
-      length: lengthRef,
-      width: widthRef,
-      height: heightRef,
-      sole: soleRef,
-      weight: weightRef,
-      review: reviewRef,
-    };
-
     refMap[firstErrorKey]?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   };
 
@@ -227,10 +229,30 @@ const ShoesRegistry = () => {
     setValue('review', review);
   }, [review, setValue]);
 
+  useEffect(() => {
+    const checkErrors = async () => {
+      const result = await trigger(); // 모든 필드를 검사합니다.
+      if (!result) {
+        handleError(errors);
+
+        // 다음 에러 필드로 스크롤
+        const NextErrorField = Object.keys(errors)[0];
+        if (NextErrorField && refMap[NextErrorField]) {
+          refMap[NextErrorField].current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+    };
+
+    // 유효성 검사를 처음에는 하지 않음
+    if (rating || length || width || height || sole || weight) {
+      checkErrors();
+    }
+  }, [rating, length, width, height, sole, weight, trigger, review, errors]);
+
   return (
     <>
       <div className={container}>
-        <Header title="신발 등록" customNavigate={handleBack} />
+        <HeaderMemo title="신발 등록" customNavigate={handleBack} />
         <p className={descP}>신발을 선택해 주세요</p>
         {selectComplet && selectProduct !== null ? (
           <button className={imagePlusButtonSelected} onClick={handleChooseShoes} disabled={!!shoesId}>
@@ -246,14 +268,20 @@ const ShoesRegistry = () => {
         <p className={starP}>별점을 눌러 만족도를 알려주세요</p>
         <form className={hookForm} onSubmit={handleSubmit(handleFormSubmit, handleError)}>
           <div ref={ratingRef}>
-            <StarRating />
+            <StarRatingMemo
+              {...register('rating', {
+                required: rating === 0 && '별점을 선택해 주세요',
+              })}
+            />
           </div>
-          {errors.rating && <p className={errorText}>{errors.rating.message}</p>}
+          <p className={errorText}>{isSubmitted && errors.rating ? errors.rating.message : ' '}</p>
 
           <p className={questP}>신발 길이가 잘 맞나요?</p>
           <div ref={lengthRef}>
-            <Choose
-              {...register('length', { required: length === '' && '신발 길이를 선택해 주세요' })}
+            <ChooseMemo
+              {...register('length', {
+                required: length === '' && '신발 길이를 선택해 주세요',
+              })}
               groupName="length"
               options={[
                 { id: 'length1', label: '짧아요' },
@@ -263,12 +291,12 @@ const ShoesRegistry = () => {
               selectedOption={length}
               setter={setLength}
             />
-            {errors.length && <p className={errorText}>{errors.length.message}</p>}
+            <p className={errorText}>{isSubmitted && errors.length ? errors.length.message : ' '}</p>
           </div>
 
           <p className={questP}>발볼 너비가 잘 맞나요?</p>
           <div ref={widthRef}>
-            <Choose
+            <ChooseMemo
               {...register('width', { required: width === '' && '발볼 너비를 선택해 주세요' })}
               groupName="width"
               options={[
@@ -279,12 +307,12 @@ const ShoesRegistry = () => {
               selectedOption={width}
               setter={setWidth}
             />
-            {errors.width && <p className={errorText}>{errors.width.message}</p>}
+            <p className={errorText}>{isSubmitted && errors.width ? errors.width.message : ' '}</p>
           </div>
 
           <p className={questP}>발등 높이는 어떤가요?</p>
           <div ref={heightRef}>
-            <Choose
+            <ChooseMemo
               {...register('height', { required: height === '' && '발등 높이를 선택해 주세요' })}
               groupName="height"
               options={[
@@ -295,12 +323,12 @@ const ShoesRegistry = () => {
               selectedOption={height}
               setter={setHeight}
             />
-            {errors.height && <p className={errorText}>{errors.height.message}</p>}
+            <p className={errorText}>{isSubmitted && errors.height ? errors.height.message : ' '}</p>
           </div>
 
           <p className={questP}>밑창은 푹신한가요?</p>
           <div ref={soleRef}>
-            <Choose
+            <ChooseMemo
               {...register('sole', { required: sole === '' && '밑창 상태를 선택해 주세요' })}
               groupName="sole"
               options={[
@@ -311,12 +339,12 @@ const ShoesRegistry = () => {
               selectedOption={sole}
               setter={setSole}
             />
-            {errors.sole && <p className={errorText}>{errors.sole.message}</p>}
+            <p className={errorText}>{isSubmitted && errors.sole ? errors.sole.message : ' '}</p>
           </div>
 
           <p className={questP}>신발 무게는 어떤가요?</p>
           <div ref={weightRef}>
-            <Choose
+            <ChooseMemo
               {...register('weight', { required: weight === '' && '신발 무게를 선택해 주세요' })}
               groupName="weight"
               options={[
@@ -327,27 +355,27 @@ const ShoesRegistry = () => {
               selectedOption={weight}
               setter={setWeight}
             />
-            {errors.weight && <p className={errorText}>{errors.weight.message}</p>}
+            <p className={errorText}>{isSubmitted && errors.weight ? errors.weight.message : ' '}</p>
           </div>
 
           <p className={questP}>이 신발의 추천 사이즈는 무엇인가요?</p>
           <Slider />
           <p className={questP}>자세한 사용기를 적어주세요.</p>
-          {errors.review && <p className={errorText}>{errors.review.message}</p>}
-          {/* <div ref={reviewRef}> */}
-          <textarea
-            {...register('review', { required: '리뷰를 작성해 주세요' })}
-            className={area}
-            placeholder="이 신발을 신으면서 느꼈던 장점 및 단점을 솔직하게 알려주세요."
-          />
-          <div className={buttonDiv}>
-            <Button type="submit" text={shoesId ? '수정 완료' : '입력 완료'} />
+          <p className={errorText}>{isSubmitted && errors.review ? errors.review.message : ' '}</p>
+          <div ref={reviewRef}>
+            <textarea
+              {...register('review', { required: '리뷰를 작성해 주세요' })}
+              className={area}
+              placeholder="이 신발을 신으면서 느꼈던 장점 및 단점을 솔직하게 알려주세요."
+            />
+            <div className={buttonDiv}>
+              <Button type="submit" text={shoesId ? '수정 완료' : '입력 완료'} onClick={() => setIsSubmitted(true)} />
+            </div>
           </div>
-          {/* </div> */}
         </form>
       </div>
     </>
   );
 };
 
-export default React.memo(ShoesRegistry);
+export default ShoesRegistry;

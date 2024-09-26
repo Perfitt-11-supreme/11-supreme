@@ -2,15 +2,22 @@ import React from 'react';
 import { empty_star, filled_star } from '../../../assets/assets';
 import { useShoesRegistryStore } from '../../../stores/useRegistryStore';
 import { star, starContainer } from './starrating.css';
+import { ChangeHandler } from 'react-hook-form';
 
-const StarRating = () => {
+type StarRatingProps = {
+  onChange: ChangeHandler;
+};
+
+const StarRating = ({ onChange }: StarRatingProps) => {
   const { rating, setRating } = useShoesRegistryStore();
 
   const handleClick = (index: number) => {
     if (rating === index) {
       setRating(0);
+      onChange({ target: { value: 0 } }); // 별점이 0으로 변경될 때 onChange 호출
     } else {
       setRating(index);
+      onChange({ target: { value: index } }); // onChange 핸들러 호출
     }
   };
 

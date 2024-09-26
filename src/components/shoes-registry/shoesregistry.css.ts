@@ -90,5 +90,7 @@ export const buttonDiv = style({
 export const errorText = style({
   width: '343px',
   color: 'red',
+  minHeight: '20px',
   fontSize: '12px',
+  alignContent: 'center',
 });
