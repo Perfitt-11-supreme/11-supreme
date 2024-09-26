@@ -8,6 +8,7 @@ export const headerContainer = style({
   position: 'fixed',
   top: '0',
   zIndex: '99',
+  maxWidth:'428px',
   width: '100%',
 });
 export const header = style({

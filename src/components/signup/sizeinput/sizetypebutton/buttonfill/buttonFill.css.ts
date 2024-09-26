@@ -2,7 +2,7 @@ import { style } from '@vanilla-extract/css';
 import { theme } from '../../../../../styles/theme';
 
 export const buttonFill = style({
-  width: '109px',
+  width: '100%',
   height: '44px',
   border: '1px solid',
   borderColor: theme.color.cool_gray100,

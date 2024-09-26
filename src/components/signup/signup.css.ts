@@ -5,6 +5,7 @@ export const signupFormContainer = style({
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
+  
   overflowY: 'auto',
   padding: '0 16px',
 });
@@ -37,6 +38,8 @@ export const signupComponentContainer = style({
 });
 
 export const signupSizeTypeContainer = style({
+  padding: '0 16px',
+  width:'100%',
   display: 'flex',
   flexDirection: 'column',
   gap: '4px',
@@ -57,10 +60,12 @@ export const infosubmitContainer = style({
   gap: '40px',
   marginTop: '24px',
   marginBottom: '34px',
+  padding: '0 16px'
 });
 
 export const signupWrap = style({
   width: '100%',
+  maxWidth:'428px',
   height: '100%',
   backgroundColor: 'rgba(0,0,0,0.5)',
   display: 'flex',

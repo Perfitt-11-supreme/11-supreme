@@ -1,9 +1,9 @@
 import { style } from '@vanilla-extract/css';
-import { theme } from '../../../../styles/theme';
 import { info } from '../../../../assets/assets';
+import { theme } from '../../../../styles/theme';
 
 export const infoContainer = style({
-  width: '343px',
+  width: '100%',
   height: '104px',
   padding: '16px',
   boxSizing: 'border-box',

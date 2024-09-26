@@ -1,9 +1,12 @@
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { USER_COLLECTION } from '../../../firebase/firebase';
+import { useChatCompletion } from '../../../hooks/useChatCompletionHook';
 import useUserStore from '../../../stores/useUserStore';
 import Button from '../../common/button/Button';
 import Modal from '../../common/modal/Modal';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
 import ToastMessage from '../../toastmessage/toastMessage';
 import {
   errorMessage,
@@ -18,9 +21,6 @@ import InfoBox from './infobox/InfoBox';
 import ButtonBlank from './sizetypebutton/buttonblank/ButtonBlank';
 import ButtonFill from './sizetypebutton/buttonfill/ButtonFill';
 import UsualSizeSelect from './usualsizeselect/UsualSizeSelect';
-import { AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
-import { useChatCompletion } from '../../../hooks/useChatCompletionHook';
 
 type SignUpSizeModalProps = {
   isOpen: boolean; //부모로부터 전달받은 isModalOpen 상태
@@ -168,7 +168,7 @@ const SignUpSizeModal: React.FC<SignUpSizeModalProps> = ({ isOpen, onClose }) =>
 
                 <div className={infosubmitContainer}>
                   <InfoBox />
-                  <Button type="button" text="가입 완료" onClick={handleSubmit} />
+                  <Button type="button" width='100%' text="가입 완료" onClick={handleSubmit} />
                 </div>
               </Modal>
             </div>

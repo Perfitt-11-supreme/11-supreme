@@ -3,10 +3,11 @@ import { select_arrow20 } from '../../../../assets/assets';
 import { theme } from '../../../../styles/theme';
 
 export const usualsizeSelectBox = style({
-  width: '343px',
   display: 'flex',
   flexDirection: 'column',
   gap: '4px',
+  padding: '0 16px',
+  width:'100%',
 });
 
 export const usualsizeLabel = style({

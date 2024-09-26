@@ -1,17 +1,17 @@
+import { getDocs, query, where } from 'firebase/firestore';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { back_arrow } from '../../../assets/assets';
+import { USER_COLLECTION } from '../../../firebase/firebase';
+import { responsiveBox } from '../../../styles/responsive.css';
 import Button from '../../common/button/Button';
 import Header from '../../common/header/Header';
+import SignUpDateSelect from '../../signup/infoInput/signupdateselect/SignUpDateSelect';
+import SignUpInput from '../../signup/infoInput/signupinput/SignUpInput';
+import SignUpSelect from '../../signup/infoInput/signupselect/SignUpSelect';
 import { errorMessage, signupFormContainer, signupFormGap, submitbuttonContainer } from '../../signup/signup.css';
 import { accountFindBox, accountFindButton } from '../emaillogin/emailLogin.css';
-import { useState } from 'react';
-import SignUpInput from '../../signup/infoInput/signupinput/SignUpInput';
 import { foundResultStyle, fullContainer } from '../login.css';
-import { USER_COLLECTION } from '../../../firebase/firebase';
-import { back_arrow } from '../../../assets/assets';
-import { getDocs, query, where } from 'firebase/firestore';
-import SignUpDateSelect from '../../signup/infoInput/signupdateselect/SignUpDateSelect';
-import SignUpSelect from '../../signup/infoInput/signupselect/SignUpSelect';
-import { responsiveBox } from '../../../styles/responsive.css';
 
 const FindEmail = () => {
   type FormErrors = {
@@ -156,7 +156,7 @@ const FindEmail = () => {
               </div>
 
               <div className={submitbuttonContainer}>
-                <Button type="button" text="이메일 찾기" onClick={handleFindEmail} />
+                <Button type="button" text="이메일 찾기" width='100%' onClick={handleFindEmail} />
               </div>
 
               {foundEmail && <div className={foundResultStyle}>{foundEmail}</div>}
