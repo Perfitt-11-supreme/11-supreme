@@ -81,18 +81,18 @@ const EmailLogin = () => {
               ...userDoc.data(),
             };
             setUser(userData); //userData를 zustand에 저장
-            console.log('로그인한 사용자:', userData);
+            // console.log('로그인한 사용자:', userData);
             const newChatId = await handleNewChat();
             navigate(`/hello/${newChatId}`); //로그인 성공 시 이동
           } else {
             //인증은 되었으나 Firestore에는 사용자 등록이 되어있지 않은 경우
             await deleteUser(user); //사용자 인증 데이터 삭제
-            console.log('인증은 되었으나 사용자 등록이 완료되지 않은 상태');
-            console.log('사용자 인증 데이터 삭제');
+            // console.log('인증은 되었으나 사용자 등록이 완료되지 않은 상태');
+            // console.log('사용자 인증 데이터 삭제');
             setToastMessage({ message: '입력한 정보를 다시 확인해 주세요.', duration: 3000 });
           }
-        } catch (error) {
-          console.error('이메일 로그인 실패:', error);
+        } catch {
+          // console.error('이메일 로그인 실패:', error);
           setToastMessage({ message: '입력한 정보를 다시 확인해 주세요.', duration: 3000 });
         }
       });
@@ -137,7 +137,7 @@ const EmailLogin = () => {
 
   return (
     <>
-      <div className={responsiveBox} style={{ overflow: 'hidden' }}>
+      <div className={responsiveBox} style={{ overflow: 'hidden', position: 'relative' }}>
         <div className={fullContainer}>
           {toastMessage && <ToastMessage message={toastMessage.message} duration={toastMessage.duration} />}
           <div>
@@ -146,7 +146,7 @@ const EmailLogin = () => {
               <form onSubmit={handleSubmit}>
                 <SignUpInput
                   label="아이디"
-                  type="email"
+                  type="text"
                   name="email"
                   id="email"
                   placeholder="이메일을 입력해 주세요"

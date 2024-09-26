@@ -20,7 +20,7 @@ export const deleteButton = style({
   cursor: 'pointer',
 });
 
-export const redoButton = style({
+export const undoButton = style({
   width: '100%',
   height: '44px',
   display: 'flex',

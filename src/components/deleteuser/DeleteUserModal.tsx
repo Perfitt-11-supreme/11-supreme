@@ -1,22 +1,16 @@
 import { deleteUser } from 'firebase/auth';
-import { collection, deleteDoc, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
+import { collection, deleteDoc, getDocs, query, where } from 'firebase/firestore';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { close } from '../../assets/assets';
 import { auth, db } from '../../firebase/firebase';
 import useUserStore from '../../stores/useUserStore';
-import { TUser } from '../../types/user';
-import {
-  shareContainer,
-  shareDescription,
-  shareTextWrap,
-  shareTitle,
-  shareWrap,
-} from '../common/share-modal/shareModal.css';
+// import { TUser } from '../../types/user';
+import { shareContainer, shareDescription, shareTextWrap, shareTitle } from '../common/share-modal/shareModal.css';
 import ToastMessage from '../toastmessage/toastMessage';
-import { deleteButton, redoButton } from './deleteUserModal.css';
-import { media } from '../../styles/media.css';
+import { deleteButton, undoButton } from './deleteUserModal.css';
+import { signupWrap } from '../signup/signup.css';
 
 type DeleteUserModalProps = {
   isOpen: boolean; //부모로부터 전달받은 isModalOpen 상태
@@ -47,21 +41,20 @@ const DeleteUserModal: React.FC<DeleteUserModalProps> = ({ isOpen, onClose }) =>
             });
           };
 
-          //users, myshoes, myproducts 컬렉션에서 해당 uid를 가진 모든 문서 삭제
-          await deleteCollectionDocs('users');
-          await deleteCollectionDocs('myshoes');
-          await deleteCollectionDocs('myproducts');
+          //컬렉션에서 해당 uid를 가진 모든 문서 삭제
+          const collections = ['users', 'myshoes', 'myViewed', 'myLiked'];
+          await Promise.all(collections.map(collection => deleteCollectionDocs(collection))); //비동기 병렬 처리
         };
 
-        //탈퇴한 사용자 정보 띄우기 위함
-        const userDocRef = doc(db, 'users', user.uid);
-        const userDoc = await getDoc(userDocRef);
+        // //탈퇴한 사용자 정보 띄우기 위함
+        // const userDocRef = doc(db, 'users', user.uid);
+        // const userDoc = await getDoc(userDocRef);
 
-        const userData: TUser = {
-          ...userDoc.data(),
-        };
+        // const userData: TUser = {
+        //   ...userDoc.data(),
+        // };
 
-        console.error('탈퇴한 사용자:', userData);
+        // console.error('탈퇴한 사용자:', userData);
 
         await deleteUserData(); //Firestore에서 해당 uid를 가진 모든 문서 삭제
         await deleteUser(user); //Authentication에서 해당 uid를 가진 사용자 인증 데이터 삭제
@@ -72,11 +65,11 @@ const DeleteUserModal: React.FC<DeleteUserModalProps> = ({ isOpen, onClose }) =>
         //탈퇴 후 이동
         setToastMessage({ message: '회원탈퇴가 완료되었습니다.', duration: 3000 });
         setTimeout(() => {
-          navigate('/login');
+          navigate('/');
         }, 1000);
       }
-    } catch (error) {
-      console.error('회원탈퇴 실패:', error);
+    } catch {
+      // console.error('회원탈퇴 실패:', error);
       setToastMessage({ message: '회원탈퇴 중 문제가 발생했습니다.', duration: 3000 });
     }
   };
@@ -90,13 +83,13 @@ const DeleteUserModal: React.FC<DeleteUserModalProps> = ({ isOpen, onClose }) =>
 
   return (
     <>
-      <div>
+      <div style={{ position: 'relative' }}>
         {toastMessage && <ToastMessage message={toastMessage.message} duration={toastMessage.duration} />}
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              className={`${shareWrap} ${media}`}
-              style={{ height: '100%', position: 'fixed', zIndex: 999 }}
+              className={signupWrap}
+              style={{ justifyContent: 'center', alignItems: 'center' }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -130,7 +123,7 @@ const DeleteUserModal: React.FC<DeleteUserModalProps> = ({ isOpen, onClose }) =>
                 <button className={deleteButton} onClick={handleDeleteUser}>
                   탈퇴하기
                 </button>
-                <button className={redoButton} onClick={onClose}>
+                <button className={undoButton} onClick={onClose} style={{ marginTop: '-8px' }}>
                   취소
                 </button>
               </motion.div>

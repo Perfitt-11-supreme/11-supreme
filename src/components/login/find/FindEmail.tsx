@@ -104,8 +104,8 @@ const FindEmail = () => {
         setFoundEmail(null);
         setError('일치하는 사용자 정보를 찾을 수 없습니다.'); //일치하는 사용자 정보가 없을 때
       }
-    } catch (error) {
-      console.error('이메일 찾기 오류:', error);
+    } catch {
+      // console.error('이메일 찾기 오류:', error);
       setError('다시 시도해 주세요.');
     }
   };
@@ -156,7 +156,7 @@ const FindEmail = () => {
               </div>
 
               <div className={submitbuttonContainer}>
-                <Button type="button" text="이메일 찾기" width='100%' onClick={handleFindEmail} />
+                <Button type="button" text="이메일 찾기" width="100%" onClick={handleFindEmail} />
               </div>
 
               {foundEmail && <div className={foundResultStyle}>{foundEmail}</div>}

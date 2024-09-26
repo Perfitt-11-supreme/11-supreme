@@ -83,8 +83,8 @@ const FindPassword = () => {
         setSuccessMessage(null);
         setError('일치하는 사용자 정보를 찾을 수 없습니다.'); //일치하는 사용자 정보가 없을 때
       }
-    } catch (error) {
-      console.error('비밀번호 찾기 오류:', error);
+    } catch {
+      // console.error('비밀번호 찾기 오류:', error);
       setError('다시 시도해 주세요.');
       setSuccessMessage(null);
     }
@@ -129,7 +129,7 @@ const FindPassword = () => {
               </div>
 
               <div className={submitbuttonContainer}>
-                <Button type="button" text="비밀번호 찾기" width='100%' onClick={handleFindPassword} />
+                <Button type="button" text="비밀번호 찾기" width="100%" onClick={handleFindPassword} />
               </div>
 
               {successMessage && <div className={foundResultStyle}>{successMessage}</div>}
