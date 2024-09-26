@@ -91,7 +91,7 @@ const ViewedHistoryPage = () => {
           )}
         </article>
       </section>
-    </div>
+    </>
   );
 };
 

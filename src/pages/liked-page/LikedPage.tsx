@@ -327,7 +327,6 @@ const LikedPage = () => {
         {likedOrViewed === '좋아요' && (
           <ProductAndBrandButton handleClick={handleProductOrBrandChange} activeTab={productOrBrand} />
         )}
-
         <article className={filterProductsAndBrandsQuantityBox}>
           {productOrBrand === '상품' ? (
             <div className={filterProductsAndBrandsQuantity}>

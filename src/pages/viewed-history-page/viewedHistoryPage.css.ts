@@ -4,6 +4,7 @@ export const likedAndViewedHistoryCointainer = style({
   width: '100%',
   height: '100%',
   position: 'relative',
+  overflowY: 'auto',
 });
 
 export const filterProductsQuantityBox = style({ padding: '0 21px' });
