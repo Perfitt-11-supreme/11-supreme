@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { back_arrow, close, hamburger_menu } from '../../../assets/assets';
 import SideMenu from '../../sidemenu/SideMenu';
-import { header, headerContainer, headerIcon, headerSpacer, headerTitle } from './header.css';
+import { header, headerContainer, headerIcon, headerTitle } from './header.css';
 
 type THeader = {
   imageSrc?: string;
@@ -42,7 +42,7 @@ const Header = ({ imageSrc, alt, title, nav }: THeader) => {
 
   return (
     <>
-      <div className={headerSpacer} />
+      {/* <div className={headerSpacer} /> */}
       <header className={headerContainer}>
         <div className={header}>
           <img className={headerIcon} src={imageSrc} alt={alt} onClick={handleClick} />

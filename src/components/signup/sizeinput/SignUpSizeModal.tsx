@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 import { AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -85,19 +85,19 @@ const SignUpSizeModal: React.FC<SignUpSizeModalProps> = ({ isOpen, onClose }) =>
           uid: realUser.uid,
         });
 
-        const userDoc = await getDoc(userDocRef);
-        if (userDoc.exists()) {
-          console.log('회원가입한 사용자:', userDoc.data());
-        } else {
-          console.log('회원가입한 사용자 정보를 찾을 수 없습니다.');
-        }
+        // const userDoc = await getDoc(userDocRef);
+        // if (userDoc.exists()) {
+        //   console.log('회원가입한 사용자:', userDoc.data());
+        // } else {
+        //   console.log('회원가입한 사용자 정보를 찾을 수 없습니다.');
+        // }
 
         const newChatId = await handleNewChat();
 
         onClose();
         navigate(`/hello/${newChatId}`, { replace: true });
-      } catch (error) {
-        console.error('사용자 등록 실패:', error);
+      } catch {
+        // console.error('사용자 등록 실패:', error);
         setToastMessage({ message: '다시 시도해 주세요.', duration: 3000 });
       }
     }
@@ -134,7 +134,7 @@ const SignUpSizeModal: React.FC<SignUpSizeModalProps> = ({ isOpen, onClose }) =>
   }, [isOpen]);
 
   return (
-    <div>
+    <div style={{ position: 'relative' }}>
       {toastMessage && <ToastMessage message={toastMessage.message} duration={toastMessage.duration} />}
       <AnimatePresence>
         {isOpen && (
@@ -168,7 +168,7 @@ const SignUpSizeModal: React.FC<SignUpSizeModalProps> = ({ isOpen, onClose }) =>
 
                 <div className={infosubmitContainer}>
                   <InfoBox />
-                  <Button type="button" width='100%' text="가입 완료" onClick={handleSubmit} />
+                  <Button type="button" width="100%" text="가입 완료" onClick={handleSubmit} />
                 </div>
               </Modal>
             </div>

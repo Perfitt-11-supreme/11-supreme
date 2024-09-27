@@ -11,7 +11,14 @@ import GoogleSignUpModal from '../signup/infoInput/GoogleSignUpModal';
 import SignUpInfoModal from '../signup/infoInput/SignUpInfoModal';
 import SignUpSizeModal from '../signup/sizeinput/SignUpSizeModal';
 import ToastMessage from '../toastmessage/toastMessage';
-import { fullContainer, inputContainer, loginBubble, loginContainer, loginbuttonContainer, loginbuttonTextContainer } from './login.css';
+import {
+  fullContainer,
+  inputContainer,
+  loginBubble,
+  loginContainer,
+  loginbuttonContainer,
+  loginbuttonTextContainer,
+} from './login.css';
 import ChatBotBox from './loginchatbot/chatbotbox/ChatBotBox';
 import LoginButton from './loginchatbot/loginbox/LoginButton';
 
@@ -36,7 +43,7 @@ const Login = () => {
           ...userDoc.data(),
         };
         setUser(userData); //userData를 zustand에 저장
-        console.log('로그인한 사용자:', userData);
+        // console.log('로그인한 사용자:', userData);
         navigate('/hello'); //기존 사용자: 로그인 성공 후 /hello(로그인 후 첫 화면) 페이지로 이동
       } else {
         const newGoogleUser = {
@@ -48,8 +55,8 @@ const Login = () => {
         setUser(newGoogleUser); //신규 사용자 정보를 zustand에 저장
         setIsGoogleModalOpen(true); //신규 사용자: /googlesignup(추가 정보 입력) 페이지로 이동
       }
-    } catch (error) {
-      console.error('구글 로그인 실패:', error);
+    } catch {
+      // console.error('구글 로그인 실패:', error);
       setToastMessage({ message: '다시 시도해 주세요.', duration: 3000 });
     }
   };
@@ -86,8 +93,7 @@ const Login = () => {
 
   return (
     <>
-
-      <div className={fullContainer}>
+      <div className={fullContainer} style={{ position: 'relative' }}>
         {toastMessage && <ToastMessage message={toastMessage.message} duration={toastMessage.duration} />}
         <Header imageSrc={hamburger_menu} alt="hamburger_menu" />
         <div className={loginContainer}>
@@ -102,15 +108,11 @@ const Login = () => {
               <div className={loginbuttonTextContainer}>또는</div>
               <LoginButton text="회원가입 하기" onClick={() => checkUserStatus(() => setIsInfoModalOpen(true))} />
             </div>
-
           </div>
           <div className={inputContainer}>
             <ChatbotSearchInput />
           </div>
         </div>
-
-
-
       </div>
       {isInfoModalOpen && (
         <SignUpInfoModal

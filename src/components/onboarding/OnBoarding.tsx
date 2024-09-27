@@ -28,18 +28,18 @@ const OnBoarding = () => {
           if (userDoc.exists()) {
             const userData = userDoc.data();
             setUser(userData); // Zustand에 로그인한 사용자 정보를 저장
-            console.log('현재 로그인한 사용자:', userData);
+            // console.log('현재 로그인한 사용자:', userData);
           } else {
             clearUser(); // 상태 초기화
-            console.log('인증은 되었으나 사용자 등록이 완료되지 않은 상태');
+            // console.log('인증은 되었으나 사용자 등록이 완료되지 않은 상태');
           }
-        } catch (error) {
-          console.error('사용자 정보를 가져오는 중 오류 발생:', error);
+        } catch {
+          // console.error('사용자 정보를 가져오는 중 오류 발생:', error);
           clearUser(); // 에러 발생 시 상태 초기화
         }
       } else {
         clearUser(); // 상태 초기화
-        console.log('로그아웃 상태');
+        // console.log('로그아웃 상태');
       }
     });
 
@@ -60,7 +60,7 @@ const OnBoarding = () => {
         navigate('/hello'); //로그인되어 있는 경우
       } else {
         await currentUser.delete(); //사용자 인증 데이터 삭제
-        console.log('사용자 인증 데이터 삭제');
+        // console.log('사용자 인증 데이터 삭제');
         navigate('/login'); //인증은 되었으나 Firestore에는 사용자 등록이 되어있지 않은 경우
       }
     }
@@ -73,7 +73,6 @@ const OnBoarding = () => {
   };
 
   return (
-
     <div className={container}>
       <div className={`${slidesWrapper} ${currentSlide === 0 ? slide0 : slide1}`}>
         <div className={slide}>
@@ -103,7 +102,6 @@ const OnBoarding = () => {
         </div>
       </div>
     </div>
-
   );
 };
 export default OnBoarding;

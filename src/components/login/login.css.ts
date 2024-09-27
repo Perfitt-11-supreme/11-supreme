@@ -9,7 +9,7 @@ export const fullContainer = style({
   height: '100vh',
   boxSizing: 'border-box',
   justifyContent: 'space-between',
-  overflow: 'hidden',
+  // overflow: 'hidden',
 });
 
 export const loginbuttonContainer = style({

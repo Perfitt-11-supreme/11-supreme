@@ -2,15 +2,15 @@ import { style } from '@vanilla-extract/css';
 import { theme } from '../../../styles/theme';
 import { media } from '../../../styles/media.css';
 
-export const headerSpacer = style({
-  height: '56px',
-});
+// export const headerSpacer = style({
+//   height: '56px',
+// });
 export const headerContainer = style([
   {
-    position: 'fixed',
+    // position: 'fixed',
     top: '0',
-    zIndex: '99',
-    maxWidth: '428px',
+    // zIndex: '99',
+    // maxWidth: '428px',
     width: '100%',
   },
   media,

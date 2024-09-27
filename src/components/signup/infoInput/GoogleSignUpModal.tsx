@@ -58,8 +58,8 @@ const GoogleSignUpModal: React.FC<GoogleSignUpModalProps> = ({ isOpen, onNext, o
         setTimeout(() => {
           onNext();
         }, 1000);
-      } catch (error) {
-        console.error('상태 업데이트 실패:', error);
+      } catch {
+        // console.error('상태 업데이트 실패:', error);
         setToastMessage({ message: '다시 시도해 주세요.', duration: 3000 });
       }
     }
@@ -96,7 +96,7 @@ const GoogleSignUpModal: React.FC<GoogleSignUpModalProps> = ({ isOpen, onNext, o
   }, [isOpen]);
 
   return (
-    <div>
+    <div style={{ position: 'relative' }}>
       {toastMessage && <ToastMessage message={toastMessage.message} duration={toastMessage.duration} />}
       <AnimatePresence>
         {isOpen && (

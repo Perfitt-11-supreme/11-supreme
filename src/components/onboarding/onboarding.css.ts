@@ -13,7 +13,6 @@ export const slidesWrapper = style({
   display: 'flex',
   transition: 'transform 0.3s ease-in-out',
   width: '200%', // 슬라이드 개수에 따라 200% 설정
-
 });
 
 export const slide = style({

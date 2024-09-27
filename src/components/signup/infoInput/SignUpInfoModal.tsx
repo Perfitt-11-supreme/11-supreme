@@ -87,7 +87,9 @@ const SignUpInfoModal: React.FC<SignUpInfoModalProps> = ({ isOpen, onNext, onClo
             // password: password,
           };
           setUser(existingEmailUser);
-          onNext();
+          setTimeout(() => {
+            onNext();
+          }, 1000);
         } else {
           //쌩 신규 사용자인 경우
           //사용자 생성
@@ -158,7 +160,7 @@ const SignUpInfoModal: React.FC<SignUpInfoModalProps> = ({ isOpen, onNext, onClo
   }, [isOpen]);
 
   return (
-    <div>
+    <div style={{ position: 'relative' }}>
       {toastMessage && <ToastMessage message={toastMessage.message} duration={toastMessage.duration} />}
       <AnimatePresence>
         {isOpen && (
