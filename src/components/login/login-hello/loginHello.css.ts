@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css';
-import { theme } from '../../../styles/theme';
 import { media } from '../../../styles/media.css';
+import { theme } from '../../../styles/theme';
 
 export const loginHelloFullContainer = style({
   display: 'flex',
@@ -30,7 +30,8 @@ export const loginHelloContainer = style({
   display: 'flex',
   flexDirection: 'column',
   padding: '0 16px',
-  paddingBottom: '150px',
+  
+  // paddingBottom: '150px',
   //  '@media': {
   //   'screen and (max-width: 428px)': {
   //     paddingTop: 'calc(80px + env(safe-area-inset-top))',
