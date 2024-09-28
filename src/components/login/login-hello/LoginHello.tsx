@@ -37,7 +37,7 @@ import RecommendedQuestionCard from '../../common/recommended-question-card/Reco
 import ShareModal from '../../common/share-modal/ShareModal';
 import ChatBotBox from '../loginchatbot/chatbotbox/ChatBotBox';
 import RecommendBox from '../loginchatbot/recommendbox/RecommendBox';
-import { loginHelloContainer, loginHelloFullContainer, loginHelloInputContainer, recommendedquestioncardContainer } from './loginHello.css';
+import { loginHelloContainer, loginHelloFullContainer, recommendedquestioncardContainer } from './loginHello.css';
 
 type TQuestions = {
   question: string;
@@ -63,13 +63,7 @@ const LoginHello = () => {
   const { setMessage } = useProductStore();
   const { chatHistory, setCurrentKeywords, currentChatId } = useChatStore();
   const { user } = useUserStore();
-  const {
-    setShowChatBotAndRecommend,
-    setHasSetInitialKeywords,
-    selectedKeywords,
-    showChatBotAndRecommend,
-    hasSetInitialKeywords,
-  } = useUIStateStore();
+  const { setShowChatBotAndRecommend, setHasSetInitialKeywords, selectedKeywords, showChatBotAndRecommend, hasSetInitialKeywords } = useUIStateStore()
 
   // 커스텀 훅
   const { isLoading } = useAuth();
@@ -151,9 +145,10 @@ const LoginHello = () => {
     },
   });
 
+
   /**키워드 선택 함수 */
   const handleKeywordSelect = (keyword: string) => {
-    useUIStateStore.setState(state => {
+    useUIStateStore.setState((state) => {
       const currentSelected = Array.isArray(state.selectedKeywords) ? state.selectedKeywords : [];
       const newSelected = currentSelected.includes(keyword)
         ? currentSelected.filter(item => item !== keyword)
@@ -176,14 +171,10 @@ const LoginHello = () => {
     // Firestore에 selectedKeywords 저장
     if (user?.uid) {
       try {
-        await setDoc(
-          doc(db, 'users', user.uid),
-          {
-            selectedKeywords,
-            hasLoggedInBefore: true,
-          },
-          { merge: true }
-        );
+        await setDoc(doc(db, 'users', user.uid), {
+          selectedKeywords,
+          hasLoggedInBefore: true
+        }, { merge: true });
         // console.log("User document updated successfully");
       } catch (error) {
         console.error('Error updating user document:', error);
@@ -245,11 +236,12 @@ const LoginHello = () => {
     handleQuestionSelect(question);
   };
 
+
   // Firebase에서 채팅 기록 불러오기
-  useFetchChatHistoryHook(currentChatId);
+  useFetchChatHistoryHook(currentChatId)
 
   // 브릿지 페이지 타이머 설정
-  useBridgePage(showBridgePage, selectedProductLink);
+  useBridgePage(showBridgePage, selectedProductLink)
 
   // 채팅 기록 변경 시 스크롤을 맨 아래로 이동
   useEffect(() => {
@@ -257,6 +249,7 @@ const LoginHello = () => {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
   }, [chatHistory]);
+
 
   useEffect(() => {
     if (!isUserStatusLoading && userLoginStatus) {
@@ -282,6 +275,7 @@ const LoginHello = () => {
     // 필요한 경우 다른 상태들도 초기화
     setShowWelcomeMessage(false);
     setHasAskedQuestion(false);
+
   }, [currentChatId]);
 
   useEffect(() => {
@@ -402,9 +396,7 @@ const LoginHello = () => {
         )}
 
         {!isKeywordModalOpen &&
-          <div className={loginHelloInputContainer}>
-            <ChatbotSearchInput />
-          </div>
+          <ChatbotSearchInput />
         }
 
         {chatHistory.length > 0 && (
@@ -436,7 +428,7 @@ const LoginHello = () => {
                 ))}
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', padding: '0 16px' }}>
-              <Button text={`${selectedKeywords.length}개 선택`} onClick={handleSubmit} />
+              <Button text={`${selectedKeywords.length}개 선택`} onClick={handleSubmit} width="100%" />
             </div>
           </Modal>
         )}
