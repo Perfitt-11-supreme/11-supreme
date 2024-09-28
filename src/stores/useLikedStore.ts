@@ -1,5 +1,5 @@
-import create from 'zustand';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import create from 'zustand';
 import { db } from '../firebase/firebase';
 import useUserStore from './useUserStore';
 
@@ -170,7 +170,7 @@ export const useLikedStore = create<LikedState>(set => ({
   },
 
   // Firestore에서 브랜드 삭제 옮김.
-  handleDeleteBrand: async (brandId: string) => {
+  handleDeleteBrand: async () => {
     // 'myLiked' 컬렉션에서 해당 사용자 문서 참조
     try {
       // const docRef = doc(db, 'myproducts', user.uid);

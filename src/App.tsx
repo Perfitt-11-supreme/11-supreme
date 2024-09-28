@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import { layoutWraper, responsiveBox } from './styles/responsive.css';
+import { responsiveBox } from './styles/responsive.css';
 
 const App = () => {
   return (

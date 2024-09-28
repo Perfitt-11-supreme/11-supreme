@@ -1,4 +1,10 @@
+import { getAuth, signOut } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore'; // Firestore 관련 함수 import
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { user_profile } from '../../assets/assets';
+import { USER_COLLECTION } from '../../firebase/firebase'; // USER_COLLECTION 경로 수정
+import useUserStore from '../../stores/useUserStore';
 import {
   sidemenuMypageLine,
   sidemenuMypageMoveButton,
@@ -8,26 +14,20 @@ import {
   sidemenuUserProfileLogout,
   sidemenuUserProfileText,
 } from './sidemenuMypageLinks.css';
-import { getAuth, signOut } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { getDoc, doc } from 'firebase/firestore'; // Firestore 관련 함수 import
-import { db, USER_COLLECTION } from '../../firebase/firebase'; // USER_COLLECTION 경로 수정
-import useUserStore from '../../stores/useUserStore';
 
-type UserData = {
-  userName?: string;
-  username?: string;
-  shoeSize?: number;
-  sizeType?: string;
-  uid: string;
-};
+// type UserData = {
+//   userName?: string;
+//   username?: string;
+//   shoeSize?: number;
+//   sizeType?: string;
+//   uid: string;
+// };
 
-type UserProfileProps = {
-  userData?: UserData | null; // userData는 UserData 타입이거나 null일 수 있음
-};
+// type UserProfileProps = {
+//   userData?: UserData | null; // userData는 UserData 타입이거나 null일 수 있음
+// };
 
-const SidemenuMypageLinks = ({ userData }: UserProfileProps) => {
+const SidemenuMypageLinks = () => {
   const navigate = useNavigate();
   const auth = getAuth();
   const [userName, setUserName] = useState<string>(''); // 사용자 이름 상태
