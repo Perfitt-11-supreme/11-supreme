@@ -101,7 +101,15 @@ const LikedPage = () => {
     }
   };
 
-  // 데이터를 FireStore에 전송
+  //
+  // const handleTextUpload = async () => {
+  //   const userDoc = doc(USER_COLLECTION, user?.uid);
+  //   await updateDoc(userDoc, {
+  //     textSearchRecord: textRecord,
+  //   });
+  // };
+
+  // user 데이터를 FireStore에 전송
   const handleAddToMyProducts = async () => {
     if (!user) {
       console.error('User is not logged in');
@@ -209,7 +217,7 @@ const LikedPage = () => {
   };
 
   //
-  // Firestore에서 상품 삭제
+  // Firestore에서 상품 삭제 성공
   // const handleDeleteProduct = async (productId: string) => {
   //   const { user } = useUserStore.getState(); // Zustand에서 user 정보 가져오기
 
@@ -243,14 +251,17 @@ const LikedPage = () => {
   //     console.error('Error deleting product from Firestore:', error);
   //   }
   // };
-  // Firestore에서 데이터 삭제
+
+  // Firestore에서 데이터 삭제 성공
   const deleteData = async (productId: string) => {
     try {
       // 'myLiked' 컬렉션에서 productId에 해당하는 문서 삭제
       // await deleteDoc(doc(db, 'myLiked', productId));
       // Firestore 문서의 'liked.products' 필드에서 productId에 해당하는 필드 삭제
-      await updateDoc(doc(db, 'myLiked', productId), {
-        [`liked.products.${productId}`]: deleteField(),
+      const docRef = doc(collection(db, 'myLiked'), user?.uid);
+
+      await updateDoc(docRef, {
+        [`products.${productId}`]: deleteField(),
       });
       console.log('Firestore에서 필드 삭제 성공:', productId);
     } catch (e) {
@@ -262,7 +273,11 @@ const LikedPage = () => {
   const handleDeleteProduct = async (productId: string) => {
     if (productId) {
       try {
-        await deleteData(productId); // productId로 삭제 실행
+        // Firestore에서 products 필드 안의 특정 productId 삭제
+        await deleteData(productId);
+        // await updateDoc(doc(db, 'myLiked', 'products'), {
+        //   [`products.${productId}`]: deleteField(),
+        // });
         console.log('Firestore에서 상품 삭제 완료:', productId);
 
         // 상태 업데이트 - 삭제된 상품을 제외한 나머지 productsData로 업데이트

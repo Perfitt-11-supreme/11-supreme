@@ -95,13 +95,7 @@ const SizeRecommendationCard = ({
         </div>
         <p className={productText}>{product?.price}원</p>
       </div>
-      <button
-        className={productDetailsButton}
-        onClick={e => {
-          e.stopPropagation(); // 부모의 onClick이 실행되지 않도록 방지
-          handleProductDetailsClick(product);
-        }}
-      >
+      <button className={productDetailsButton} type="button">
         <img src={ai} alt="ai" />이 신발 더 알아보기
       </button>
     </div>
