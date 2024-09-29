@@ -2,7 +2,8 @@ import { style } from '@vanilla-extract/css';
 import { theme } from '../../../styles/theme';
 
 export const sizeRecommendationCardBox = style({
-  width: '166px',
+  width: 'auto',
+  minWidth: '166px',
   height: '277px',
   display: 'flex',
   flexDirection: 'column',
@@ -24,9 +25,8 @@ export const sizeRecommendationThumbnailContainer = style({
   alignItems: 'center',
   borderTopLeftRadius: '6.27px',
   borderTopRightRadius: '6.27px',
-  overflow: 'hidden'
-  
-})
+  overflow: 'hidden',
+});
 export const sizeRecommendationBadge = style({
   width: '77px',
   height: '20px',

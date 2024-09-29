@@ -24,6 +24,7 @@ export const sidemenuMypageMoveButton = style({
   backgroundColor: theme.color.white,
   border: 'none',
   cursor: 'pointer',
+  color: theme.color.black,
 });
 export const sidemenuUserProfileBox = style({
   width: '100%',
@@ -49,6 +50,7 @@ export const sidemenuUserProfileText = style({
   fontSize: '16px',
   lineHeight: '20px',
   letterSpacing: '-0.003em',
+  color: theme.color.black,
 });
 export const sidemenuUserProfileLogout = style({
   fontWeight: '400',
