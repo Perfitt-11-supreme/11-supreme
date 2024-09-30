@@ -14,11 +14,11 @@ import ProductAndBrandButton from '../../components/mypage/product-and-brand-but
 import LikedInBrand from '../../components/mypage/liked-in-brand/LikedInBrand';
 import { getDownloadURL, getStorage, listAll, ref } from 'firebase/storage';
 import useUserStore from '../../stores/useUserStore';
-import { collection, deleteField, doc, getDoc, getFirestore, setDoc, updateDoc } from 'firebase/firestore';
+import { deleteField, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import LoadingPage from '../loading-page/loadingPage';
+import { LIKED_COLLECTION } from '../../firebase/firebase';
 
 // Firebase 초기화
-const db = getFirestore();
 const storage = getStorage();
 
 type Product = {
@@ -43,14 +43,14 @@ type Brand = {
 };
 
 const LikedPage = () => {
+  // 탭메뉴 상태관리
   const [likedOrViewed, setLikedOrViewed] = useState('좋아요');
   const [productOrBrand, setProductOrBrand] = useState('상품');
-  const [logos, setLogos] = useState<{ [key: string]: string }>({}); // 브랜드 이름과 로고 URL을 매핑하는 객체
-  // Zustand store에서 데이터와 메서드 가져오기
-  // const { productsData, brandsData, fetchLikedData, handleDeleteProduct, handleDeleteBrand } = useLikedStore();
-
+  // 상품카드 상태관리
   const [productsData, setProductsData] = useState<{ [key: string]: Product }>({});
   const [brandsData, setBrandsData] = useState<{ [key: string]: Brand }>({});
+  // 브랜드로고 상태관리
+  const [logos, setLogos] = useState<{ [key: string]: string }>({}); // 브랜드 이름과 로고 URL을 매핑하는 객체
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
   // UseUserStore로부터 유저 정보 가져오기
   const { user } = useUserStore();
@@ -88,7 +88,6 @@ const LikedPage = () => {
     setProductOrBrand(buttonType);
   };
 
-  //테스트
   // Firebase Storage에서 로고 URL을 가져오는 함수
   const fetchLogoURL = async (logoPath: string) => {
     try {
@@ -101,14 +100,6 @@ const LikedPage = () => {
     }
   };
 
-  //
-  // const handleTextUpload = async () => {
-  //   const userDoc = doc(USER_COLLECTION, user?.uid);
-  //   await updateDoc(userDoc, {
-  //     textSearchRecord: textRecord,
-  //   });
-  // };
-
   // user 데이터를 FireStore에 전송
   const handleAddToMyProducts = async () => {
     if (!user) {
@@ -118,17 +109,17 @@ const LikedPage = () => {
 
     try {
       // 'myLiked' 컬렉션에서 해당 사용자 문서 참조
-      const userDoc = doc(collection(db, 'myLiked'), user.uid);
+      const userDoc = doc(LIKED_COLLECTION, user.uid);
 
       // Firestore에서 고유 ID 생성
-      const nike = doc(collection(db, 'myLiked')).id;
-      const adidas = doc(collection(db, 'myLiked')).id;
-      const crocs = doc(collection(db, 'myLiked')).id;
-      const productId1 = doc(collection(db, 'myLiked')).id;
-      const productId2 = doc(collection(db, 'myLiked')).id;
-      const productId3 = doc(collection(db, 'myLiked')).id;
-      const productId4 = doc(collection(db, 'myLiked')).id;
-      const productId5 = doc(collection(db, 'myLiked')).id;
+      const nike = doc(LIKED_COLLECTION).id;
+      const adidas = doc(LIKED_COLLECTION).id;
+      const crocs = doc(LIKED_COLLECTION).id;
+      const productId1 = doc(LIKED_COLLECTION).id;
+      const productId2 = doc(LIKED_COLLECTION).id;
+      const productId3 = doc(LIKED_COLLECTION).id;
+      const productId4 = doc(LIKED_COLLECTION).id;
+      const productId5 = doc(LIKED_COLLECTION).id;
 
       // Firebase Storage에서 브랜드 로고 URL 가져오기
       const nikeLogoURL = await fetchLogoURL('logos/nike.svg');
@@ -216,49 +207,11 @@ const LikedPage = () => {
     }
   };
 
-  //
-  // Firestore에서 상품 삭제 성공
-  // const handleDeleteProduct = async (productId: string) => {
-  //   const { user } = useUserStore.getState(); // Zustand에서 user 정보 가져오기
-
-  //   if (!user?.uid) {
-  //     return;
-  //   }
-
-  //   try {
-  //     const docRef = doc(db, 'myLiked', user.uid);
-  //     const docSnap = await getDoc(docRef);
-
-  //     const data = docSnap.data();
-  //     console.log('Firestore data 삭제 목적 구조 확인:', data); // 데이터 구조 확인
-  //     const likedData = data?.liked;
-
-  //     if (likedData && likedData.products && likedData.products[productId]) {
-  //       // Firestore에서 필드 삭제
-  //       await updateDoc(docRef, {
-  //         [`liked.products.${productId}`]: deleteField(), // Firestore에서 필드 삭제
-  //       });
-
-  //       console.log('Firestore에서 상품 삭제 완료:', productId);
-
-  //       // 상태 업데이트 후 다시 렌더링
-  //       const updatedProducts = { ...likedData.products };
-  //       delete updatedProducts[productId]; // 상품 삭제
-  //       setProductsData(updatedProducts);
-  //       console.log('상태 업데이트된 productsData:', updatedProducts);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error deleting product from Firestore:', error);
-  //   }
-  // };
-
   // Firestore에서 데이터 삭제 성공
-  const deleteData = async (productId: string) => {
+  const deleteLikedData = async (productId: string) => {
     try {
-      // 'myLiked' 컬렉션에서 productId에 해당하는 문서 삭제
-      // await deleteDoc(doc(db, 'myLiked', productId));
       // Firestore 문서의 'liked.products' 필드에서 productId에 해당하는 필드 삭제
-      const docRef = doc(collection(db, 'myLiked'), user?.uid);
+      const docRef = doc(LIKED_COLLECTION, user?.uid);
 
       await updateDoc(docRef, {
         [`products.${productId}`]: deleteField(),
@@ -274,10 +227,8 @@ const LikedPage = () => {
     if (productId) {
       try {
         // Firestore에서 products 필드 안의 특정 productId 삭제
-        await deleteData(productId);
-        // await updateDoc(doc(db, 'myLiked', 'products'), {
-        //   [`products.${productId}`]: deleteField(),
-        // });
+        await deleteLikedData(productId);
+
         console.log('Firestore에서 상품 삭제 완료:', productId);
 
         // 상태 업데이트 - 삭제된 상품을 제외한 나머지 productsData로 업데이트
@@ -293,7 +244,6 @@ const LikedPage = () => {
     }
   };
 
-  //
   // 컴포넌트 마운트 시 Firestore에 데이터 추가
   useEffect(() => {
     handleAddToMyProducts();
@@ -324,15 +274,11 @@ const LikedPage = () => {
             )
           )}
         </article>
-        {/* 테스트용 버튼 */}
-        {/* <div>
-          <button onClick={handleAddToMyProducts}>Add Product</button>
-        </div> */}
+
         {productOrBrand === '상품' && (
           <article className={likedAndViewedHistoryItemBox}>
             {productsData && Object.keys(productsData).length > 0 ? (
               Object.entries(productsData).map(([key, product]) => {
-                // console.log('Rendering product:', product); // 각 product가 렌더링될 때 출력
                 return (
                   <SizeRecommendationCard
                     key={key}
@@ -343,7 +289,6 @@ const LikedPage = () => {
                       brand: product.brand || 'Unknown Brand', // brand가 없으면 기본 값 할당
                     }}
                     onDelete={handleDeleteProduct} // productId를 전달
-                    // onDelete={() => handleDeleteProduct(product.productId || key)} // 삭제 시 productId 전달
                   />
                 );
               })
