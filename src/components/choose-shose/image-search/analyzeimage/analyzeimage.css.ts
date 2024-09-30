@@ -39,6 +39,17 @@ export const AnalyzeImage_Button = style([
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    boxShadow: '0px -1px 4px 0px #00000026',
   },
   media,
 ]);
+
+export const AnalyzeImage_SimilarContainer = style({
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  overflowY: 'auto',
+});

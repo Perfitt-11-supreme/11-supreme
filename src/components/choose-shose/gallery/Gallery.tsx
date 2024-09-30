@@ -1,6 +1,8 @@
+// 리액트 / 아이콘
 import React, { useRef } from 'react';
-import useGalleryStore from '../../../stores/useGalleryStore';
 import { gallery } from '../../../assets/assets';
+// Zustand
+import useGalleryStore from '../../../stores/useGalleryStore';
 
 export default function Gallery() {
   const { setGalleryImage } = useGalleryStore();

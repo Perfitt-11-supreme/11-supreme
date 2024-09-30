@@ -1,8 +1,11 @@
+// 리액트 / css
 import { useNavigate } from 'react-router-dom';
-import Button from '../../../common/button/Button';
 import { TextFooter_Background } from './textfooter.css';
+// Zustand
 import useTextSearchStore from '../../../../stores/useTextSearchStore';
 import useSelectItemStore from '../../../../stores/useSelectItemStore';
+// 컴포넌트
+import Button from '../../../common/button/Button';
 
 const TextFooter = () => {
   const { focus, isSubmit, resetState } = useTextSearchStore();

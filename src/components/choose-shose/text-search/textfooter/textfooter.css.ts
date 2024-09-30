@@ -12,6 +12,7 @@ export const TextFooter_Background = style([
     bottom: '0',
     height: '108px',
     padding: '0 5%',
+    boxShadow: '0px -1px 4px 0px #00000026',
   },
   media,
 ]);

@@ -1,21 +1,23 @@
+// 아이콘 / 리액트
 import { back_arrow } from '../../../assets/assets';
 import { useEffect } from 'react';
+// Zustand
+import useProductStore from '../../../stores/useProductsStore';
+import useTextSearchStore from '../../../stores/useTextSearchStore';
+import useSelectItemStore from '../../../stores/useSelectItemStore';
+// 커스텀훅
+// 컴포넌트
 import MainContainer from './mainContainder/MainContainer';
 import TextFooter from './textfooter/TextFooter';
 import SearchBox from './search-box/SearchBox';
 import Header from '../../common/header/Header';
-// 전역상태관리
-import useProductStore from '../../../stores/useProductsStore';
-import useTextSearchStore from '../../../stores/useTextSearchStore';
-import useSelectItemStore from '../../../stores/useSelectItemStore';
-import { FetchTextRecord } from '../firebase/textupload/FetchTextRecord';
-// 커스텀훅
+import { TextUpload } from '../firebase/textupload/TextUpload';
 
 const TextSearch = () => {
   const { setProducts } = useProductStore();
   const { resetState } = useTextSearchStore();
   const { resetItem } = useSelectItemStore();
-  const { handleTextDownload } = FetchTextRecord();
+  const handleTextDownload = TextUpload();
   useEffect(() => {
     setProducts([]);
     resetState();

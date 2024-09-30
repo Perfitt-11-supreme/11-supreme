@@ -1,21 +1,11 @@
-import CameraWindow from './camera-window/CameraWindow';
-import useProductStore from '../../../stores/useProductsStore';
-import { useEffect } from 'react';
+// 아이콘
 import { close } from '../../../assets/assets';
+// 컴포넌트
+import CameraWindow from './camera-window/CameraWindow';
 import Header from '../../common/header/Header';
 import AnalyzeImage from './analyzeimage/AnalyzeImage';
-import useSelectItemStore from '../../../stores/useSelectItemStore';
 
 const ImageSearch = () => {
-  const { setProducts } = useProductStore();
-  const { resetItem } = useSelectItemStore();
-  useEffect(() => {
-    setProducts([]);
-    resetItem();
-  }, []);
-
-  console.log('랜더링됨');
-
   return (
     <>
       <Header imageSrc={close} alt="close" nav="/text-search" />

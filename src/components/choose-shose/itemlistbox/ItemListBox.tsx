@@ -1,7 +1,10 @@
-import IsLoading from '../isLoading/IsLoading';
+// css
+import { ItemListBox_Container, ItemListBox_PaddingTop } from './itemlistbox.css';
+// Zustand
 import useTextSearchStore from '../../../stores/useTextSearchStore';
 import useProductStore from '../../../stores/useProductsStore';
-import { ItemListBox_Container, ItemListBox_PaddingTop } from './itemlistbox.css';
+// 컴포넌트
+import IsLoading from '../isLoading/IsLoading';
 import ItemCard from './itemcard/ItemCard';
 
 const ItemListBox = ({ paddingTop = true }: { paddingTop?: boolean }) => {

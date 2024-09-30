@@ -1,7 +1,10 @@
+// 리액트
 import { useMutation } from '@tanstack/react-query';
+// apu
 import { ImageShoseSearchAPI } from '../../../../api/searchRequests';
+// 타입
 import { TProduct } from '../../../../types/product';
-// 전역 상태들 불러오기
+// Zustand
 import useProductStore from '../../../../stores/useProductsStore';
 import useSelectItemStore from '../../../../stores/useSelectItemStore';
 import useImageSearchStore from '../../../../stores/useImageSearchStore';

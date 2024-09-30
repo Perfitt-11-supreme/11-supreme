@@ -1,11 +1,15 @@
+//리액트
+import { useEffect, useState } from 'react';
+// Zustand
 import useTextSearchStore from '../../../../stores/useTextSearchStore';
 import useUserStore from '../../../../stores/useUserStore';
+// 파이어베이스
 import { USER_COLLECTION } from '../../../../firebase/firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
+// 터입
 import { TUser } from '../../../../types/user';
-import { useEffect, useState } from 'react';
 
-export const FetchTextRecord = () => {
+export const TextUpload = () => {
   const { textRecord, setLoading, downloadTextRecord } = useTextSearchStore();
   const { user } = useUserStore();
   const [pageLoad, setPageLoad] = useState(false);
@@ -20,8 +24,12 @@ export const FetchTextRecord = () => {
 
   const handleTextUpload = async () => {
     const userDoc = doc(USER_COLLECTION, user?.uid);
+    // 배열을 문자열로 압축
+    const compressedRecord = JSON.stringify(textRecord);
+
     await updateDoc(userDoc, {
-      textSearchRecord: textRecord,
+      // JSON 문자열로 저장
+      textSearchRecord: compressedRecord,
     });
   };
 
@@ -36,11 +44,14 @@ export const FetchTextRecord = () => {
           if (userDoc.exists()) {
             const userData: TUser = userDoc.data();
 
-            if (userData.textSearchRecord !== undefined && userData.textSearchRecord.length > 0) {
-              const textSearchRecord = userData.textSearchRecord;
+            const textSearchRecord = userData.textSearchRecord
+              ? JSON.parse(userData.textSearchRecord) // JSON 문자열을 배열로 전환
+              : []; // 저장된 값이 없다면 빈배열
 
+            if (Array.isArray(textSearchRecord) && textSearchRecord.length > 0) {
               console.log('검색 기록 다운로드');
               console.log(textSearchRecord);
+              // 다운로드 받은 텍스트 배열 zustand에 저장
               downloadTextRecord(textSearchRecord);
             } else {
               console.log('검색 기록이 비어있습니다');
@@ -60,5 +71,5 @@ export const FetchTextRecord = () => {
     }
   };
 
-  return { handleTextDownload };
+  return handleTextDownload;
 };

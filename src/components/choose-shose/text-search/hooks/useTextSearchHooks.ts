@@ -1,5 +1,7 @@
+// Zustand
 import useTextSearchStore from '../../../../stores/useTextSearchStore';
 import useProductStore from '../../../../stores/useProductsStore';
+// 커스텀훅
 import { useHandleTextSearchPost } from './useHandleTextSearchPost';
 
 export const useTextSearchHooks = () => {

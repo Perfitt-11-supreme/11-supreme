@@ -1,8 +1,11 @@
+// 리액트 / css
+import { useEffect, useRef } from 'react';
 import { MainContainter_Background } from './maincontainer.css';
+// Zustand
 import useTextSearchStore from '../../../../stores/useTextSearchStore';
+// 컴포넌트
 import TextRecordBox from './textrecordbox/TextRecordBox';
 import ItemListBox from '../../itemlistbox/ItemListBox';
-import { useEffect, useRef } from 'react';
 
 const MainContainer = () => {
   const { focus, isScrolling, setIsScrolling } = useTextSearchStore();
