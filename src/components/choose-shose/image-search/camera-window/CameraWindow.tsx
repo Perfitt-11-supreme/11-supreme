@@ -1,38 +1,46 @@
+// 아이콘 / css
 import { camera, rectangle } from '../../../../assets/assets';
 import {
   CameraWindow_CameraIcon,
   CameraWindow_CameraIconBackground,
-  CameraWindow_Canvas,
   CameraWindow_GalleryIcon,
   CameraWindow_Icons,
   CameraWindow_Rectangle,
   CameraWindow_View,
   CameraWindow_ViewContainer,
 } from './camerawindow.css';
-import useImageSearchStore from '../../../../stores/useImageSearchStore';
 import { useEffect, useRef } from 'react';
-import Gallery from '../../gallery/Gallery';
+// ZuStand
+import useImageSearchStore from '../../../../stores/useImageSearchStore';
 import useGalleryStore from '../../../../stores/useGalleryStore';
+import useSelectItemStore from '../../../../stores/useSelectItemStore';
+import useProductStore from '../../../../stores/useProductsStore';
+// 커스텀 훅
 import { useImageSearchHooks } from '../hooks/useImageSearchHooks';
-import { ImageUpload } from '../../firebase/imageupload/ImageUpload';
+// 컴포넌트
+import Gallery from '../../gallery/Gallery';
 
 const CameraWindow = () => {
   //분석중인지 / 포스트 성공 여부 / 캔버스에 그려진 이미지 / 상태 설정 함수 / 포스트 받은 데이터 저장 함수 /
   const { isAnalyze, isSuccess, isSimilar, setAnalyze, resetState } = useImageSearchStore();
+  const { setProducts } = useProductStore();
+  const { resetItem } = useSelectItemStore();
   const { galleryImage } = useGalleryStore();
-  const { handleCaptureImage } = useImageSearchHooks();
-  const { handleImageToBase64 } = ImageUpload();
+  const { handleCaptureImage, handleImageToBase64 } = useImageSearchHooks();
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const handleClickCamera = () => {
-    if (canvasRef && videoRef && canvasRef.current && videoRef.current) {
-      const canvas: HTMLCanvasElement = canvasRef.current;
+    if (videoRef && videoRef.current) {
       const video: HTMLVideoElement = videoRef.current;
 
-      setAnalyze(true);
-      // 찍은 사진을 base64로 변환하는 함수
-      handleCaptureImage(canvas, video);
+      if (video.readyState >= 2) {
+        // READY_STATE_HAVE_ENOUGH_DATA
+        setAnalyze(true);
+        // 찍은 사진을 base64로 변환하는 함수
+        handleCaptureImage(video);
+      } else {
+        console.warn('Video is not ready yet.');
+      }
     }
   };
 
@@ -40,6 +48,8 @@ const CameraWindow = () => {
     resetState();
     // 카메라가 있고 접근이 된다면 videoRef에 연결
     const getCameraStream = async () => {
+      setProducts([]);
+      resetItem();
       try {
         // 카메라가 있다면
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -48,6 +58,7 @@ const CameraWindow = () => {
         }
       } catch (err) {
         console.error('Error accessing camera: ', err);
+        alert('카메라 접근에 실패했습니다. 권한을 확인하세요.');
       }
     };
 
@@ -93,7 +104,6 @@ const CameraWindow = () => {
       )}
       <div className={CameraWindow_ViewContainer}>
         <video className={CameraWindow_View} ref={videoRef} autoPlay></video>
-        <canvas className={CameraWindow_Canvas} ref={canvasRef}></canvas>
       </div>
     </>
   );

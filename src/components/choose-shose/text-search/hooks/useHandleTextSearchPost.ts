@@ -1,7 +1,11 @@
+// 리액트
 import { useMutation } from '@tanstack/react-query';
-import useTextSearchStore from '../../../../stores/useTextSearchStore';
+// api
 import { textShoseSearchAPI } from '../../../../api/searchRequests';
+// 타입
 import { TProduct } from '../../../../types/product';
+// Zustand
+import useTextSearchStore from '../../../../stores/useTextSearchStore';
 import useProductStore from '../../../../stores/useProductsStore';
 import useSelectItemStore from '../../../../stores/useSelectItemStore';
 

@@ -1,5 +1,4 @@
-import useSelectItemStore from '../../../../stores/useSelectItemStore';
-import { TProduct } from '../../../../types/product';
+// css
 import {
   ItemCard_Container,
   ItemCard_Frame,
@@ -9,6 +8,10 @@ import {
   ItemCard_ShoseBrand,
   ItemCard_ShoseName,
 } from './itemcard.css';
+// Zustand
+import useSelectItemStore from '../../../../stores/useSelectItemStore';
+// 타입
+import { TProduct } from '../../../../types/product';
 
 const ItemCard = ({ index, data }: { index: number; data: TProduct }) => {
   const { isSelected, setIsSelected, setSelectProduct } = useSelectItemStore();

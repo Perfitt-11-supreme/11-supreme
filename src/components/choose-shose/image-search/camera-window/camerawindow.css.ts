@@ -66,10 +66,3 @@ export const CameraWindow_View = style({
   width: '100%',
   height: 'auto',
 });
-
-export const CameraWindow_Canvas = style({
-  display: 'none',
-  width: '100%',
-  height: 'auto',
-  zIndex: '-1',
-});

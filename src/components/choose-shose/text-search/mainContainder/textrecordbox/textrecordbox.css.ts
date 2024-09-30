@@ -50,11 +50,13 @@ export const TextRecordBox_NoRecord = style({
 
 export const TextRecordBox_RecentRecord = style({
   height: '24px',
+  width: 'min-content',
   marginTop: '10px',
   fontWeight: '400',
   fontSize: '15px',
   color: theme.color.gray300,
   cursor: 'pointer',
+  whiteSpace: 'nowrap',
 });
 
 export const TextRecordBox_TextList = style({

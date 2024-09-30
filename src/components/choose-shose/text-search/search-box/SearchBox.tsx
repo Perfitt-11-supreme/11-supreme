@@ -1,4 +1,7 @@
+// 리액트 / 아이콘 / css
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import { camera, search } from '../../../../assets/assets';
 import {
   SearchBox_Background,
@@ -8,10 +11,10 @@ import {
   SearchBox_cameraIcon,
   SearchBox_searchIcon,
 } from './searchbox.css';
-import { useNavigate } from 'react-router-dom';
+// Zustand
 import useTextSearchStore from '../../../../stores/useTextSearchStore';
+// 커스텀 훅
 import { useTextSearchHooks } from '../hooks/useTextSearchHooks';
-import { useForm } from 'react-hook-form';
 
 const SearchBox = () => {
   const { text, postText, isScrolling, setText, setFocus } = useTextSearchStore();

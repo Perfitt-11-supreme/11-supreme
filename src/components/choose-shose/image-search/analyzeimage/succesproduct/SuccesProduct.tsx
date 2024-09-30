@@ -1,3 +1,4 @@
+// css
 import {
   Product_ProductBrand,
   Product_ProductImage,
@@ -7,7 +8,9 @@ import {
   Product_SimilarText,
   Product_SuccesContainer,
 } from './succesproduct.css';
+// Zustand
 import useSelectItemStore from '../../../../../stores/useSelectItemStore';
+// 커스텀 훅
 import useImaeSearchPost from '../../hooks/useImaeSearchPost';
 
 const SuccesProduct = () => {

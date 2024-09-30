@@ -1,3 +1,4 @@
+// css
 import {
   TextRecordBox_Container,
   TextRecordBox_Header,
@@ -8,9 +9,12 @@ import {
   TextRecordBox_Remove,
   TextRecordBox_TextList,
 } from './textrecordbox.css';
+// Zustand
 import useTextSearchStore from '../../../../../stores/useTextSearchStore';
+// 커스텀훅
 import { useTextSearchHooks } from '../../hooks/useTextSearchHooks';
 import { useHandleTextSearchPost } from '../../hooks/useHandleTextSearchPost';
+// 컴포넌트
 import IsLoading from '../../../isLoading/IsLoading';
 
 const TextRecordBox = () => {

@@ -1,13 +1,11 @@
+// 파이어베이스
 import { ref, uploadString, getDownloadURL, deleteObject } from 'firebase/storage';
 import { storage } from '../../../../firebase/firebase';
+// Zustand
 import useUserStore from '../../../../stores/useUserStore';
-import useImageSearchPost from '../../image-search/hooks/useImaeSearchPost';
-import useGalleryStore from '../../../../stores/useGalleryStore';
 
 export const ImageUpload = () => {
   const userId = useUserStore(state => state.user?.uid);
-  const handleImageSearchPost = useImageSearchPost();
-  const { setGalleryImage } = useGalleryStore();
 
   const handleImageUpload = async (canvasImage: string, onSuccess: (url: string) => void) => {
     const timestamp = new Date().getTime();
@@ -44,39 +42,5 @@ export const ImageUpload = () => {
     });
   };
 
-  // 갤러리에서 가져온 파일을 매개변수로 받아 base64형태로 바꾸는 함수
-  const handleImageToBase64 = (file: File) => {
-    imageToBase64(file)
-      .then(dataURL =>
-        // base64로 변환한 이미지로 ImageUpload 실행
-        handleImageUpload(dataURL, downloadURL => {
-          handleImageSearchPost.mutate(downloadURL);
-        })
-      )
-      // galleryimage에 저장된 이미지를 지우기
-      .then(() => setGalleryImage(null));
-  };
-
-  const imageToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-
-      // FileReader를 정상적으로 가져옴
-      reader.onloadend = () => {
-        // FileReader에 들어온 파일을 base64로 변환
-        const base64String = reader.result as string;
-        // base64 문자열 반환
-        resolve(base64String);
-      };
-      // FileReader를 가져오는 중 에러
-      reader.onerror = () => {
-        reject(new Error('Failed to convert image to Base64'));
-      };
-
-      // 파일 읽기
-      reader.readAsDataURL(file);
-    });
-  };
-
-  return { handleImageUpload, handleImageToBase64 };
+  return handleImageUpload;
 };
