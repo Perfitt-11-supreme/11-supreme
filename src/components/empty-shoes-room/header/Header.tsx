@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { back_arrow } from '../../../assets/assets';
-import { backButton, frame, headerDiv, headerTitle } from './header.css';
+import { arrow, backButton, frame, headerDiv, headerTitle } from './header.css';
 import Kebab from '../../kebab/Kebab';
 import React from 'react';
 
@@ -16,7 +16,7 @@ const Header = ({ title, customNavigate }: { title?: string; customNavigate?: ()
       <header className={headerDiv}>
         <div className={frame}>
           <button className={backButton} onClick={customNavigate ? customNavigate : handleNavigate}>
-            <img src={back_arrow} alt="back" />
+            <img className={arrow} src={back_arrow} alt="back" />
           </button>
         </div>
         <p className={headerTitle}>{title}</p>

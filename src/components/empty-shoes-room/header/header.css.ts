@@ -38,3 +38,8 @@ export const backButton = style({
   border: 'none',
   cursor: 'pointer',
 });
+
+export const arrow = style({
+  width: '24px',
+  height: '24px',
+});

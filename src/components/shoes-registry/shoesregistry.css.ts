@@ -96,3 +96,8 @@ export const errorText = style({
   fontSize: '12px',
   alignContent: 'center',
 });
+
+export const plusButton = style({
+  width: '36px',
+  height: '36px',
+});

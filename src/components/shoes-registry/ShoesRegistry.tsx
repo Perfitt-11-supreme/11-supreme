@@ -22,6 +22,7 @@ import {
   imagePlusButton,
   imagePlusButtonSelected,
   itemCardDiv,
+  plusButton,
   questP,
   questionP,
   starP,
@@ -92,8 +93,6 @@ const ShoesRegistry = () => {
         const docSnap = await getDoc(doc(db, 'myshoes', shoesId));
         if (docSnap.exists()) {
           const data = docSnap.data() as ShoeData;
-          console.log('Fetched data:', data);
-          // setEditData(data);
 
           // 폼에 데이터 채우기
           setSelectProduct({
@@ -232,19 +231,12 @@ const ShoesRegistry = () => {
 
   useEffect(() => {
     const checkErrors = async () => {
-      const result = await trigger(); // 모든 필드를 검사합니다.
+      const result = await trigger();
       if (!result) {
         handleError(errors);
-
-        // 다음 에러 필드로 스크롤
-        // const NextErrorField = Object.keys(errors)[0];
-        // if (NextErrorField && refMap[NextErrorField]) {
-        //   refMap[NextErrorField].current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        // }
       }
     };
 
-    // 유효성 검사를 처음에는 하지 않음
     if (rating || length || width || height || sole || weight) {
       checkErrors();
     }
@@ -263,7 +255,7 @@ const ShoesRegistry = () => {
           </button>
         ) : (
           <button className={imagePlusButton} onClick={handleChooseShoes}>
-            <img src={plus} alt="등록" />
+            <img className={plusButton} src={plus} alt="등록" />
           </button>
         )}
 
