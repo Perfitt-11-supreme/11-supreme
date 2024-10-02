@@ -23,7 +23,8 @@ type SizeRecommendationCardProps = {
   onDelete?: (id: string) => void; // 삭제 함수
   onAdd?: (productId: string) => void; // 하트 클릭 시 호출할 함수
   productId?: string;
-  moveProduct?: (userId: string, productId: string) => Promise<void>; // moveProduct 함수 타입 정의
+  moveHeartProduct?: (userId: string, productId: string) => Promise<void>; // moveHeartProduct 함수 타입 정의
+  moveClickProduct?: (userId: string, productId: string) => Promise<void>; // moveClickProduct 함수 타입 정의
   userId?: string; // 사용자 uid
 };
 
@@ -33,25 +34,27 @@ const SizeRecommendationCard = ({
   onCardClick,
   onDelete,
   productId,
-  moveProduct,
+  moveHeartProduct,
+  moveClickProduct,
   userId,
 }: SizeRecommendationCardProps) => {
   // product가 null일 경우 아무것도 렌더링하지 않음
   if (!product) {
     return <></>;
   }
+
+  // product 로그 출력
+  console.log('Received product:', product);
+
   const [isChecked, setIsChecked] = useState(isHeartFilled);
 
-  const handleHeartChecked = (e: React.MouseEvent) => {
-    console.log('productId:', productId);
-    console.log('userId:', userId);
-
+  const handleHeartChecked = async (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsChecked(prev => !prev);
 
     // 하트 클릭 시 myViewed에서 myLiked로 상품을 이동하는 함수 호출
     if (userId && productId) {
-      moveProduct?.(userId, productId);
+      moveHeartProduct?.(userId, productId);
     } else {
       console.error('userId 또는 productId가 정의되지 않았습니다.');
     }
@@ -66,8 +69,12 @@ const SizeRecommendationCard = ({
   return (
     <div
       className={sizeRecommendationCardBox}
-      onClick={() => {
+      onClick={async e => {
         window.open(product.link, '_blank'); // 새 창에서 링크 열기
+        e.stopPropagation();
+        if (userId && productId && moveClickProduct) {
+          await moveClickProduct(userId, productId); // moveClickProduct 호출
+        }
         onCardClick?.(); // 클릭한 시간을 기록하는 함수 호출 (옵셔널 체이닝 처리)
       }}
     >

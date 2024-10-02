@@ -47,69 +47,112 @@ const ViewedHistoryPage = () => {
       // 'myViewed' 컬렉션에서 해당 사용자 문서 참조
       const userDoc = doc(VIEWED_COLLECTION, user.uid);
 
+      // Firestore에서 기존 데이터를 가져옴
+      const docSnap = await getDoc(userDoc);
+
+      // docSnap.exists()로 Firestore에 데이터가 있는지 확인한 후, 데이터가 없을 경우에만 목데이터를 추가
+      // if (docSnap.exists()) {
+      //   console.log('Firestore에 이미 데이터가 존재합니다.');
+      //   const data = docSnap.data();
+      //   setProductsData(data?.products || {});
+      //   return; // 데이터가 이미 있으므로 추가하지 않음
+      // }
+
       // Firestore에서 고유 ID 생성
       const productId6 = doc(collection(db, 'myViewed')).id;
       const productId7 = doc(collection(db, 'myViewed')).id;
       const productId8 = doc(collection(db, 'myViewed')).id;
       const productId9 = doc(collection(db, 'myViewed')).id;
-      const productId10 = doc(collection(db, 'myViewed')).id;
 
-      // 사용자 데이터에 고유 ID를 가진 브랜드 추가
-      await setDoc(userDoc, {
-        uid: user.uid,
-        products: {
-          [productId6]: {
-            brand: 'Nike',
-            image: 'https://image.a-rt.com/art/product/2022/01/60008_1642143249212.jpg?shrink=580:580',
-            link: 'https://abcmart.a-rt.com/product/new?prdtNo=1010087307&page=1',
-            modelName: '우먼스 나이키 코트 비전 알타 레더',
-            price: 59000,
-            sizeRecommend: '245mm',
-            timestamp: '',
-          },
-          [productId7]: {
-            brand: 'Vans',
-            image: 'https://image.a-rt.com/art/product/2024/01/97399_1704875453756.jpg?shrink=580:580',
-            link: 'https://abcmart.a-rt.com/product/new?prdtNo=1010104029&page=1',
-            modelName: '어센틱 - 컬러 띠어리 아이스버그 그린',
-            price: 95000,
-            sizeRecommend: '240mm',
-          },
-          [productId8]: {
-            brand: 'Vans',
-            image: 'https://image.a-rt.com/art/product/2024/03/20487_1709622787180.jpg?shrink=580:580',
-            link: 'https://abcmart.a-rt.com/product/new?prdtNo=1010105228&page=1',
-            modelName: '올드 스쿨 - 스레디드 데님 블루/화이트',
-            price: 95000,
-            sizeRecommend: '240mm',
-          },
-          [productId9]: {
-            brand: 'Adidas',
-            image: 'https://image.a-rt.com/art/product/2024/09/76112_1725849859140.jpg?shrink=580:580',
-            link: 'https://abcmart.a-rt.com/product/new?prdtNo=1010109169&page=1',
-            modelName: '핸드볼 스페지알 우먼스',
-            price: 139000,
-            sizeRecommend: '235mm',
-          },
-          [productId10]: {
-            brand: 'Crocs',
-            image: 'https://image.a-rt.com/art/product/2023/06/21029_1688017391942.jpg?shrink=580:580',
-            link: 'https://abcmart.a-rt.com/product/new?prdtNo=1010100080&page=1',
-            modelName: '듀엣 맥스 II 클로그',
-            price: 79900,
-            sizeRecommend: '245mm',
-          },
+      // 기존 데이터와 병합하여 products 업데이트
+      const updatedProducts = {
+        [productId6]: {
+          brand: 'Converse',
+          image: 'https://image.a-rt.com/art/product/upload3/M9166C_Black/S1.jpg?shrink=580:580',
+          link: 'https://abcmart.a-rt.com/product/new?prdtNo=1010043164',
+          modelName: '척테일러 올스타 블랙',
+          price: 55000,
+          sizeRecommend: '240mm',
+          timestamp: '',
         },
-      });
+        [productId7]: {
+          brand: 'Nike',
+          image: 'https://image.a-rt.com/art/product/2024/04/49929_1714454204500.jpg?shrink=580:580',
+          link: 'https://abcmart.a-rt.com/product/new?prdtNo=1010105391&page=1',
+          modelName: '코트 버로우 로우 리크래프트 보이그레이드',
+          price: 69000,
+          sizeRecommend: '245mm',
+        },
+        [productId8]: {
+          brand: 'Vans',
+          image: 'https://image.a-rt.com/art/product/2024/01/48875_1706597710426.jpg?shrink=580:580',
+          link: 'https://abcmart.a-rt.com/product/new?prdtNo=1010104561&page=1',
+          modelName: '어센틱 - 체커보드 블랙/화이트',
+          price: 75000,
+          sizeRecommend: '240mm',
+        },
+        [productId9]: {
+          brand: 'Vans',
+          image: 'https://image.a-rt.com/art/product/upload/VN0A3MUS6BT_BLACK%2BTRUE%20WHITE/S1.jpg?shrink=580:580',
+          link: 'https://abcmart.a-rt.com/product/new?prdtNo=1010063447&page=1',
+          modelName: '올드 스쿨 뮬 - 블랙/트루 화이트',
+          price: 85000,
+          sizeRecommend: '240mm',
+        },
+      };
+
+      // docSnap.exists()로 Firestore에 데이터가 있는지 확인한 후, 데이터가 없을 경우에만 목데이터를 추가
+      if (docSnap.exists()) {
+        console.log('Firestore에 이미 데이터가 존재합니다.');
+        const data = docSnap.data();
+        const productsData = data?.products || {}; // 기존 products 데이터를 가져옴
+
+        // products 필드가 존재하지 않거나 비어있을 경우 목데이터 추가
+        if (Object.keys(productsData).length === 0) {
+          console.log('products 필드가 비어있습니다. 목데이터를 추가합니다.');
+          await setDoc(
+            userDoc,
+            {
+              uid: user.uid,
+              products: updatedProducts,
+            },
+            { merge: true }
+          );
+          console.log('products 목데이터가 추가되었습니다.');
+        } else {
+          console.log('products 필드에 데이터가 이미 있습니다.');
+          setProductsData(productsData); // 이미 있는 데이터를 상태에 설정
+        }
+        return;
+      }
+
+      // Firestore에 업데이트
+      await setDoc(
+        userDoc,
+        {
+          uid: user.uid,
+          products: updatedProducts,
+        },
+        { merge: true } // 병합 옵션 추가
+      );
 
       // Firestore에서 데이터를 다시 가져와서 상태 업데이트
-      const docSnap = await getDoc(userDoc);
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        setProductsData(data?.products || {});
+      const updatedDocSnap = await getDoc(userDoc);
+      if (updatedDocSnap.exists()) {
+        const updatedData = updatedDocSnap.data();
+        setProductsData(updatedData?.products || {});
       } else {
         console.log('No document found');
       }
+
+      // Firestore에서 데이터를 다시 가져와서 상태 업데이트
+      // const docSnap = await getDoc(userDoc);
+      // if (docSnap.exists()) {
+      //   const data = docSnap.data();
+      //   setProductsData(data?.products || {});
+      // } else {
+      //   console.log('No document found');
+      // }
 
       console.log('Products and brands added to Firestore');
     } catch (error) {
@@ -117,6 +160,7 @@ const ViewedHistoryPage = () => {
     }
   };
 
+  // 최근본=>좋아요로 옮기는 기능
   // myViewed에서 하트 클릭 시 product를 가져와 myLiked로 옮기는 함수 (timestamp 추가 포함)
   const moveProductFromViewedToLiked = async (userId: string, productId: string) => {
     try {
@@ -220,12 +264,12 @@ const ViewedHistoryPage = () => {
                     handleCardClick(productId); // 클릭 시 시간 기록 함수 호출
                   }}
                   key={productId} // key는 productId로 설정
+                  isHeartFilled={false}
                   product={{
                     ...product,
                     brand: product.brand || 'Unknown Brand', // brand가 없을 경우 기본 값 할당
                   }}
-                  isHeartFilled={false}
-                  moveProduct={moveProductFromViewedToLiked} // moveProduct 함수 전달
+                  moveHeartProduct={moveProductFromViewedToLiked} // moveHeartProduct 함수 전달
                   userId={user?.uid || ''} // 현재 사용자의 uid 전달
                   productId={productId} // productId도 props로 전달
                 />

@@ -1,4 +1,4 @@
-import { heart_filled } from '../../../assets/assets';
+import { heart_empty, heart_filled } from '../../../assets/assets';
 import {
   brandListBox,
   brandLists,
@@ -27,22 +27,28 @@ type LikedInBrandCardProps = {
 };
 
 const LikedInBrand = ({ brand, isHeartFilled = false, logos, onDelete }: LikedInBrandCardProps) => {
+  // brand가 null일 경우 아무것도 렌더링하지 않음
   if (!brand) {
-    return null;
+    return <></>;
   }
   const [isChecked, setIsChecked] = useState(isHeartFilled);
-  console.log('heart :', isChecked);
 
   const handleHeartChecked = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsChecked(prev => !prev);
 
-    if (isChecked) {
-      if (brand?.brandId) {
-        onDelete?.(brand.brandId); // 삭제 함수 호출
-      } else {
-      }
+    // 하트가 채워져 있을 때 (삭제 이벤트)
+    if (isChecked && brand?.brandId) {
+      console.log('Deleting brand with brandId:', brand?.brandId); // brandId 확인
+      onDelete?.(brand.brandId); // 삭제 함수 호출
     }
+
+    // if (isChecked) {
+    //   if (brand?.brandId) {
+    //     onDelete?.(brand.brandId); // 삭제 함수 호출
+    //   } else {
+    //   }
+    // }
   };
 
   return (
@@ -71,7 +77,7 @@ const LikedInBrand = ({ brand, isHeartFilled = false, logos, onDelete }: LikedIn
             }}
           >
             {/* 브랜드 페이지 시안 x */}
-            <img className={heartFilledIcon} src={isChecked ? heart_filled : heart_filled} alt="heart" />
+            <img className={heartFilledIcon} src={isChecked ? heart_filled : heart_empty} alt="heart" />
           </div>
         </article>
       </section>
