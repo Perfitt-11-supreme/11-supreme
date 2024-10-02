@@ -19,7 +19,7 @@ export const hookForm = style({
 
 export const descP = style({
   width: '343px',
-  padding: '6px 0 0 16px',
+  padding: '6px 0 0 8px',
   fontWeight: 'bold',
   fontSize: '15px',
   lineHeight: '18px',

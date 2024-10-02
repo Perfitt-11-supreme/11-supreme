@@ -7,6 +7,7 @@ import Header from '../empty-shoes-room/header/Header';
 import {
   brandP,
   container,
+  imageSize,
   imgDiv,
   infoDiv,
   infoP,
@@ -45,7 +46,7 @@ const ShoesInfo = () => {
     <>
       <div className={container}>
         <Header title="신발 정보" />
-        <div className={imgDiv}>{shoeData && <img src={shoeData.image} alt="신발 이미지" />}</div>
+        <div className={imgDiv}>{shoeData && <img src={shoeData.image} alt="신발 이미지" className={imageSize} />}</div>
         <div className={infoDiv}>
           <div className={starDiv}>
             <img src={filled_star} alt="별점" />

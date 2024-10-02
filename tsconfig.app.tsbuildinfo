@@ -33,7 +33,7 @@
     "./src/components/chatbot/user-bubble/userbubble.tsx",
     "./src/components/chatbot/user-bubble/userbubble.css.ts",
     "./src/components/choose-shose/firebase/imageupload/imageupload.ts",
-    "./src/components/choose-shose/firebase/textupload/fetchtextrecord.ts",
+    "./src/components/choose-shose/firebase/textupload/textupload.ts",
     "./src/components/choose-shose/gallery/gallery.tsx",
     "./src/components/choose-shose/gallery/gallery.css.ts",
     "./src/components/choose-shose/image-search/imagesearch.tsx",
@@ -41,8 +41,6 @@
     "./src/components/choose-shose/image-search/againbox/againbox.css.ts",
     "./src/components/choose-shose/image-search/analyzeimage/analyzeimage.tsx",
     "./src/components/choose-shose/image-search/analyzeimage/analyzeimage.css.ts",
-    "./src/components/choose-shose/image-search/analyzeimage/similarproduct/similarproduct.tsx",
-    "./src/components/choose-shose/image-search/analyzeimage/similarproduct/similarproduct.css.ts",
     "./src/components/choose-shose/image-search/analyzeimage/succesproduct/succesproduct.tsx",
     "./src/components/choose-shose/image-search/analyzeimage/succesproduct/succesproduct.css.ts",
     "./src/components/choose-shose/image-search/camera-window/camerawindow.tsx",
@@ -220,6 +218,5 @@
     "./src/utils/sharedchathistoryutils.ts",
     "./setupproxy.ts"
   ],
-  "errors": true,
   "version": "5.6.2"
 }

@@ -20,6 +20,7 @@ import {
   optiondiv,
   select,
   shoesdiv,
+  visuallyHidden,
 } from './emptyshoesroom.css';
 import Header from './header/Header';
 import UserProfile from './user-profile/UserProfile';
@@ -147,7 +148,10 @@ const EmptyShoesRoom = () => {
               <p className={countp}>
                 <span className={fontBold}>총 {shoesList.length}</span>개
               </p>
-              <select className={select} value={selected} onChange={handleSelectChange}>
+              <label htmlFor="selectBox" className={visuallyHidden}>
+                셀렉트박스
+              </label>
+              <select id="selectBox" className={select} value={selected} onChange={handleSelectChange}>
                 <option value="latest">최신순</option>
                 <option value="registered">등록순</option>
               </select>
@@ -158,7 +162,7 @@ const EmptyShoesRoom = () => {
               </button>
               {shoesList.map(shoe => (
                 <button key={shoe.id} className={imagebutton} onClick={() => handleShoesInfo(shoe.id)}>
-                  <img className={buttonImage} src={shoe.image} alt={shoe.name} />
+                  <img className={buttonImage} src={shoe.image} alt={shoe.modelName} />
                 </button>
               ))}
             </div>

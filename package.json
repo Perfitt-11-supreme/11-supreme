@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "serve": "serve -s dist",
+    "watch": "nodemon --watch src --ext js,ts,tsx,json,css --exec 'yarn build && npx serve -s dist'"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.53.2",
@@ -16,12 +18,14 @@
     "axios": "^1.7.7",
     "firebase": "^10.13.1",
     "framer-motion": "^11.3.31",
+    "nodemon": "^3.1.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.0",
     "react-image-file-resizer": "^0.4.8",
     "react-markdown": "^9.0.1",
     "react-router-dom": "^6.26.1",
+    "serve": "^14.2.3",
     "vite-plugin-compression": "^0.5.1",
     "zustand": "^4.5.5"
   },

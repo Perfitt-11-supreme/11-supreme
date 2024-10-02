@@ -57,16 +57,10 @@ const KebabMenu = () => {
     console.log('수정 버튼 클릭됨');
   };
 
-  // const handleClickOutside = useCallback((event: MouseEvent) => {
-  //   if (event.target instanceof HTMLElement && !event.currentTarget.contains(event.target)) {
-  //     setIsOpen(false);
-  //   }
-  // }, []);
-
   return (
     <div className={menuContainer}>
       <button className={kebabButton} onClick={toggleMenu}>
-        <img src={kebab} />
+        <img src={kebab} alt="케밥 아이콘" />
       </button>
       <div className={`${dropdownMenu} ${isOpen ? dropdownMenuVisible : ''}`}>
         <div className={menuItem} onClick={handleDelete}>
