@@ -95,7 +95,7 @@ const SignUpSizeModal: React.FC<SignUpSizeModalProps> = ({ isOpen, onClose }) =>
         const newChatId = await handleNewChat();
 
         onClose();
-        navigate(`/hello/${newChatId}`, { replace: true });
+        navigate(`/chat/${newChatId}`, { replace: true });
       } catch {
         // console.error('사용자 등록 실패:', error);
         setToastMessage({ message: '다시 시도해 주세요.', duration: 3000 });

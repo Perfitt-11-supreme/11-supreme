@@ -65,12 +65,12 @@ const ProductRecommendationPreview = ({ products = [], shareId, onMoreClick }: P
           ) : (
             <li>상품이 없습니다.</li> // 상품이 없을 때 보여줄 메시지
           )}
-          <div onClick={handleOpenModal}>
+          <li onClick={handleOpenModal}>
             <div className={productRecommendPreviewMore}>
-              <img src={arrow_right} className={productRecommendPreviewMoreIcon} />
+              <img src={arrow_right} className={productRecommendPreviewMoreIcon} alt='more_button' />
               <p style={{ fontSize: '9px', marginTop: '6px' }}>더보기</p>
             </div>
-          </div>
+          </li>
         </motion.ul>
         <div className={productRecommendPreviewIconWrap}>
           <img src={export_icon} alt="" className={productRecommendPreviewIcon} onClick={handleOpenShareModal} />

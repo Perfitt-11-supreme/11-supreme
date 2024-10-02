@@ -57,7 +57,7 @@ const OnBoarding = () => {
       const userDoc = await getDoc(userDocRef);
 
       if (userDoc.exists()) {
-        navigate('/hello'); //로그인되어 있는 경우
+        navigate('/chat'); //로그인되어 있는 경우
       } else {
         await currentUser.delete(); //사용자 인증 데이터 삭제
         // console.log('사용자 인증 데이터 삭제');

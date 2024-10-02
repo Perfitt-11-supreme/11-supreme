@@ -400,7 +400,7 @@ const LoginHello = () => {
         }
 
         {chatHistory.length > 0 && (
-          <Modal height="70vh" initialHeight="125px" >
+          <Modal height="100vh" initialHeight="125px" >
             {selectedBrand ? (
               <BrandPLP />
             ) : showProductRecommendation ? (

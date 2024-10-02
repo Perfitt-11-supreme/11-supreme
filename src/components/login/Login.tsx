@@ -44,7 +44,7 @@ const Login = () => {
         };
         setUser(userData); //userData를 zustand에 저장
         // console.log('로그인한 사용자:', userData);
-        navigate('/hello'); //기존 사용자: 로그인 성공 후 /hello(로그인 후 첫 화면) 페이지로 이동
+        navigate('/chat'); //기존 사용자: 로그인 성공 후 /hello(로그인 후 첫 화면) 페이지로 이동
       } else {
         const newGoogleUser = {
           uid: googleUser.uid, //구글 회원가입 시 자동 생성된 uid 저장

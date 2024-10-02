@@ -66,7 +66,7 @@ const SizeRecommendationCard = ({
     >
       <div className={sizeRecommendationThumbnail}>
         <div className={sizeRecommendationThumbnailContainer}>
-          <img src={product.image} alt={product.modelName} />
+          <img src={product.image} alt={product.modelName} loading='lazy' />
         </div>
         <div className={sizeRecommendationBadge}>
           <p className={sizeRecommendationBadgeTag}>{product?.sizeRecommend} 추천</p>

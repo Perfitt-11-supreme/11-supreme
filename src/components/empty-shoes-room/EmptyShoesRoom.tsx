@@ -1,10 +1,13 @@
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { collection, query, getDocs, orderBy, where } from 'firebase/firestore';
 import { noshoes, plus } from '../../assets/assets';
+import { db } from '../../firebase/firebase';
+import LoadingPage from '../../pages/loading-page/loadingPage';
+import { ShoesList, UserData } from '../../types/shoesroom';
 import Button from '../common/button/Button';
-import Header from './header/Header';
-import UserProfile from './user-profile/UserProfile';
+import ToastMessage from '../toastmessage/toastMessage';
 import {
   buttonDiv,
   buttonImage,
@@ -18,11 +21,8 @@ import {
   select,
   shoesdiv,
 } from './emptyshoesroom.css';
-import { db } from '../../firebase/firebase';
-import ToastMessage from '../toastmessage/toastMessage';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { ShoesList, UserData } from '../../types/shoesroom';
-import LoadingPage from '../../pages/loading-page/loadingPage';
+import Header from './header/Header';
+import UserProfile from './user-profile/UserProfile';
 
 const EmptyShoesRoom = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -139,7 +139,7 @@ const EmptyShoesRoom = () => {
     <>
       <div className={container}>
         {toastMessage && <ToastMessage message={toastMessage} duration={3000} />}
-        <Header title="신발장" customNavigate={() => navigate('/hello')} />
+        <Header title="신발장" customNavigate={() => navigate('/chat')} />
         <UserProfile userData={userData} />
         {shoesList.length > 0 ? (
           <>

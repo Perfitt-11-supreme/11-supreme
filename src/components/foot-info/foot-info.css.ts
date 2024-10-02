@@ -3,14 +3,25 @@ import { style } from '@vanilla-extract/css';
 export const container = style({
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'flex-start',
-  alignItems: 'center',
-  minHeight: '100%',
-  position: 'relative',
+  minHeight: '100vh',
+  height: '100%',
 });
 
+export const contentContainer = style({
+  flexGrow: 1,
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+});
+
+export const footInfoWrap = style({
+  display: 'flex',
+  alignItems: 'center',
+  flexDirection: 'column',
+})
 export const imgDiv = style({
-  marginTop: '135px',
+  width: '284px',
+  height: 'auto',
 });
 
 export const bigP = style({

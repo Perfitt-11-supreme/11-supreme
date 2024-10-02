@@ -20,6 +20,7 @@ import { ImageShoseSearchAPI } from '../../../api/searchRequests';
 import { useChatCompletion } from '../../../hooks/useChatCompletionHook';
 import useChatStore from '../../../stores/useChatStore';
 import { ChatItem } from '../../../types/chatItem';
+import { resizeImage } from '../../../utils/resizeImageUtils';
 import ToastMessage from '../../toastmessage/toastMessage';
 
 export type Brand = {
@@ -45,12 +46,25 @@ const ChatbotSearchInput = () => {
   const imageSearchMutation = useMutation({
     mutationFn: async (file: File) => {
       const storage = getStorage();
-      const imageRef = storageRef(storage, `images/${file.name}`);
-      await uploadBytes(imageRef, file);
+      // 이미지 리사이징 (필요한 경우에만)
+      const resizedImageBase64 = await resizeImage(file, 800, 800, 80);
+
+
+      // Base64 문자열을 Blob으로 변환
+      const resizedImageBlob = await fetch(resizedImageBase64).then(res => res.blob());
+      // 파일 이름 변경 (확장자를 .webp로)
+      const newFileName = file.name.replace(/\.[^/.]+$/, "") + ".webp";
+
+      // Blob을 File 객체로 변환
+      const resizedImageFile = new File([resizedImageBlob], newFileName, { type: 'image/webp' });
+
+
+      const imageRef = storageRef(storage, `images/${resizedImageFile.name}`);
+      await uploadBytes(imageRef, resizedImageFile);
       const imageUrl = await getDownloadURL(imageRef);
 
       const formData = new FormData();
-      formData.append('image', file);
+      formData.append('image', resizedImageFile);
       const response = await ImageShoseSearchAPI(formData);
 
       return { response, imageUrl };
