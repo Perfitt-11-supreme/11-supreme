@@ -1,4 +1,4 @@
-import { sliderContainer, slider, track, dotContainer, dot, labels, label } from './slider.css';
+import { sliderContainer, slider, track, dotContainer, dot, labels, label, visuallyHidden } from './slider.css';
 import { useShoesRegistryStore } from '../../stores/useRegistryStore';
 import React, { useEffect, useState } from 'react';
 
@@ -32,7 +32,10 @@ const Slider = () => {
   return (
     <div className={sliderContainer}>
       <div className={track} />
-      <input type="range" min="-2" max="2" value={value} className={slider} onChange={handleChangeValue} />
+      <label htmlFor="slider" className={visuallyHidden}>
+        추천 사이즈
+      </label>
+      <input id="slider" type="range" min="-2" max="2" value={value} className={slider} onChange={handleChangeValue} />
       <div className={dotContainer}>
         {labelPositions.map(key => (
           <div key={key} className={dot} />

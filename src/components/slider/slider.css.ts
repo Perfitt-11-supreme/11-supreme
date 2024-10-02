@@ -22,7 +22,6 @@ export const slider = style({
     cursor: 'pointer',
     borderRadius: '99px',
     border: '3px solid #3f3f46',
-    // top: '50%',
     transform: 'translateY(-75%)',
     zIndex: 2,
   },
@@ -84,4 +83,15 @@ export const label = style({
   fontSize: '12px',
   fontWeight: 'bold',
   color: '#a1a1aa',
+});
+
+export const visuallyHidden = style({
+  position: 'absolute',
+  width: '1px',
+  height: '1px',
+  margin: '-1px',
+  padding: 0,
+  overflow: 'hidden',
+  clip: 'rect(0, 0, 0, 0)',
+  border: 0,
 });

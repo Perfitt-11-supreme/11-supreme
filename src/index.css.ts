@@ -7,6 +7,7 @@ globalFontFace('PretendardVariable', {
   src: `local('PretendardVariable'), url('/fonts/PretendardVariable.woff2') format('woff2-variations')`,
   fontWeight: '45 920',
   fontStyle: 'normal',
+  fontDisplay: 'swap',
 });
 
 globalStyle('html', {

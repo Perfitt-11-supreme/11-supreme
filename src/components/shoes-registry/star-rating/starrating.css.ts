@@ -8,4 +8,6 @@ export const starContainer = style({
 
 export const star = style({
   cursor: 'pointer',
+  width: '36px',
+  height: '36px',
 });

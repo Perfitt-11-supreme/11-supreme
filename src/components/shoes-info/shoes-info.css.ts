@@ -84,3 +84,8 @@ export const reviewP = style({
   wordBreak: 'break-word',
   overflowWrap: 'break-word',
 });
+
+export const imageSize = style({
+  width: '343px',
+  height: '343px',
+});

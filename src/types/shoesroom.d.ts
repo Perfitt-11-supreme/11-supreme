@@ -3,7 +3,7 @@ import { Timestamp } from 'firebase/firestore';
 export type ShoesList = {
   id: string;
   image: string;
-  name: string;
+  modelName: string;
   timestamp: Timestamp;
   uid: string;
 };
