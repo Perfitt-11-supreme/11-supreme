@@ -30,6 +30,7 @@ export const loginHelloContainer = style({
   display: 'flex',
   flexDirection: 'column',
   padding: '0 16px',
+  marginBottom:'30px'
   
   // paddingBottom: '150px',
   //  '@media': {

@@ -39,13 +39,12 @@ globalStyle('ul,li,ol', {
 
 globalStyle('body', {
   minHeight: '100dvh',
-  lineHeight: '1',
   backgroundColor: theme.color.slate200,
   overflow: 'hidden',
 });
 
 globalStyle('h1,h2,h3,h4,button,input,label', {
-  lineHeight: '1.1',
+  lineHeight: '1.4em',
 });
 
 globalStyle('h1,h2,h3,h4,b', {

@@ -36,7 +36,7 @@ const ProductRecommendationCard = ({ product }: ProductRecommendationCardProps) 
         {/* Thumbnail */}
         <div className={productRecommendationThumbnail}>
           <div className={productRecommendationThumbnailContainer}>
-            <img src={product?.image} />
+            <img src={product?.image} alt={product?.brand} loading='lazy' />
           </div>
           <div className={heartIconBox} onClick={(e) => {
             e.stopPropagation();

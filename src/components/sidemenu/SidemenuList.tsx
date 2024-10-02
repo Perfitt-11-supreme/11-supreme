@@ -90,7 +90,7 @@ const SideMenuList = ({ iconSrc, keywords, id, shareId, handleDelete, onClose }:
   const navigate = useNavigate();
   const handleChatLink = async () => {
     setCurrentChatId(id);
-    navigate(`/hello/${id}`);
+    navigate(`/chat/${id}`);
     onClose()
   };
 

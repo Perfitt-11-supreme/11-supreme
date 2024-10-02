@@ -1,4 +1,5 @@
 import { deleteUser, signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { back_arrow } from '../../../assets/assets';
@@ -16,7 +17,6 @@ import SignUpSizeModal from '../../signup/sizeinput/SignUpSizeModal';
 import ToastMessage from '../../toastmessage/toastMessage';
 import { fullContainer } from '../login.css';
 import { accountFindBox, accountFindButton } from './emailLogin.css';
-import { doc, getDoc, getFirestore } from 'firebase/firestore';
 
 const EmailLogin = () => {
   type FormData = {
@@ -83,7 +83,7 @@ const EmailLogin = () => {
             setUser(userData); //userData를 zustand에 저장
             // console.log('로그인한 사용자:', userData);
             const newChatId = await handleNewChat();
-            navigate(`/hello/${newChatId}`); //로그인 성공 시 이동
+            navigate(`/chat/${newChatId}`); //로그인 성공 시 이동
           } else {
             //인증은 되었으나 Firestore에는 사용자 등록이 되어있지 않은 경우
             await deleteUser(user); //사용자 인증 데이터 삭제
