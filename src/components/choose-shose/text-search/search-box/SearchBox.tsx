@@ -1,5 +1,5 @@
 // 리액트 / 아이콘 / css
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { camera, search } from '../../../../assets/assets';
@@ -72,32 +72,32 @@ const SearchBox = () => {
     }
   }, [text]);
 
+  const handleFocusInput = useCallback(() => {
+    setFocus(true);
+  }, []);
+
+  const handleClickSearchIcon = useCallback(() => {
+    setFormFocus('searchText');
+  }, []);
+
+  const handleClickCameraIcon = useCallback(() => {
+    navigate('/image-search');
+  }, []);
+
   return (
     <>
       <div className={`${SearchBox_Background} ${isScrolling ? SearchBox_Hide : ''}`}>
         <form onSubmit={handleSubmit(onSubmit)} className={SearchBox_Container}>
-          <img
-            className={SearchBox_searchIcon}
-            src={search}
-            alt="search_icon"
-            onClick={() => setFormFocus('searchText')}
-          />
+          <img className={SearchBox_searchIcon} src={search} alt="search_icon" onClick={handleClickSearchIcon} />
           <input
             {...register('searchText')}
             className={SearchBox_Box}
             type="text"
             placeholder="신발이름, 모델명 검색"
-            onFocus={() => setFocus(true)}
+            onFocus={handleFocusInput}
             autoComplete="off"
           />
-          <img
-            className={SearchBox_cameraIcon}
-            src={camera}
-            alt="camera_icon"
-            onClick={() => {
-              navigate('/image-search');
-            }}
-          />
+          <img className={SearchBox_cameraIcon} src={camera} alt="camera_icon" onClick={handleClickCameraIcon} />
         </form>
       </div>
     </>

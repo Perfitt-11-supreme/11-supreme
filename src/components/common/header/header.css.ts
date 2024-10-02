@@ -28,6 +28,8 @@ export const header = style({
 export const headerIcon = style({
   cursor: 'pointer',
   zIndex: '1',
+  width: '24px',
+  height: '24px',
 });
 export const headerTitle = style({
   fontWeight: '600',

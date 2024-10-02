@@ -1,13 +1,5 @@
-import { style, keyframes } from '@vanilla-extract/css';
-
-const rotation = keyframes({
-  '0%': {
-    transform: 'rotate(0deg)',
-  },
-  '100%': {
-    transform: 'rotate(360deg)',
-  },
-});
+import { style } from '@vanilla-extract/css';
+import { theme } from '../../../styles/theme';
 
 export const IsLoading_Container = style({
   display: 'flex',
@@ -28,7 +20,12 @@ export const IsLoading_Window = style({
 
 export const IsLoading_Circle = style({
   position: 'absolute',
-  animation: `${rotation} 2s linear infinite`,
+  width: '80px',
+  height: '80px',
+  border: '8px solid transparent',
+  borderTopColor: theme.color.black150 /* 스피너 색상 */,
+  borderRadius: '50%',
+  marginBottom: '20px' /* 텍스트와의 간격 */,
 });
 
 export const IsLoading_Text = style({
