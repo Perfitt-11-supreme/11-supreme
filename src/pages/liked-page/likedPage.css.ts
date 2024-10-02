@@ -21,11 +21,17 @@ export const likedAndViewedHistoryItemBox = style({
   gridTemplateColumns: '1fr 1fr',
   gap: '16px',
   paddingBottom: '64px',
+  overflowY: 'auto',
+  height: 'calc(100% - 180px)',
 });
 export const likedInBrandsItemBox = style({
   padding: '0 16px',
-  display: 'grid',
-  gridTemplateColumns: '1fr',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'start',
+  alignItems: 'start',
   gap: '16px',
   paddingBottom: '64px',
+  overflowY: 'auto',
+  height: 'calc(100% - 180px)',
 });
