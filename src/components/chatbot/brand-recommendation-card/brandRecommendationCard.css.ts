@@ -14,9 +14,9 @@ export const brandRecommendImgContainer = style({
   padding: '7px',
   borderBottom: `1px solid ${theme.color.cool_gray100}`,
   display: 'flex',
-  justifyContent: 'content',
-  alignItems:'center'
+  alignItems: 'center',
 })
+
 
 export const brandRecommendButton = style({
   width: '100%',

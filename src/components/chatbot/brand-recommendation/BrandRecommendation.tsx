@@ -56,8 +56,8 @@ const BrandRecommendation = ({ brands, shareId, onBrandClick }: BrandRecommendat
       </ul>
       {!isSharePage && (
         <div className={brandRecommendIconWrap}>
-          <img src={export_icon} alt="" className={brandRecommendIcon} onClick={handleOpenShareModal} />
-          <img src={thumbs_down} alt="" className={brandRecommendIcon} />
+          <img src={export_icon} alt="" className={brandRecommendIcon} onClick={handleOpenShareModal} width="22px" height="22px" />
+          <img src={thumbs_down} alt="" className={brandRecommendIcon} width="22px" height="22px" />
         </div>
       )}
 

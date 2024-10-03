@@ -45,7 +45,7 @@ const Header = ({ imageSrc, alt, title, nav }: THeader) => {
       {/* <div className={headerSpacer} /> */}
       <header className={headerContainer}>
         <div className={header}>
-          <img className={headerIcon} src={imageSrc} alt={alt} onClick={handleClick} />
+          <img className={headerIcon} src={imageSrc} alt={alt} onClick={handleClick} width="24px" height="24px" />
           <div className={headerTitle}>{title}</div>
         </div>
       </header>

@@ -68,7 +68,6 @@ const LoginHello = () => {
   // 커스텀 훅
   const { isLoading } = useAuth();
   const { handleQuestionSelect } = useChatCompletion();
-
   // state
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
 

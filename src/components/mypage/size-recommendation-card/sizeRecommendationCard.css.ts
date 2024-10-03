@@ -26,7 +26,19 @@ export const sizeRecommendationThumbnailContainer = style({
   borderTopLeftRadius: '6.27px',
   borderTopRightRadius: '6.27px',
   overflow: 'hidden',
+  position: 'relative',
 });
+
+export const imageStyle = style({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: '100%',
+  objectFit: 'cover',
+})
+
+
 export const sizeRecommendationBadge = style({
   width: '77px',
   height: '20px',
