@@ -2,6 +2,7 @@ import { style } from '@vanilla-extract/css';
 import { theme } from '../../../styles/theme';
 
 export const brandsContainer = style({
+  width: '100%',
   display: 'flex',
   flexDirection: 'column',
   gap: '10px',

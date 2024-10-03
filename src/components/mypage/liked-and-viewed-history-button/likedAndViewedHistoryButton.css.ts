@@ -31,6 +31,6 @@ export const likedAndViewedHistoryButtonChecked = style([
   baseLikedAndViewedHistoryButton,
   {
     fontWeight: '800',
-    boxShadow: `0px -2px 0px 0px ${theme.color.black} inset`,
+    boxShadow: `0px -3.2px 0px -1px ${theme.color.black} inset`, // 브라우저 화면 기준 - 좋아요 탭, 우측 그림자 제거
   },
 ]);

@@ -25,10 +25,12 @@ const auth = getAuth(app);
 const storage = getStorage(app);
 const db = getFirestore(app);
 const USER_COLLECTION = collection(db, 'users');
+const LIKED_COLLECTION = collection(db, 'myLiked');
+const VIEWED_COLLECTION = collection(db, 'myViewed');
 const database = getDatabase(app);
 const signInWithGoogle = () => {
   const googleProvider = new GoogleAuthProvider();
   return signInWithPopup(auth, googleProvider);
 };
 
-export { USER_COLLECTION, auth, storage, database, db, signInWithGoogle };
+export { USER_COLLECTION, LIKED_COLLECTION, VIEWED_COLLECTION, auth, storage, database, db, signInWithGoogle };

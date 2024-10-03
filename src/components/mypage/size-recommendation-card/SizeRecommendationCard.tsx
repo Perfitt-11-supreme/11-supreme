@@ -1,6 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ai, brand_abcmart, heart_empty, heart_filled } from '../../../assets/assets';
-import useProductDetailStore from '../../../stores/useProductDetailStore';
 import { TProduct } from '../../../types/product';
 import {
   brandIconBox,
@@ -22,51 +21,59 @@ type SizeRecommendationCardProps = {
   isHeartFilled?: boolean;
   onCardClick?: () => void; // 클릭 이벤트를 처리하는 함수
   onDelete?: (id: string) => void; // 삭제 함수
+  onAdd?: (productId: string) => void; // 하트 클릭 시 호출할 함수
+  productId?: string;
+  moveClickProduct?: (userId: string, productId: string) => Promise<void>; // moveClickProduct 함수 타입 정의
+  userId?: string; // 사용자 uid
+  moveHeartProduct?: (productId: string, newChecked: boolean) => void; // 하트 상태 변경 함수
 };
 
 const SizeRecommendationCard = ({
   product,
   isHeartFilled = false,
   onCardClick,
-  onDelete,
+  productId,
+  moveHeartProduct,
+  moveClickProduct,
+  userId,
 }: SizeRecommendationCardProps) => {
   // product가 null일 경우 아무것도 렌더링하지 않음
   if (!product) {
     return <></>;
   }
-  // console.log('Product in SizeRecommendationCard:', product); // 전달된 product 확인
+
   const [isChecked, setIsChecked] = useState(isHeartFilled);
-  const { handleProductDetailsClick } = useProductDetailStore();
 
-  const handleHeartChecked = (e: React.MouseEvent) => {
+  useEffect(() => {
+    setIsChecked(isHeartFilled);
+  }, [isHeartFilled]);
+
+  // 하트가 비활성화될 때 myLiked에서 해당 제품을 삭제하는 코드 추가
+  const handleHeartChecked = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsChecked(prev => !prev);
+    const newChecked = !isChecked;
+    setIsChecked(newChecked);
 
-    // 하트가 채워져 있을 때 (삭제 이벤트)
-    if (isChecked && product?.productId) {
-      console.log('Deleting product with productId:', product?.productId); // productId 확인
-      onDelete?.(product.productId); // 삭제 함수 호출
-      // if (isChecked) {
-      //   console.log('Deleting product with productId:', product?.productId); // productId 확인
-      //   if (product?.productId) {
-      //     onDelete?.(product.productId); // 삭제 함수 호출
-      //   } else {
-      //     console.log('Product ID is undefined');
-      //   }
-      // }
+    if (moveHeartProduct && productId) {
+      moveHeartProduct(productId, newChecked); // 하트 클릭 시 zustand의 handleHeartChecked 호출
     }
   };
+
   return (
     <div
       className={sizeRecommendationCardBox}
-      onClick={() => {
+      onClick={async e => {
         window.open(product.link, '_blank'); // 새 창에서 링크 열기
+        e.stopPropagation();
+        if (userId && productId && moveClickProduct) {
+          await moveClickProduct(userId, productId); // moveClickProduct 호출
+        }
         onCardClick?.(); // 클릭한 시간을 기록하는 함수 호출 (옵셔널 체이닝 처리)
       }}
     >
       <div className={sizeRecommendationThumbnail}>
         <div className={sizeRecommendationThumbnailContainer}>
-          <img src={product.image} alt={product.modelName} loading='lazy' />
+          <img src={product.image} alt={product.modelName} loading="lazy" />
         </div>
         <div className={sizeRecommendationBadge}>
           <p className={sizeRecommendationBadgeTag}>{product?.sizeRecommend} 추천</p>
@@ -79,7 +86,6 @@ const SizeRecommendationCard = ({
             handleHeartChecked(e);
           }}
         >
-          {/* <img src={isHeartFilled || isChecked ? heart_filled : heart_empty} alt="heart" /> */}
           <img src={isChecked ? heart_filled : heart_empty} alt="heart" />
         </div>
 
@@ -95,13 +101,7 @@ const SizeRecommendationCard = ({
         </div>
         <p className={productText}>{product?.price}원</p>
       </div>
-      <button
-        className={productDetailsButton}
-        onClick={e => {
-          e.stopPropagation(); // 부모의 onClick이 실행되지 않도록 방지
-          handleProductDetailsClick(product);
-        }}
-      >
+      <button className={productDetailsButton} type="button">
         <img src={ai} alt="ai" />이 신발 더 알아보기
       </button>
     </div>
