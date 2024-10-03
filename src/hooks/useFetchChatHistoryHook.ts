@@ -1,6 +1,5 @@
-import { DataSnapshot, DatabaseReference, onValue, orderByChild, query, ref } from 'firebase/database';
-import { useEffect, useRef, useState } from 'react';
-import { database } from '../firebase/firebase';
+import { DataSnapshot, DatabaseReference, getDatabase, off, onValue, orderByChild, query, ref } from 'firebase/database';
+import { useEffect, useState } from 'react';
 import useBrandStore from '../stores/useBrandStore';
 import useChatStore from '../stores/useChatStore';
 import useProductStore from '../stores/useProductsStore';
@@ -16,88 +15,102 @@ const useFetchChatHistoryHook = (currentChatId: string | null) => {
   const { setShowChatBotAndRecommend } = useUIStateStore();
   const { setBrands } = useBrandStore();
 
-  const messagesRefCleanup = useRef<(() => void) | null>(null);
-  const [firebaseChatItems, setFirebaseChatItems] = useState<ChatItem[]>([]);
+  const [data, setData] = useState<ChatItem[] | null>(null);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    // Cleanup 이전 구독 해제
-    if (messagesRefCleanup.current) {
-      messagesRefCleanup.current();
-      messagesRefCleanup.current = null;
-    }
+    let dbRef: DatabaseReference;
 
-    // 현재 사용자와 채팅 ID가 유효한 경우
-    if (user?.uid && currentChatId) {
-      const messagesRef: DatabaseReference = ref(database, `users/${user.uid}/chats/${currentChatId}/messages`);
-      // 쿼리 생성
-      const messagesQuery = query(messagesRef, orderByChild('timestamp'));
+    const connect = () => {
+      setLoading(true);
+      if (user?.uid && currentChatId) {
+        const db = getDatabase();
+        dbRef = ref(db, `users/${user.uid}/chats/${currentChatId}/messages`);
+        const messagesQuery = query(dbRef, orderByChild('timestamp'));
 
-      const handleSnapshot = (snapshot: DataSnapshot) => {
-        const chatItems: ChatItem[] = [];
+        onValue(messagesQuery, (snapshot: DataSnapshot) => {
+          const chatItems: ChatItem[] = [];
 
-        snapshot.forEach((messageSnapshot: DataSnapshot) => {
-          const messageId = messageSnapshot.key;
-          const message = messageSnapshot.val();
-          if (messageId && message) {
-            chatItems.push({
-              ...message,
-              id: messageId,
-            });
-          }
-        });
+          snapshot.forEach((messageSnapshot: DataSnapshot) => {
+            const messageId = messageSnapshot.key;
+            const message = messageSnapshot.val();
+            if (messageId && message) {
+              chatItems.push({
+                ...message,
+                id: messageId,
+              });
+            }
+          });
 
-        setFirebaseChatItems(chatItems);
+          setData(chatItems);
+          setLoading(false);
 
-        // 채팅 항목 처리
-        if (chatItems.length > 0) {
-          setChatHistory(chatItems);
-          const lastChatItem = chatItems[chatItems.length - 1];
-          if (lastChatItem.products) {
-            setProducts(lastChatItem.products);
-            setShowChatBotAndRecommend(true);
+           // 채팅 항목 처리
+          if (chatItems.length > 0) {
+            setChatHistory(chatItems);
+            const lastChatItem = chatItems[chatItems.length - 1];
+            if (lastChatItem.products) {
+              setProducts(lastChatItem.products);
+              setShowChatBotAndRecommend(true);
+            } else {
+              setProducts([]);
+              setShowChatBotAndRecommend(false);
+            }
+            if (lastChatItem.brands) {
+              setBrands(lastChatItem.brands);
+            }
           } else {
+            setChatHistory([]);
             setProducts([]);
+            setBrands([]);
+            setCurrentKeywords('');
             setShowChatBotAndRecommend(false);
           }
-          if (lastChatItem.brands) {
-            setBrands(lastChatItem.brands);
-          }
-          // setCurrentKeywords(lastChatItem.keywords);
-        } else {
-          setChatHistory([]);
-          setProducts([]);
-          setBrands([]);
-          setCurrentKeywords('');
-          setShowChatBotAndRecommend(false);
-        }
-      };
-
-      // 쿼리에서 값 변경 이벤트를 수신
-     const unsubscribe = onValue(messagesQuery, handleSnapshot);
-
-      messagesRefCleanup.current = () => unsubscribe();
-    } else {
-      // 사용자나 채팅 ID가 없을 경우 상태 초기화
-      setChatHistory([]);
-      setProducts([]);
-      setBrands([]);
-      setCurrentKeywords('');
-      setShowChatBotAndRecommend(false);
-    }
-
-    // 컴포넌트 언마운트 시 클린업
-    return () => {
-      if (messagesRefCleanup.current) {
-        messagesRefCleanup.current();
+        });
+      } else {
+        // user 또는 chatId가 없을 경우 상태 초기화
+        setData(null);
+        setChatHistory([]);
+        setProducts([]);
+        setBrands([]);
+        setCurrentKeywords('');
+        setShowChatBotAndRecommend(false);
+        setLoading(false);
       }
     };
+
+    const disconnect = () => {
+      if (dbRef) {
+        off(dbRef);
+      }
+    };
+
+    // 초기 연결
+    connect();
+
+      // bfcache 관련 이벤트 처리
+    const handlePageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) {
+        connect(); // 페이지가 bfcache에서 복원된 경우 Firebase 재연결
+      }
+    };
+
+    const handlePageHide = () => {
+      disconnect(); // 페이지가 숨겨질 때 Firebase 연결 해제
+    };
+
+    window.addEventListener('pageshow', handlePageShow);
+    window.addEventListener('pagehide', handlePageHide);
+
+    // 클린업 함수
+    return () => {
+      disconnect();
+      window.removeEventListener('pageshow', handlePageShow);
+      window.removeEventListener('pagehide', handlePageHide);
+    };
   }, [user, currentChatId, setProducts, setBrands, setChatHistory, setCurrentKeywords, setShowChatBotAndRecommend]);
-  // Firebase에서 가져온 데이터만 setChatHistory에 설정
-  useEffect(() => {
-    setChatHistory(firebaseChatItems);
-  }, [firebaseChatItems, setChatHistory]);
 
-  return firebaseChatItems;
+  return { data, loading };
 };
-
 
 export default useFetchChatHistoryHook;

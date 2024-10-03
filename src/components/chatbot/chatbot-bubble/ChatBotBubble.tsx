@@ -9,7 +9,7 @@ const ChatBotBubble = ({ bubbleContent }: TChat) => {
     <>
       <div className={chatBotBubbleWrap}>
         <div className={chatBotBubbleContainer}>
-          <img src={prefitt_symbol} alt="" />
+          <img src={prefitt_symbol} alt="perfitt_symbol" width="28px" height="28px" />
           <div className={chatBotBubbleText}>
             <ReactMarkdown>{content}</ReactMarkdown>
           </div>

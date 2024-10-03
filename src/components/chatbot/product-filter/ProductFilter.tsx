@@ -48,7 +48,7 @@ const ProductFilter = ({ filterProducts }: ProductFilterProps) => {
       <div className={productRecommendWrapper}>
         <ul className={productRecommend}>
           {displayProducts.map((product, index) => (
-            <li key={index}><SizeRecommendationCard product={product} /></li>
+            <li key={index} style={{ width: 'auto', minWidth: '166px' }}><SizeRecommendationCard product={product} /></li>
           ))}
         </ul>
       </div>

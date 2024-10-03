@@ -4,6 +4,7 @@ import { TProduct } from '../../../types/product';
 import {
   brandIconBox,
   heartIconBox,
+  imageStyle,
   productBox,
   productBrand,
   productDetailsButton,
@@ -73,7 +74,7 @@ const SizeRecommendationCard = ({
     >
       <div className={sizeRecommendationThumbnail}>
         <div className={sizeRecommendationThumbnailContainer}>
-          <img src={product.image} alt={product.modelName} loading="lazy" />
+          <img src={product.image} alt={product.modelName} loading="lazy" className={imageStyle} />
         </div>
         <div className={sizeRecommendationBadge}>
           <p className={sizeRecommendationBadgeTag}>{product?.sizeRecommend} 추천</p>
@@ -99,7 +100,7 @@ const SizeRecommendationCard = ({
           <p className={productBrand}>{product.brand || 'Unknown Brand'}</p>
           <p className={productText}>{product.modelName}</p>
         </div>
-        <p className={productText}>{product?.price}원</p>
+        {/* <p className={productText}>{product?.price}</p> */}
       </div>
       <button className={productDetailsButton} type="button">
         <img src={ai} alt="ai" />이 신발 더 알아보기

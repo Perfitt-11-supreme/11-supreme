@@ -57,7 +57,7 @@ const Modal = ({
                 //실시간 변화일 때 클릭 아예 차단
               }}
             >
-              <img src={bar} alt="bar" />
+              <img src={bar} alt="bar" width="32px" height="4" />
             </div>
             {title && <h1 className={modalContainerTitle}>{title}</h1>}
             {children}

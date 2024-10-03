@@ -215,7 +215,7 @@ const ChatbotSearchInput = () => {
     <div className={chatbotSearchContainer}>
       {toastMessage && <ToastMessage message={toastMessage.message} duration={toastMessage.duration} />}
       <div className={pictureIconBox} onClick={handlePictureClick}>
-        <img src={picture} alt="picture" />
+        <img src={picture} alt="picture" width="22.16px" height="22.16px" />
       </div>
       <div className={chatbotSearchInputBox}>
         {previewImage && (
@@ -257,7 +257,7 @@ const ChatbotSearchInput = () => {
           disabled={selectedFile !== null}
         />
         <button className={uploadIconBox} onClick={handleButtonClick}>
-          <img src={upload} alt="upload" />
+          <img src={upload} alt="upload" width="40px" height="40px" />
         </button>
       </div>
       <input ref={fileInputRef} type="file" style={{ display: 'none' }} accept="image/*" onChange={handleFileChange} />
