@@ -2,9 +2,9 @@ import { getAuth, signOut } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore'; // Firestore 관련 함수 import
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { user_profile } from '../../assets/assets';
-import { USER_COLLECTION } from '../../firebase/firebase'; // USER_COLLECTION 경로 수정
-import useUserStore from '../../stores/useUserStore';
+import { user_profile } from '../../../assets/assets';
+import { USER_COLLECTION } from '../../../firebase/firebase';
+import useUserStore from '../../../stores/useUserStore';
 import {
   sidemenuMypageLine,
   sidemenuMypageMoveButton,
@@ -13,7 +13,7 @@ import {
   sidemenuUserProfileIcon,
   sidemenuUserProfileLogout,
   sidemenuUserProfileText,
-} from './sidemenuMypageLinks.css';
+} from './sidemenu-mypage-link.css';
 
 // type UserData = {
 //   userName?: string;
