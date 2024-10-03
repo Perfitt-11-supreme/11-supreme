@@ -22,7 +22,7 @@ export const likedAndViewedHistoryItemBox = style({
   gap: '16px',
   paddingBottom: '64px',
   overflowY: 'auto',
-  height: 'calc(100% - 180px)',
+  height: 'calc(100% - 260px)',
 });
 export const likedInBrandsItemBox = style({
   padding: '0 16px',

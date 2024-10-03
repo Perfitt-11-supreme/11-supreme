@@ -31,6 +31,7 @@ type Product = {
   sizeRecommend: string;
   uid: string;
   timestamp?: string;
+  isLiked?: boolean; // 추가된 필드
 };
 
 type Brand = {
@@ -95,7 +96,6 @@ const LikedPage = () => {
       const url = await getDownloadURL(imageRef);
       return url;
     } catch (error) {
-      console.error('Error fetching logo image URL:', error);
       return null;
     }
   };
@@ -103,7 +103,6 @@ const LikedPage = () => {
   // user 데이터를 FireStore에 전송
   const handleAddToMyProducts = async () => {
     if (!user) {
-      console.error('User is not logged in');
       return;
     }
 
@@ -113,15 +112,6 @@ const LikedPage = () => {
 
       // Firestore에서 기존 데이터를 가져옴
       const docSnap = await getDoc(userDoc);
-
-      // docSnap.exists()로 Firestore에 데이터가 있는지 확인한 후, 데이터가 없을 경우에만 목데이터를 추가
-      // if (docSnap.exists()) {
-      //   console.log('Firestore에 이미 데이터가 존재합니다.');
-      //   const data = docSnap.data();
-      //   setBrandsData(data?.brands || {});
-      //   setProductsData(data?.products || {});
-      //   return; // 데이터가 이미 있으므로 추가하지 않음
-      // }
 
       // Firestore에서 고유 ID 생성
       const nike = doc(LIKED_COLLECTION).id;
@@ -165,7 +155,8 @@ const LikedPage = () => {
           modelName: '우먼스 나이키 코트 비전 알타 레더',
           price: 59000,
           sizeRecommend: '245mm',
-          timestamp: '',
+          timestamp: new Date().toISOString(),
+          isLiked: true, // 초기 하트 상태 설정
         },
         [productId2]: {
           brand: 'Vans',
@@ -174,6 +165,8 @@ const LikedPage = () => {
           modelName: '어센틱 - 컬러 띠어리 아이스버그 그린',
           price: 95000,
           sizeRecommend: '240mm',
+          timestamp: new Date().toISOString(),
+          isLiked: true, // 초기 하트 상태 설정
         },
         [productId3]: {
           brand: 'Vans',
@@ -182,6 +175,8 @@ const LikedPage = () => {
           modelName: '올드 스쿨 - 스레디드 데님 블루/화이트',
           price: 95000,
           sizeRecommend: '240mm',
+          timestamp: new Date().toISOString(),
+          isLiked: true, // 초기 하트 상태 설정
         },
         [productId4]: {
           brand: 'Adidas',
@@ -190,6 +185,8 @@ const LikedPage = () => {
           modelName: '핸드볼 스페지알 우먼스',
           price: 139000,
           sizeRecommend: '235mm',
+          timestamp: new Date().toISOString(),
+          isLiked: true, // 초기 하트 상태 설정
         },
         [productId5]: {
           brand: 'Crocs',
@@ -198,19 +195,19 @@ const LikedPage = () => {
           modelName: '듀엣 맥스 II 클로그',
           price: 79900,
           sizeRecommend: '245mm',
+          timestamp: new Date().toISOString(),
+          isLiked: true, // 초기 하트 상태 설정
         },
       };
 
       // docSnap.exists()로 Firestore에 데이터가 있는지 확인한 후, 데이터가 없을 경우에만 목데이터를 추가
       if (docSnap.exists()) {
-        console.log('Firestore에 이미 데이터가 존재합니다.');
         const data = docSnap.data();
         const productsData = data?.products || {}; // 기존 products 데이터를 가져옴
         const brandsData = data?.brands || {}; // 기존 brands 데이터를 가져옴
 
         // products 필드가 존재하지 않거나 비어있을 경우 목데이터 추가
         if (Object.keys(productsData).length === 0) {
-          console.log('products 필드가 비어있습니다. 목데이터를 추가합니다.');
           await setDoc(
             userDoc,
             {
@@ -219,15 +216,12 @@ const LikedPage = () => {
             },
             { merge: true }
           );
-          console.log('products 목데이터가 추가되었습니다.');
         } else {
-          console.log('products 필드에 데이터가 이미 있습니다.');
           setProductsData(productsData); // 이미 있는 데이터를 상태에 설정
         }
 
         // brands 필드가 존재하지 않거나 비어있을 경우 목데이터 추가
         if (Object.keys(brandsData).length === 0) {
-          console.log('brands 필드가 비어있습니다. 목데이터를 추가합니다.');
           await setDoc(
             userDoc,
             {
@@ -236,9 +230,7 @@ const LikedPage = () => {
             },
             { merge: true }
           );
-          console.log('brands 목데이터가 추가되었습니다.');
         } else {
-          console.log('brands 필드에 데이터가 이미 있습니다.');
           setBrandsData(brandsData); // 이미 있는 데이터를 상태에 설정
         }
         return;
@@ -261,13 +253,9 @@ const LikedPage = () => {
         const updatedData = updatedDocSnap.data();
         setProductsData(updatedData?.products || {});
         setBrandsData(updatedData?.brands || {});
-      } else {
-        console.log('No document found');
       }
-
-      console.log('Products and brands added to Firestore');
     } catch (error) {
-      console.error('Error adding document: ', error);
+      alert('handleAddToMyProducts 에러');
     }
   };
 
@@ -280,9 +268,8 @@ const LikedPage = () => {
       await updateDoc(docRef, {
         [`products.${productId}`]: deleteField(),
       });
-      console.log('Firestore에서 필드 삭제 성공:', productId);
     } catch (e) {
-      console.error('Firestore에서 필드 삭제 에러: ', e);
+      alert('deleteLikedProductData 에러');
     }
   };
 
@@ -293,18 +280,21 @@ const LikedPage = () => {
         // Firestore에서 products 필드 안의 특정 productId 삭제
         await deleteLikedProductData(productId);
 
-        console.log('Firestore에서 상품 삭제 완료:', productId);
-
         // 상태 업데이트 - 삭제된 상품을 제외한 나머지 productsData로 업데이트
         const updatedProducts = { ...productsData };
         delete updatedProducts[productId]; // 삭제된 상품을 상태에서 제거
         setProductsData(updatedProducts); // 상태 업데이트
+
+        // `myViewed`에서 해당 상품의 `isLiked`를 false로 업데이트
+        if (user?.uid) {
+          const viewedDocRef = doc(VIEWED_COLLECTION, user.uid);
+          await updateDoc(viewedDocRef, {
+            [`products.${productId}.isLiked`]: false, // `isLiked`를 false로 변경
+          });
+        }
       } catch (error) {
-        console.error('삭제 실패:', error);
-        alert('삭제 중 오류가 발생했습니다.');
+        alert('handleDeleteProduct 에러');
       }
-    } else {
-      console.error('productId가 정의되지 않았습니다.');
     }
   };
 
@@ -317,9 +307,8 @@ const LikedPage = () => {
       await updateDoc(docRef, {
         [`brands.${brandId}`]: deleteField(),
       });
-      console.log('Firestore에서 필드 삭제 성공:', brandId);
     } catch (e) {
-      console.error('Firestore에서 필드 삭제 에러: ', e);
+      alert('user 데이터를 FireStore에 전송 에러');
     }
   };
 
@@ -330,22 +319,16 @@ const LikedPage = () => {
         // Firestore에서 brands 필드 안의 특정 brandId 삭제
         await deleteLikedBrandData(brandId);
 
-        console.log('Firestore에서 상품 삭제 완료:', brandId);
-
         // 상태 업데이트 - 삭제된 상품을 제외한 나머지 brandsData로 업데이트
         const updatedBrands = { ...brandsData };
         delete updatedBrands[brandId]; // 삭제된 상품을 상태에서 제거
         setBrandsData(updatedBrands); // 상태 업데이트
       } catch (error) {
-        console.error('삭제 실패:', error);
-        alert('삭제 중 오류가 발생했습니다.');
+        alert('handleDeleteBrand 에러');
       }
-    } else {
-      console.error('brandId가 정의되지 않았습니다.');
     }
   };
 
-  // 좋아요=>최근본으로 옮기는 기능
   // myLiked에서 카드 클릭 시 product를 가져와 myViewed로 옮기는 함수 (timestamp 추가 포함)
   const moveProductFromLikedToViewed = async (userId: string, productId: string) => {
     try {
@@ -370,30 +353,23 @@ const LikedPage = () => {
           const updatedProductData = {
             ...productData, // 기존 product 데이터 유지
             timestamp: timestamp, // 새로 추가할 timestamp
+            isLiked: true, // 좋아요 상태 유지
           };
 
           // 'myViewed' 문서에 해당 product 추가
           await updateDoc(viewedDocRef, {
             [`products.${productId}`]: updatedProductData, // 모든 product 필드가 포함된 객체 업데이트
           });
-
-          console.log(`Product ${productId} moved from myLiked to myViewed.`);
-        } else {
-          console.log(`Product ${productId} not found in myLiked.`);
         }
-      } else {
-        console.log('myLiked 문서가 존재하지 않습니다.');
       }
     } catch (error) {
-      console.error('Error moving product:', error);
+      alert('moveProductFromLikedToViewed 에러');
     }
   };
 
-  // 최근본 기능 - 좋아요에서는 미완성
   // 카드 클릭 시 timestamp를 기록하는 함수
   const handleCardClick = async (productId: string) => {
     if (!user?.uid) {
-      console.log('User가 없습니다.');
       return; // 사용자가 없으면 중단
     }
 
@@ -415,10 +391,62 @@ const LikedPage = () => {
           timestamp,
         },
       }));
-
-      console.log(`Timestamp for product ${productId} 저장 성공:`, timestamp);
     } catch (error) {
-      console.error('Timestamp 저장 실패:', error);
+      alert('handleCardClick 에러');
+    }
+  };
+
+  // 하트 상태 변경 처리 (myViewed에 하트 상태 업데이트 및 myLiked에 추가) - 하트상태 firestore에 저장
+  const handleHeartChecked = async (productId: string, newChecked: boolean) => {
+    if (!user?.uid || !productId) return;
+
+    try {
+      const viewedDocRef = doc(VIEWED_COLLECTION, user.uid);
+      const likedDocRef = doc(LIKED_COLLECTION, user.uid);
+      const timestamp = new Date().toISOString();
+
+      // 'myViewed' 컬렉션 업데이트 (하트 상태 및 클릭한 시간 업데이트)
+      await updateDoc(viewedDocRef, {
+        [`products.${productId}.isLiked`]: newChecked, // Firestore에 isLiked 상태 저장
+        [`products.${productId}.timestamp`]: timestamp, // 클릭한 시간 기록
+      });
+
+      // 하트가 눌렸다면 myLiked로 이동
+      if (newChecked) {
+        // 좋아요 상태 추가
+        const productData = productsData[productId];
+        const updatedProductData = { ...productData, isLiked: true, timestamp: new Date().toISOString() };
+
+        await updateDoc(likedDocRef, {
+          [`products.${productId}`]: updatedProductData,
+        });
+      } else {
+        // 하트가 취소되면 myLiked에서 삭제
+        await updateDoc(likedDocRef, {
+          [`products.${productId}`]: deleteField(),
+        });
+      }
+
+      // 상태 업데이트 및 클릭된 시간대로 정렬
+      setProductsData(prevProductsData => {
+        const updatedData = { ...prevProductsData };
+
+        if (!newChecked) {
+          // 좋아요가 취소되면 상태에서 제거
+          delete updatedData[productId];
+        } else {
+          // 좋아요 상태 유지
+          updatedData[productId] = {
+            ...updatedData[productId],
+            isLiked: newChecked,
+            timestamp,
+          };
+        }
+
+        return updatedData;
+      });
+    } catch (error) {
+      alert('handleHeartChecked 에러');
     }
   };
 
@@ -456,26 +484,30 @@ const LikedPage = () => {
         {productOrBrand === '상품' && (
           <article className={likedAndViewedHistoryItemBox}>
             {productsData && Object.keys(productsData).length > 0 ? (
-              Object.entries(productsData).map(([productId, product]) => {
-                return (
-                  <SizeRecommendationCard
-                    onCardClick={() => {
-                      handleCardClick(productId); // 클릭 시 시간 기록 함수 호출
-                    }}
-                    key={productId}
-                    isHeartFilled
-                    product={{
-                      ...product,
-                      productId: product.productId || productId, // productId가 없으면 key 사용
-                      brand: product.brand || 'Unknown Brand', // brand가 없으면 기본 값 할당
-                    }}
-                    moveClickProduct={moveProductFromLikedToViewed} // moveClickProduct 함수 전달
-                    userId={user?.uid || ''} // 현재 사용자의 uid 전달
-                    productId={productId} // productId도 props로 전달
-                    onDelete={handleDeleteProduct} // productId를 전달
-                  />
-                );
-              })
+              Object.entries(productsData)
+                .sort(([, a], [, b]) => new Date(b.timestamp || 0).getTime() - new Date(a.timestamp || 0).getTime()) // 클릭 시간으로 정렬
+                .map(([productId, product]) => {
+                  return (
+                    <SizeRecommendationCard
+                      onCardClick={() => {
+                        handleCardClick(productId); // 클릭 시 시간 기록 함수 호출
+                      }}
+                      key={productId}
+                      // isHeartFilled
+                      isHeartFilled={product.isLiked}
+                      product={{
+                        ...product,
+                        productId: product.productId || productId, // productId가 없으면 key 사용
+                        brand: product.brand || 'Unknown Brand', // brand가 없으면 기본 값 할당
+                      }}
+                      moveClickProduct={moveProductFromLikedToViewed} // moveClickProduct 함수 전달
+                      moveHeartProduct={handleHeartChecked} // 하트 상태 변경 함수 전달
+                      userId={user?.uid || ''} // 현재 사용자의 uid 전달
+                      productId={productId} // productId도 props로 전달
+                      onDelete={handleDeleteProduct} // productId를 전달
+                    />
+                  );
+                })
             ) : (
               <></> // productsData가 비어 있을 때 메시지 출력
             )}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ai, brand_abcmart, heart_empty, heart_filled } from '../../../assets/assets';
 import { TProduct } from '../../../types/product';
 import {
@@ -23,16 +23,15 @@ type SizeRecommendationCardProps = {
   onDelete?: (id: string) => void; // 삭제 함수
   onAdd?: (productId: string) => void; // 하트 클릭 시 호출할 함수
   productId?: string;
-  moveHeartProduct?: (userId: string, productId: string) => Promise<void>; // moveHeartProduct 함수 타입 정의
   moveClickProduct?: (userId: string, productId: string) => Promise<void>; // moveClickProduct 함수 타입 정의
   userId?: string; // 사용자 uid
+  moveHeartProduct?: (productId: string, newChecked: boolean) => void; // 하트 상태 변경 함수
 };
 
 const SizeRecommendationCard = ({
   product,
   isHeartFilled = false,
   onCardClick,
-  onDelete,
   productId,
   moveHeartProduct,
   moveClickProduct,
@@ -43,26 +42,20 @@ const SizeRecommendationCard = ({
     return <></>;
   }
 
-  // product 로그 출력
-  console.log('Received product:', product);
-
   const [isChecked, setIsChecked] = useState(isHeartFilled);
 
+  useEffect(() => {
+    setIsChecked(isHeartFilled);
+  }, [isHeartFilled]);
+
+  // 하트가 비활성화될 때 myLiked에서 해당 제품을 삭제하는 코드 추가
   const handleHeartChecked = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsChecked(prev => !prev);
+    const newChecked = !isChecked;
+    setIsChecked(newChecked);
 
-    // 하트 클릭 시 myViewed에서 myLiked로 상품을 이동하는 함수 호출
-    if (userId && productId) {
-      moveHeartProduct?.(userId, productId);
-    } else {
-      console.error('userId 또는 productId가 정의되지 않았습니다.');
-    }
-
-    // 하트가 채워져 있을 때 (삭제 이벤트)
-    if (isChecked && product?.productId) {
-      console.log('Deleting product with productId:', product?.productId); // productId 확인
-      onDelete?.(product.productId); // 삭제 함수 호출
+    if (moveHeartProduct && productId) {
+      moveHeartProduct(productId, newChecked); // 하트 클릭 시 zustand의 handleHeartChecked 호출
     }
   };
 
@@ -80,7 +73,7 @@ const SizeRecommendationCard = ({
     >
       <div className={sizeRecommendationThumbnail}>
         <div className={sizeRecommendationThumbnailContainer}>
-          <img src={product.image} alt={product.modelName} loading='lazy' />
+          <img src={product.image} alt={product.modelName} loading="lazy" />
         </div>
         <div className={sizeRecommendationBadge}>
           <p className={sizeRecommendationBadgeTag}>{product?.sizeRecommend} 추천</p>
