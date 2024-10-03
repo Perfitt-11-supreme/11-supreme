@@ -149,7 +149,7 @@ const Mypage = () => {
     <>
       <div className={responsiveBox} style={{ overflow: 'hidden' }}>
         <section className={mypageContainer}>
-          <Header imageSrc={back_arrow} alt="back arrow" nav="/hello" />
+          <Header imageSrc={back_arrow} alt="back arrow" nav="/chat" />
           <article className={userProfileImageContainer}>
             <div className={userProfileIconBox}>
               <div className={profileImageBox} onClick={handlePictureClick}>
