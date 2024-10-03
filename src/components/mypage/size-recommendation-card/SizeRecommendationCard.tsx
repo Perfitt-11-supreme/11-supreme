@@ -15,7 +15,7 @@ import {
   sizeRecommendationCardBox,
   sizeRecommendationThumbnail,
   sizeRecommendationThumbnailContainer,
-} from './sizeRecommendationCard.css';
+} from './size-recommendation-card.css';
 
 type SizeRecommendationCardProps = {
   product: TProduct | null;
