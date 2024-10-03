@@ -12,11 +12,11 @@ import ShoesInfo from '../components/shoes-info/ShoesInfo';
 import ShoesRegistry from '../components/shoes-registry/ShoesRegistry';
 import BridgePage from '../pages/bridge-page/bridgePage';
 import ChatBotPage from '../pages/chatbot-page/chatBotPage';
-import LikedPage from '../pages/liked-page/LikedPage';
+import LikedPage from '../pages/mypage/liked-page/LikedPage';
 import Mypage from '../pages/mypage/Mypage';
 import NotFound from '../pages/not-found/notFound';
 import SharePage from '../pages/share-page/SharePage';
-import ViewedHistoryPage from '../pages/viewed-history-page/ViewedHistoryPage';
+import ViewedHistoryPage from '../pages/mypage/viewed-history-page/ViewedHistoryPage';
 import ImageSearch from '../pages/imagesearch-page/ImageSearch';
 import TextSearch from '../pages/textsearch-page/TextSearch';
 

@@ -1,22 +1,22 @@
-import { back_arrow } from '../../assets/assets';
-import Header from '../../components/common/header/Header';
-import SizeRecommendationCard from '../../components/mypage/size-recommendation-card/SizeRecommendationCard';
+import { back_arrow } from '../../../assets/assets';
+import Header from '../../../components/common/header/Header';
+import SizeRecommendationCard from '../../../components/mypage/size-recommendation-card/SizeRecommendationCard';
 import {
   filterProductsAndBrandsQuantity,
   filterProductsAndBrandsQuantityBox,
   likedAndViewedHistoryCointainer,
   likedAndViewedHistoryItemBox,
   likedInBrandsItemBox,
-} from './likedPage.css';
-import LikedAndViewedHistoryButton from '../../components/mypage/liked-and-viewed-history-button/LikedAndViewedHistoryButton';
+} from './liked-page.css';
+import LikedAndViewedHistoryButton from '../../../components/mypage/liked-and-viewed-history-button/LikedAndViewedHistoryButton';
 import { useEffect, useState } from 'react';
-import ProductAndBrandButton from '../../components/mypage/product-and-brand-button/ProductAndBrandButton';
-import LikedInBrand from '../../components/mypage/liked-in-brand/LikedInBrand';
+import ProductAndBrandButton from '../../../components/mypage/product-and-brand-button/ProductAndBrandButton';
+import LikedInBrand from '../../../components/mypage/liked-in-brand/LikedInBrand';
 import { getDownloadURL, getStorage, listAll, ref } from 'firebase/storage';
-import useUserStore from '../../stores/useUserStore';
+import useUserStore from '../../../stores/useUserStore';
 import { deleteField, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
-import LoadingPage from '../loading-page/loadingPage';
-import { LIKED_COLLECTION, VIEWED_COLLECTION } from '../../firebase/firebase';
+import LoadingPage from '../../loading-page/loadingPage';
+import { LIKED_COLLECTION, VIEWED_COLLECTION } from '../../../firebase/firebase';
 
 // Firebase 초기화
 const storage = getStorage();
