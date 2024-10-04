@@ -28,7 +28,7 @@ import {
   starP,
 } from './shoesregistry.css';
 import StarRating from './star-rating/StarRating';
-import ItemCard from '../choose-shose/itemlistbox/itemcard/ItemCard';
+import ItemCard from '../shose-search/itemlistbox/itemcard/ItemCard';
 
 const auth = getAuth();
 const ShoesRegistry = () => {
