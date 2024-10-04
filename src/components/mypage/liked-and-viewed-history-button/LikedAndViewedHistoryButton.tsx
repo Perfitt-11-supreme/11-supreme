@@ -4,7 +4,7 @@ import {
   likedAndViewedHistoryButton,
   likedAndViewedHistoryButtonBox,
   likedAndViewedHistoryButtonChecked,
-} from './liked-and-viewed-history-button.css';
+} from './likedAndViewedHistoryButton.css';
 import { useNavigate } from 'react-router-dom';
 
 type LikedAndViewedHistoryButtonProps = {

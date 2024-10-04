@@ -24,7 +24,7 @@ import {
   sidemenuMypageMoveContainer,
   sidemenuNewChatContainer,
 } from './sidemenu.css';
-import { sidemenuUserProfileLogin } from './sidemenu-mypage-link/sidemenu-mypage-link.css';
+import { sidemenuUserProfileLogin } from './sidemenu-mypage-link/sidemenuMypageLink.css';
 
 type SideMenuProps = {
   onClose: () => void;

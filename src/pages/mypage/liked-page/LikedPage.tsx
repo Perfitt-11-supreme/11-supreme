@@ -7,7 +7,7 @@ import {
   likedAndViewedHistoryCointainer,
   likedAndViewedHistoryItemBox,
   likedInBrandsItemBox,
-} from './liked-page.css';
+} from './likedPage.css';
 import LikedAndViewedHistoryButton from '../../../components/mypage/liked-and-viewed-history-button/LikedAndViewedHistoryButton';
 import { useEffect, useState } from 'react';
 import ProductAndBrandButton from '../../../components/mypage/product-and-brand-button/ProductAndBrandButton';

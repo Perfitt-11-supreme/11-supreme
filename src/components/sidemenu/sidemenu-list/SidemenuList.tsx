@@ -13,7 +13,7 @@ import {
   sidemenuListIcon,
   sidemenuListText,
   sidemenuSwiperHiddenBox,
-} from './sidemenu-list.css';
+} from './sidemenuList.css';
 
 type SidemenuListProps = {
   iconSrc: string;

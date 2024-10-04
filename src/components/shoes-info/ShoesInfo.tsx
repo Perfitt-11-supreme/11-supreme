@@ -17,7 +17,7 @@ import {
   reviewP,
   shoesP,
   starDiv,
-} from './shoes-info.css';
+} from './shoesInfo.css';
 
 const ShoesInfo = () => {
   const [shoeData, setShoeData] = useState<any>(null);

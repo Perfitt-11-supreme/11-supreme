@@ -13,7 +13,7 @@ import {
   sidemenuUserProfileIcon,
   sidemenuUserProfileLogout,
   sidemenuUserProfileText,
-} from './sidemenu-mypage-link.css';
+} from './sidemenuMypageLink.css';
 
 // type UserData = {
 //   userName?: string;

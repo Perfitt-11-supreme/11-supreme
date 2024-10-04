@@ -6,7 +6,7 @@ import {
   filterProductsQuantityBox,
   likedAndViewedHistoryCointainer,
   viewedHistoryItemBox,
-} from './viewed-history-page.css';
+} from './viewedHistoryPage.css';
 import LikedAndViewedHistoryButton from '../../../components/mypage/liked-and-viewed-history-button/LikedAndViewedHistoryButton';
 import { back_arrow } from '../../../assets/assets';
 import useUserStore from '../../../stores/useUserStore';

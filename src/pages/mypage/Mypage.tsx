@@ -3,14 +3,7 @@ import { collection, doc, getDoc, getDocs, query, setDoc, where } from 'firebase
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  back_arrow,
-  mypage_arrow,
-  mypage_heart,
-  mypage_shoes_room,
-  user_profile,
-  user_profile_upload,
-} from '../../assets/assets';
+import { back_arrow, mypage_heart, mypage_shoes_room, user_profile, user_profile_upload } from '../../assets/assets';
 import Header from '../../components/common/header/Header';
 import DeleteUserModal from '../../components/deleteuser/DeleteUserModal';
 import { db } from '../../firebase/firebase';
@@ -21,7 +14,6 @@ import {
   myInfoContainer,
   myInfoKey,
   myInfoServiceBox,
-  myInfoServiceButton,
   myInfoServiceTermBox,
   myInfoServiceTermButton,
   myInfoTitle,
@@ -39,6 +31,7 @@ import {
   userProfileNameTextBold,
   userProfileUploadIconBox,
 } from './mypage.css';
+import MypageServiceAccordian from '../../components/mypage/mypage-service-accordian/MypageServiceAccordian';
 
 const Mypage = () => {
   const navigate = useNavigate();
@@ -178,9 +171,9 @@ const Mypage = () => {
               <span className={userProfileNameTextBold}>
                 {userData
                   ? userData?.userName ||
-                  userData?.username
-                    .split('')
-                    .map((char: string, index: number) => <span key={index}>{char}&nbsp;</span>)
+                    userData?.username
+                      .split('')
+                      .map((char: string, index: number) => <span key={index}>{char}&nbsp;</span>)
                   : '-'}
               </span>
               님
@@ -227,18 +220,7 @@ const Mypage = () => {
           <article>
             <hr className={borderLine} />
             <div className={myInfoServiceBox}>
-              <div className={myInfoServiceButton}>
-                <span>내 정보 수정</span>
-                <img src={mypage_arrow} alt="mypage_arrow" />
-              </div>
-              <div className={myInfoServiceButton}>
-                <span>비밀번호 변경</span>
-                <img src={mypage_arrow} alt="mypage_arrow" />
-              </div>
-              <div className={myInfoServiceButton}>
-                <span>고객센터</span>
-                <img src={mypage_arrow} alt="mypage_arrow" />
-              </div>
+              <MypageServiceAccordian />
             </div>
             <div className={myInfoServiceTermBox}>
               <div className={myInfoServiceTermButton} onClick={() => setIsDeleteUserModalOpen(true)}>

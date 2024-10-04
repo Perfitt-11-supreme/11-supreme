@@ -139,18 +139,7 @@ export const myInfoValue = style([
 export const myInfoServiceBox = style({
   paddingTop: '25px',
 });
-export const myInfoServiceButton = style({
-  padding: '16px',
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  fontSize: '14px',
-  fontWeight: '500',
-  lineHeight: '16.71px',
-  backgroundColor: theme.color.white,
-  borderBottom: `1px solid ${theme.color.cool_gray100}`,
-  cursor: 'pointer',
-});
+
 export const myInfoServiceTermBox = style({
   display: 'flex',
   alignItems: 'center',
