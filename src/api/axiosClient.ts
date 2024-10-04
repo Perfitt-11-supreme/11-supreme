@@ -14,7 +14,7 @@ import axios from "axios";
       if (config.url?.startsWith('http://perfitt-supreme.s3-website.ap-northeast-2.amazonaws.com')) {
         config.url = config.url.replace('http://perfitt-supreme.s3-website.ap-northeast-2.amazonaws.com', VITE_BASE_REQUEST_URL);
       }
-      console.log("Full Request URL:", config.baseURL + config.url);
+      // console.log("Full Request URL:", config.baseURL + config.url);
       return config;
     }, error => {
       console.error("Request error:", error);
