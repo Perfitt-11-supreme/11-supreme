@@ -22,7 +22,6 @@ import brand_crocs from './common/brand_crocs.svg';
 import brand_nike from './common/brand_nike.svg';
 import chatCircle from './common/chatCircle.svg';
 import checked from './common/checked.svg';
-import circle from './common/circle.svg';
 import close from './common/close.svg';
 import copy_left from './common/copy_left.svg';
 import filled_star from './common/filled_star.svg';
@@ -87,17 +86,27 @@ export {
   brand_adidas,
   brand_crocs,
   brand_nike,
-  camera, chatCircle, checked,
-  circle,
-  close, copy_left, deleted,
+  camera,
+  chatCircle,
+  checked,
+  close,
+  copy_left,
+  deleted,
   detail,
   empty_star,
   export_icon,
-  filled_star, foot_loading, gallery, google, hamburger_menu,
+  filled_star,
+  foot_loading,
+  gallery,
+  google,
+  hamburger_menu,
   heart_empty,
   heart_filled,
   info,
-  kebab, link_angled, loading, modify,
+  kebab,
+  link_angled,
+  loading,
+  modify,
   more_arrow,
   my_foot,
   my_foot_info,
@@ -110,7 +119,9 @@ export {
   perfittlogo,
   picture,
   plus,
-  polygon2, prefitt_logo2, prefitt_symbol,
+  polygon2,
+  prefitt_logo2,
+  prefitt_symbol,
   rectangle,
   search,
   select,
@@ -137,6 +148,5 @@ export {
   user_profile,
   user_profile_upload,
   warning,
-  warning2
+  warning2,
 };
-
