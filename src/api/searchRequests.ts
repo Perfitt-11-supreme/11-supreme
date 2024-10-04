@@ -10,7 +10,7 @@ type SerachRequests = SearchRequestPaths & {
 };
 
 // chatRequests 객체 구현
-const serachRequests: SerachRequests = {
+const searchRequests: SerachRequests = {
   textSearch: '/shoes/find', // 맞춤 상품 추천
   imageSearch: '/shoes/find-by-image', // 키워드 리스트
   getFullPath(path: string): string {
@@ -19,11 +19,11 @@ const serachRequests: SerachRequests = {
 };
 
 /** 텍스트 검색 */
-export const textShoseSearchAPI = (text: string) => {
-  return axiosClient.post(serachRequests.getFullPath(serachRequests.textSearch), text);
+export const textShoesSearchAPI = (text: string) => {
+  return axiosClient.post(searchRequests.getFullPath(searchRequests.textSearch), text);
 };
 
 // 이미지 검색
-export const ImageShoseSearchAPI = (imageUrl: string| FormData):Promise<AxiosResponse> => {
-  return axiosClient.post(serachRequests.getFullPath(serachRequests.imageSearch), imageUrl);
+export const ImageShoesSearchAPI = (imageUrl: string| FormData):Promise<AxiosResponse> => {
+  return axiosClient.post(searchRequests.getFullPath(searchRequests.imageSearch), imageUrl);
 };

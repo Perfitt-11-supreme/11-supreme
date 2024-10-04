@@ -12,14 +12,14 @@ import {
 // Zustand
 import useTextSearchStore from '../../../../../stores/useTextSearchStore';
 // 커스텀훅
-import { useTextSearchHooks } from '../../../../../hooks/useTextSearchHooks';
-import { useHandleTextSearchPost } from '../../../../../hooks/useHandleTextSearchPost';
+import { useHandleTextSearchPost } from '../../../../../hooks/useHandleTextSearchPostHook';
+import { useTextSearch } from '../../../../../hooks/useTextSearchHooks';
 // 컴포넌트
 import IsLoading from '../../../isLoading/IsLoading';
 
 const TextRecordBox = () => {
   const { postText, isLoading, textRecord, setText, setFocus, clearTextRecord } = useTextSearchStore();
-  const { handleClickRecord } = useTextSearchHooks();
+  const { handleClickRecord } = useTextSearch();
   const { handleTextSearchPost } = useHandleTextSearchPost();
 
   const renderTextRecords = () => {

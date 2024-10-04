@@ -11,7 +11,7 @@ import {
 // Zustand
 import useSelectItemStore from '../../../../../stores/useSelectItemStore';
 // 커스텀 훅
-import useImaeSearchPost from '../../../../../hooks/useHandleImaeSearchPost';
+import useImaeSearchPost from '../../../../../hooks/useHandleImageSearchPostHook';
 
 const SuccesProduct = () => {
   const { selectProduct } = useSelectItemStore();

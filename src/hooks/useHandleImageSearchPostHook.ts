@@ -1,13 +1,13 @@
 // 리액트
 import { useMutation } from '@tanstack/react-query';
 // apu
-import { ImageShoseSearchAPI } from '../api/searchRequests';
+import { ImageShoesSearchAPI } from '../api/searchRequests';
 // 타입
 import { TProduct } from '../types/product';
 // Zustand
+import useImageSearchStore from '../stores/useImageSearchStore';
 import useProductStore from '../stores/useProductsStore';
 import useSelectItemStore from '../stores/useSelectItemStore';
-import useImageSearchStore from '../stores/useImageSearchStore';
 
 // 매개변수 true : 비슷한 상품 보기  false : 촬영한 이미지 포스트
 const useHandleImageSearchPost = () => {
@@ -18,7 +18,7 @@ const useHandleImageSearchPost = () => {
   const handleImageSearchPost = useMutation({
     mutationFn: (data: string) => {
       setAnalyze(true);
-      return ImageShoseSearchAPI(data);
+      return ImageShoesSearchAPI(data);
     },
     onSuccess: response => {
       console.log('키워드 전송 성공');

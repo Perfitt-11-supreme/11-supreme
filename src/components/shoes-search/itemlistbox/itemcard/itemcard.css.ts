@@ -41,7 +41,7 @@ export const ItemCard_Frame = style({
   gap: '10px',
 });
 
-export const ItemCard_ShoseBrand = style({
+export const ItemCard_ShoesBrand = style({
   height: 'auto',
   fontWeight: '400',
   fontSize: '14px',
@@ -49,7 +49,7 @@ export const ItemCard_ShoseBrand = style({
   color: theme.color.black,
 });
 
-export const ItemCard_ShoseName = style({
+export const ItemCard_ShoesName = style({
   height: '15px',
   fontWeight: '500',
   fontSize: '15px',
@@ -58,7 +58,7 @@ export const ItemCard_ShoseName = style({
   color: theme.color.black,
 });
 
-export const ItemCard_ShosePrice = style({
+export const ItemCard_ShoesPrice = style({
   height: '15px',
   fontWeight: '500',
   fontSize: '14px',

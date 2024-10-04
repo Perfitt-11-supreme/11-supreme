@@ -1,13 +1,13 @@
 // 리액트
 import { useMutation } from '@tanstack/react-query';
 // api
-import { textShoseSearchAPI } from '../api/searchRequests';
+import { textShoesSearchAPI } from '../api/searchRequests';
 // 타입
 import { TProduct } from '../types/product';
 // Zustand
-import useTextSearchStore from '../stores/useTextSearchStore';
 import useProductStore from '../stores/useProductsStore';
 import useSelectItemStore from '../stores/useSelectItemStore';
+import useTextSearchStore from '../stores/useTextSearchStore';
 
 export const useHandleTextSearchPost = () => {
   const { text, setLoading, setFocus, setSubmit, setPostText } = useTextSearchStore();
@@ -20,7 +20,7 @@ export const useHandleTextSearchPost = () => {
       setFocus(false);
       setSubmit(true);
       resetItem();
-      return textShoseSearchAPI(data);
+      return textShoesSearchAPI(data);
     },
     onSuccess: response => {
       console.log('키워드 전송 성공');

@@ -5,13 +5,13 @@ import small_arrow from './chatbot/small_arrow.svg';
 import speech_bubble from './chatbot/speech_bubble.svg';
 import thumbs_down from './chatbot/thumbsDown.svg';
 import tooltip from './chatbot/tooltip.svg';
-import again from './choose-shose/again.svg';
-import camera from './choose-shose/camera.svg';
-import gallery from './choose-shose/gallery.svg';
-import rectangle from './choose-shose/rectangle.svg';
-import search from './choose-shose/search_icon.svg';
-import shoes_w159 from './choose-shose/shoes_w159.svg';
-import shoes_w182 from './choose-shose/shoes_w182.svg';
+import again from './choose-shoes/again.svg';
+import camera from './choose-shoes/camera.svg';
+import gallery from './choose-shoes/gallery.svg';
+import rectangle from './choose-shoes/rectangle.svg';
+import search from './choose-shoes/search_icon.svg';
+import shoes_w159 from './choose-shoes/shoes_w159.svg';
+import shoes_w182 from './choose-shoes/shoes_w182.svg';
 import ai from './common/ai.svg';
 import arrow_right from './common/arrow_right.svg';
 import back_arrow from './common/back_arrow.svg';
@@ -61,7 +61,7 @@ import google from './login/google.svg';
 import more_arrow from './login/more_arrow.svg';
 import mypage_arrow from './mypage/mypage_arrow.svg';
 import mypage_heart from './mypage/mypage_heart.svg';
-import mypage_shose_room from './mypage/mypage_shose_room.svg';
+import mypage_shoes_room from './mypage/mypage_shoes_room.svg';
 import user_profile from './mypage/user_profile.svg';
 import user_profile_upload from './mypage/user_profile_upload.svg';
 import onboarding1 from './onboarding/onboarding1.svg';
@@ -112,7 +112,7 @@ export {
   my_foot_info,
   mypage_arrow,
   mypage_heart,
-  mypage_shose_room,
+  mypage_shoes_room,
   noshoes,
   onboarding1,
   onboarding2,
@@ -148,5 +148,6 @@ export {
   user_profile,
   user_profile_upload,
   warning,
-  warning2,
+  warning2
 };
+

@@ -11,6 +11,7 @@ import { ShoeData, User } from '../../types/registry';
 import Button from '../common/button/Button';
 import Choose from '../empty-shoes-room/choose/Choose';
 import Header from '../empty-shoes-room/header/Header';
+import ItemCard from '../shoes-search/itemlistbox/itemcard/ItemCard';
 import Slider from '../slider/Slider';
 import {
   area,
@@ -28,7 +29,6 @@ import {
   starP,
 } from './shoesregistry.css';
 import StarRating from './star-rating/StarRating';
-import ItemCard from '../shose-search/itemlistbox/itemcard/ItemCard';
 
 const auth = getAuth();
 const ShoesRegistry = () => {
