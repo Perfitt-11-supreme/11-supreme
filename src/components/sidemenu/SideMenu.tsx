@@ -150,27 +150,19 @@ const SideMenu = ({ onClose }: SideMenuProps) => {
               </article>
               {/* 리스트 */}
               <article className={sidemenuListsContainer}>
-                <div>
-                  <h3
-                    className={sidemenuListsTitle}
-                    style={{
-                      display: filteredTodayChatHistory.length === 0 ? 'none' : 'flex',
-                    }}
-                  >
-                    오늘
-                  </h3>
+                <div
+                  style={{
+                    display: filtered7DaysChatHistory.length === 0 ? 'none' : 'block',
+                  }}
+                >
+                  <h3 className={sidemenuListsTitle}>오늘</h3>
                   {chatHistoryIsLoading ? (
                     <div style={{ marginTop: '15px' }}>
                       <SideMenuSkeleton />
                     </div>
                   ) : (
                     <div className={sidemenuListsItem3ScrollAuto}>
-                      <ul
-                        className={sidemenuListsBox}
-                        style={{
-                          display: filteredTodayChatHistory.length === 0 ? 'none' : 'flex',
-                        }}
-                      >
+                      <ul className={sidemenuListsBox}>
                         {filteredTodayChatHistory.map(
                           chat =>
                             !deletedChatIds.includes(chat.id) && ( // 삭제된 ID가 아닐 경우에만 렌더링
@@ -190,25 +182,17 @@ const SideMenu = ({ onClose }: SideMenuProps) => {
                     </div>
                   )}
                 </div>
-                <div>
-                  <h3
-                    className={sidemenuListsTitle}
-                    style={{
-                      display: filtered7DaysChatHistory.length === 0 ? 'none' : 'flex',
-                    }}
-                  >
-                    지난 7일
-                  </h3>
+                <div
+                  style={{
+                    display: filtered7DaysChatHistory.length === 0 ? 'none' : 'block',
+                  }}
+                >
+                  <h3 className={sidemenuListsTitle}>지난 7일</h3>
                   {chatHistoryIsLoading ? (
                     <SideMenuSkeleton />
                   ) : (
                     <div className={sidemenuListsItem5ScrollAuto}>
-                      <ul
-                        className={sidemenuListsBox}
-                        style={{
-                          display: filtered7DaysChatHistory.length === 0 ? 'none' : 'flex',
-                        }}
-                      >
+                      <ul className={sidemenuListsBox}>
                         {filtered7DaysChatHistory.map(
                           chat =>
                             !deletedChatIds.includes(chat.id) && ( // 삭제된 ID가 아닐 경우에만 렌더링
