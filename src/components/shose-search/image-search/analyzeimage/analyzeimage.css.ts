@@ -1,6 +1,6 @@
 import { style, styleVariants } from '@vanilla-extract/css';
-import { theme } from '../../../styles/theme';
-import { media } from '../../../styles/media.css';
+import { theme } from '../../../../styles/theme';
+import { media } from '../../../../styles/media.css';
 
 export const AnalyzeImage_Container = style([
   {

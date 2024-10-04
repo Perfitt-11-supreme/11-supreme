@@ -8,10 +8,10 @@ import useProductStore from '../../stores/useProductsStore';
 // 커스텀훅
 import { TextUpload } from '../../firebase/TextUpload';
 // 컴포넌트
-import SearchBox from '../../components/text-search/search-box/SearchBox';
-import MainContainer from '../../components/text-search/mainContainder/MainContainer';
+import SearchBox from '../../components/shose-search/text-search/search-box/SearchBox';
+import MainContainer from '../../components/shose-search/text-search/mainContainder/MainContainer';
 import Header from '../../components/common/header/Header';
-import TextFooter from '../../components/text-search/textfooter/TextFooter';
+import TextFooter from '../../components/shose-search/text-search/textfooter/TextFooter';
 
 const TextSearch = () => {
   const { setProducts } = useProductStore();

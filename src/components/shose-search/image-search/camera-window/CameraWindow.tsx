@@ -1,5 +1,5 @@
 // 아이콘 / css
-import { camera, rectangle } from '../../../assets/assets';
+import { camera, rectangle } from '../../../../assets/assets';
 import {
   CameraWindow_CameraIcon,
   CameraWindow_CameraIconBackground,
@@ -11,12 +11,12 @@ import {
 } from './camerawindow.css';
 import { useEffect, useRef } from 'react';
 // ZuStand
-import useImageSearchStore from '../../../stores/useImageSearchStore';
-import useGalleryStore from '../../../stores/useGalleryStore';
-import useSelectItemStore from '../../../stores/useSelectItemStore';
-import useProductStore from '../../../stores/useProductsStore';
+import useImageSearchStore from '../../../../stores/useImageSearchStore';
+import useGalleryStore from '../../../../stores/useGalleryStore';
+import useSelectItemStore from '../../../../stores/useSelectItemStore';
+import useProductStore from '../../../../stores/useProductsStore';
 // 커스텀 훅
-import { useImageSearchHooks } from '../../../hooks/useImageSearchHooks';
+import { useImageSearchHooks } from '../../../../hooks/useImageSearchHooks';
 // 컴포넌트
 import Gallery from '../gallery/Gallery';
 

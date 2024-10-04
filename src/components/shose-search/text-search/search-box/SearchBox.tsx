@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { camera, search } from '../../../assets/assets';
+import { camera, search } from '../../../../assets/assets';
 import {
   SearchBox_Background,
   SearchBox_Box,
@@ -12,9 +12,9 @@ import {
   SearchBox_searchIcon,
 } from './searchbox.css';
 // Zustand
-import useTextSearchStore from '../../../stores/useTextSearchStore';
+import useTextSearchStore from '../../../../stores/useTextSearchStore';
 // 커스텀 훅
-import { useTextSearchHooks } from '../../../hooks/useTextSearchHooks';
+import { useTextSearchHooks } from '../../../../hooks/useTextSearchHooks';
 
 const SearchBox = () => {
   const { text, postText, isScrolling, setText, setFocus } = useTextSearchStore();

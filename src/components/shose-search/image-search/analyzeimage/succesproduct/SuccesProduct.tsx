@@ -9,9 +9,9 @@ import {
   Product_SuccesContainer,
 } from './succesproduct.css';
 // Zustand
-import useSelectItemStore from '../../../../stores/useSelectItemStore';
+import useSelectItemStore from '../../../../../stores/useSelectItemStore';
 // 커스텀 훅
-import useImaeSearchPost from '../../../../hooks/useHandleImaeSearchPost';
+import useImaeSearchPost from '../../../../../hooks/useHandleImaeSearchPost';
 
 const SuccesProduct = () => {
   const { selectProduct } = useSelectItemStore();

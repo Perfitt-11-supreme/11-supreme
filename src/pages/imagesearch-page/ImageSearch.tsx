@@ -2,8 +2,8 @@
 import { close } from '../../assets/assets';
 // 컴포넌트
 import Header from '../../components/common/header/Header';
-import AnalyzeImage from '../../components/image-search/analyzeimage/AnalyzeImage';
-import CameraWindow from '../../components/image-search/camera-window/CameraWindow';
+import AnalyzeImage from '../../components/shose-search/image-search/analyzeimage/AnalyzeImage';
+import CameraWindow from '../../components/shose-search/image-search/camera-window/CameraWindow';
 
 const ImageSearch = () => {
   return (

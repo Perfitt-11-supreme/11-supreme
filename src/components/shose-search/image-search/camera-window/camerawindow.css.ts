@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css';
-import { theme } from '../../../styles/theme';
-import { media } from '../../../styles/media.css';
+import { theme } from '../../../../styles/theme';
+import { media } from '../../../../styles/media.css';
 
 export const CameraWindow_Rectangle = style({
   position: 'fixed',

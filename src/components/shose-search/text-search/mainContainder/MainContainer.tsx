@@ -2,10 +2,10 @@
 import { useEffect, useRef } from 'react';
 import { MainContainter_Background } from './maincontainer.css';
 // Zustand
-import useTextSearchStore from '../../../stores/useTextSearchStore';
+import useTextSearchStore from '../../../../stores/useTextSearchStore';
 // 컴포넌트
 import TextRecordBox from './textrecordbox/TextRecordBox';
-import ItemListBox from '../../shose-search/itemlistbox/ItemListBox';
+import ItemListBox from '../../itemlistbox/ItemListBox';
 
 const MainContainer = () => {
   const { focus, isScrolling, setIsScrolling } = useTextSearchStore();

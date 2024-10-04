@@ -7,16 +7,16 @@ import {
   AnalyzeImage_SimilarContainer,
 } from './analyzeimage.css.ts';
 // 커스텀 훅
-import { useImageSearchHooks } from '../../../hooks/useImageSearchHooks.ts';
+import { useImageSearchHooks } from '../../../../hooks/useImageSearchHooks.ts';
 // Zustand
-import useSelectItemStore from '../../../stores/useSelectItemStore.ts';
-import useImageSearchStore from '../../../stores/useImageSearchStore.ts';
+import useSelectItemStore from '../../../../stores/useSelectItemStore.ts';
+import useImageSearchStore from '../../../../stores/useImageSearchStore.ts';
 // 컴포넌트
 import SuccesProduct from './succesproduct/SuccesProduct.tsx';
-import Button from '../../common/button/Button.tsx';
+import Button from '../../../common/button/Button.tsx';
 import AgainBox from '../againbox/AgainBox.tsx';
-import ItemListBox from '../../shose-search/itemlistbox/ItemListBox.tsx';
-import IsLoading from '../../shose-search/isLoading/IsLoading.tsx';
+import ItemListBox from '../../itemlistbox/ItemListBox.tsx';
+import IsLoading from '../../isLoading/IsLoading.tsx';
 
 const AnalyzeImage = () => {
   const { isAnalyze, isSuccess, isSimilar } = useImageSearchStore();
