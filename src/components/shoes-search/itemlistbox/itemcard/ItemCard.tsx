@@ -5,8 +5,8 @@ import {
   ItemCard_Image,
   ItemCard_Rectangle,
   ItemCard_Select,
-  ItemCard_ShoseBrand,
-  ItemCard_ShoseName,
+  ItemCard_ShoesBrand,
+  ItemCard_ShoesName,
 } from './itemcard.css';
 // Zustand
 import useSelectItemStore from '../../../../stores/useSelectItemStore';
@@ -27,8 +27,8 @@ const ItemCard = ({ index, data }: { index: number; data: TProduct }) => {
           <img className={ItemCard_Image} src={data!.image} alt="" />
         </div>
         <div className={ItemCard_Frame}>
-          <p className={ItemCard_ShoseBrand}>{data!.brand}</p>
-          <p className={ItemCard_ShoseName}>{data!.modelName}</p>
+          <p className={ItemCard_ShoesBrand}>{data!.brand}</p>
+          <p className={ItemCard_ShoesName}>{data!.modelName}</p>
         </div>
       </div>
     </>

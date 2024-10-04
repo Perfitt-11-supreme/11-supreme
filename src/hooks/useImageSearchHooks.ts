@@ -1,14 +1,14 @@
 // 리액트
 import { useNavigate } from 'react-router-dom';
 // Zustand
-import useSelectItemStore from '../stores/useSelectItemStore';
 import useGalleryStore from '../stores/useGalleryStore';
+import useSelectItemStore from '../stores/useSelectItemStore';
 // 파이어베이스
 import { ImageUpload } from '../firebase/ImageUpload';
 // 커스텀 훅
-import useImageSearchPost from './useHandleImaeSearchPost';
+import useImageSearchPost from './useHandleImageSearchPostHook';
 
-export const useImageSearchHooks = () => {
+export const useImageSearch = () => {
   const { selectProduct, setSelectProduct, setIsSelected, setSelectComplet } = useSelectItemStore();
   const handleImageSearchPost = useImageSearchPost();
   const handleImageUpload = ImageUpload();

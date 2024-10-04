@@ -7,20 +7,20 @@ import {
   AnalyzeImage_SimilarContainer,
 } from './analyzeimage.css.ts';
 // 커스텀 훅
-import { useImageSearchHooks } from '../../../../hooks/useImageSearchHooks.ts';
+import { useImageSearch } from '../../../../hooks/useImageSearchHooks.ts';
 // Zustand
-import useSelectItemStore from '../../../../stores/useSelectItemStore.ts';
 import useImageSearchStore from '../../../../stores/useImageSearchStore.ts';
+import useSelectItemStore from '../../../../stores/useSelectItemStore.ts';
 // 컴포넌트
-import SuccesProduct from './succesproduct/SuccesProduct.tsx';
 import Button from '../../../common/button/Button.tsx';
-import AgainBox from '../againbox/AgainBox.tsx';
-import ItemListBox from '../../itemlistbox/ItemListBox.tsx';
 import IsLoading from '../../isLoading/IsLoading.tsx';
+import ItemListBox from '../../itemlistbox/ItemListBox.tsx';
+import AgainBox from '../againbox/AgainBox.tsx';
+import SuccesProduct from './succesproduct/SuccesProduct.tsx';
 
 const AnalyzeImage = () => {
   const { isAnalyze, isSuccess, isSimilar } = useImageSearchStore();
-  const { handleImageSearchNavigate } = useImageSearchHooks();
+  const { handleImageSearchNavigate } = useImageSearch();
   const divRef = useRef<HTMLDivElement>(null);
   const { selectProduct } = useSelectItemStore();
 
@@ -62,13 +62,12 @@ const AnalyzeImage = () => {
   return (
     <>
       <div
-        className={`${AnalyzeImage_Container} ${
-          isSuccess || isSimilar
+        className={`${AnalyzeImage_Container} ${isSuccess || isSimilar
             ? AnalyzeImage_AnalyzerContainerMove.success
             : isAnalyze
-            ? AnalyzeImage_Container + ' ' + AnalyzeImage_AnalyzerContainerMove.analyze
-            : ''
-        }`}
+              ? AnalyzeImage_Container + ' ' + AnalyzeImage_AnalyzerContainerMove.analyze
+              : ''
+          }`}
       >
         {renderContent()}
       </div>

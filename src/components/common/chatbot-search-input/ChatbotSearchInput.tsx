@@ -16,7 +16,7 @@ import {
 
 import { useMutation } from '@tanstack/react-query';
 import { getDownloadURL, getStorage, ref as storageRef, uploadBytes } from 'firebase/storage';
-import { ImageShoseSearchAPI } from '../../../api/searchRequests';
+import { ImageShoesSearchAPI } from '../../../api/searchRequests';
 import { useChatCompletion } from '../../../hooks/useChatCompletionHook';
 import useChatStore from '../../../stores/useChatStore';
 import { ChatItem } from '../../../types/chatItem';
@@ -65,7 +65,7 @@ const ChatbotSearchInput = () => {
 
       const formData = new FormData();
       formData.append('image', resizedImageFile);
-      const response = await ImageShoseSearchAPI(formData);
+      const response = await ImageShoesSearchAPI(formData);
 
       return { response, imageUrl };
     },

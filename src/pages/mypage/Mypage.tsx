@@ -1,12 +1,13 @@
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { collection, doc, getDoc, getDocs, query, setDoc, where } from 'firebase/firestore'; // Firestore 관련 함수 import
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   back_arrow,
   mypage_arrow,
   mypage_heart,
-  mypage_shose_room,
+  mypage_shoes_room,
   user_profile,
   user_profile_upload,
 } from '../../assets/assets';
@@ -38,7 +39,6 @@ import {
   userProfileNameTextBold,
   userProfileUploadIconBox,
 } from './mypage.css';
-import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 
 const Mypage = () => {
   const navigate = useNavigate();
@@ -178,9 +178,9 @@ const Mypage = () => {
               <span className={userProfileNameTextBold}>
                 {userData
                   ? userData?.userName ||
-                    userData?.username
-                      .split('')
-                      .map((char: string, index: number) => <span key={index}>{char}&nbsp;</span>)
+                  userData?.username
+                    .split('')
+                    .map((char: string, index: number) => <span key={index}>{char}&nbsp;</span>)
                   : '-'}
               </span>
               님
@@ -194,7 +194,7 @@ const Mypage = () => {
                 <span>좋아요</span>
               </button>
               <button className={mypageButton} type="button" onClick={handleNavigateShoesroom}>
-                <img className={mypageButtonIcon} src={mypage_shose_room} alt="mypage_shose_room" />
+                <img className={mypageButtonIcon} src={mypage_shoes_room} alt="mypage_shoes_room" />
                 <span>신발장</span>
               </button>
             </div>

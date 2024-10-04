@@ -1,4 +1,5 @@
 // 아이콘 / css
+import { useEffect, useRef } from 'react';
 import { camera, rectangle } from '../../../../assets/assets';
 import {
   CameraWindow_CameraIcon,
@@ -9,14 +10,13 @@ import {
   CameraWindow_View,
   CameraWindow_ViewContainer,
 } from './camerawindow.css';
-import { useEffect, useRef } from 'react';
 // ZuStand
-import useImageSearchStore from '../../../../stores/useImageSearchStore';
 import useGalleryStore from '../../../../stores/useGalleryStore';
-import useSelectItemStore from '../../../../stores/useSelectItemStore';
+import useImageSearchStore from '../../../../stores/useImageSearchStore';
 import useProductStore from '../../../../stores/useProductsStore';
+import useSelectItemStore from '../../../../stores/useSelectItemStore';
 // 커스텀 훅
-import { useImageSearchHooks } from '../../../../hooks/useImageSearchHooks';
+import { useImageSearch } from '../../../../hooks/useImageSearchHooks';
 // 컴포넌트
 import Gallery from '../gallery/Gallery';
 
@@ -26,7 +26,7 @@ const CameraWindow = () => {
   const { setProducts } = useProductStore();
   const { resetItem } = useSelectItemStore();
   const { galleryImage } = useGalleryStore();
-  const { handleCaptureImage, handleImageToBase64 } = useImageSearchHooks();
+  const { handleCaptureImage, handleImageToBase64 } = useImageSearch();
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const handleClickCamera = () => {
