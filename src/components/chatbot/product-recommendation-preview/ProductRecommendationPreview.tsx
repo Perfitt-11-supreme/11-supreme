@@ -73,8 +73,8 @@ const ProductRecommendationPreview = ({ products = [], shareId, onMoreClick }: P
           </li>
         </motion.ul>
         <div className={productRecommendPreviewIconWrap}>
-          <img src={export_icon} alt="" className={productRecommendPreviewIcon} onClick={handleOpenShareModal} />
-          <img src={thumbs_down} alt="" className={brandRecommendIcon} />
+          <img src={export_icon} alt="" className={productRecommendPreviewIcon} onClick={handleOpenShareModal} width="22px" height="22px" />
+          <img src={thumbs_down} alt="" className={brandRecommendIcon} width="22px" height="22px" />
         </div>
       </div>
     </>

@@ -13,7 +13,7 @@ const BrandRecommendationCard = ({ thumbnail, brand }: TBrand) => {
     <>
       <div className={brandRecommendCardWrap}>
         <div className={brandRecommendImgContainer}>
-          <img src={thumbnail} alt={brand} width="94px" height={0} />
+          <img src={thumbnail} alt={brand} width="94px" height="auto" />
         </div>
         <div className={brandRecommendButton}>
           <div className={brandRecommendTextWrap} onClick={handleOpenModal}>
