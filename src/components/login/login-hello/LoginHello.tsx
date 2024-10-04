@@ -342,7 +342,7 @@ const LoginHello = () => {
                       <img
                         src={chat.imageUrl}
                         alt="Uploaded"
-                        style={{ maxWidth: '200px', maxHeight: '200px', borderRadius: '10px' }}
+                        style={{ maxWidth: '200px', maxHeight: '200px', width: '100%', height: 'auto' }}
                         className={userBubbleText}
                       />
                     </div>

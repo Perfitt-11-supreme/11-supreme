@@ -36,17 +36,17 @@ const ProductRecommendationCard = ({ product }: ProductRecommendationCardProps) 
         {/* Thumbnail */}
         <div className={productRecommendationThumbnail}>
           <div className={productRecommendationThumbnailContainer}>
-            <img src={product?.image} alt={product?.brand} loading='lazy' />
+            <img src={product?.image} alt={product?.brand} loading='lazy' width="162px" height="162px" />
           </div>
           <div className={heartIconBox} onClick={(e) => {
             e.stopPropagation();
             handleHeartChecked();
           }}>
-            {isChecked ? <img src={heart_filled} alt="heart_filled" /> : <img src={heart_empty} alt="heart_empty" />}
+            {isChecked ? <img src={heart_filled} alt="heart_filled" width="19px" height="18px" /> : <img src={heart_empty} alt="heart_empty" width="19px" height="18px" />}
           </div>
 
           <div className={brandIconBox}>
-            <img src={brand_abcmart} alt="brand_abcmart" />
+            <img src={brand_abcmart} alt="brand_abcmart" width="24px" height="24px" />
           </div>
         </div>
         {/* Product */}

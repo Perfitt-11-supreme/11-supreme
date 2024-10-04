@@ -6,6 +6,12 @@ import viteCompression from 'vite-plugin-compression';
 export default defineConfig({
   plugins: [react(), vanillaExtractPlugin(), viteCompression()],
   server: {
-    hmr: false
-  }
+    proxy: {
+      '/api': {
+        target: 'https://e035c336-46ca-4e92-9206-6fc8d219b701.mock.pstmn.io/api',
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/api/, ''),
+      },
+    },
+  },
 });
