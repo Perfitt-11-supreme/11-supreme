@@ -8,7 +8,7 @@ import useUserStore from '../stores/useUserStore';
 import { ChatItem } from '../types/chatItem';
 
 // Firebase에서 채팅 기록 불러오기 사이드메뉴에서 불러오는 훅 아닙니다!!!! LoginHello에서 사용하는 훅
-const useFetchChatHistoryHook = (currentChatId: string | null) => {
+const useFetchChatHistory = (currentChatId: string | null) => {
   const { user } = useUserStore();
   const { setCurrentKeywords, setChatHistory } = useChatStore();
   const { setProducts } = useProductStore();
@@ -113,4 +113,4 @@ const useFetchChatHistoryHook = (currentChatId: string | null) => {
   return { data, loading };
 };
 
-export default useFetchChatHistoryHook;
+export default useFetchChatHistory;
