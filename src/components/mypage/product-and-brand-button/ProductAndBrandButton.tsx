@@ -3,7 +3,7 @@ import {
   filterProductAndBrand,
   filterProductAndBrandButtonBox,
   filterProductAndBrandChecked,
-} from './product-and-brand-button.css';
+} from './productAndBrandButton.css';
 
 type ProductAndBrandButtonProps = {
   handleClick: (buttonType: string) => void;
