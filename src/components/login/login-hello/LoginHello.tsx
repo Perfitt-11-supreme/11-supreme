@@ -8,7 +8,7 @@ import { hamburger_menu } from '../../../assets/assets';
 import { database, db } from '../../../firebase/firebase';
 import { useAuth } from '../../../hooks/useAuthHook';
 import { useChatCompletion } from '../../../hooks/useChatCompletionHook';
-import useFetchChatHistoryHook from '../../../hooks/useFetchChatHistoryHook';
+import useFetchChatHistory from '../../../hooks/useFetchChatHistoryHook';
 import BridgePage from '../../../pages/bridge-page/bridgePage';
 import { keywordWrap } from '../../../pages/chatbot-page/chatBotPage.css';
 import LoadingPage from '../../../pages/loading-page/loadingPage';
@@ -237,7 +237,7 @@ const LoginHello = () => {
 
 
   // Firebase에서 채팅 기록 불러오기
-  useFetchChatHistoryHook(currentChatId)
+  useFetchChatHistory(currentChatId)
 
   // 브릿지 페이지 타이머 설정
   useBridgePage(showBridgePage, selectedProductLink)

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { prefitt_logo2, sidemenu_list, sidemenu_plus } from '../../assets/assets';
 import { default as SideMenuList, default as SidemenuList } from '../../components/sidemenu/SidemenuList';
 import { useChatCompletion } from '../../hooks/useChatCompletionHook';
-import useChatHistoryHook from '../../hooks/useChatHistoryHook';
+import useChatHistory from '../../hooks/useChatHistoryHook';
 import SideMenuSkeleton from '../sidemenu-skeleton/SideMenuSkeleton';
 import SidemenuMypageLinks from './SidemenuMypageLinks';
 import {
@@ -37,7 +37,7 @@ const SideMenu = ({ onClose }: SideMenuProps) => {
   const navigate = useNavigate();
   const auth = getAuth();
   const { handleNewChat } = useChatCompletion();
-  const { chatHistory, deleteChatHistory, chatHistoryIsLoading } = useChatHistoryHook();
+  const { chatHistory, deleteChatHistory, chatHistoryIsLoading } = useChatHistory();
   // 현재 UTC 시간으로 오늘 날짜 계산
   // UTC 시간
   const utcToday = useMemo(() => {

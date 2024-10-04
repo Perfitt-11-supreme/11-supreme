@@ -46,7 +46,7 @@ const fetchChatHistory = async (userId: string): Promise<ChatHistory[]> => {
   return chatList;
 };
 
-const useChatHistoryHook = () => {
+const useChatHistory = () => {
   const { user } = useUserStore(); // user 정보 가져오기
   const queryClient = useQueryClient();
 
@@ -89,4 +89,4 @@ const useChatHistoryHook = () => {
   };
 };
 
-export default useChatHistoryHook;
+export default useChatHistory;
