@@ -42,6 +42,6 @@ jobs:
     - name: Generate Environment Variables File for Production
       run: |
           echo "VITE_BASE_REQUEST_URL=$VITE_BASE_REQUEST_URL" >> .env
-        env:
+      env:
           VITE_BASE_REQUEST_URL: ${{ secrets.VITE_BASE_REQUEST_URL }}
 
