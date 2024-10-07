@@ -148,6 +148,7 @@ export const myInfoServiceTermBox = style({
   padding: '39px 0 51px',
 });
 export const myInfoServiceTermButton = style({
+  position: 'relative',
   fontSize: '14px',
   fontWeight: '400',
   lineHeight: '16.71px',

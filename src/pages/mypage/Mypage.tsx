@@ -31,20 +31,22 @@ import {
   userProfileNameTextBold,
   userProfileUploadIconBox,
 } from './mypage.css';
-import MypageServiceAccordian from '../../components/mypage/mypage-service-accordian/MypageServiceAccordian';
+import MypageServiceButton from '../../components/mypage/mypage-service-button/MypageServiceButton';
+import ToastMessage from '../../components/toastmessage/toastMessage';
 
 const Mypage = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState<any>(null);
   const [profileImage, setProfileImage] = useState<string>(user_profile); // 기본 이미지로 설정
   const [isDeleteUserModalOpen, setIsDeleteUserModalOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState<{ message: string; duration: number } | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleNavigateShoesroom = () => {
     navigate('/empty-shoesroom');
   };
-  const handleNavigateLikedPage = () => {
-    navigate('/likedpage');
+  const handleNavigateLiked = () => {
+    navigate('/liked');
   };
   console.log('userData in Mypage', userData);
   const fetchUserDatas = async () => {
@@ -138,6 +140,10 @@ const Mypage = () => {
     }
   };
 
+  const handleShowToast = () => {
+    setToastMessage({ message: '이용약관 준비 중입니다.', duration: 3000 });
+  };
+
   return (
     <>
       <div className={responsiveBox} style={{ overflow: 'hidden' }}>
@@ -182,7 +188,7 @@ const Mypage = () => {
           <article>
             <hr className={borderLine} />
             <div className={mypageButtonBox}>
-              <button className={mypageButton} type="button" onClick={handleNavigateLikedPage}>
+              <button className={mypageButton} type="button" onClick={handleNavigateLiked}>
                 <img className={mypageButtonIcon} src={mypage_heart} alt="mypage_heart" />
                 <span>좋아요</span>
               </button>
@@ -220,13 +226,16 @@ const Mypage = () => {
           <article>
             <hr className={borderLine} />
             <div className={myInfoServiceBox}>
-              <MypageServiceAccordian />
+              <MypageServiceButton />
             </div>
             <div className={myInfoServiceTermBox}>
               <div className={myInfoServiceTermButton} onClick={() => setIsDeleteUserModalOpen(true)}>
                 회원탈퇴
               </div>
-              <div className={myInfoServiceTermButton}>고객약관</div>
+              <div className={myInfoServiceTermButton} onClick={handleShowToast}>
+                고객약관
+              </div>
+              {toastMessage && <ToastMessage message={toastMessage.message} duration={toastMessage.duration} />}
             </div>
           </article>
         </section>
