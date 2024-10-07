@@ -18,7 +18,7 @@ const LikedAndViewedHistoryButton = ({ handleClick, activeTab }: LikedAndViewedH
 
   const handleButtonClick = (buttonType: string) => {
     handleClick(buttonType);
-    navigate(buttonType === '좋아요' ? '/likedpage' : '/viewedhistorypage');
+    navigate(buttonType === '좋아요' ? '/liked' : '/viewedhistory');
   };
 
   const [isHidden, setIsHidden] = useState(false);

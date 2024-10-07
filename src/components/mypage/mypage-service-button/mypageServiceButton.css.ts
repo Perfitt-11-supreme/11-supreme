@@ -13,3 +13,8 @@ export const myInfoServiceButton = style({
   borderBottom: `1px solid ${theme.color.cool_gray100}`,
   cursor: 'pointer',
 });
+
+export const myInfoServiceAccordianContainer = style({
+  overflow: 'hidden',
+  transition: 'max-height 0.3s ease-out',
+});

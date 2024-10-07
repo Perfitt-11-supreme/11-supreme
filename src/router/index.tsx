@@ -19,6 +19,8 @@ import SharePage from '../pages/share-page/SharePage';
 import ViewedHistoryPage from '../pages/mypage/viewed-history-page/ViewedHistoryPage';
 import ImageSearch from '../pages/imagesearch-page/ImageSearch';
 import TextSearch from '../pages/textsearch-page/TextSearch';
+import EditUser from '../components/mypage/mypage-service-button/edit-user/EditUser';
+import EditPassword from '../components/mypage/mypage-service-button/edit-password/EditPassword';
 
 export const router = createBrowserRouter([
   {
@@ -58,15 +60,15 @@ export const router = createBrowserRouter([
         element: <ShoesRegistry />,
       },
       {
-        path: '/mypage',
+        path: '/my',
         element: <Mypage />,
       },
       {
-        path: '/likedpage',
+        path: '/liked',
         element: <LikedPage />,
       },
       {
-        path: '/viewedhistorypage',
+        path: '/viewedhistory',
         element: <ViewedHistoryPage />,
       },
       {
@@ -100,6 +102,14 @@ export const router = createBrowserRouter([
       {
         path: '/findpassword',
         element: <FindPassword />,
+      },
+      {
+        path: '/edituser',
+        element: <EditUser />,
+      },
+      {
+        path: '/editpassword',
+        element: <EditPassword />,
       },
     ],
   },

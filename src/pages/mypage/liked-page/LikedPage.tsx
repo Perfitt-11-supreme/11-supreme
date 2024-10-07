@@ -462,7 +462,7 @@ const LikedPage = () => {
   return (
     <>
       <section className={likedAndViewedHistoryCointainer}>
-        <Header imageSrc={back_arrow} alt="back arrow" nav="/mypage" />
+        <Header imageSrc={back_arrow} alt="back arrow" nav="/my" />
 
         <LikedAndViewedHistoryButton handleClick={handleLikedOrViewedChange} activeTab={likedOrViewed} />
 
