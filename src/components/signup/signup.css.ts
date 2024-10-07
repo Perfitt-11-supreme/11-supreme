@@ -36,10 +36,11 @@ export const signupComponentContainer = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
+  padding: '0 16px',
 });
 
 export const signupSizeTypeContainer = style({
-  padding: '0 16px',
+  // padding: '0 16px',
   width: '100%',
   display: 'flex',
   flexDirection: 'column',
@@ -84,4 +85,5 @@ export const signupModalContainer = style({
   zIndex: 1000,
   position: 'absolute',
   bottom: '0',
+  padding: '8px 16px 0',
 });

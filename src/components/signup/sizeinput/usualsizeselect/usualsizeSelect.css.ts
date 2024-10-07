@@ -5,9 +5,10 @@ import { theme } from '../../../../styles/theme';
 export const usualsizeSelectBox = style({
   display: 'flex',
   flexDirection: 'column',
-  gap: '4px',
-  padding: '0 16px',
-  width:'100%',
+  // gap: '4px',
+  gap: '8px',
+  // padding: '0 16px',
+  width: '100%',
 });
 
 export const usualsizeLabel = style({
@@ -21,8 +22,10 @@ export const usualsizeLabel = style({
 export const usualsizeSelect = style({
   appearance: 'none',
   width: '100%',
-  height: '45px',
-  padding: '12.5px 10px',
+  // height: '45px',
+  // padding: '12.5px 10px',
+  height: '48px',
+  padding: '14px 16px',
   color: theme.color.cool_gray400,
   fontSize: '16px',
   fontWeight: '600',
@@ -33,9 +36,12 @@ export const usualsizeSelect = style({
   borderRadius: '4px',
   backgroundImage: `url(${select_arrow20})`,
   backgroundRepeat: 'no-repeat',
-  backgroundPosition: 'calc(100% - 10px) center',
-  backgroundSize: 'auto 20px',
+  // backgroundPosition: 'calc(100% - 10px) center',
+  // backgroundSize: 'auto 20px',
+  backgroundPosition: 'calc(100% - 16px) 14px',
+  backgroundSize: 'auto 24px',
   transition: 'all 0.2s ease-out',
+  cursor: 'pointer',
   ':focus': {
     outlineColor: theme.color.ai_blue500,
   },

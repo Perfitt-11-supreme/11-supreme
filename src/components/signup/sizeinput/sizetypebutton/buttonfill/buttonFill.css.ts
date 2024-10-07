@@ -3,7 +3,8 @@ import { theme } from '../../../../../styles/theme';
 
 export const buttonFill = style({
   width: '100%',
-  height: '44px',
+  // height: '44px',
+  height: '48px',
   border: '1px solid',
   borderColor: theme.color.cool_gray100,
   borderRadius: '4px',
@@ -13,5 +14,5 @@ export const buttonFill = style({
   lineHeight: '20px',
   letterSpacing: '-0.003em',
   fontSize: '16px',
-  cursor: 'pointer',
+  // cursor: 'pointer',
 });

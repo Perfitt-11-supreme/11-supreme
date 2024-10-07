@@ -33,6 +33,7 @@ export const select = style({
   backgroundPosition: 'calc(100% - 16px) 14px',
   backgroundSize: 'auto 24px',
   transition: 'all 0.2s ease-out',
+  cursor: 'pointer',
   ':focus': {
     outlineColor: theme.color.ai_blue500,
   },

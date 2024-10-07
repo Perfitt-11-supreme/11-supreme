@@ -3,7 +3,8 @@ import { theme } from '../../../../../styles/theme';
 
 export const buttonBlank = style({
   width: '100%',
-  height: '44px',
+  // height: '44px',
+  height: '48px',
   border: '1px solid',
   borderColor: theme.color.cool_gray100,
   borderRadius: '4px',
