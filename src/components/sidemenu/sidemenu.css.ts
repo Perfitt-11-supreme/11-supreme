@@ -21,7 +21,6 @@ const slideIn = keyframes({
 
 export const sidemenuDimmed = style({
   width: '100%',
-  maxWidth:'428px',
   height: '100%',
   backgroundColor: `${theme.color.black}99`,
   zIndex: 1000,

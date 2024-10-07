@@ -2,9 +2,9 @@ import { getAuth, signOut } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore'; // Firestore 관련 함수 import
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { user_profile } from '../../assets/assets';
-import { USER_COLLECTION } from '../../firebase/firebase'; // USER_COLLECTION 경로 수정
-import useUserStore from '../../stores/useUserStore';
+import { user_profile } from '../../../assets/assets';
+import { USER_COLLECTION } from '../../../firebase/firebase';
+import useUserStore from '../../../stores/useUserStore';
 import {
   sidemenuMypageLine,
   sidemenuMypageMoveButton,
@@ -13,7 +13,7 @@ import {
   sidemenuUserProfileIcon,
   sidemenuUserProfileLogout,
   sidemenuUserProfileText,
-} from './sidemenuMypageLinks.css';
+} from './sidemenuMypageLink.css';
 
 // type UserData = {
 //   userName?: string;
@@ -80,11 +80,11 @@ const SidemenuMypageLinks = () => {
       });
   };
 
-  const handleNavigateLikedPage = () => {
-    navigate('/likedpage');
+  const handleNavigateLiked = () => {
+    navigate('/liked');
   };
-  const handleNavigateViewedhistoryPage = () => {
-    navigate('/viewedhistorypage');
+  const handleNavigateViewedhistory = () => {
+    navigate('/viewedhistory');
   };
   const handleNavigateEmptyShoesroom = () => {
     navigate('/empty-shoesroom');
@@ -92,19 +92,19 @@ const SidemenuMypageLinks = () => {
   const handleNavigateFootinfo = () => {
     navigate('/footinfo');
   };
-  const handleNavigateMypage = () => {
-    navigate('/mypage');
+  const handleNavigateMy = () => {
+    navigate('/my');
   };
 
   return (
     <>
       <hr className={sidemenuMypageLine} />
       <div>
-        <button className={sidemenuMypageMoveButton} onClick={handleNavigateLikedPage}>
+        <button className={sidemenuMypageMoveButton} onClick={handleNavigateLiked}>
           좋아요
         </button>
         <span>|</span>
-        <button className={sidemenuMypageMoveButton} onClick={handleNavigateViewedhistoryPage}>
+        <button className={sidemenuMypageMoveButton} onClick={handleNavigateViewedhistory}>
           최근 본
         </button>
       </div>
@@ -121,7 +121,7 @@ const SidemenuMypageLinks = () => {
       <hr className={sidemenuMypageLine} />
 
       <div className={sidemenuUserProfileBox}>
-        <button className={sidemenuUserProfileButton} onClick={handleNavigateMypage}>
+        <button className={sidemenuUserProfileButton} onClick={handleNavigateMy}>
           <img className={sidemenuUserProfileIcon} src={profileImage} alt="user_profile" />
           {/* Firestore에서 받아온 사용자 이름을 표시 */}
           <span className={sidemenuUserProfileText}>{userName}</span>

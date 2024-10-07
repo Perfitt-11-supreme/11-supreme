@@ -3,14 +3,7 @@ import { collection, doc, getDoc, getDocs, query, setDoc, where } from 'firebase
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  back_arrow,
-  mypage_arrow,
-  mypage_heart,
-  mypage_shoes_room,
-  user_profile,
-  user_profile_upload,
-} from '../../assets/assets';
+import { back_arrow, mypage_heart, mypage_shoes_room, user_profile, user_profile_upload } from '../../assets/assets';
 import Header from '../../components/common/header/Header';
 import DeleteUserModal from '../../components/deleteuser/DeleteUserModal';
 import { db } from '../../firebase/firebase';
@@ -21,7 +14,6 @@ import {
   myInfoContainer,
   myInfoKey,
   myInfoServiceBox,
-  myInfoServiceButton,
   myInfoServiceTermBox,
   myInfoServiceTermButton,
   myInfoTitle,
@@ -39,19 +31,22 @@ import {
   userProfileNameTextBold,
   userProfileUploadIconBox,
 } from './mypage.css';
+import MypageServiceButton from '../../components/mypage/mypage-service-button/MypageServiceButton';
+import ToastMessage from '../../components/toastmessage/toastMessage';
 
 const Mypage = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState<any>(null);
   const [profileImage, setProfileImage] = useState<string>(user_profile); // 기본 이미지로 설정
   const [isDeleteUserModalOpen, setIsDeleteUserModalOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState<{ message: string; duration: number } | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleNavigateShoesroom = () => {
     navigate('/empty-shoesroom');
   };
-  const handleNavigateLikedPage = () => {
-    navigate('/likedpage');
+  const handleNavigateLiked = () => {
+    navigate('/liked');
   };
   console.log('userData in Mypage', userData);
   const fetchUserDatas = async () => {
@@ -145,11 +140,15 @@ const Mypage = () => {
     }
   };
 
+  const handleShowToast = () => {
+    setToastMessage({ message: '이용약관 준비 중입니다.', duration: 3000 });
+  };
+
   return (
     <>
       <div className={responsiveBox} style={{ overflow: 'hidden' }}>
         <section className={mypageContainer}>
-          <Header imageSrc={back_arrow} alt="back arrow" nav="/hello" />
+          <Header imageSrc={back_arrow} alt="back arrow" nav="/chat" />
           <article className={userProfileImageContainer}>
             <div className={userProfileIconBox}>
               <div className={profileImageBox} onClick={handlePictureClick}>
@@ -178,9 +177,9 @@ const Mypage = () => {
               <span className={userProfileNameTextBold}>
                 {userData
                   ? userData?.userName ||
-                  userData?.username
-                    .split('')
-                    .map((char: string, index: number) => <span key={index}>{char}&nbsp;</span>)
+                    userData?.username
+                      .split('')
+                      .map((char: string, index: number) => <span key={index}>{char}&nbsp;</span>)
                   : '-'}
               </span>
               님
@@ -189,7 +188,7 @@ const Mypage = () => {
           <article>
             <hr className={borderLine} />
             <div className={mypageButtonBox}>
-              <button className={mypageButton} type="button" onClick={handleNavigateLikedPage}>
+              <button className={mypageButton} type="button" onClick={handleNavigateLiked}>
                 <img className={mypageButtonIcon} src={mypage_heart} alt="mypage_heart" />
                 <span>좋아요</span>
               </button>
@@ -227,24 +226,16 @@ const Mypage = () => {
           <article>
             <hr className={borderLine} />
             <div className={myInfoServiceBox}>
-              <div className={myInfoServiceButton}>
-                <span>내 정보 수정</span>
-                <img src={mypage_arrow} alt="mypage_arrow" />
-              </div>
-              <div className={myInfoServiceButton}>
-                <span>비밀번호 변경</span>
-                <img src={mypage_arrow} alt="mypage_arrow" />
-              </div>
-              <div className={myInfoServiceButton}>
-                <span>고객센터</span>
-                <img src={mypage_arrow} alt="mypage_arrow" />
-              </div>
+              <MypageServiceButton />
             </div>
             <div className={myInfoServiceTermBox}>
               <div className={myInfoServiceTermButton} onClick={() => setIsDeleteUserModalOpen(true)}>
                 회원탈퇴
               </div>
-              <div className={myInfoServiceTermButton}>고객약관</div>
+              <div className={myInfoServiceTermButton} onClick={handleShowToast}>
+                고객약관
+              </div>
+              {toastMessage && <ToastMessage message={toastMessage.message} duration={toastMessage.duration} />}
             </div>
           </article>
         </section>

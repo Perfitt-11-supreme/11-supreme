@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
-import Header from '../../components/common/header/Header';
-import SizeRecommendationCard from '../../components/mypage/size-recommendation-card/SizeRecommendationCard';
+import Header from '../../../components/common/header/Header';
+import SizeRecommendationCard from '../../../components/mypage/size-recommendation-card/SizeRecommendationCard';
 import {
   filterProductsQuantity,
   filterProductsQuantityBox,
   likedAndViewedHistoryCointainer,
   viewedHistoryItemBox,
 } from './viewedHistoryPage.css';
-import LikedAndViewedHistoryButton from '../../components/mypage/liked-and-viewed-history-button/LikedAndViewedHistoryButton';
-import { back_arrow } from '../../assets/assets';
-import useUserStore from '../../stores/useUserStore';
+import LikedAndViewedHistoryButton from '../../../components/mypage/liked-and-viewed-history-button/LikedAndViewedHistoryButton';
+import { back_arrow } from '../../../assets/assets';
+import useUserStore from '../../../stores/useUserStore';
 import { deleteField, doc, getDoc, updateDoc } from 'firebase/firestore';
-import { LIKED_COLLECTION, VIEWED_COLLECTION } from '../../firebase/firebase';
+import { LIKED_COLLECTION, VIEWED_COLLECTION } from '../../../firebase/firebase';
 
 type Product = {
   brand?: string;
