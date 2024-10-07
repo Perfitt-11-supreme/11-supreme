@@ -38,4 +38,10 @@ jobs:
         AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        VITE_BASE_REQUEST_URL: ${{ secrets.VITE_BASE_REQUEST_URL }}
+
+    - name: Generate Environment Variables File for Production
+      run: |
+          echo "VITE_BASE_REQUEST_URL=$VITE_BASE_REQUEST_URL" >> .env
+        env:
+          VITE_BASE_REQUEST_URL: ${{ secrets.VITE_BASE_REQUEST_URL }}
+
