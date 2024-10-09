@@ -101,10 +101,8 @@ const LikedPage = () => {
   };
 
   // user 데이터를 FireStore에 전송
-  const handleAddToMyProducts = async () => {
-    if (!user) {
-      return;
-    }
+  const fetchLikedProducts = async () => {
+    if (!user) return;
 
     try {
       // 'myLiked' 컬렉션에서 해당 사용자 문서 참조
@@ -255,7 +253,7 @@ const LikedPage = () => {
         setBrandsData(updatedData?.brands || {});
       }
     } catch (error) {
-      alert('handleAddToMyProducts 에러');
+      alert('fetchLikedProducts 에러');
     }
   };
 
@@ -442,7 +440,6 @@ const LikedPage = () => {
             timestamp,
           };
         }
-
         return updatedData;
       });
     } catch (error) {
@@ -452,7 +449,7 @@ const LikedPage = () => {
 
   // 컴포넌트 마운트 시 Firestore에 데이터 추가
   useEffect(() => {
-    handleAddToMyProducts();
+    fetchLikedProducts();
   }, []);
 
   if (isLoading) {

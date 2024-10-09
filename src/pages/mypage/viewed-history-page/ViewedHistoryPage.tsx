@@ -10,8 +10,8 @@ import {
 import LikedAndViewedHistoryButton from '../../../components/mypage/liked-and-viewed-history-button/LikedAndViewedHistoryButton';
 import { back_arrow } from '../../../assets/assets';
 import useUserStore from '../../../stores/useUserStore';
-import { deleteField, doc, getDoc, updateDoc } from 'firebase/firestore';
-import { LIKED_COLLECTION, VIEWED_COLLECTION } from '../../../firebase/firebase';
+import { collection, deleteField, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { LIKED_COLLECTION, VIEWED_COLLECTION, db } from '../../../firebase/firebase';
 
 type Product = {
   brand?: string;
@@ -35,6 +35,84 @@ const ViewedHistoryPage = () => {
 
   const handleLikedOrViewedChange = (buttonType: string) => {
     setLikedOrViewed(buttonType);
+  };
+
+  // Firestore에서 'myViewed' 컬렉션 데이터 가져오기 - 하트상태 firestore에 저장을
+  // user 데이터를 FireStore에 전송 으로 바꿔야함.
+  const fetchViewedProducts = async () => {
+    if (!user) return;
+
+    try {
+      // 'myViewed' 컬렉션에서 해당 사용자 문서 참조
+      const userDoc = doc(VIEWED_COLLECTION, user.uid);
+      const docSnap = await getDoc(userDoc);
+
+      // Firestore에서 고유 ID 생성
+      const productId6 = doc(collection(db, 'myViewed')).id;
+      const productId7 = doc(collection(db, 'myViewed')).id;
+
+      // 기존 데이터와 병합하여 products 업데이트
+      const updatedProducts = {
+        [productId6]: {
+          brand: 'Converse',
+          image: 'https://image.a-rt.com/art/product/upload3/M9166C_Black/S1.jpg?shrink=580:580',
+          link: 'https://abcmart.a-rt.com/product/new?prdtNo=1010043164',
+          modelName: '척테일러 올스타 블랙',
+          price: 55000,
+          sizeRecommend: '240mm',
+          timestamp: '',
+        },
+        [productId7]: {
+          brand: 'Nike',
+          image: 'https://image.a-rt.com/art/product/2024/04/49929_1714454204500.jpg?shrink=580:580',
+          link: 'https://abcmart.a-rt.com/product/new?prdtNo=1010105391&page=1',
+          modelName: '코트 버로우 로우 리크래프트 보이그레이드',
+          price: 69000,
+          sizeRecommend: '245mm',
+        },
+      };
+
+      // docSnap.exists()로 Firestore에 데이터가 있는지 확인한 후, 데이터가 없을 경우에만 목데이터를 추가
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        const productsData = data?.products || {}; // 기존 products 데이터를 가져옴
+        // setProductsData(docSnap.data()?.products || {});
+
+        // products 필드가 존재하지 않거나 비어있을 경우 목데이터 추가
+        if (Object.keys(productsData).length === 0) {
+          await setDoc(
+            userDoc,
+            {
+              uid: user.uid,
+              products: updatedProducts,
+            },
+            { merge: true }
+          );
+        } else {
+          setProductsData(productsData); // 이미 있는 데이터를 상태에 설정
+        }
+        return;
+      }
+
+      // Firestore에 업데이트
+      await setDoc(
+        userDoc,
+        {
+          uid: user.uid,
+          products: updatedProducts,
+        },
+        { merge: true } // 병합 옵션 추가
+      );
+
+      // Firestore에서 데이터를 다시 가져와서 상태 업데이트
+      const updatedDocSnap = await getDoc(userDoc);
+      if (updatedDocSnap.exists()) {
+        const updatedData = updatedDocSnap.data();
+        setProductsData(updatedData?.products || {});
+      }
+    } catch (error) {
+      alert('fetchViewedProducts 에러');
+    }
   };
 
   // 카드 클릭 시 timestamp를 기록하는 함수
@@ -98,20 +176,6 @@ const ViewedHistoryPage = () => {
       }
     } catch (error) {
       alert('handleHeartChecked 에러');
-    }
-  };
-
-  // Firestore에서 'myViewed' 컬렉션 데이터 가져오기 - 하트상태 firestore에 저장
-  const fetchViewedProducts = async () => {
-    if (!user) return;
-    try {
-      const userDoc = doc(VIEWED_COLLECTION, user.uid);
-      const docSnap = await getDoc(userDoc);
-      if (docSnap.exists()) {
-        setProductsData(docSnap.data()?.products || {});
-      }
-    } catch (error) {
-      alert('fetchViewedProducts 에러');
     }
   };
 
