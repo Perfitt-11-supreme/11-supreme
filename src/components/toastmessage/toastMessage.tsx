@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { toastContainer, toastMessage, showToast } from './toast-message.css'; // 스타일 정의
+import { toastContainer, toastMessage, showToast } from './toast-message.css';
 
 const ToastMessage = ({ message, duration }: { message: string; duration: number }) => {
   const [visible, setVisible] = useState(true);

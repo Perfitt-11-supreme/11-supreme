@@ -42,6 +42,15 @@ const ShoesInfo = () => {
     fetchShoeInfo();
   }, [shoesId]);
 
+  useEffect(() => {
+    if (shoeData?.image) {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.href = shoeData.image;
+      link.as = 'image';
+      document.head.appendChild(link);
+    }
+  }, [shoeData]);
   return (
     <>
       <div className={container}>

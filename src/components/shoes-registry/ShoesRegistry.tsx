@@ -33,7 +33,7 @@ import StarRating from './star-rating/StarRating';
 const auth = getAuth();
 const ShoesRegistry = () => {
   const { shoesId } = useParams<{ shoesId: string }>();
-  const { selectProduct, selectComplet, setSelectProduct } = useSelectItemStore();
+  const { selectProduct, setSelectProduct } = useSelectItemStore();
   const navigate = useNavigate();
   const ratingRef = useRef<HTMLDivElement>(null);
   const lengthRef = useRef<HTMLDivElement>(null);
@@ -247,7 +247,7 @@ const ShoesRegistry = () => {
       <HeaderMemo title="신발 등록" customNavigate={handleBack} />
       <div className={container}>
         <p className={descP}>신발을 선택해 주세요</p>
-        {selectComplet && selectProduct !== null ? (
+        {selectProduct !== null ? (
           <button className={imagePlusButtonSelected} onClick={handleChooseShoes} disabled={!!shoesId}>
             <div className={itemCardDiv}>
               <ItemCard index={0} data={selectProduct} />
