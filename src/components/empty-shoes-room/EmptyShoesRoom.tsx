@@ -132,6 +132,18 @@ const EmptyShoesRoom = () => {
     }
   }, [user, selected]);
 
+  useEffect(() => {
+    shoesList.forEach(shoe => {
+      if (shoe.image) {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.href = shoe.image;
+        link.as = 'image';
+        document.head.appendChild(link);
+      }
+    });
+  }, [shoesList]);
+
   if (isLoading) {
     return <LoadingPage />;
   }

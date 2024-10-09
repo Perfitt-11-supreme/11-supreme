@@ -7,6 +7,8 @@ export const container = style({
   alignItems: 'center',
   minHeight: '100vh',
   position: 'relative',
+  overflowY: 'auto',
+  flexGrow: 1,
 });
 
 export const infoDiv = style({
@@ -25,14 +27,15 @@ export const infoP = style({
 
 export const imgDiv = style({
   display: 'flex',
-  width: '343px',
-  height: '343px',
-  borderRadius: '6px',
+  width: '100%',
+  maxWidth: '343px',
+  height: 'auto',
+  aspectRatio: '1', // 정사각형 비율을 유지
   backgroundColor: '#f5f5f5',
   justifyContent: 'center',
   alignItems: 'center',
   marginBottom: '20px',
-  overflow: 'hidden',
+  borderRadius: '6px',
 });
 
 export const labelP = style({
@@ -86,6 +89,9 @@ export const reviewP = style({
 });
 
 export const imageSize = style({
-  width: '343px',
-  height: '343px',
+  width: '100%',
+  height: 'auto',
+  objectFit: 'contain', // 이미지를 컨테이너에 맞추어 비율 유지
+  borderRadius: '6px',
+  aspectRatio: '1', // 정사각형 비율을 유지
 });
