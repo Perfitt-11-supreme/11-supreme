@@ -399,12 +399,13 @@ const LikedPage = () => {
     if (!user?.uid || !productId) return;
 
     try {
-      const viewedDocRef = doc(VIEWED_COLLECTION, user.uid);
+      // const viewedDocRef = doc(VIEWED_COLLECTION, user.uid);
       const likedDocRef = doc(LIKED_COLLECTION, user.uid);
       const timestamp = new Date().toISOString();
 
       // 'myViewed' 컬렉션 업데이트 (하트 상태 및 클릭한 시간 업데이트)
-      await updateDoc(viewedDocRef, {
+      // await updateDoc(viewedDocRef, {
+      await updateDoc(likedDocRef, {
         [`products.${productId}.isLiked`]: newChecked, // Firestore에 isLiked 상태 저장
         [`products.${productId}.timestamp`]: timestamp, // 클릭한 시간 기록
       });
