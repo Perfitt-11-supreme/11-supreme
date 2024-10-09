@@ -63,7 +63,13 @@ const LoginHello = () => {
   const { setMessage } = useProductStore();
   const { chatHistory, setCurrentKeywords, currentChatId } = useChatStore();
   const { user } = useUserStore();
-  const { setShowChatBotAndRecommend, setHasSetInitialKeywords, selectedKeywords, showChatBotAndRecommend, hasSetInitialKeywords } = useUIStateStore()
+  const {
+    setShowChatBotAndRecommend,
+    setHasSetInitialKeywords,
+    selectedKeywords,
+    showChatBotAndRecommend,
+    hasSetInitialKeywords,
+  } = useUIStateStore();
 
   // 커스텀 훅
   const { isLoading } = useAuth();
@@ -94,6 +100,36 @@ const LoginHello = () => {
     },
     enabled: !!user?.uid,
   });
+
+  // Firestore에 myLiked와 myViewed 문서 추가
+  useEffect(() => {
+    const initializeUserCollections = async () => {
+      if (user?.uid) {
+        const likedDocRef = doc(db, 'myLiked', user.uid);
+        const viewedDocRef = doc(db, 'myViewed', user.uid);
+
+        try {
+          // myLiked 컬렉션에 사용자 문서가 없으면 초기화
+          const likedDoc = await getDoc(likedDocRef);
+          if (!likedDoc.exists()) {
+            await setDoc(likedDocRef, { uid: user.uid, products: {}, brands: {} });
+            console.log('myLiked 문서가 초기화되었습니다.');
+          }
+
+          // myViewed 컬렉션에 사용자 문서가 없으면 초기화
+          const viewedDoc = await getDoc(viewedDocRef);
+          if (!viewedDoc.exists()) {
+            await setDoc(viewedDocRef, { uid: user.uid, products: {} });
+            console.log('myViewed 문서가 초기화되었습니다.');
+          }
+        } catch (error) {
+          console.error('Firestore 초기화 중 오류 발생:', error);
+        }
+      }
+    };
+
+    initializeUserCollections();
+  }, [user?.uid]);
 
   // 키워드 리스트 불러오기
   const {
@@ -144,10 +180,9 @@ const LoginHello = () => {
     },
   });
 
-
   /**키워드 선택 함수 */
   const handleKeywordSelect = (keyword: string) => {
-    useUIStateStore.setState((state) => {
+    useUIStateStore.setState(state => {
       const currentSelected = Array.isArray(state.selectedKeywords) ? state.selectedKeywords : [];
       const newSelected = currentSelected.includes(keyword)
         ? currentSelected.filter(item => item !== keyword)
@@ -170,10 +205,14 @@ const LoginHello = () => {
     // Firestore에 selectedKeywords 저장
     if (user?.uid) {
       try {
-        await setDoc(doc(db, 'users', user.uid), {
-          selectedKeywords,
-          hasLoggedInBefore: true
-        }, { merge: true });
+        await setDoc(
+          doc(db, 'users', user.uid),
+          {
+            selectedKeywords,
+            hasLoggedInBefore: true,
+          },
+          { merge: true }
+        );
         // console.log("User document updated successfully");
       } catch (error) {
         console.error('Error updating user document:', error);
@@ -235,12 +274,11 @@ const LoginHello = () => {
     handleQuestionSelect(question);
   };
 
-
   // Firebase에서 채팅 기록 불러오기
-  useFetchChatHistory(currentChatId)
+  useFetchChatHistory(currentChatId);
 
   // 브릿지 페이지 타이머 설정
-  useBridgePage(showBridgePage, selectedProductLink)
+  useBridgePage(showBridgePage, selectedProductLink);
 
   // 채팅 기록 변경 시 스크롤을 맨 아래로 이동
   useEffect(() => {
@@ -248,7 +286,6 @@ const LoginHello = () => {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
   }, [chatHistory]);
-
 
   useEffect(() => {
     if (!isUserStatusLoading && userLoginStatus) {
@@ -274,7 +311,6 @@ const LoginHello = () => {
     // 필요한 경우 다른 상태들도 초기화
     setShowWelcomeMessage(false);
     setHasAskedQuestion(false);
-
   }, [currentChatId]);
 
   useEffect(() => {
@@ -394,12 +430,10 @@ const LoginHello = () => {
           </motion.div>
         )}
 
-        {!isKeywordModalOpen &&
-          <ChatbotSearchInput />
-        }
+        {!isKeywordModalOpen && <ChatbotSearchInput />}
 
         {chatHistory.length > 0 && (
-          <Modal height="100vh" initialHeight="125px" >
+          <Modal height="100vh" initialHeight="125px">
             {selectedBrand ? (
               <BrandPLP />
             ) : showProductRecommendation ? (
@@ -407,8 +441,6 @@ const LoginHello = () => {
             ) : null}
           </Modal>
         )}
-
-
 
         {/* 공유 모달  */}
         {isShareModalOpen && <ShareModal />}
