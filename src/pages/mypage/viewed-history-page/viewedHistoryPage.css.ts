@@ -19,8 +19,9 @@ export const viewedHistoryItemBox = style({
   padding: '0 16px',
   display: 'grid',
   gridTemplateColumns: '1fr 1fr',
+  gridTemplateRows: '277px',
   gap: '16px',
   paddingBottom: '64px',
   overflowY: 'auto',
-  height: 'calc(100% - 120px)',
+  height: 'calc(100% - 121px)',
 });

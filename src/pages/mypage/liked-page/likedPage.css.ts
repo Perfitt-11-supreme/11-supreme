@@ -19,10 +19,11 @@ export const likedAndViewedHistoryItemBox = style({
   padding: '0 16px',
   display: 'grid',
   gridTemplateColumns: '1fr 1fr',
+  gridTemplateRows: '277px',
   gap: '16px',
   paddingBottom: '64px',
   overflowY: 'auto',
-  height: 'calc(100% - 260px)',
+  height: 'calc(100% - 142px)',
 });
 export const likedInBrandsItemBox = style({
   padding: '0 16px',
@@ -33,5 +34,5 @@ export const likedInBrandsItemBox = style({
   gap: '16px',
   paddingBottom: '64px',
   overflowY: 'auto',
-  height: 'calc(100% - 180px)',
+  height: 'calc(100% - 142px)',
 });
