@@ -42,13 +42,6 @@ const LikedInBrand = ({ brand, isHeartFilled = false, logos, onDelete }: LikedIn
       console.log('Deleting brand with brandId:', brand?.brandId); // brandId 확인
       onDelete?.(brand.brandId); // 삭제 함수 호출
     }
-
-    // if (isChecked) {
-    //   if (brand?.brandId) {
-    //     onDelete?.(brand.brandId); // 삭제 함수 호출
-    //   } else {
-    //   }
-    // }
   };
 
   return (
