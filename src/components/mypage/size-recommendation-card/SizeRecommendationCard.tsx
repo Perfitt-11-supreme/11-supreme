@@ -56,7 +56,7 @@ const SizeRecommendationCard = ({
     setIsChecked(newChecked);
 
     if (moveHeartProduct && productId) {
-      moveHeartProduct(productId, newChecked); // 하트 클릭 시 zustand의 handleHeartChecked 호출
+      moveHeartProduct(productId, newChecked);
     }
   };
 
