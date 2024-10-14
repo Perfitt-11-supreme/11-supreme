@@ -25,7 +25,7 @@ type LikedInBrandCardProps = {
   logos?: any;
 };
 
-const LikedInBrand = ({ brand, isHeartFilled = false, logos }: LikedInBrandCardProps) => {
+const LikedInBrand = ({ brand, isHeartFilled = true, logos }: LikedInBrandCardProps) => {
   const { user } = useUserStore();
   const { deleteBrand } = useMyLikedBrandStore();
   const [isChecked, setIsChecked] = useState(isHeartFilled);
