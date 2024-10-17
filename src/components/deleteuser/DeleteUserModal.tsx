@@ -36,9 +36,11 @@ const DeleteUserModal: React.FC<DeleteUserModalProps> = ({ isOpen, onClose }) =>
             const q = query(collectionRef, where('uid', '==', uid));
             const querySnapshot = await getDocs(q);
 
-            querySnapshot.forEach(async doc => {
-              await deleteDoc(doc.ref); //문서 삭제
-            });
+            // querySnapshot.forEach(async doc => {
+            //   await deleteDoc(doc.ref); //문서 삭제
+            // });
+            // 각 문서를 삭제할 때 Promise를 수집하여, 모두 완료될 때까지 대기 - 하윤(최근본, 좋아요 작업 후 회원탈퇴 에러 해결)
+            await Promise.all(querySnapshot.docs.map(doc => deleteDoc(doc.ref)));
           };
 
           //컬렉션에서 해당 uid를 가진 모든 문서 삭제

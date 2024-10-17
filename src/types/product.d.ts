@@ -8,4 +8,7 @@ export type TProduct = {
   gender?: string;
   price?: number;
   sizeRecommend?: string;
+  uid?: string; // 추가 - 하윤
+  timestamp?: string; // 추가 - 하윤
+  isLiked?: boolean; // 추가 - 하윤
 } | null;

@@ -128,7 +128,10 @@ const SharePage = () => {
                       productData.products.length > 0 &&
                       productData.products.map(item => (
                         <li key={item.productId}>
-                          <ProductRecommendationCard product={item} />
+                          <ProductRecommendationCard
+                            product={item}
+                            showHeart={false} // 하트 아이콘 감추기
+                          />
                         </li>
                       ))}
                     {/* 브랜드 렌더링 */}

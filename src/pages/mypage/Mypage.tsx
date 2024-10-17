@@ -48,7 +48,6 @@ const Mypage = () => {
   const handleNavigateLiked = () => {
     navigate('/liked');
   };
-  console.log('userData in Mypage', userData);
   const fetchUserDatas = async () => {
     try {
       const auth = getAuth();

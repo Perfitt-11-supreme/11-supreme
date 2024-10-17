@@ -15,18 +15,6 @@ import {
   sidemenuUserProfileText,
 } from './sidemenuMypageLink.css';
 
-// type UserData = {
-//   userName?: string;
-//   username?: string;
-//   shoeSize?: number;
-//   sizeType?: string;
-//   uid: string;
-// };
-
-// type UserProfileProps = {
-//   userData?: UserData | null; // userData는 UserData 타입이거나 null일 수 있음
-// };
-
 const SidemenuMypageLinks = () => {
   const navigate = useNavigate();
   const auth = getAuth();
@@ -43,21 +31,17 @@ const SidemenuMypageLinks = () => {
         const userDoc = await getDoc(doc(USER_COLLECTION, user.uid)); // Firestore에서 유저 정보 가져오기
         if (userDoc.exists()) {
           const userData = userDoc.data();
-          // console.log('User Data:', userData); // 가져온 사용자 데이터 출력
 
           // Firestore에서 userName 필드를 상태에 저장
           setUserName(userData.userName || userData.username);
           setProfileImage(userData.profileImage || user_profile);
         } else {
-          console.log('No such user document!');
           setError('No user document found.');
         }
       } catch (error) {
-        console.error('Error fetching user data:', error);
         setError('Error fetching user data.');
       }
     } else {
-      console.error('No authenticated user');
       setError('No authenticated user.');
     }
   };

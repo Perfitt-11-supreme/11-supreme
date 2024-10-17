@@ -16,17 +16,17 @@ import {
   sizeRecommendationThumbnail,
   sizeRecommendationThumbnailContainer,
 } from './sizeRecommendationCard.css';
+import useMyLikedProductStore from '../../../stores/useMyLikedProductStore';
 
 type SizeRecommendationCardProps = {
   product: TProduct | null;
   isHeartFilled?: boolean;
   onCardClick?: () => void; // 클릭 이벤트를 처리하는 함수
   onDelete?: (id: string) => void; // 삭제 함수
-  onAdd?: (productId: string) => void; // 하트 클릭 시 호출할 함수
   productId?: string;
-  moveClickProduct?: (userId: string, productId: string) => Promise<void>; // moveClickProduct 함수 타입 정의
   userId?: string; // 사용자 uid
-  moveHeartProduct?: (productId: string, newChecked: boolean) => void; // 하트 상태 변경 함수
+  moveHeartProduct?: (productId: string, newChecked: boolean) => void; // productId 추가
+  showHeart?: boolean; // 특정페이지에서 하트를 감추는 조건부렌더링 처리
 };
 
 const SizeRecommendationCard = ({
@@ -35,8 +35,8 @@ const SizeRecommendationCard = ({
   onCardClick,
   productId,
   moveHeartProduct,
-  moveClickProduct,
   userId,
+  showHeart = true, // 기본값으로 하트를 보여주도록 설정
 }: SizeRecommendationCardProps) => {
   // product가 null일 경우 아무것도 렌더링하지 않음
   if (!product) {
@@ -44,6 +44,7 @@ const SizeRecommendationCard = ({
   }
 
   const [isChecked, setIsChecked] = useState(isHeartFilled);
+  const { addProduct, deleteProduct } = useMyLikedProductStore();
 
   useEffect(() => {
     setIsChecked(isHeartFilled);
@@ -56,7 +57,26 @@ const SizeRecommendationCard = ({
     setIsChecked(newChecked);
 
     if (moveHeartProduct && productId) {
-      moveHeartProduct(productId, newChecked); // 하트 클릭 시 zustand의 handleHeartChecked 호출
+      moveHeartProduct(productId, newChecked); // 선택한 productId와 새로운 좋아요 상태 전달
+    }
+
+    if (userId && productId) {
+      if (newChecked) {
+        const productWithUid = {
+          ...product,
+          uid: userId, // uid 필드를 명시적으로 추가
+        };
+
+        console.log('하트를 클릭하여 Firestore에 추가될 제품:', {
+          productId,
+          productWithUid,
+        });
+
+        await addProduct(userId, productId, productWithUid); // uid가 추가된 객체 전달
+      } else {
+        console.log('하트를 취소하여 Firestore에서 삭제될 제품:', productId);
+        await deleteProduct(userId, productId);
+      }
     }
   };
 
@@ -66,9 +86,6 @@ const SizeRecommendationCard = ({
       onClick={async e => {
         window.open(product.link, '_blank'); // 새 창에서 링크 열기
         e.stopPropagation();
-        if (userId && productId && moveClickProduct) {
-          await moveClickProduct(userId, productId); // moveClickProduct 호출
-        }
         onCardClick?.(); // 클릭한 시간을 기록하는 함수 호출 (옵셔널 체이닝 처리)
       }}
     >
@@ -80,15 +97,17 @@ const SizeRecommendationCard = ({
           <p className={sizeRecommendationBadgeTag}>{product?.sizeRecommend} 추천</p>
         </div>
 
-        <div
-          className={heartIconBox}
-          onClick={e => {
-            e.stopPropagation();
-            handleHeartChecked(e);
-          }}
-        >
-          <img src={isChecked ? heart_filled : heart_empty} alt="heart" />
-        </div>
+        {showHeart && ( // 하트 표시 여부를 showHeart로 제어
+          <div
+            className={heartIconBox}
+            onClick={e => {
+              e.stopPropagation();
+              handleHeartChecked(e);
+            }}
+          >
+            <img src={isChecked ? heart_filled : heart_empty} alt="heart" />
+          </div>
+        )}
 
         <div className={brandIconBox}>
           <img src={brand_abcmart} alt="brand_abcmart" />

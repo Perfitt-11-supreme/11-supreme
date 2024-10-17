@@ -36,11 +36,11 @@ export const imageStyle = style({
   width: '100%',
   height: '100%',
   objectFit: 'cover',
-})
-
+});
 
 export const sizeRecommendationBadge = style({
-  width: '77px',
+  // width: '77px', 사이즈추천 기능 미구현 이슈
+  width: '37px',
   height: '20px',
   display: 'flex',
   justifyContent: 'center',
