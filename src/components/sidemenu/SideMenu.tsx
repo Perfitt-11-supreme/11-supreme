@@ -1,5 +1,4 @@
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { prefitt_logo2, sidemenu_list, sidemenu_plus } from '../../assets/assets';
@@ -8,6 +7,7 @@ import { useChatCompletion } from '../../hooks/useChatCompletionHook';
 import useChatHistory from '../../hooks/useChatHistoryHook';
 import SideMenuSkeleton from '../sidemenu-skeleton/SideMenuSkeleton';
 import SidemenuMypageLinks from './sidemenu-mypage-link/SidemenuMypageLink';
+import { sidemenuUserProfileLogin } from './sidemenu-mypage-link/sidemenuMypageLink.css';
 import {
   logoIcon,
   logoIconBox,
@@ -24,7 +24,6 @@ import {
   sidemenuMypageMoveContainer,
   sidemenuNewChatContainer,
 } from './sidemenu.css';
-import { sidemenuUserProfileLogin } from './sidemenu-mypage-link/sidemenuMypageLink.css';
 
 type SideMenuProps = {
   onClose: () => void;
@@ -33,11 +32,10 @@ type SideMenuProps = {
 const SideMenu = ({ onClose }: SideMenuProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUserUid, setCurrentUserUid] = useState<string | null>(null);
-  const [deletedChatIds] = useState<string[]>([]);
   const navigate = useNavigate();
   const auth = getAuth();
   const { handleNewChat } = useChatCompletion();
-  const { chatHistory, deleteChatHistory, chatHistoryIsLoading } = useChatHistory();
+  const { chatHistory, deleteChatHistory, chatHistoryIsLoading, chatHistoryIsFetching } = useChatHistory();
   // 현재 UTC 시간으로 오늘 날짜 계산
   // UTC 시간
   const utcToday = useMemo(() => {
@@ -62,25 +60,7 @@ const SideMenu = ({ onClose }: SideMenuProps) => {
     };
   }, [auth]);
 
-  // 비슷한데.. 합치면 안되나
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const user = auth.currentUser;
-      if (user) {
-        const db = getFirestore();
-        const userDocRef = doc(db, 'users', user.uid);
-        const userDoc = await getDoc(userDocRef);
-        if (userDoc.exists()) {
-          console.log('Firestore uid:', user.uid); // Firestore에서 가져온 uid 확인
-          setCurrentUserUid(user.uid); // Firestore에서 uid를 가져옴
-        } else {
-          console.log('No such document!');
-        }
-      }
-    };
 
-    fetchUserData();
-  }, [auth]);
 
   const handleLoginClick = useCallback(() => {
     onClose();
@@ -97,6 +77,7 @@ const SideMenu = ({ onClose }: SideMenuProps) => {
     () =>
       chatHistory
         .filter(chat => {
+          if (!chat.timestamp) return false;
           const chatDate = new Date(chat.timestamp);
           return (
             currentUserUid &&
@@ -113,6 +94,7 @@ const SideMenu = ({ onClose }: SideMenuProps) => {
     () =>
       chatHistory
         .filter(chat => {
+          if (!chat.timestamp) return false;
           const chatDate = new Date(chat.timestamp);
           return (
             currentUserUid &&
@@ -127,8 +109,14 @@ const SideMenu = ({ onClose }: SideMenuProps) => {
     [chatHistory, currentUserUid, sevenDaysAgo, utcToday]
   );
 
-  // if (chatHistoryIsLoading) return <SideMenuSkeleton />
-
+  console.log({
+    isLoggedIn,
+    currentUserUid,
+    chatHistoryIsLoading,
+    chatHistoryLength: chatHistory.length,
+    filteredTodayLength: filteredTodayChatHistory.length,
+    filtered7DaysLength: filtered7DaysChatHistory.length
+  });
   return (
     <>
       <section className={sidemenuDimmed} onClick={onClose}>
@@ -139,33 +127,29 @@ const SideMenu = ({ onClose }: SideMenuProps) => {
               <img className={logoIcon} src={prefitt_logo2} alt="hamburger_menu" />
             </button>
           </article>
-          {isLoggedIn ? (
+          <article className={sidemenuNewChatContainer}>
+            <button className={plusButtonBox} onClick={handleNavigateChatbot}>
+              <img src={sidemenu_plus} alt="sidemenu_plus" />
+              <p className={newChatText}>새 채팅</p>
+            </button>
+          </article>
+
+          {isLoggedIn && (
             <>
               {/* 새 채팅 */}
-              <article className={sidemenuNewChatContainer}>
-                <button className={plusButtonBox} onClick={handleNavigateChatbot}>
-                  <img src={sidemenu_plus} alt="sidemenu_plus" />
-                  <p className={newChatText}>새 채팅</p>
-                </button>
-              </article>
-              {/* 리스트 */}
               <article className={sidemenuListsContainer}>
-                <div
-                  style={{
-                    display: filtered7DaysChatHistory.length === 0 ? 'none' : 'block',
-                  }}
-                >
-                  <h3 className={sidemenuListsTitle}>오늘</h3>
-                  {chatHistoryIsLoading ? (
-                    <div style={{ marginTop: '15px' }}>
-                      <SideMenuSkeleton />
-                    </div>
-                  ) : (
-                    <div className={sidemenuListsItem3ScrollAuto}>
-                      <ul className={sidemenuListsBox}>
-                        {filteredTodayChatHistory.map(
-                          chat =>
-                            !deletedChatIds.includes(chat.id) && ( // 삭제된 ID가 아닐 경우에만 렌더링
+                {(chatHistoryIsLoading || chatHistoryIsFetching) ? (
+                  <div style={{ marginTop: '15px' }}>
+                    <SideMenuSkeleton />
+                  </div>
+                ) : (
+                  <>
+                    {filteredTodayChatHistory.length > 0 && (
+                      <div>
+                        <h3 className={sidemenuListsTitle}>오늘</h3>
+                        <div className={sidemenuListsItem3ScrollAuto}>
+                          <ul className={sidemenuListsBox}>
+                            {filteredTodayChatHistory.map(chat => (
                               <SidemenuList
                                 key={chat.id}
                                 iconSrc={sidemenu_list}
@@ -174,28 +158,19 @@ const SideMenu = ({ onClose }: SideMenuProps) => {
                                 keywords={chat.keywords}
                                 timestamp={chat.timestamp}
                                 onClose={onClose}
-                                handleDelete={deleteChatHistory} // 삭제 함수 전달
+                                handleDelete={deleteChatHistory}
                               />
-                            )
-                        )}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-                <div
-                  style={{
-                    display: filtered7DaysChatHistory.length === 0 ? 'none' : 'block',
-                  }}
-                >
-                  <h3 className={sidemenuListsTitle}>지난 7일</h3>
-                  {chatHistoryIsLoading ? (
-                    <SideMenuSkeleton />
-                  ) : (
-                    <div className={sidemenuListsItem5ScrollAuto}>
-                      <ul className={sidemenuListsBox}>
-                        {filtered7DaysChatHistory.map(
-                          chat =>
-                            !deletedChatIds.includes(chat.id) && ( // 삭제된 ID가 아닐 경우에만 렌더링
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    )}
+                    {filtered7DaysChatHistory.length > 0 && (
+                      <div>
+                        <h3 className={sidemenuListsTitle}>지난 7일</h3>
+                        <div className={sidemenuListsItem5ScrollAuto}>
+                          <ul className={sidemenuListsBox}>
+                            {filtered7DaysChatHistory.map(chat => (
                               <SideMenuList
                                 key={chat.id}
                                 iconSrc={sidemenu_list}
@@ -203,18 +178,19 @@ const SideMenu = ({ onClose }: SideMenuProps) => {
                                 shareId={chat.shareId}
                                 keywords={chat.keywords}
                                 timestamp={chat.timestamp}
-                                handleDelete={deleteChatHistory} // 삭제 함수 전달
+                                handleDelete={deleteChatHistory}
                                 onClose={onClose}
                               />
-                            )
-                        )}
-                      </ul>
-                    </div>
-                  )}
-                </div>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )}
               </article>
             </>
-          ) : null}
+          )}
           {/* mypage 링크 또는 로그인 버튼 */}
           <article className={sidemenuMypageMoveContainer}>
             {isLoggedIn ? (
