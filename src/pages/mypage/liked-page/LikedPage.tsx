@@ -17,6 +17,7 @@ import useUserStore from '../../../stores/useUserStore';
 import LoadingPage from '../../loading-page/loadingPage';
 import useMyLikedBrandStore from '../../../stores/useMyLikedBrandStore';
 import useMyLikedProductStore from '../../../stores/useMyLikedProductStore';
+import useMyViewedProductStore from '../../../stores/useMyViewedProductStore';
 
 // Firebase 초기화
 const storage = getStorage();
@@ -28,8 +29,8 @@ const LikedPage = () => {
   // UseUserStore로부터 유저 정보 가져오기
   const { user } = useUserStore();
   // 상품카드 상태관리 - zustand
-  const { productsData, deleteProduct, fetchProductsData, handleCardClick, handleProductHeartChecked } =
-    useMyLikedProductStore();
+  const { productsData, deleteProduct, fetchProductsLikedData, handleProductHeartChecked } = useMyLikedProductStore();
+  const { handleCardClick } = useMyViewedProductStore();
   // 브랜드 상태관리 - zustand
   const { brandsData, fetchBrandsData } = useMyLikedBrandStore();
   // 브랜드로고 이미지 상태관리 - 파이어베이스의 스토리지에 담은 이미지를 가져와야 해서 별도 처리
@@ -38,7 +39,7 @@ const LikedPage = () => {
 
   useEffect(() => {
     if (user?.uid) {
-      fetchProductsData(user.uid); // liked 상품 데이터 가져오기
+      fetchProductsLikedData(user.uid); // liked 상품 데이터 가져오기
       fetchBrandsData(user.uid);
     }
   }, [user?.uid]);
@@ -128,16 +129,19 @@ const LikedPage = () => {
                 .map(([productId, product]) => {
                   return (
                     <SizeRecommendationCard
-                      onCardClick={() => handleCardClick(user?.uid || '', productId)} // 카드 클릭 시 호출
-                      key={productId}
-                      isHeartFilled={product?.isLiked || false} // product가 null일 수 있으므로 안전하게 처리
                       product={product} // TProduct 타입 전달
+                      isHeartFilled={product?.isLiked || false} // product가 null일 수 있으므로 안전하게 처리
+                      userId={user?.uid || ''} // 현재 사용자의 uid 전달
+                      productId={productId} // productId도 props로 전달
                       moveHeartProduct={(productId, checked) =>
                         handleProductHeartChecked(user?.uid || '', productId, checked)
                       } // 하트 상태 변경 함수 전달
-                      userId={user?.uid || ''} // 현재 사용자의 uid 전달
-                      productId={productId} // productId도 props로 전달
+                      key={productId}
                       onDelete={handleDeleteProduct} // productId를 전달
+                      // onCardClick={() => handleCardClick(user?.uid || '', productId)} // 카드 클릭 시 호출
+                      onCardClick={() =>
+                        handleCardClick(user?.uid || '', product?.productId || product?.modelNo || '', product)
+                      }
                     />
                   );
                 })

@@ -17,6 +17,7 @@ import {
   productRecommendFiltering,
   productRecommendWrapper,
 } from './productFilter.css';
+import useMyViewedProductStore from '../../../stores/useMyViewedProductStore';
 
 type ProductFilterProps = {
   filterProducts?: TProduct[];
@@ -42,14 +43,15 @@ const ProductFilter = ({ filterProducts }: ProductFilterProps) => {
   // user 정보 가져오기 - 하윤
   const { user } = useUserStore();
   // myLiked 관련 함수 zustand 스토어에서 함수 가져오기 - 하윤
-  const { fetchProductsData, productsData, handleProductHeartChecked } = useMyLikedProductStore();
+  const { fetchProductsLikedData, productsData, handleProductHeartChecked } = useMyLikedProductStore();
+  const { handleCardClick } = useMyViewedProductStore();
 
   // 좋아요 하트 true값 유지하기 - 하윤
   useEffect(() => {
     if (user?.uid) {
-      fetchProductsData(user.uid); // Firestore에서 liked 데이터 불러오기
+      fetchProductsLikedData(user.uid); // Firestore에서 liked 데이터 불러오기
     }
-  }, [user?.uid, fetchProductsData]);
+  }, [user?.uid, fetchProductsLikedData]);
 
   const handleDetailClick = () => {
     setFilterOpen(true);
@@ -89,6 +91,9 @@ const ProductFilter = ({ filterProducts }: ProductFilterProps) => {
                   moveHeartProduct={(productId, checked) =>
                     handleProductHeartChecked(user?.uid || '', productId, checked)
                   } // 하트 상태 변경 함수 전달
+                  onCardClick={() =>
+                    handleCardClick(user?.uid || '', product?.productId || product?.modelNo || '', product)
+                  }
                 />
               </li>
             );

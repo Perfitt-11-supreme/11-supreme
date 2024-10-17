@@ -26,6 +26,7 @@ type SizeRecommendationCardProps = {
   productId?: string;
   userId?: string; // 사용자 uid
   moveHeartProduct?: (productId: string, newChecked: boolean) => void; // productId 추가
+  showHeart?: boolean; // 특정페이지에서 하트를 감추는 조건부렌더링 처리
 };
 
 const SizeRecommendationCard = ({
@@ -35,6 +36,7 @@ const SizeRecommendationCard = ({
   productId,
   moveHeartProduct,
   userId,
+  showHeart = true, // 기본값으로 하트를 보여주도록 설정
 }: SizeRecommendationCardProps) => {
   // product가 null일 경우 아무것도 렌더링하지 않음
   if (!product) {
@@ -95,15 +97,17 @@ const SizeRecommendationCard = ({
           <p className={sizeRecommendationBadgeTag}>{product?.sizeRecommend} 추천</p>
         </div>
 
-        <div
-          className={heartIconBox}
-          onClick={e => {
-            e.stopPropagation();
-            handleHeartChecked(e); // 하트 상태 변경
-          }}
-        >
-          <img src={isChecked ? heart_filled : heart_empty} alt="heart" />
-        </div>
+        {showHeart && ( // 하트 표시 여부를 showHeart로 제어
+          <div
+            className={heartIconBox}
+            onClick={e => {
+              e.stopPropagation();
+              handleHeartChecked(e);
+            }}
+          >
+            <img src={isChecked ? heart_filled : heart_empty} alt="heart" />
+          </div>
+        )}
 
         <div className={brandIconBox}>
           <img src={brand_abcmart} alt="brand_abcmart" />

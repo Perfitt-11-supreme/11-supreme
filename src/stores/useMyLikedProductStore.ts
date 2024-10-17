@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { doc, getDoc, updateDoc, deleteField } from 'firebase/firestore';
-import { LIKED_COLLECTION, VIEWED_COLLECTION } from '../firebase/firebase';
+import { LIKED_COLLECTION } from '../firebase/firebase';
 import { TProduct } from '../types/product';
 
 type MyLikedProductStore = {
@@ -8,8 +8,7 @@ type MyLikedProductStore = {
   setProductsData: (products: { [key: string]: TProduct }) => void;
   addProduct: (uid: string, productId: string, product: TProduct) => Promise<void>;
   deleteProduct: (uid: string, productId: string) => Promise<void>;
-  fetchProductsData: (userId: string) => Promise<void>;
-  handleCardClick: (userId: string, productId: string) => Promise<void>;
+  fetchProductsLikedData: (userId: string) => Promise<void>;
   handleProductHeartChecked: (userId: string, productId: string, newChecked: boolean) => Promise<void>;
 };
 
@@ -49,7 +48,7 @@ const useMyLikedProductStore = create<MyLikedProductStore>(set => ({
     });
   },
 
-  fetchProductsData: async userId => {
+  fetchProductsLikedData: async userId => {
     const userDoc = doc(LIKED_COLLECTION, userId);
     const docSnap = await getDoc(userDoc);
 
@@ -59,32 +58,6 @@ const useMyLikedProductStore = create<MyLikedProductStore>(set => ({
 
       set({ productsData });
     }
-  },
-
-  handleCardClick: async (userId, productId) => {
-    const timestamp = new Date().toISOString();
-    const viewedDocRef = doc(VIEWED_COLLECTION, userId);
-
-    await updateDoc(viewedDocRef, {
-      [`products.${productId}.timestamp`]: timestamp,
-    });
-
-    set(state => {
-      const product = state.productsData[productId];
-      if (!product) {
-        return state;
-      }
-
-      return {
-        productsData: {
-          ...state.productsData,
-          [productId]: {
-            ...product,
-            timestamp,
-          },
-        },
-      };
-    });
   },
 
   // 하트 상태를 변경하는 함수
@@ -124,7 +97,6 @@ const useMyLikedProductStore = create<MyLikedProductStore>(set => ({
 
       // 정렬된 데이터를 다시 객체로 변환하여 상태에 저장
       const sortedProductsData = Object.fromEntries(sortedData);
-      //   return { productsData: updatedData };
       return { productsData: sortedProductsData };
     });
   },
