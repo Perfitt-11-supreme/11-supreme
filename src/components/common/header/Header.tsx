@@ -31,12 +31,9 @@ const Header = ({ imageSrc, alt, title, nav }: THeader) => {
     e.stopPropagation();
 
     if (imageSrc === back_arrow || imageSrc === close) {
-      console.log('Navigating back...');
       handleNavigate(nav); // back 또는 close 이미지일 경우 지정된 경로로 이동
     } else if (imageSrc === hamburger_menu) {
       toggleSideMenu(); // 햄버거 아이콘일 경우 사이드 메뉴 열기
-    } else {
-      console.log('No matching imageSrc');
     }
   };
 
