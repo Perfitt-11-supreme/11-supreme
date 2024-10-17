@@ -19,7 +19,7 @@ const ViewedHistoryPage = () => {
   // UseUserStore로부터 유저 정보 가져오기
   const { user } = useUserStore();
   // 상품카드 상태관리 - zustand
-  const { fetchProductsLikedData, handleProductHeartChecked } = useMyLikedProductStore();
+  const { fetchProductsLikedData } = useMyLikedProductStore();
   const { productsData, fetchProductsViewedData, handleCardClick } = useMyViewedProductStore();
 
   const handleLikedOrViewedChange = (buttonType: string) => {
