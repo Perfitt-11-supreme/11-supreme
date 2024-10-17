@@ -113,14 +113,14 @@ const LoginHello = () => {
           const likedDoc = await getDoc(likedDocRef);
           if (!likedDoc.exists()) {
             await setDoc(likedDocRef, { uid: user.uid, products: {}, brands: {} });
-            console.log('myLiked 문서가 초기화되었습니다.');
+            // console.log('myLiked 문서가 초기화되었습니다.');
           }
 
           // myViewed 컬렉션에 사용자 문서가 없으면 초기화
           const viewedDoc = await getDoc(viewedDocRef);
           if (!viewedDoc.exists()) {
             await setDoc(viewedDocRef, { uid: user.uid, products: {} });
-            console.log('myViewed 문서가 초기화되었습니다.');
+            // console.log('myViewed 문서가 초기화되었습니다.');
           }
         } catch (error) {
           console.error('Firestore 초기화 중 오류 발생:', error);
