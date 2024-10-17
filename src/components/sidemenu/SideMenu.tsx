@@ -32,7 +32,6 @@ type SideMenuProps = {
 const SideMenu = ({ onClose }: SideMenuProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUserUid, setCurrentUserUid] = useState<string | null>(null);
-  const [deletedChatIds] = useState<string[]>([]);
   const navigate = useNavigate();
   const auth = getAuth();
   const { handleNewChat } = useChatCompletion();
