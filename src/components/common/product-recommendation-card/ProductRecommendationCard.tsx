@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { brand_abcmart, heart_empty, heart_filled } from '../../../assets/assets';
-import useProductDetailStore from '../../../stores/useProductDetailStore';
+// import useProductDetailStore from '../../../stores/useProductDetailStore';
 import { TProduct } from '../../../types/product';
 import {
   brandIconBox,
@@ -8,7 +8,7 @@ import {
   productBox,
   productBrand,
   productName,
-  productPrice,
+  // productPrice,
   productRecommendationCardBox,
   productRecommendationThumbnail,
   productRecommendationThumbnailContainer,

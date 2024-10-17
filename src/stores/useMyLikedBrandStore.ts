@@ -1,4 +1,4 @@
-import create from 'zustand';
+import { create } from 'zustand';
 import { doc, getDoc, updateDoc, deleteField } from 'firebase/firestore';
 import { LIKED_COLLECTION } from '../firebase/firebase';
 
