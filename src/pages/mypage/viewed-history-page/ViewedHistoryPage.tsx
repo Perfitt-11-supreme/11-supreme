@@ -10,7 +10,6 @@ import {
 import LikedAndViewedHistoryButton from '../../../components/mypage/liked-and-viewed-history-button/LikedAndViewedHistoryButton';
 import { back_arrow } from '../../../assets/assets';
 import useUserStore from '../../../stores/useUserStore';
-import useMyLikedProductStore from '../../../stores/useMyLikedProductStore';
 import useMyViewedProductStore from '../../../stores/useMyViewedProductStore';
 
 const ViewedHistoryPage = () => {
@@ -19,7 +18,6 @@ const ViewedHistoryPage = () => {
   // UseUserStore로부터 유저 정보 가져오기
   const { user } = useUserStore();
   // 상품카드 상태관리 - zustand
-  const { fetchProductsLikedData } = useMyLikedProductStore();
   const { productsData, fetchProductsViewedData, handleCardClick } = useMyViewedProductStore();
 
   const handleLikedOrViewedChange = (buttonType: string) => {
@@ -29,7 +27,6 @@ const ViewedHistoryPage = () => {
   useEffect(() => {
     if (user?.uid) {
       fetchProductsViewedData(user.uid);
-      fetchProductsLikedData(user.uid);
     }
   }, [user?.uid]);
 
