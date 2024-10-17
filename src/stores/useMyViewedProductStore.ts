@@ -33,15 +33,12 @@ const useMyViewedProductStore = create<MyViewedProductStore>(set => ({
       // 정렬된 데이터를 다시 객체로 변환하여 상태에 저장
       const sortedProductsData = Object.fromEntries(sortedData);
       set({ productsData: sortedProductsData }); // 상태에 저장
-    } else {
-      console.log('No data found for this user.');
     }
   },
 
   // 카드 클릭 시 timestamp 업데이트
   handleCardClick: async (userId: string, productId: string, product: TProduct) => {
     if (!product) {
-      console.error('Product is null or undefined');
       return; // product가 null인 경우 함수 종료
     }
 
