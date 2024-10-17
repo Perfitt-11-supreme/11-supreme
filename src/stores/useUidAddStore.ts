@@ -17,7 +17,7 @@ const useUidAddStore = create<UidAddStore>(() => ({
       await setDoc(likedDocRef, { uid, products: {}, brands: {} });
       await setDoc(viewedDocRef, { uid, products: {} });
 
-      console.log('myLiked, myViewed에 uid값 추가... 성공');
+      // console.log('myLiked, myViewed에 uid값 추가... 성공');
     } catch (error) {
       console.error('myLiked, myViewed에 uid값 추가... 실패', error);
     }
