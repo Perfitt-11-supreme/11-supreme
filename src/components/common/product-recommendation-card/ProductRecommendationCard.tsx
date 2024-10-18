@@ -66,15 +66,8 @@ const ProductRecommendationCard = ({
           ...product,
           uid: userId, // uid 필드를 명시적으로 추가
         };
-
-        console.log('하트를 클릭하여 Firestore에 추가될 제품:', {
-          productId,
-          productWithUid,
-        });
-
         await addProduct(userId, productId, productWithUid); // uid가 추가된 객체 전달
       } else {
-        console.log('하트를 취소하여 Firestore에서 삭제될 제품:', productId);
         await deleteProduct(userId, productId);
       }
     }

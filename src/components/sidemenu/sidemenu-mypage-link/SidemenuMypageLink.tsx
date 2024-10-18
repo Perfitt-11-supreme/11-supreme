@@ -26,7 +26,7 @@ const SidemenuMypageLinks = () => {
   const fetchUserData = async () => {
     const user = auth.currentUser;
     if (user) {
-      console.log('Fetching data for UID:', user.uid); // uid 로그 출력
+      // console.log('Fetching data for UID:', user.uid); // uid 로그 출력
       try {
         const userDoc = await getDoc(doc(USER_COLLECTION, user.uid)); // Firestore에서 유저 정보 가져오기
         if (userDoc.exists()) {

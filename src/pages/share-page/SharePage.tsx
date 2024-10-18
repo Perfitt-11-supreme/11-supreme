@@ -71,13 +71,13 @@ const SharePage = () => {
           if (data) {
             setProductData(data); // 데이터를 상태에 저장
           } else {
-            console.error('데이터가 없습니다.');
+            // console.error('데이터가 없습니다.');
             setProductData(null); // 데이터가 없을 경우 null로 설정
           }
-        },
-        error => {
-          console.error('데이터 불러오기 에러:', error);
         }
+        // error => {
+        //   console.error('데이터 불러오기 에러:', error);
+        // }
       );
     };
 

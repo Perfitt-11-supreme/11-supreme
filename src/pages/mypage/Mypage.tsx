@@ -68,11 +68,7 @@ const Mypage = () => {
 
         if (usersData.length > 0) {
           setUserData(usersData[0]);
-        } else {
-          console.log('사용자 데이터를 찾을 수 없습니다.');
         }
-      } else {
-        console.log('사용자가 로그인하지 않았습니다.');
       }
     } catch (error) {
       console.error('Error fetching user data: ', error);
@@ -84,8 +80,6 @@ const Mypage = () => {
     const unsubscribe = onAuthStateChanged(auth, user => {
       if (user) {
         fetchUserDatas();
-      } else {
-        console.log('No user is signed in');
       }
     });
 
@@ -126,7 +120,7 @@ const Mypage = () => {
         const userDocRef = doc(db, 'users', userData.uid);
         await setDoc(userDocRef, { profileImage: imageUrl }, { merge: true });
 
-        console.log('Firestore에 이미지 URL 저장 완료:', imageUrl);
+        // console.log('Firestore에 이미지 URL 저장 완료:', imageUrl);
       } catch (error) {
         console.error('Firestore에 이미지 저장 중 오류 발생:', error);
       }
