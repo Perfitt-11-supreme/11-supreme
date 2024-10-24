@@ -1,4 +1,4 @@
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
 import { TUser } from '../types/user';
 
@@ -23,7 +23,7 @@ export const fetchUserDatas = async (uid: string): Promise<TUser | null> => {
     if (usersData.length > 0) {
       return usersData[0]; // 첫 번째 사용자 데이터 반환
     } else {
-      console.log('사용자 데이터를 찾을 수 없습니다.');
+      console.error('사용자 데이터를 찾을 수 없습니다.');
       return null;
     }
   } catch (error) {

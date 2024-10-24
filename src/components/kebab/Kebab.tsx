@@ -21,14 +21,14 @@ const KebabMenu = () => {
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
-    console.log(isOpen);
+    // console.log(isOpen);
   };
 
   const deleteData = async (shoesId: string) => {
     try {
       // 'myshoes'는 컬렉션 이름, shoesId는 삭제할 문서의 ID
       await deleteDoc(doc(db, 'myshoes', shoesId));
-      console.log('문서 삭제 성공');
+      // console.log('문서 삭제 성공');
     } catch (e) {
       console.error('문서 삭제 에러: ', e);
     }
@@ -54,7 +54,7 @@ const KebabMenu = () => {
     if (shoesId) {
       navigate(`/shoes-registry/${shoesId}`);
     }
-    console.log('수정 버튼 클릭됨');
+    // console.log('수정 버튼 클릭됨');
   };
 
   return (

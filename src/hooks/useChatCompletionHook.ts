@@ -35,7 +35,7 @@ export const useChatCompletion = () => {
     if (newChatId) {
       localStorage.setItem(CHAT_ID_KEY, newChatId);
     }
-    console.log("새로운 채팅방 아이디", newChatId);
+    // console.log("새로운 채팅방 아이디", newChatId);
     return newChatId;
   };
 
@@ -49,7 +49,7 @@ export const useChatCompletion = () => {
       return { response, chatId };
     },
     onSuccess: async ({ response, chatId }, question) => {
-      console.log('채팅 응답 성공:', response);
+      // console.log('채팅 응답 성공:', response);
 
       const chatItemWithoutIds = {
         userQuestion: question || '',
@@ -90,7 +90,7 @@ export const useChatCompletion = () => {
     const shareId = push(ref(database, 'sharedChatHistory')).key;
     if (shareId) {
       await set(ref(database, `sharedChatHistory/${shareId}`), chatItem);
-      console.log('공유용 채팅 히스토리 저장 성공:', shareId);
+      // console.log('공유용 채팅 히스토리 저장 성공:', shareId);
       return shareId;
     }
     throw new Error('Failed to generate shareId');

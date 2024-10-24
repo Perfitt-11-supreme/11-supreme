@@ -8,22 +8,22 @@ import UserBubble from '../../components/chatbot/user-bubble/UserBubble';
 import Button from '../../components/common/button/Button';
 import ChatbotSearchInput from '../../components/common/chatbot-search-input/ChatbotSearchInput';
 
+import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { chatKeywordsAPI, keywordsListAPI } from '../../api/chatRequests';
 import ProductRecommendationPreview from '../../components/chatbot/product-recommendation-preview/ProductRecommendationPreview';
 import Header from '../../components/common/header/Header';
 import KeywordCard from '../../components/common/keyword-card/KeywordCard';
 import Modal from '../../components/common/modal/Modal';
+import { auth } from '../../firebase/firebase';
+import { fetchUserDatas } from '../../services/fetchUserDatasService';
 import useBrandStore from '../../stores/useBrandStore';
 import useModalStore from '../../stores/useModalStore';
 import useProductStore from '../../stores/useProductsStore';
+import useUserStore from '../../stores/useUserStore';
 import { TKeyWordsData } from '../../types/keywords';
 import LoadingPage from '../loading-page/loadingPage';
 import { chatBotCardWrap, chatBotContainer, chatBotModalWrap, chatBubbleWrap, keywordWrap } from './chatBotPage.css';
-import useUserStore from '../../stores/useUserStore';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../../firebase/firebase';
-import { fetchUserDatas } from '../../services/fetchUserDatasService';
 
 type KeywordsList = string[];
 
@@ -49,7 +49,7 @@ const ChatBotPage = () => {
           }
         }
       } else {
-        console.log('로그인한 사용자가 없습니다.');
+        console.error('로그인한 사용자가 없습니다.');
       }
     });
 
@@ -66,7 +66,7 @@ const ChatBotPage = () => {
     queryFn: async () => {
       try {
         const response = await keywordsListAPI();
-        console.log(' 키워드 리스트 데이터 확인용', response);
+        // console.log(' 키워드 리스트 데이터 확인용', response);
         return response.data;
       } catch (error) {
         console.error('키워드 정보 불러오기 에러', error);
@@ -100,7 +100,7 @@ const ChatBotPage = () => {
   const keywordMutation = useMutation({
     mutationFn: (data: TKeyWordsData) => chatKeywordsAPI(data),
     onSuccess: response => {
-      console.log('키워드 전송 성공:', response);
+      // console.log('키워드 전송 성공:', response);
       setKeywordModalOpen(false);
       setMessage(response.data.message);
       setProducts(response.data.products);
@@ -109,7 +109,7 @@ const ChatBotPage = () => {
       console.error('키워드 전송 실패:', error);
     },
     onSettled: () => {
-      console.log('결과에 관계없이 무언가 실행됨');
+      // console.log('결과에 관계없이 무언가 실행됨');
     },
   });
 

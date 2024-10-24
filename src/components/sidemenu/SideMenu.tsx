@@ -109,14 +109,7 @@ const SideMenu = ({ onClose }: SideMenuProps) => {
     [chatHistory, currentUserUid, sevenDaysAgo, utcToday]
   );
 
-  console.log({
-    isLoggedIn,
-    currentUserUid,
-    chatHistoryIsLoading,
-    chatHistoryLength: chatHistory.length,
-    filteredTodayLength: filteredTodayChatHistory.length,
-    filtered7DaysLength: filtered7DaysChatHistory.length
-  });
+
   return (
     <>
       <section className={sidemenuDimmed} onClick={onClose}>

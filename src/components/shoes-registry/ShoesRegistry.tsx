@@ -109,7 +109,7 @@ const ShoesRegistry = () => {
           setReview(data.review);
           setRecommendation(data.recommendation);
         } else {
-          console.log('해당 문서가 없습니다.');
+          console.error('해당 문서가 없습니다.');
         }
       } catch (e) {
         console.error('문서를 가져오는 중 오류 발생: ', e);
@@ -141,11 +141,11 @@ const ShoesRegistry = () => {
           // 신발 정보 수정
           const shoeDocRef = doc(db, 'myshoes', shoesId);
           await updateDoc(shoeDocRef, dataWithUid);
-          console.log('db 수정 성공 ID: ', shoesId);
+          // console.log('db 수정 성공 ID: ', shoesId);
         } else {
           // 신발 정보 저장
           const docRef = await addDoc(collection(db, 'myshoes'), dataWithUid);
-          console.log('db 저장 성공 ID: ', docRef.id);
+          // console.log('db 저장 성공 ID: ', docRef.id);
         }
       } catch (e) {
         console.error('db 저장/수정 에러: ', e);

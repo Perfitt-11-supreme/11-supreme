@@ -76,13 +76,13 @@ const SideMenuList = ({ iconSrc, keywords, id, shareId, handleDelete, onClose }:
           setShareModalId(fetchedShareId);
           setIsShareModalOpen(true);
         } else {
-          console.log('공유 ID를 찾을 수 없습니다.');
+          console.error('공유 ID를 찾을 수 없습니다.');
         }
       } else {
-        console.log('사용자 ID가 제공되지 않았습니다.'); // 사용자 ID가 없을 때 처리
+        console.error('사용자 ID가 제공되지 않았습니다.'); // 사용자 ID가 없을 때 처리
       }
     } else {
-      console.log('공유 ID가 제공되지 않았습니다.');
+      console.error('공유 ID가 제공되지 않았습니다.');
     }
   };
 

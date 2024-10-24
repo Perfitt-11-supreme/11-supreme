@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ai, brand_abcmart, heart_empty, heart_filled } from '../../../assets/assets';
+import useMyLikedProductStore from '../../../stores/useMyLikedProductStore';
 import { TProduct } from '../../../types/product';
 import {
   brandIconBox,
@@ -16,7 +17,6 @@ import {
   sizeRecommendationThumbnail,
   sizeRecommendationThumbnailContainer,
 } from './sizeRecommendationCard.css';
-import useMyLikedProductStore from '../../../stores/useMyLikedProductStore';
 
 type SizeRecommendationCardProps = {
   product: TProduct | null;

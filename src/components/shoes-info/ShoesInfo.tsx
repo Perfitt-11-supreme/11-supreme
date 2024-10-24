@@ -29,10 +29,10 @@ const ShoesInfo = () => {
         const docSnap = await getDoc(doc(db, 'myshoes', shoesId as string));
         if (docSnap.exists()) {
           const data = docSnap.data();
-          console.log('Fetched shoe data: ', data); // 데이터 구조 확인
+          // console.log('Fetched shoe data: ', data); // 데이터 구조 확인
           setShoeData(data); // 데이터를 상태로 저장
         } else {
-          console.log('해당 문서가 없습니다');
+          console.error('해당 문서가 없습니다');
         }
       } catch (e) {
         console.error('문서를 가져오는 중 오류 발생: ', e);

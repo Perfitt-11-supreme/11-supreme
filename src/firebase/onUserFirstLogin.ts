@@ -9,7 +9,7 @@ export const onUserFirstLogin = async (uid: string, additionalData: { email: str
     await addUidToFirestore(uid);
 
     setUser({ uid, email: additionalData.email, userName: additionalData.userName });
-    console.log('사용자 Firestore 초기화 성공');
+    // console.log('사용자 Firestore 초기화 성공');
   } catch (error) {
     console.error('사용자 Firestore 초기화 실패: ', error);
   }

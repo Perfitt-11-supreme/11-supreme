@@ -1,5 +1,5 @@
 // 파이어베이스
-import { ref, uploadString, getDownloadURL, deleteObject } from 'firebase/storage';
+import { deleteObject, getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { storage } from './firebase';
 // Zustand
 import useUserStore from '../stores/useUserStore';
@@ -23,7 +23,7 @@ export const ImageUpload = () => {
         // Post 함수
         onSuccess(downloadURL);
 
-        console.log(downloadURL);
+        // console.log(downloadURL);
         // 2초뒤 실행
         setTimeout(() => {
           // 이미지 삭제 함수
@@ -32,7 +32,7 @@ export const ImageUpload = () => {
           // 이미지 삭제
           deleteObject(storageRef)
             .then(() => {
-              console.log('File deleted successfully');
+              // console.log('File deleted successfully');
             })
             .catch(error => {
               console.error('Error deleting file:', error);

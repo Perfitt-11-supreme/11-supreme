@@ -86,7 +86,7 @@ const ShareModal = () => {
             console.error('데이터가 없습니다.');
             setProductData(null); // 데이터가 없을 경우 null로 설정
           }
-          console.log(data);
+          // console.log(data);
         },
         error => {
           console.error('데이터 불러오기 에러:', error);
@@ -145,10 +145,10 @@ const ShareModal = () => {
               <p className={shareDate}>
                 {productData?.timestamp
                   ? new Date(productData.timestamp).toLocaleDateString('ko-KR', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                    })
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })
                   : null}
               </p>
             </div>

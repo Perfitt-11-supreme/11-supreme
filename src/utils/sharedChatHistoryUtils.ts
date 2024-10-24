@@ -21,10 +21,10 @@ export const fetchShareId = async (userId:string, targetId: string): Promise<str
         }
       }
 
-      console.log("일치하는 공유 채팅 기록을 찾을 수 없습니다.");
+      console.error("일치하는 공유 채팅 기록을 찾을 수 없습니다.");
       return null;
     } else {
-      console.log("공유 채팅 기록을 사용할 수 없습니다.");
+      console.error("공유 채팅 기록을 사용할 수 없습니다.");
       return null;
     }
   } catch (error) {
