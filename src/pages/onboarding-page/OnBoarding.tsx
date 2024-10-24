@@ -3,9 +3,9 @@ import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { onboarding1, onboarding2 } from '../../assets/assets';
+import Button from '../../components/common/button/Button';
 import { auth, db } from '../../firebase/firebase';
 import useUserStore from '../../stores/useUserStore';
-import Button from '../common/button/Button';
 import { buttonDiv, container, descP, slide, slide0, slide1, slidesWrapper } from './onboarding.css';
 
 const OnBoarding = () => {

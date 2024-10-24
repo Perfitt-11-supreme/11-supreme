@@ -6,21 +6,21 @@ import Login from '../components/login/Login';
 import EmailLogin from '../components/login/emaillogin/EmailLogin';
 import FindEmail from '../components/login/find/FindEmail';
 import FindPassword from '../components/login/find/FindPassword';
-import LoginHello from '../components/login/login-hello/LoginHello';
-import OnBoarding from '../components/onboarding/OnBoarding';
+import EditPassword from '../components/mypage/mypage-service-button/edit-password/EditPassword';
+import EditUser from '../components/mypage/mypage-service-button/edit-user/EditUser';
 import ShoesInfo from '../components/shoes-info/ShoesInfo';
 import ShoesRegistry from '../components/shoes-registry/ShoesRegistry';
 import BridgePage from '../pages/bridge-page/bridgePage';
 import ChatBotPage from '../pages/chatbot-page/chatBotPage';
-import LikedPage from '../pages/mypage/liked-page/LikedPage';
-import Mypage from '../pages/mypage/Mypage';
-import NotFound from '../pages/not-found/notFound';
-import SharePage from '../pages/share-page/SharePage';
-import ViewedHistoryPage from '../pages/mypage/viewed-history-page/ViewedHistoryPage';
+import LoginHello from '../pages/chatbot-page/login-hello/LoginHello';
 import ImageSearch from '../pages/imagesearch-page/ImageSearch';
+import Mypage from '../pages/mypage/Mypage';
+import LikedPage from '../pages/mypage/liked-page/LikedPage';
+import ViewedHistoryPage from '../pages/mypage/viewed-history-page/ViewedHistoryPage';
+import NotFound from '../pages/not-found/notFound';
+import OnBoarding from '../pages/onboarding-page/OnBoarding';
+import SharePage from '../pages/share-page/SharePage';
 import TextSearch from '../pages/textsearch-page/TextSearch';
-import EditUser from '../components/mypage/mypage-service-button/edit-user/EditUser';
-import EditPassword from '../components/mypage/mypage-service-button/edit-password/EditPassword';
 
 export const router = createBrowserRouter([
   {
