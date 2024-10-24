@@ -1,13 +1,13 @@
+import { Outlet } from 'react-router-dom';
+import { layoutWraper, responsiveBox } from './styles/responsive.css';
 
-
-function App() {
-
-
+const App = () => {
   return (
-    <>
-      <h1>폰트 적용 테스트</h1>
-    </>
-  )
-}
-
-export default App
+    <div className={layoutWraper}>
+      <div className={responsiveBox}>
+        <Outlet />
+      </div>
+    </div>
+  );
+};
+export default App;

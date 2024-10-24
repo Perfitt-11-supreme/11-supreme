@@ -1,11 +1,13 @@
 import { globalFontFace, globalStyle } from '@vanilla-extract/css';
+import { theme } from './styles/theme';
 
 const Pretendard = 'PretendardVariable';
 
 globalFontFace('PretendardVariable', {
-  src: `url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/PretendardVariable.woff2') format('woff')`,
+  src: `local('PretendardVariable'), url('/fonts/PretendardVariable.woff2') format('woff2-variations')`,
   fontWeight: '45 920',
   fontStyle: 'normal',
+  fontDisplay: 'swap',
 });
 
 globalStyle('html', {
@@ -37,16 +39,18 @@ globalStyle('ul,li,ol', {
 });
 
 globalStyle('body', {
-  minHeight: '100vh',
-  lineHeight: '1',
+  minHeight: '100dvh',
+  backgroundColor: theme.color.slate200,
+  overflow: 'hidden',
 });
 
 globalStyle('h1,h2,h3,h4,button,input,label', {
-  lineHeight: '1.1',
+  lineHeight: '1.4em',
 });
 
-globalStyle('h1,h2,h3,h4', {
+globalStyle('h1,h2,h3,h4,b', {
   textWrap: 'balance',
+  color: theme.color.black,
 });
 
 globalStyle('a:not([class])', {
@@ -60,7 +64,7 @@ globalStyle('img,picture', {
 });
 
 globalStyle('input,button,textarea,select', {
-  font: Pretendard,
+  fontFamily: Pretendard,
 });
 
 globalStyle('textarea:not([row])', {
@@ -74,7 +78,7 @@ globalStyle(
     padding: 0,
     border: 0,
     fontSize: '100%',
-    font: 'inherit',
+    // font: 'inherit',
     fontFamily: Pretendard,
     verticalAlign: 'baseline',
   }
