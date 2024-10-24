@@ -144,8 +144,7 @@ const ShoesRegistry = () => {
           // console.log('db 수정 성공 ID: ', shoesId);
         } else {
           // 신발 정보 저장
-          const docRef = await addDoc(collection(db, 'myshoes'), dataWithUid);
-          // console.log('db 저장 성공 ID: ', docRef.id);
+          await addDoc(collection(db, 'myshoes'), dataWithUid);
         }
       } catch (e) {
         console.error('db 저장/수정 에러: ', e);

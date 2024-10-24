@@ -1,6 +1,9 @@
 import { motion } from 'framer-motion';
+import { useEffect } from 'react';
 import { arrow_right, export_icon, thumbs_down } from '../../../assets/assets';
 import useModalStore from '../../../stores/useModalStore';
+import useMyLikedProductStore from '../../../stores/useMyLikedProductStore';
+import useMyViewedProductStore from '../../../stores/useMyViewedProductStore';
 import useUserStore from '../../../stores/useUserStore';
 import { TProduct } from '../../../types/product';
 import { fetchShareId } from '../../../utils/sharedChatHistoryUtils';
@@ -14,9 +17,6 @@ import {
   productRecommendPreviewMoreIcon,
   productRecommendPreviewWrap,
 } from './productRecommendationPreview.css';
-import useMyViewedProductStore from '../../../stores/useMyViewedProductStore';
-import useMyLikedProductStore from '../../../stores/useMyLikedProductStore';
-import { useEffect } from 'react';
 interface ProductRecommendationPreviewProps {
   products: TProduct[];
   shareId?: string;
@@ -69,13 +69,13 @@ const ProductRecommendationPreview = ({ products = [], shareId, onMoreClick }: P
           setShareModalId(fetchedShareId);
           setIsShareModalOpen(true);
         } else {
-          console.log('공유 ID를 찾을 수 없습니다.');
+          // console.log('공유 ID를 찾을 수 없습니다.');
         }
       } else {
-        console.log('사용자 ID가 제공되지 않았습니다.'); // 사용자 ID가 없을 때 처리
+        // console.log('사용자 ID가 제공되지 않았습니다.'); // 사용자 ID가 없을 때 처리
       }
     } else {
-      console.log('공유 ID가 제공되지 않았습니다.');
+      // console.log('공유 ID가 제공되지 않았습니다.');
     }
   };
 

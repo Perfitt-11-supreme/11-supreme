@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { detail } from '../../../assets/assets';
 import useModalStore from '../../../stores/useModalStore';
 import useMyLikedProductStore from '../../../stores/useMyLikedProductStore';
+import useMyViewedProductStore from '../../../stores/useMyViewedProductStore';
 import useProductStore from '../../../stores/useProductsStore';
 import useUserStore from '../../../stores/useUserStore';
 import { TProduct } from '../../../types/product';
@@ -17,7 +18,6 @@ import {
   productRecommendFiltering,
   productRecommendWrapper,
 } from './productFilter.css';
-import useMyViewedProductStore from '../../../stores/useMyViewedProductStore';
 
 type ProductFilterProps = {
   filterProducts?: TProduct[];
@@ -55,7 +55,7 @@ const ProductFilter = ({ filterProducts }: ProductFilterProps) => {
 
   const handleDetailClick = () => {
     setFilterOpen(true);
-    console.log('필터');
+    // console.log('필터');
   };
 
   const displayProducts = filterProducts || products;

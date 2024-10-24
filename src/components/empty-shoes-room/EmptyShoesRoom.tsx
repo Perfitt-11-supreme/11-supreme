@@ -53,7 +53,7 @@ const EmptyShoesRoom = () => {
         fetchUserData(user.uid);
         fetchShoesData(selected);
       } else {
-        console.log('No user is signed in');
+        console.error('No user is signed in');
         setIsLoading(false);
       }
     });
